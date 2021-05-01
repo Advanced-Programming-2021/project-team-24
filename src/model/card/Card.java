@@ -9,6 +9,10 @@ public abstract class Card {
     private LimitType limitType;    
     public String getDescription;
     private static List<Card> allCards;
+    public static List<Card> getAllCards()
+    {
+        return allCards;
+    }
     public static void intialize()
     {
         // TODO add all cards, parse from json to Card       
