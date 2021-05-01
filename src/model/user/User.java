@@ -115,7 +115,7 @@ public class User {
             {
                 if(readUser(usernames.get(i)).getNickname().compareTo(nickname) == 0)
                 {
-                    return new Message(TypeMessage.ERROR, "user with nickname " + nickname + " already exists");
+                    return new Message(TypeMessage.SUCCESSFUL, "user with nickname " + nickname + " already exists");
                 }
             }
             //add new user
@@ -175,6 +175,12 @@ public class User {
             }
         }
         return null;
+    }
+    public void setPassword(String newPassword){
+        this.password = newPassword;
+    }
+    public void setNickname(String nickname){
+        this.nickname = nickname;
     }
 
     //TODO
