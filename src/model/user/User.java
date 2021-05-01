@@ -1,13 +1,14 @@
 package model.user;
 
+import java.lang.ProcessBuilder.Redirect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-//import com.google.gson;
-import model.*;
 
 import model.deck.*;
+import programcontroller.Message;
 import model.card.*;
+import programcontroller.*;
 
 public class User {
     private String nickname;
@@ -16,7 +17,7 @@ public class User {
     private int score;
     private List<String> cardNames;
     private List<Card> cards;//fill it after reading json
-
+    private static List<String> usernames;
     private List<Deck> decks;
     private Deck activeDeck;
     public String getNickname()
@@ -34,7 +35,25 @@ public class User {
         this.nickname = nickname;
         this.cards = new ArrayList<Card>();        
         this.score = 8000;
-        //TODO add this file to directory
+        usernames.add(username);
+        this.cardNames = new ArrayList<String>();
+        this.cards = new ArrayList<Card>();
+        this.decks = new ArrayList<Deck>();
+        this.activeDeck = null;
+        //update usernames list        
+        // add json file of user to directory
+    }    
+    
+    
+    public static void intialize()
+    {
+        // get list of all users from folder
+        usernames = new ArrayList<String>();
+
+    }
+    public void logout()
+    {
+        //update json file of user
     }    
     private boolean changePassword(String oldPassword, String newPassword)
     {
@@ -46,7 +65,7 @@ public class User {
         else
             return false;
     }
-    private User readUser(String username)
+    private static User readUser(String username)
     {
         //TODO reading by GSON
         return null;
@@ -87,13 +106,60 @@ public class User {
     {
         return this.score;
     }
-    public static LoginMenuMessage register(String username, String password, String nickname)
+    public static Message register(String username, String password, String nickname)
     {
-        return null;
+        User register = readUser(username);
+        if(register == null)
+        {
+            for(int i = 0; i < usernames.size(); i++)
+            {
+                if(readUser(usernames.get(i)).getNickname().compareTo(nickname) == 0)
+                {
+                    return new Message(TypeMessage.ERROR, "user with nickname " + nickname + " already exists");
+                }
+            }
+            //add new user
+            new User(username, password, nickname);   
+            return new Message(TypeMessage.SUCCESSFUL, "user logged in successfully!");
+        }
+        else
+        {
+            return new Message(TypeMessage.ERROR, "user with username " + username + " already exists");
+        }        
     }
-    public static User login(String username, String password, String nickname)
+    public static User getUserByNameAndPassword(String username, String password)
     {
-        return null;
+        User loging = readUser(username);
+        if(loging == null)
+        {
+            return null;
+        }
+        else
+        {
+            if(loging.comparePassword(password))
+            {
+                return loging;
+            }
+            else
+                return null;
+        }
+    }
+    public static Message login(String username, String password)
+    {
+        User loging = readUser(username);
+        if(loging == null)
+        {
+            return new Message(TypeMessage.ERROR, "Username and password didn’t match!")
+        }
+        else
+        {
+            if(loging.comparePassword(password))
+            {
+                return new Message(TypeMessage.SUCCESSFUL, "user logged in successfully!");
+            }
+            else
+                return new Message(TypeMessage.ERROR, "Username and password didn’t match!");
+        }
     } 
     public void changeScore(int changeScore)
     {
