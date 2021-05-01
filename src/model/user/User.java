@@ -1,6 +1,5 @@
 package model.user;
 
-import java.lang.ProcessBuilder.Redirect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +84,10 @@ public class User {
     public void addDeck(String deckName)
     {
         //return Errors.DeckWithSameNameExitsts;        
+    }
+    public Deck getActiveDeck()
+    {
+        return this.activeDeck;
     }
     public void removeDeck(String deckName)
     {

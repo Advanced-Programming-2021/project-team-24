@@ -5,7 +5,10 @@ public class MagicCardsZone extends Zone {
     {
 
     }
-    public void addCard(Card card);
+    public void addCard(Card card)
+    {
+        
+    }
     
     public void removeCardHolderById(int id)
     {
