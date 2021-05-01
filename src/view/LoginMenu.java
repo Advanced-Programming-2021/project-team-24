@@ -94,12 +94,12 @@ public class LoginMenu {
                 System.out.println("please login first");
             }
             else
-            if(command.substring(10).compareTo("user login") == 0 && command.split(" ").length == 6)
+            if(command.substring(0, 10).compareTo("user login") == 0 && command.split(" ").length == 6)
             {
                 login(command);
             }
             else
-            if(command.split(" ").length == 8 && command.substring(11).compareTo("user create") == 0)
+            if(command.split(" ").length == 8 && command.substring(0, 11).compareTo("user create") == 0)
             {   
                 register(command);
             }
@@ -110,8 +110,6 @@ public class LoginMenu {
         }
     }
     public static void main(String[] args) {
-        String v = "alireza";
-        System.out.println(v.substring(1, 2));        
         new LoginMenu().run();   
     }
 }

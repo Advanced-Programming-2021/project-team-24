@@ -1,6 +1,11 @@
+import model.card.Card;
+import model.user.User;
+import view.LoginMenu;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+        Card.intialize();
+        User.intialize();
+        new LoginMenu().run();
     }
 }

@@ -120,7 +120,7 @@ public class User {
             }
             //add new user
             new User(username, password, nickname);   
-            return new Message(TypeMessage.SUCCESSFUL, "user logged in successfully!");
+            return new Message(TypeMessage.SUCCESSFUL, "user created successfully!");
         }
         else
         {
@@ -149,7 +149,7 @@ public class User {
         User loging = readUser(username);
         if(loging == null)
         {
-            return new Message(TypeMessage.ERROR, "Username and password didn’t match!")
+            return new Message(TypeMessage.ERROR, "Username and password didn’t match!");
         }
         else
         {
