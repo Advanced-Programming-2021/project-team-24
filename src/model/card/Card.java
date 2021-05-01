@@ -6,6 +6,7 @@ public abstract class Card {
     private Integer score;
     private LimitType limitType;    
     public String getDescription;
+    public static ArrayList<Card> cards = new ArrayList<Card>();
     public String getName()
     {
         return this.name;
