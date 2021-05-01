@@ -5,9 +5,6 @@ import java.util.List;
 public abstract class FundamentalEffect {
     private List<String> requiredPhase;
     private List<String> requiredEvent;
-    private String requiredString;
-    public boolean isConditionsSatisfied() {
-        return true;
-    }
-    
+    private String requiredString;    
+    public abstract boolean isConditionsSatisfied();    
 }
