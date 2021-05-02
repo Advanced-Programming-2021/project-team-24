@@ -9,7 +9,7 @@ import java.util.*;
 public class FieldZone extends Zone{
     public boolean isFull()
     {
-        return true;
+
     }
     public void addCard(Card card)
     {
@@ -22,6 +22,6 @@ public class FieldZone extends Zone{
     } 
     public List<CardHolder> getListOfCard()
     {
-        return null;
+
     }  
 }

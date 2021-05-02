@@ -5,7 +5,7 @@ import view.LoginMenu;
 public class App {
     public static void main(String[] args) throws Exception {
         Card.intialize();
-        User.intialize();
+        User.initialize();
         new LoginMenu().run();
     }
 }

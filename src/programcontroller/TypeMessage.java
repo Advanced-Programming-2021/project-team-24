@@ -1,7 +1,8 @@
 package programcontroller;
 
 
-public enum TypeMessage{
+public enum TypeMessage {
   SUCCESSFUL,
-  ERROR
+  ERROR,
+  INFO
 }

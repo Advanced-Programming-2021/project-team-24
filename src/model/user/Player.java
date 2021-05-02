@@ -1,13 +1,14 @@
 package model.user;
 
 
-import model.card.CardHolder;
 import model.duel.zone.DrawDeckZone;
 import model.duel.zone.FieldZone;
 import model.duel.zone.Graveyard;
 import model.duel.zone.MagicCardsZone;
 import model.duel.zone.MonsterZone;
 import model.duel.zone.Zone;
+import model.card.CardHolder;
+import model.user.User;
 
 public class Player {
     private User user;

@@ -2,30 +2,32 @@ package programcontroller;
 
 import model.user.User;
 
+import java.util.Collections;
+import java.util.List;
+
+
 public class ScoreboardMenu extends Menu{
-    private List<User> userList;//get users from User Class
-    public ScoreboardMenu();
-    private void sortUserList(){
-        for (int i = 0; i < userList.size(); i++) {
-            for (int j = i+1; j < userList.size; j++) {
-                if (userList.get(i).getScore < userList.get(j).getScore){
-
-                }
-                else if (userList.get(i).getScore == userList.get(j).getScore){
-                    if (userList.get(i).getNickname.compareTo(userList.get(j).getNickname) > 0){
-
-                    }
-                }
+    private List<String> usernames = User.getUsernames();
+    public ScoreboardMenu(User user){
+        super(user);
+    }
+    private void sortUserList(List<String> usernames){
+        for (int i = 0; i < usernames.size(); i++) {
+            for (int j = i+1; j < usernames.size(); j++) {
+                User userI = User.readUser(usernames.get(i));
+                User userJ = User.readUser(usernames.get(j));
+                if (userI.getScore() < userJ.getScore())    Collections.swap(usernames, i, j);
+                else if (userI.getScore() == userJ.getScore() && userI.getNickname().compareTo(userJ.getNickname()) > 0) Collections.swap(usernames, i, j);
             }
-
         }
     }
     public Message showScoreboard(){
-        sortUserList(userList);
+        sortUserList(usernames);
         String content = "";
-        for (int i = 1; i < userList.size()+1; i++) {
-            content += i + "- " + userList.get(i-1).getNickname() + ": " + userList.get(i-1).getScore() + "\n";
+        for (int i = 1; i < usernames.size()+1; i++) {
+            User user = User.readUser(usernames.get(i-1));
+            content += i + "- " + user.getNickname() + ": " + user.getScore() + "\n";
         }
-        return new Message(TypeMessage.SUCCESSFUL, content);
+        return new Message(TypeMessage.INFO, content);
     }
 }

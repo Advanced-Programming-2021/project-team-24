@@ -6,6 +6,7 @@ public abstract class Card {
     private String name;
     private String description;
     private Integer score;
+    private Integer price;
     private LimitType limitType;    
     public String getDescription;
     private static List<Card> allCards;
@@ -30,6 +31,9 @@ public abstract class Card {
     public String getName()
     {
         return this.name;
+    }
+    public int getPrice(){
+        return this.price;
     }
     public LimitType getLimitType()
     {

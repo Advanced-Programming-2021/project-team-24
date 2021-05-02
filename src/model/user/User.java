@@ -14,6 +14,7 @@ public class User {
     private String username;
     private String password;
     private int score;
+    private int coin;
     private List<String> cardNames;
     private List<Card> cards;//fill it after reading json
     private static List<String> usernames;
@@ -30,6 +31,12 @@ public class User {
     public int getScore(){
         return score;
     }
+    public int getCoin(){
+        return coin;
+    }
+    public static List<String> getUsernames(){
+        return usernames;
+    }
 
     public List<Card> getCards() {
         return cards;
@@ -40,7 +47,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
-        this.cards = new List<Card>();
+        this.cards = new ArrayList<Card>();
         this.score = 8000;
         usernames.add(username);
         this.cardNames = new ArrayList<String>();
@@ -52,7 +59,7 @@ public class User {
     }    
     
     
-    public static void intialize()
+    public static void initialize()
     {
         // get list of all users from folder
         usernames = new ArrayList<String>();
@@ -62,7 +69,7 @@ public class User {
     {
         //update json file of user
     }    
-    private boolean changePassword(String oldPassword, String newPassword)
+    public boolean changePassword(String oldPassword, String newPassword)
     {
         if(this.password.compareTo(oldPassword) == 0)
         {
@@ -72,7 +79,7 @@ public class User {
         else
             return false;
     }
-    private static User readUser(String username)
+    public static User readUser(String username)
     {
         //TODO reading by GSON
         return null;
@@ -89,12 +96,12 @@ public class User {
             return false;
         }
     }
-    public void addCard(card newCard){
+    public void addCard(Card newCard){
         cards.add(newCard);
     }
     public void addDeck(String deckName)
     {
-        //return Errors.DeckWithSameNameExitsts;        
+        //return Errors.DeckWithSameNameExists;
     }
     public Deck getActiveDeck()
     {
@@ -116,10 +123,6 @@ public class User {
             }
         }
     }
-    public int getScore()
-    {
-        return this.score;
-    }
     public static Message register(String username, String password, String nickname)
     {
         User register = readUser(username);
@@ -129,7 +132,7 @@ public class User {
             {
                 if(readUser(usernames.get(i)).getNickname().compareTo(nickname) == 0)
                 {
-                    return new Message(TypeMessage.ERROR, "user with nickname " + nickname + " already exists");
+                    return new Message(TypeMessage.SUCCESSFUL, "user with nickname " + nickname + " already exists");
                 }
             }
             //add new user
@@ -190,10 +193,7 @@ public class User {
         }
         return null;
     }
-    public void setPassword(String newPassword){
-        this.password = newPassword;
-    }
-    public void setNickname(String nickname){
+    public void changeNickname(String nickname){
         this.nickname = nickname;
     }
 
