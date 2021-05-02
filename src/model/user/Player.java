@@ -1,6 +1,7 @@
 package model.user;
 
 
+import model.card.CardHolder;
 import model.duel.zone.DrawDeckZone;
 import model.duel.zone.FieldZone;
 import model.duel.zone.Graveyard;

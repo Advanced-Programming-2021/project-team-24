@@ -118,7 +118,7 @@ public class User {
             {
                 if(readUser(usernames.get(i)).getNickname().compareTo(nickname) == 0)
                 {
-                    return new Message(TypeMessage.SUCCESSFUL, "user with nickname " + nickname + " already exists");
+                    return new Message(TypeMessage.ERROR, "user with nickname " + nickname + " already exists");
                 }
             }
             //add new user
