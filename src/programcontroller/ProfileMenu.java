@@ -16,7 +16,10 @@ public class ProfileMenu extends Menu{
         else return new Message(TypeMessage.ERROR, "current password is invalid");
     }
     public Message changeNickname(String nickname){
-        for (int i = 0; i < User.; i++)
+        //check users nicknames
+        for (int i = 0; i < User.; i++){
+
+        }
         user.setNickname(String nickname);
     }
 }

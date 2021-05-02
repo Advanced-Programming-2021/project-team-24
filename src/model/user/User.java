@@ -27,6 +27,11 @@ public class User {
     {
         return this.username;
     }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
     private User(String username, String password, String nickname)
     {
         this.username = username;

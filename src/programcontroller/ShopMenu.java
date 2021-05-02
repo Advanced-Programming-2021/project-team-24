@@ -12,12 +12,17 @@ public class ShopMenu extends Menu {
         }
         return null;
     }
-    public String buyCard(String cardName){
-        user.
+    public Message buyCard(String cardName){
+        //add card
         return null;
 
     }
-    public void getInfo(String cardName){
-
+    public Message getInfo(String cardName){
+        String content = "";
+        List<Card> cards = user.getCards;
+        for (int i = 0; i < cards.size(); i++) {
+            content += cards.get(i).getName() +":"+cards.get(i).getDescription()+"\n";
+        }
+        return new Message(TypeMessage.SUCCESSFUL, content);
     }
 }
