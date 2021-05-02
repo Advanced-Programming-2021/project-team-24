@@ -27,6 +27,9 @@ public class User {
     {
         return this.username;
     }
+    public int getScore(){
+        return score;
+    }
 
     public List<Card> getCards() {
         return cards;
