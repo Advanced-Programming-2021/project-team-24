@@ -27,12 +27,20 @@ public class User {
     {
         return this.username;
     }
+    public int getScore(){
+        return score;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
     private User(String username, String password, String nickname)
     {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
-        this.cards = new ArrayList<Card>();        
+        this.cards = new List<Card>();
         this.score = 8000;
         usernames.add(username);
         this.cardNames = new ArrayList<String>();
@@ -80,6 +88,9 @@ public class User {
         {
             return false;
         }
+    }
+    public void addCard(card newCard){
+        cards.add(newCard);
     }
     public void addDeck(String deckName)
     {
@@ -185,6 +196,7 @@ public class User {
     public void setNickname(String nickname){
         this.nickname = nickname;
     }
+
 
     //TODO
 }
