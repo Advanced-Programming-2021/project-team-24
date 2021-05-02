@@ -37,7 +37,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
-        this.cards = new ArrayList<Card>();        
+        this.cards = new List<Card>();
         this.score = 8000;
         usernames.add(username);
         this.cardNames = new ArrayList<String>();
@@ -85,6 +85,9 @@ public class User {
         {
             return false;
         }
+    }
+    public void addCard(card newCard){
+        cards.add(newCard);
     }
     public void addDeck(String deckName)
     {
@@ -190,6 +193,7 @@ public class User {
     public void setNickname(String nickname){
         this.nickname = nickname;
     }
+
 
     //TODO
 }

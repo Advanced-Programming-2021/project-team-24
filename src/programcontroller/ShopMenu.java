@@ -13,7 +13,10 @@ public class ShopMenu extends Menu {
         return null;
     }
     public Message buyCard(String cardName){
-        //add card
+        Card newCard = getCardByName(cardName);
+        if (newCard == null) return new Message(TypeMessage.ERROR, "there is no card with this name");
+        //check enough money
+        else user.addCard(newCard);
         return null;
 
     }
