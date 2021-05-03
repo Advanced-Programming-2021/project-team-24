@@ -52,7 +52,7 @@ public class Deck {
     }
 
     public boolean isValid() {
-        if (this.mainCards.size() >= 40) return true;
+        if (this.mainCards.size() >= 40 && this.mainCards.size() <= 60) return true;
         return false;
     }
 }
