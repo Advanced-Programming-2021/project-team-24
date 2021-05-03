@@ -4,8 +4,9 @@ import model.user.User;
 
 import java.util.regex.Matcher;
 
-public class ShopMenu extends Menu {
+public class ShopMenu extends MainMenu {
     private programcontroller.ShopMenu shopMenu = new programcontroller.ShopMenu(user);
+    private programcontroller.MainMenu mainMenu = new programcontroller.MainMenu(user);
     public ShopMenu(User user){
         super(user);
     }
@@ -20,6 +21,11 @@ public class ShopMenu extends Menu {
                 }
             }
             else if (command.compareToIgnoreCase("shop show --all") == 0) System.out.printf(shopMenu.getInfo().getContent());
+            checkShowCurrentMenu(command);
+            if(checkMenuExit(command)) {
+                mainMenu.menuExit();
+                return;
+            }
         }
     }
 }

@@ -4,7 +4,7 @@ import model.user.User;
 
 import java.util.List;
 
-public class ProfileMenu extends Menu{
+public class ProfileMenu extends MainMenu {
     public ProfileMenu(User user){
         super(user);
     }

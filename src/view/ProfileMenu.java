@@ -1,15 +1,12 @@
 package view;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.regex.Matcher;
 
 import model.user.User;
-import programcontroller.Message;
-import programcontroller.TypeMessage;
 
-public class ProfileMenu extends Menu{
+public class ProfileMenu extends MainMenu {
     private programcontroller.ProfileMenu profileMenu = new programcontroller.ProfileMenu(user);
+    private programcontroller.MainMenu mainMenu = new programcontroller.MainMenu(user);
     public ProfileMenu(User user){
         super(user);
     }
@@ -31,6 +28,11 @@ public class ProfileMenu extends Menu{
                     String newPassword = temp[1];
                     System.out.printf(profileMenu.changePassword(oldPassword, newPassword).getContent());
                 }
+            }
+            checkShowCurrentMenu(command);
+            if(checkMenuExit(command)) {
+                mainMenu.menuExit();
+                return;
             }
         }
     }

@@ -7,7 +7,7 @@ import model.user.User;
 import java.util.List;
 
 
-public class ShopMenu extends Menu {
+public class ShopMenu extends MainMenu {
     public ShopMenu(User user){
         super(user);
     }
