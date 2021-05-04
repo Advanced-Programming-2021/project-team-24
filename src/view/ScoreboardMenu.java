@@ -3,8 +3,8 @@ package view;
 import model.user.User;
 
 public class ScoreboardMenu extends MainMenu {
-    private programcontroller.ScoreboardMenu scoreboardMenu = new programcontroller.ScoreboardMenu(user);
-    private programcontroller.MainMenu mainMenu = new programcontroller.MainMenu(user);
+    private controller.ScoreboardMenu scoreboardMenu = new controller.ScoreboardMenu(user);
+    private controller.MainMenu mainMenu = new controller.MainMenu(user);
     public ScoreboardMenu(User user){
         super(user);
     }

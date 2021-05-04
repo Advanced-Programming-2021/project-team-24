@@ -1,4 +1,4 @@
-package programcontroller;
+package controller;
 
 import model.user.User;
 

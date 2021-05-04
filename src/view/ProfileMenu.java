@@ -5,8 +5,8 @@ import java.util.regex.Matcher;
 import model.user.User;
 
 public class ProfileMenu extends MainMenu {
-    private programcontroller.ProfileMenu profileMenu = new programcontroller.ProfileMenu(user);
-    private programcontroller.MainMenu mainMenu = new programcontroller.MainMenu(user);
+    private controller.ProfileMenu profileMenu = new controller.ProfileMenu(user);
+    private controller.MainMenu mainMenu = new controller.MainMenu(user);
     public ProfileMenu(User user){
         super(user);
     }
