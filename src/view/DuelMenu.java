@@ -1,6 +1,7 @@
 package view;
 
 import java.util.regex.Matcher;
+import model.user.User;
 
 
 import controller.DuelController;
