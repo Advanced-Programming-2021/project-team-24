@@ -1,8 +1,5 @@
 package view;
 
-
-import static Global.regexFind;
-
 import java.util.regex.Matcher;
 
 
@@ -17,7 +14,7 @@ public class DuelMenu {
     DuelController duelController;
 
     public DuelMenu(User user, String opponentUsername) {
-        this.duelController = new DuelController(new Duel(user, User.getUserByUsername(opponentUsername)));
+        this.duelController = new DuelController(new Duel(user, User.readUser(opponentUsername)));
     }
 
     private static final String REGEX_ENTER_MENU = "menu enter (\\w+)";
@@ -43,7 +40,8 @@ public class DuelMenu {
             } else if (command.equals("activate effect")) {
                 //TODO activate effect
             } else if (command.equals("show graveyard")) {
-                //TODO show graveyard
+                Message message = duelController.showGraveyard();
+                System.out.println(message.getContent());
             } else if (command.equals("card show --selected")) {
                 Message message = duelController.showSelectedCard();
                 System.out.println(message.getContent());

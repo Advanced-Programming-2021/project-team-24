@@ -13,4 +13,7 @@ public class Address {
         this.opponent = opponent;
         this.place = place;
     }
+    public void plusplus(){
+        this.place++;
+    }
 }
