@@ -2,22 +2,22 @@ package model.card;
 
 import java.util.List;
 
+
 public abstract class Card {
-    private String name;
-    private String description;
-    private Integer score;
-    private Integer price;
-    private LimitType limitType;    
+    protected String name;
+    protected String description;    
+    protected Integer price;
+    protected LimitType limitType;
+    protected CardType cardType;    
     public String getDescription;
-    private static List<Card> allCards;
-    public static List<Card> getAllCards()
+    protected static List <Card> allCards;
+    public static List <Card> getAllCards()
     {
         return allCards;
     }
     public static void intialize()
     {
         // TODO add all cards, parse from json to Card       
-
     }
     public static Card getCardByName(String cardName)
     {
@@ -27,6 +27,10 @@ public abstract class Card {
                 return allCards.get(i);
         }
         return null;
+    }
+    public CardType getCardType()
+    {
+        return this.cardType;
     }
     public String getName()
     {
@@ -43,9 +47,12 @@ public abstract class Card {
     {
         return this.description;
     }
-    public int getScore()
+    public boolean isMagic()
     {
-        return this.score;
+        if(this.cardType == CardType.MONSTER)
+            return false;
+        else
+            return true;
     }
     //TODO
 }

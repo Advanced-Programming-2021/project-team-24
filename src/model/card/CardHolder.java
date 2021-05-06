@@ -1,47 +1,48 @@
 package model.card;
 
-
 import java.util.*;
+
+import model.user.User;
+
 
 
 
 public abstract class CardHolder {
-    private int id;
-    private static int idCounter = 0;    
-    private Card card;    
-    
-    
-    
-    
-    private Position position;
-    
-    
-        
-    public CardHolder()
+    protected int id;
+    protected static int idCounter = 1;    
+    protected Card card;                    
+    protected CardState cardState;
+    protected User owner;
+    public String getOnwerName()
     {
+        return this.owner.getNickname();
+    }        
+    public CardHolder(User owner)
+    {        
+        this.owner = owner;
         this.card = null;
-        this.position = null;
+        this.cardState = null;
         this.id = idCounter ++;        
         this.appliedEffects = new ArrayList<Integer>();
         this.effectsId = new ArrayList<Integer>();        
     }
     
     List <Integer> effectsId;        
-    List<Integer> appliedEffects;
+    List <Integer> appliedEffects;
     
     public void makeEmpty()
     {
         this.card = null;
-        this.position = null;
+        this.cardState = null;
         this.id = idCounter ++;        
         this.effectsId = new ArrayList<Integer>();
         this.appliedEffects = new ArrayList<Integer>();
     }
     
-    public CardHolder(Card card, Position position)
+    public CardHolder(Card card, CardState cardState)
     {
         this.card = card;
-        this.position = position;        
+        this.cardState = cardState;        
     }
     
     
@@ -56,9 +57,9 @@ public abstract class CardHolder {
     }
     
     
-    private Position getPosition()
+    private CardState getPosition()
     {
-        return this.position;
+        return this.cardState;
     }
     
     

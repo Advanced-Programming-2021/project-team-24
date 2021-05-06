@@ -1,9 +1,10 @@
 package model.duel.zone;
 
-import model.card.Card;
 import java.util.List;
+
+import model.card.Card;
 import model.card.CardHolder;
-import model.deck;
+import model.deck.Deck;
 
 
 public class DrawDeckZone extends Zone{    
@@ -29,7 +30,7 @@ public class DrawDeckZone extends Zone{
         return null;
     }
     public static void main(String[] args) {
-        DrawDeckZone v = new DrawDeckZone();
+        DrawDeckZone v = new DrawDeckZone(null);
         if(v.isFull())
         {
             

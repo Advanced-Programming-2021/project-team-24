@@ -1,13 +1,11 @@
 package view;
 
 
-import static Global.regexFind;
-
 import java.util.HashMap;
 
-import model.user.User;
 import controller.Message;
 import controller.TypeMessage;
+import model.user.User;
 
 public class LoginMenu {
    

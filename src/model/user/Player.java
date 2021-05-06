@@ -1,12 +1,7 @@
 package model.user;
 
+import model.duel.zone.*;
 import model.zones.Address;
-import model.zones.DrawDeckZone;
-import model.zones.FieldZone;
-import model.zones.Graveyard;
-import model.zones.MagicCardsZone;
-import model.zones.MonsterZone;
-import model.card.CardHolder;
 
 public class Player {
     private User user;

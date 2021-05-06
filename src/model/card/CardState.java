@@ -2,7 +2,6 @@ package model.card;
 
 
 
-
 public enum CardState
 {
   SET_DEFENCE,

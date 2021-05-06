@@ -1,8 +1,14 @@
 package model.duel.zone;
 
+import java.util.List;
+
+import model.card.Card;
+import model.card.CardHolder;
+
 public class MagicCardsZone extends Zone {
     public boolean isFull()
     {
+        return false;
 
     }
     public void addCard(Card card)
@@ -16,6 +22,7 @@ public class MagicCardsZone extends Zone {
     } 
     public List<CardHolder> getListOfCard()
     {
-
-    }  
+        return null;
+    }
+     
 }
