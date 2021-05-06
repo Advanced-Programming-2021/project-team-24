@@ -1,54 +1,61 @@
 package model.deck;
 
+import model.card.Card;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Deck {
     private String name;
-    private List<String> mainCards;
-    private List<String> sideCards;
+    private List<Card> mainCards;
+    private List<Card> sideCards;
 
     public Deck(String name) {
         this.name = name;
-        this.mainCards = new ArrayList<String>();
-        this.sideCards = new ArrayList<String>();
+        this.mainCards = new ArrayList<Card>();
+        this.sideCards = new ArrayList<Card>();
     }
 
     public String getName() {
         return this.name;
     }
 
-    public List<String> getMainCards() {
+    public List<Card> getMainCards() {
         return this.mainCards;
     }
 
-    public List<String> getSideCards() {
+    public List<Card> getSideCards() {
         return this.sideCards;
     }
 
     public int getCountOfCard(String name) {
         int count = 0;
-        for (String cardName : getMainCards())
+        String cardName = null;
+        for (Card card : getMainCards()) {
+            cardName = card.getName();
             if (cardName.equals(name)) count++;
-        for (String cardName : getSideCards())
+        }
+        for (Card card : getSideCards()) {
+            cardName = card.getName();
             if (cardName.equals(name)) count++;
+        }
         return count;
     }
 
-    public void addMainCard(String name) {
-        this.mainCards.add(name);
+    public void addMainCard(Card card) {
+        this.mainCards.add(card);
     }
 
-    public void addSideCard(String name) {
-        this.sideCards.add(name);
+    public void addSideCard(Card card) {
+        this.sideCards.add(card);
     }
 
-    public void removeMainCard(String name) {
-        this.mainCards.remove(name);
+    public void removeMainCard(Card card) {
+        this.mainCards.remove(card);
     }
 
-    public void removeSideCard(String name) {
-        this.sideCards.remove(name);
+    public void removeSideCard(Card card) {
+        this.sideCards.remove(card);
     }
 
     public boolean isValid() {
