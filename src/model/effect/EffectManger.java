@@ -7,4 +7,5 @@ public class EffectManger {
     private int id;    
     private Effect effect;        
     
+    
 }

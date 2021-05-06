@@ -1,11 +1,8 @@
 package view;
 
 
-import static Global.regexFind;
-
 import java.util.regex.Matcher;
 import model.user.User;
-
 
 import controller.DuelController;
 import controller.Message;
