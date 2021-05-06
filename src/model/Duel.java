@@ -1,7 +1,10 @@
 package model;
 
+import model.effect.EffectManger;
 import model.user.Player;
 import model.user.User;
+
+import java.util.List;
 
 public class Duel {
     Player user;
@@ -14,5 +17,11 @@ public class Duel {
 
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+    public void addEffect(int idEffect){
+
+    }
+    public void removeEffect(int idEffect){
+
     }
 }
