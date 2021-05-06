@@ -5,9 +5,9 @@ import java.util.List;
 
 
 import model.deck.*;
-import programcontroller.Message;
+import controller.Message;
 import model.card.*;
-import programcontroller.*;
+import controller.*;
 
 public class User {
     private String nickname;

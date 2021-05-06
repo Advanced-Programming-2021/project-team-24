@@ -1,6 +1,5 @@
-package programcontroller;
+package controller;
 
-import model.card.Card;
 import model.user.User;
 
 public class MainMenu {

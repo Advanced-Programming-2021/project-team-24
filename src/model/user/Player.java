@@ -1,53 +1,51 @@
 package model.user;
 
-
-import model.duel.zone.DrawDeckZone;
-import model.duel.zone.FieldZone;
-import model.duel.zone.Graveyard;
-import model.duel.zone.MagicCardsZone;
-import model.duel.zone.MonsterZone;
-import model.duel.zone.Zone;
+import model.zones.Address;
+import model.zones.DrawDeckZone;
+import model.zones.FieldZone;
+import model.zones.Graveyard;
+import model.zones.MagicCardsZone;
+import model.zones.MonsterZone;
 import model.card.CardHolder;
-import model.user.User;
 
 public class Player {
     private User user;
     private int lifePoint;
-    private CardHolder selectedCardHolder;    
+    private Address selectedAddress;
     private Graveyard graveyard;
     private MonsterZone monsterZone;
     private MagicCardsZone magicCardsZone;
     private DrawDeckZone drawDeckZone;
     private FieldZone fieldZone;
-    public Player(User user)
-    {
+
+    public Player(User user) {
         this.lifePoint = 8000;
-        this.user = user;    
+        this.user = user;
         this.fieldZone = new FieldZone();
-        this.drawDeckZone = new DrawDeckZone(user.getActiveDeck());    
+        this.drawDeckZone = new DrawDeckZone(user.getActiveDeck());
         this.graveyard = new Graveyard();
         this.magicCardsZone = new MagicCardsZone();
         this.monsterZone = new MonsterZone();
     }
-    
-    public void setSelectedCardHolder(CardHolder cardHolder)
-    {
-        this.selectedCardHolder = cardHolder;
+
+    public void selectAddress(Address address) {
+        this.selectedAddress = address;
     }
 
+    public Address getSelectedAddress() {
+        return this.selectedAddress;
+    }
 
-    
-    public String getNickname()
-    {
+    public String getNickname() {
         return user.getNickname();
-    }    
-    public void changeLifePoint(int change)
-    {
+    }
+
+    public void changeLifePoint(int change) {
         this.lifePoint += change;
     }
-    public boolean isDead()
-    {
-        if(lifePoint <= 0)
+
+    public boolean isDead() {
+        if (lifePoint <= 0)
             return true;
         else
             return false;

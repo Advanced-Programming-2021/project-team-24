@@ -1,4 +1,4 @@
-package programcontroller;
+package controller;
 public class Message{
   private TypeMessage typeMessage;
   private String content;

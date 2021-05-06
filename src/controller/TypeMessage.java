@@ -1,4 +1,4 @@
-package programcontroller;
+package controller;
 
 
 public enum TypeMessage {

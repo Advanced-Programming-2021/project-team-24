@@ -5,8 +5,8 @@ import model.user.User;
 import java.util.regex.Matcher;
 
 public class ShopMenu extends MainMenu {
-    private programcontroller.ShopMenu shopMenu = new programcontroller.ShopMenu(user);
-    private programcontroller.MainMenu mainMenu = new programcontroller.MainMenu(user);
+    private controller.ShopMenu shopMenu = new controller.ShopMenu(user);
+    private controller.MainMenu mainMenu = new controller.MainMenu(user);
     public ShopMenu(User user){
         super(user);
     }

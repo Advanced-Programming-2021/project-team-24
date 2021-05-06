@@ -5,29 +5,54 @@ import java.util.List;
 
 public class Deck {
     private String name;
-    private List<String> cardNames;    
-    public Deck(String name)
-    {
+    private List<String> mainCards;
+    private List<String> sideCards;
+
+    public Deck(String name) {
         this.name = name;
-        this.cardNames = new ArrayList<String>();
+        this.mainCards = new ArrayList<String>();
+        this.sideCards = new ArrayList<String>();
     }
-    public String getName()
-    {
+
+    public String getName() {
         return this.name;
     }
-    public List<String> getCardList()
-    {
-        return this.cardNames;
-    }
-    public int getCountOfCard(String name)
-    {
-        for(int i = 0; i < cardNames.size(); i++)
-        {
-            if(name.compareTo(name) == 0)
-            {
 
-            }
-        }
-        return 0;
+    public List<String> getMainCards() {
+        return this.mainCards;
+    }
+
+    public List<String> getSideCards() {
+        return this.sideCards;
+    }
+
+    public int getCountOfCard(String name) {
+        int count = 0;
+        for (String cardName : getMainCards())
+            if (cardName.equals(name)) count++;
+        for (String cardName : getSideCards())
+            if (cardName.equals(name)) count++;
+        return count;
+    }
+
+    public void addMainCard(String name) {
+        this.mainCards.add(name);
+    }
+
+    public void addSideCard(String name) {
+        this.sideCards.add(name);
+    }
+
+    public void removeMainCard(String name) {
+        this.mainCards.remove(name);
+    }
+
+    public void removeSideCard(String name) {
+        this.sideCards.remove(name);
+    }
+
+    public boolean isValid() {
+        if (this.mainCards.size() >= 40 && this.mainCards.size() <= 60) return true;
+        return false;
     }
 }
