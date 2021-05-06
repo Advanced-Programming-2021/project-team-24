@@ -4,7 +4,7 @@ package view;
 import model.user.User;
 
 public class MainMenu {
-    User user;
+    protected User user;
     public MainMenu(User user){
         this.user = user;
     }

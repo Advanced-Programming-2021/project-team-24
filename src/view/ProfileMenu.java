@@ -5,11 +5,11 @@ import java.util.regex.Matcher;
 import model.user.User;
 
 public class ProfileMenu extends MainMenu {
-    private controller.ProfileMenu profileMenu = new controller.ProfileMenu(user);
-    private controller.MainMenu mainMenu = new controller.MainMenu(user);
     public ProfileMenu(User user){
         super(user);
     }
+    private controller.ProfileMenu profileMenu = new controller.ProfileMenu(user);
+    private controller.MainMenu mainMenu = new controller.MainMenu(user);
     public void run(){
         while(true) {
             String command = Global.nextLine();

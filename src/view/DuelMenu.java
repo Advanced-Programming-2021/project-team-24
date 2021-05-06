@@ -2,6 +2,7 @@ package view;
 
 
 import java.util.regex.Matcher;
+import model.user.User;
 
 import controller.DuelController;
 import controller.Message;
@@ -14,7 +15,7 @@ public class DuelMenu {
     DuelController duelController;
 
     public DuelMenu(User user, String opponentUsername) {
-        this.duelController = new DuelController(new Duel(user, User.getUserByUsername(opponentUsername)));
+        this.duelController = new DuelController(new Duel(user, User.readUser(opponentUsername)));
     }
 
     private static final String REGEX_ENTER_MENU = "menu enter (\\w+)";
