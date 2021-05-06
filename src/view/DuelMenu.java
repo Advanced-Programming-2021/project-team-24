@@ -1,8 +1,7 @@
 package view;
 
-
 import java.util.regex.Matcher;
-import model.user.User;
+
 
 import controller.DuelController;
 import controller.Message;
@@ -41,7 +40,8 @@ public class DuelMenu {
             } else if (command.equals("activate effect")) {
                 //TODO activate effect
             } else if (command.equals("show graveyard")) {
-                //TODO show graveyard
+                Message message = duelController.showGraveyard();
+                System.out.println(message.getContent());
             } else if (command.equals("card show --selected")) {
                 Message message = duelController.showSelectedCard();
                 System.out.println(message.getContent());
