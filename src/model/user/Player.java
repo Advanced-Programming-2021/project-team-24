@@ -8,13 +8,10 @@ import model.zones.MagicCardsZone;
 import model.zones.MonsterZone;
 import model.card.CardHolder;
 
-import java.util.List;
-
 public class Player {
     private User user;
     private int lifePoint;
     private Address selectedAddress;
-    private List<CardHolder> cardHolders;
     private Graveyard graveyard;
     private MonsterZone monsterZone;
     private MagicCardsZone magicCardsZone;
@@ -52,10 +49,6 @@ public class Player {
             return true;
         else
             return false;
-    }
-
-    public CardHolder getCardHolderById(int id) {
-        for (CardHolder cardHolder : cardHolders) if (cardHolder.getId() == id) return cardHolder;
     }
 
 }
