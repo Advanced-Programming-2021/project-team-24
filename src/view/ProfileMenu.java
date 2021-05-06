@@ -28,6 +28,13 @@ public class ProfileMenu extends MainMenu {
                     String newPassword = temp[1];
                     System.out.printf(profileMenu.changePassword(oldPassword, newPassword).getContent());
                 }
+                matcher = Global.getMatcher(command, "(?<=profile change --password --new ).*");
+                if (matcher.find()){
+                    String[] temp = matcher.group().split(" --current ");
+                    String oldPassword = temp[1];
+                    String newPassword = temp[0];
+                    System.out.printf(profileMenu.changePassword(oldPassword, newPassword).getContent());
+                }
             }
             checkShowCurrentMenu(command);
             if(checkMenuExit(command)) {
