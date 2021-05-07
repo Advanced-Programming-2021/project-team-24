@@ -1,7 +1,7 @@
 package model.user;
 
 import model.duel.zone.*;
-import model.zones.Address;
+import model.zone.Address;
 
 import java.util.List;
 
