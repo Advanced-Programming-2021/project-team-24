@@ -27,7 +27,7 @@ public abstract class CardHolder {
         this.effectManagerId = new ArrayList<Integer>();
         //TODO effectManager should be updated by creating effectManagerId        
     }
-    
+    public abstract void endPhase();
     private List <Integer> effectManagerId;        
     private List <Integer> appliedEffects;    
     protected abstract void recalculateEffect();    

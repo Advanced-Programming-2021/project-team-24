@@ -15,14 +15,9 @@ public class Duel {
     Player opponent;
     Player currentPlayer;
     private static List<EffectManager> effectManagerList;
-<<<<<<< HEAD
-    
-    public static EffectManager getEffectManagerById(int id){
-=======
     private HashMap<Address, CardHolder> map;
-
+    private List<Zone> zones;
     public static EffectManager getEffectManagerById(int id) {
->>>>>>> 307c471169f64833dbb9468b61fb9c559a2bd1ec
         for (int i = 0; i < effectManagerList.size(); i++) {
             if (effectManagerList.get(i).getId() == id) return effectManagerList.get(i);
         }
@@ -30,6 +25,17 @@ public class Duel {
     }
 
     public Duel(User user, User opponent) {
+        zones = new ArrayList<Zone>();
+        zones.add(new Zone("graveyard", false));
+        zones.add(new Zone("graveyard", true));        
+        zones.add(new Zone("hand", false));
+        zones.add(new Zone("hand", true));
+        zones.add(new Zone("monster", false));
+        zones.add(new Zone("monster", true));
+        zones.add(new Zone("magic", false));
+        zones.add(new Zone("magic", true));
+        
+        
         this.user = new Player(user);
         this.opponent = new Player(opponent);
     }
@@ -53,6 +59,59 @@ public class Duel {
             allCard.get(i).removeEffect(id);
         }
     }
+    public List<CardHolder> getZone(Zone zone){
+        Address address = new Address(zone , 0);
+        List<CardHolder> cardHolders = new ArrayList<>();
+        for(int i=1;i<=60;i++){
+            CardHolder cardHolder = duel.getMap().get(address);
+            if(cardHolder!=null) cardHolders.add(cardHolder);
+            address.plusplus();
+        }
+        return cardHolders;
+    }
+
+    public CardHolder getCardHolderById(int cardHolderId)
+    {
+        for (Zone zone : zones) {
+            List<CardHolder> v = getZone(zone);
+            for(int i = 0; i < v.size(); i++)
+                if(v.get(i).getId() == cardHolderId)
+                    return v.get(i);
+        }
+        return null;
+    }
+    public void removeCardHolder(int cardHolderId)
+    {
+        //TODO Hesam
+        // maybe just make it empty or totally remove in hand or something else
+    }
+    public void addCard(Card card, Zone zone)
+    {
+        //TODO do in map class not here
+    }   
+
+
+    public void changeZone(int cardHolderId, Zone targetZone)
+    {
+        if(getCardHolderById(cardHolderId)  != null)
+        {
+            addCard(getCardHolderById(cardHolderId).getCard() , targetZone);
+            removeCardHolder(cardHolderId);            
+        }        
+    }
+
+
+    public void changerZone(List<Integer> cardHolders, Zone targetZone)
+    {
+        for (Integer cardHolderId : cardHolders) {
+                if(getCardHolderById(cardHolderId)  != null)
+            {
+                addCard(getCardHolderById(cardHolderId).getCard() , targetZone);
+                removeCardHolder(cardHolderId);            
+            }  
+        }
+    }
+
 
     public HashMap<Address, CardHolder> getMap() {
         return map;

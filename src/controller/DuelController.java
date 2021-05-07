@@ -45,6 +45,7 @@ public class DuelController {
     {
         return null;
     }
+    
 
     public Message showGraveyard() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -57,7 +58,10 @@ public class DuelController {
         }
         return list;
     }
-
+    public Message attack(Address opponentCard)
+    {
+        
+    }
     public List<CardHolder> getZone(Zone zone){
         Address address = new Address(zone,0);
         List<CardHolder> cardHolders = new ArrayList<>();
