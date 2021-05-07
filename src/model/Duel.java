@@ -7,6 +7,7 @@ import java.util.List;
 
 import model.card.Card;
 import model.card.CardHolder;
+import model.duel.Filter;
 import model.effect.EffectManager;
 import model.user.Player;
 import model.user.User;
@@ -135,6 +136,27 @@ public class Duel {
     }
 
 
+    
+    public booelan filterMatch(Filter filter, CardHolder cardHolder)
+    {
+        //TODO
+        if(filter.getIdCardHolder().size() > 0)
+        {
+            for(int i = 0; i < filter.getIdCardHolder().size(); i++)
+            {
+                if(filter.getIdCardHolder().get(i) == cardHolder.getId())
+                {
+                    return true;
+                }
+            }            
+            return false;
+        }
+        else
+        {            
+        }
+        return true;
+
+    }
     public HashMap<Address, CardHolder> getMap() {
         return map;
     }
