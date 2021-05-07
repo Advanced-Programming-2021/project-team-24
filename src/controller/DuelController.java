@@ -73,6 +73,15 @@ public class DuelController {
             //TODO
         }
     }
+    public Message summon()
+    {
+        
+        return null;
+    }
+    public Address getSelectedAddress()
+    {
+        return duel.getCurrentPlayer().getSelectedAddress();
+    }
     public Message flipSummon()
     {
         CardHolder selected = duel.getMap().get(duel.getCurrentPlayer().getSelectedAddress());

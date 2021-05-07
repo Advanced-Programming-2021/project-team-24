@@ -1,5 +1,6 @@
 package model.card;
 
+import org.junit.jupiter.api.Test;
 import java.util.*;
 
 import model.user.Player;
@@ -13,6 +14,7 @@ public abstract class CardHolder {
     protected static int idCounter = 1;    
     protected Card card;                    
     protected CardState cardState;
+    protected CardType cardType;
     protected Player owner;
     public String getOnwerName()
     {

@@ -21,6 +21,8 @@ public class DuelMenu {
     {
 
     }
+
+    
     private static final String REGEX_ENTER_MENU = "menu enter (\\w+)";
 
     public void run() {
@@ -34,16 +36,21 @@ public class DuelMenu {
                 Message message = duelController.deselect();
                 System.out.println(message.getContent());
             } else if (command.equals("summon")) {
-                //TODO summon
-            } else if (command.equals("flip-summon")) {
-                //TODO flip
-            } else if (command.equals("set")) {
+                duelController.summon();
+            }
+             else if (command.equals("flip-summon")) {
+                duelController.flipSummon();
+            }
+             else if (command.equals("set")) {
                 //TODO set
             } else if (command.equals("attack direct")) {
-                //TODO direct-attack
+                //TODO
             } else if (command.equals("activate effect")) {
-                //TODO activate effect
-            } else if (command.equals("show graveyard")) {
+                
+                
+                duelController.activeMagicCard(duelController.getSelectedAddress());                
+            }
+            else if (command.equals("show graveyard")) {
                 List<CardHolder> graveyard = duelController.getZone(new Zone("graveyard", false));
                 if (graveyard.isEmpty()) System.out.println("graveyard empty");
                 else showCardList(graveyard);
