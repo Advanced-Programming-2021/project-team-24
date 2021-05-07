@@ -1,25 +1,14 @@
 package model.zone;
 
 
-
-import model.card.Card;
-
-import java.util.HashMap;
-
 public class Address {
     private String name;
-    private Boolean opponent;
+    private Zone zone;
     private int place;
-    public Address(String name, Boolean opponent, int place){
-        this.name = name;
-        this.opponent = opponent;
-        this.place = place;
-    }
     public Address(Zone zone, int place)
     {
-        this.name = zone.getName();
         this.place = place;
-        this.opponent = zone.getOpponent();
+        this.zone = zone;
     }
     public void plusplus(){
         this.place++;

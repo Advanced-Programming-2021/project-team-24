@@ -1,21 +1,33 @@
 package model.zone;
 
+import model.user.Player;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Zone {
-    private String name;
-    private Boolean opponent;
-    public Zone(String name,Boolean opponent){
-        this.name = name;
-        this.opponent = opponent;
-    };
-    public String getName()
+    private String zone;
+    private Player player;
+    private static final String[] zoneStrings = {"graveyard","monster","spell","hand","field"};
+    public Zone(String zone, Player player)
     {
-        return this.name;
-    }
-    public boolean getOpponent()
+        this.zone = zone;
+        this.player = player;
+    }   
+    public boolean isValid()
     {
-        return this.opponent;
+        for (String zoneString : zoneStrings) {
+            if(zoneString.compareTo(zone) == 0)
+                return true;
+        }
+        return false;
+    } 
+    public Player getPlayer()
+    {
+        return this.player;
     }
-    public static void main(String[] args) {
-        
-    }
+    public String zone()
+    {
+        return this.zone;
+    }    
 }
