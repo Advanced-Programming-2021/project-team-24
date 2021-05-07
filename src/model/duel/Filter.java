@@ -4,8 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import model.Duel;
 import model.card.CardHolder;
 import model.card.CardType;
+import model.duel.filterhandle.AttackHandler;
+import model.duel.filterhandle.CardNameHandler;
+import model.duel.filterhandle.DefenceHandler;
+import model.duel.filterhandle.FilterHandler;
+import model.duel.filterhandle.IdHandler;
+import model.duel.filterhandle.LevelHandler;
+import model.duel.filterhandle.ZoneHandler;
 
 public class Filter {
     
@@ -140,5 +148,21 @@ public class Filter {
         this.ownerName = ownerName;
         //TODO others;
     }    
+    public boolean match(CardHolder cardHolder, Duel duel)
+    {
+        IdHandler id = new IdHandler();        
+        CardNameHandler cardName = new CardNameHandler();    
+        LevelHandler level = new LevelHandler();
+        AttackHandler attack = new AttackHandler();
+        DefenceHandler defence = new DefenceHandler();
+        ZoneHandler zoneH = new ZoneHandler();        
+        id.setNextFilterHandler(cardName);
+        cardName.setNextFilterHandler(level);
+        level.setNextFilterHandler(attack);
+        attack.setNextFilterHandler(defence);
+        defence.setNextFilterHandler(zoneH);
+
+        return id.Handle(this, cardHolder, duel);
+    }
     
 }
