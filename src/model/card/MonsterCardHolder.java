@@ -2,10 +2,15 @@ package model.card;
 
 import java.util.HashMap;
 
+import model.user.Player;
 import model.user.User;
 
 
 public class MonsterCardHolder extends CardHolder {
+    public MonsterCardHolder(MonsterCard card, CardState cardState) {
+        super(card, cardState);
+        //TODO Auto-generated constructor stub
+    }
     //IDEA hashmap
     HashMap<String, Boolean> cardMap;// find good name
     
@@ -44,14 +49,7 @@ public class MonsterCardHolder extends CardHolder {
             this.cardState = newCardState;
     }
 
-    public MonsterCardHolder(Card card, CardState cardState ,Player owner)
-    {
-        this.age = 0;    
-        cardMap.put("can_change_state", true);
-        this.owner = owner;
-        this.card = card;
-        this.cardState = cardState;
-    }
+    
     //TODO run hashmap or no
 
     public void flip()

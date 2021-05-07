@@ -22,7 +22,7 @@ public class Filter {
     private List<String> zones;
     private String ownerName;
 
-    public int getMinLevel() {
+    public Integer getMinLevel() {
         return this.minLevel;
     }
 
@@ -30,7 +30,7 @@ public class Filter {
         this.minLevel = minLevel;
     }
 
-    public int getMaxLevel() {
+    public Integer getMaxLevel() {
         return this.maxLevel;
     }
 

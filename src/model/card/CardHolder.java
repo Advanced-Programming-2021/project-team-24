@@ -11,10 +11,12 @@ import model.user.User;
 
 public abstract class CardHolder {
     protected int id;
-    protected static int idCounter = 1;    
+    protected static int idCounter = 1; 
     protected Card card;                    
     protected CardState cardState;
     protected CardType cardType;
+
+
     protected Player owner;
     public String getOnwerName()
     {
