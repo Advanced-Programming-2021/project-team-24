@@ -2,7 +2,7 @@ package model.user;
 
 import model.card.CardHolder;
 import model.duel.zone.*;
-import model.zones.Address;
+import model.zone.Address;
 
 import java.util.List;
 

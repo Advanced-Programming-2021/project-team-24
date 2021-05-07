@@ -4,8 +4,10 @@ import model.card.CardHolder;
 import model.effect.*;
 import model.user.Player;
 import model.user.User;
+import model.zone.Address;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 public class Duel {
@@ -13,14 +15,21 @@ public class Duel {
     Player opponent;
     Player currentPlayer;
     private static List<EffectManager> effectManagerList;
+<<<<<<< HEAD
     
     public static EffectManager getEffectManagerById(int id){
+=======
+    private HashMap<Address, CardHolder> map;
+
+    public static EffectManager getEffectManagerById(int id) {
+>>>>>>> 307c471169f64833dbb9468b61fb9c559a2bd1ec
         for (int i = 0; i < effectManagerList.size(); i++) {
             if (effectManagerList.get(i).getId() == id) return effectManagerList.get(i);
         }
         return null;
     }
-    public Duel(User user, User opponent){
+
+    public Duel(User user, User opponent) {
         this.user = new Player(user);
         this.opponent = new Player(opponent);
     }
@@ -30,24 +39,22 @@ public class Duel {
     }
 
 
-    public void addEffectManager(EffectManager effectManager)
-    {
+    public void addEffectManager(EffectManager effectManager) {
         effectManagerList.add(effectManager);
     }
-    public List<CardHolder> getAllCardHolder()
-    {
-        return null;    
+
+    public List<CardHolder> getAllCardHolder() {
+        return null;
     }
 
-    public void removeEffect(int id)
-    {
+    public void removeEffect(int id) {
         List<CardHolder> allCard = this.getAllCardHolder();
-        for(int i = 0; i < allCard.size(); i++)
-        {
-            allCard.get(i).removeEffect(id);            
+        for (int i = 0; i < allCard.size(); i++) {
+            allCard.get(i).removeEffect(id);
         }
     }
-    public Object getMap() {
-        return null;
+
+    public HashMap<Address, CardHolder> getMap() {
+        return map;
     }
 }

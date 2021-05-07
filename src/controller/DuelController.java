@@ -6,7 +6,11 @@ import java.util.List;
 import model.Duel;
 import model.card.Card;
 import model.card.CardHolder;
-import model.zones.Address;
+import model.zone.Address;
+import model.zone.Zone;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DuelController {
     Duel duel;
@@ -42,14 +46,9 @@ public class DuelController {
         return null;
     }
 
-    
-    private boolean match()
-    {
-        return true;
-    }        
-    public List<CardHolder> getGraveyard(boolean opponent) {
-        List<CardHolder> list = new ArrayList<CardHolder>();
-        Address address = new Address("graveyard",false,0);
+    public Message showGraveyard() {
+        StringBuilder stringBuilder = new StringBuilder();
+        Address address = new Address(new Zone("graveyard",false),0);
         for(int i=1;i<60;i++){
             CardHolder cardHolder = duel.getMap().get(address);
             if(cardHolder!=null)
@@ -57,5 +56,16 @@ public class DuelController {
             address.plusplus();
         }
         return list;
+    }
+
+    public List<CardHolder> getZone(Zone zone){
+        Address address = new Address(zone,0);
+        List<CardHolder> cardHolders = new ArrayList<>();
+        for(int i=1;i<=60;i++){
+            CardHolder cardHolder = duel.getMap().get(address);
+            if(cardHolder!=null) cardHolders.add(cardHolder);
+            address.plusplus();
+        }
+        return cardHolders;
     }
 }

@@ -1,14 +1,18 @@
 package view;
 
+import java.util.List;
 import java.util.regex.Matcher;
+
+import model.card.Card;
+import model.card.CardHolder;
 import model.user.User;
 
 
 import controller.DuelController;
 import controller.Message;
 import model.Duel;
-import model.user.User;
-import model.zones.Address;
+import model.zone.Address;
+import model.zone.Zone;
 
 public class DuelMenu {
 
@@ -44,8 +48,9 @@ public class DuelMenu {
             } else if (command.equals("activate effect")) {
                 //TODO activate effect
             } else if (command.equals("show graveyard")) {
-                
-                //TODO
+                List<CardHolder> graveyard = duelController.getZone(new Zone("graveyard", false));
+                if (graveyard.isEmpty()) System.out.println("graveyard empty");
+                else showCardList(graveyard);
             } else if (command.equals("card show --selected")) {
 
                 Message message = duelController.showSelectedCard();
@@ -65,7 +70,7 @@ public class DuelMenu {
                         if (matcher.group("opponent") != null) {
                             opponent = true;
                         }
-                        Address address = new Address(zoneName, opponent, place);
+                        Address address = new Address(new Zone(zoneName, opponent), place);
                         Message message = duelController.select(address);
                         System.out.println(message.getContent());
                     } else System.out.println("invalid selection");
@@ -83,14 +88,16 @@ public class DuelMenu {
                     //TODO attack
                     continue;
                 }
-
-                matcher = Global.getMatcher(command, "attack (?<place>[0-4])");
-                if (matcher.find()) {
-                    //TODO attack
-                    continue;
-                }
             }
             System.out.println("invalid command");
+        }
+    }
+
+    private void showCardList(List<CardHolder> cardHolders) {
+        int i = 0;
+        for (CardHolder cardHolder : cardHolders) {
+            i++;
+            System.out.println(i + ". " + cardHolder.toString());
         }
     }
 
