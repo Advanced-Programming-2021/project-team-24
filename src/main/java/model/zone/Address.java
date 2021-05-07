@@ -10,6 +10,14 @@ public class Address {
         this.place = place;
         this.zone = zone;
     }
+
+    //copy constructor
+    public Address(Address address){
+        this.name = address.name;
+        this.zone = address.zone;
+        this.place = address.place;
+    }
+
     public void plusplus(){
         this.place++;
     }

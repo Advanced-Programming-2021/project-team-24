@@ -78,15 +78,14 @@ public class Duel {
     }
 
     public void removeCardHolderById(int id) {
-        CardHolder cardHolder = getCardHolderById(id);
-        Address address = map.inverse().get(cardHolder), newAddress = address;
+        Address address = map.inverse().get(getCardHolderById(id)), newAddress = new Address(address);
         if (!address.getZone().getZoneName().equals("spell") && !address.getZone().getZoneName().equals("monster"))
             for (int i = address.getPlace(); i <= 60; i++) {
                 newAddress.plusplus();
                 map.put(address, map.get(newAddress));
                 address.plusplus();
             }
-        cardHolder = null;
+        else map.put(address,null);
     }
 
     public void addEffectManager(EffectManager effectManager) {
