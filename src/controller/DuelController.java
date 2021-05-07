@@ -25,6 +25,10 @@ public class DuelController {
         this.duel = duel;        
     }
 
+    public Duel getDuel() {
+        return duel;
+    }
+
     public Message select(Address address) {
         if (duel.getMap().get(address) == null)
             return new Message(TypeMessage.ERROR, "no card found in the given position");
@@ -136,18 +140,18 @@ public class DuelController {
                             int oppDef = attacker.getAttack();
                             if(oppDef == attackAmount)
                             {
-                                changeZone(attacker.getId(), new Zone("graveyard", false));
-                                changeZone(opponent.getId(), new Zone("graveyard", true));
+                                duel.changeZone(attacker.getId(), new Zone("graveyard",  duel.getCurrentPlayer()));
+                                duel.changeZone(opponent.getId(), new Zone("graveyard", duel.getOpponent()));
                             }      
                             else
                             if(attackAmount > oppDef)
                             {
-                                ChangeZone(opponent.getId(), new Zone("graveyard", true));
+                                duel.changeZone(opponent.getId(), new Zone("graveyard", duel.getOpponent()));
                                 duel.getOpponent().changeLifePoint(-attackAmount + oppDef);
                             }
                             else
                             {
-                                duel.changeZone(attacker.getId(), new Zone("graveyard", false));
+                                duel.changeZone(attacker.getId(), new Zone("graveyard", duel.getCurrentPlayer()));
                                 duel.getCurrentPlayer().changeLifePoint(attackAmount - oppDef);
                             }                            
                         }
@@ -162,7 +166,7 @@ public class DuelController {
                             else
                             if(attackAmount > oppDef)
                             {
-                                ChangeZone(opponent.getId(), new Zone("graveyard", true));
+                                duel.changeZone(opponent.getId(), new Zone("graveyard", duel.getOpponent()));
                                 duel.getOpponent().changeLifePoint(-attackAmount + oppDef);
                             }
                             else

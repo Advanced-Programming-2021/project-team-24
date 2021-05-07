@@ -8,6 +8,7 @@ import controller.Message;
 import model.Duel;
 import model.card.CardHolder;
 import model.user.User;
+import model.zone.Address;
 import model.zone.Zone;
 
 public class DuelMenu {
@@ -46,12 +47,9 @@ public class DuelMenu {
             } else if (command.equals("attack direct")) {
                 //TODO
             } else if (command.equals("activate effect")) {
-                
-                
-                duelController.activeMagicCard(duelController.getSelectedAddress());                
-            }
-            else if (command.equals("show graveyard")) {
-                List<CardHolder> graveyard = duelController.getZone(new Zone("graveyard", false));
+                //TODO activate effect
+            } else if (command.equals("show graveyard")) {
+                List<CardHolder> graveyard = duelController.getZone(new Zone("graveyard",  duelController.getDuel().getCurrentPlayer()));
                 if (graveyard.isEmpty()) System.out.println("graveyard empty");
                 else showCardList(graveyard);
             } else if (command.equals("card show --selected")) {
@@ -62,6 +60,7 @@ public class DuelMenu {
             } else if (command.equals("surrender")) {
                 //TODO surrender
             } else {
+                //<select>
                 Matcher matcher = Global.getMatcher(command, "select (?<address>(?:--\\w+\\s*\\d*){1,2})");
                 if (matcher.find()) {
                     String zone = matcher.group("zone");
@@ -73,7 +72,7 @@ public class DuelMenu {
                         if (matcher.group("opponent") != null) {
                             opponent = true;
                         }
-                        Address address = new Address(new Zone(zoneName, opponent), place);
+                        Address address = new Address(new Zone(zoneName, duelController.getDuel().getCurrentPlayer()), place);
                         Message message = duelController.select(address);
                         System.out.println(message.getContent());
                     } else System.out.println("invalid selection");

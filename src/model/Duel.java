@@ -12,6 +12,7 @@ import model.effect.EffectManager;
 import model.user.Player;
 import model.user.User;
 import model.zone.Address;
+import model.zone.Zone;
 
 public class Duel {
     Player user;
@@ -29,18 +30,17 @@ public class Duel {
     
     public Duel(User user, User opponent) {
         zones = new ArrayList<Zone>();
-        zones.add(new Zone("graveyard", false));
-        zones.add(new Zone("graveyard", true));        
-        zones.add(new Zone("hand", false));
-        zones.add(new Zone("hand", true));
-        zones.add(new Zone("monster", false));
-        zones.add(new Zone("monster", true));
-        zones.add(new Zone("magic", false));
-        zones.add(new Zone("magic", true));
-        
-        
         this.user = new Player(user);
         this.opponent = new Player(opponent);
+        zones.add(new Zone("graveyard", this.user));
+        zones.add(new Zone("graveyard", this.opponent));
+        zones.add(new Zone("hand", this.user));
+        zones.add(new Zone("hand", this.opponent));
+        zones.add(new Zone("monster", this.user));
+        zones.add(new Zone("monster", this.opponent));
+        zones.add(new Zone("magic", this.user));
+        zones.add(new Zone("magic", this.opponent));
+
     }
 
     public Player getCurrentPlayer() {
@@ -86,7 +86,7 @@ public class Duel {
         Address address = new Address(zone , 0);
         List<CardHolder> cardHolders = new ArrayList<>();
         for(int i=1;i<=60;i++){
-            CardHolder cardHolder = duel.getMap().get(address);
+            CardHolder cardHolder = getMap().get(address);
             if(cardHolder!=null) cardHolders.add(cardHolder);
             address.plusplus();
         }
@@ -114,7 +114,7 @@ public class Duel {
     }   
 
 
-    public void changeZone(int cardHolderId, Zone targetZone)
+    public void changeZone(int cardHolderId, model.zone.Zone targetZone)
     {
         if(getCardHolderById(cardHolderId)  != null)
         {
