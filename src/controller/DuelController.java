@@ -1,5 +1,8 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import model.Duel;
 import model.card.Card;
 import model.card.CardHolder;
@@ -9,7 +12,7 @@ public class DuelController {
     Duel duel;
 
     public DuelController(Duel duel) {
-        this.duel = duel;
+        this.duel = duel;        
     }
 
     public Message select(Address address) {
@@ -32,17 +35,27 @@ public class DuelController {
         //TODO check "card is not visible"
         return new Message(TypeMessage.INFO, duel.getMap().get(duel.getCurrentPlayer().getSelectedAddress()).toString());
     }
+    private List<String> zoneStrings = new ArrayList<String>();
 
-    public Message showGraveyard() {
-        StringBuilder stringBuilder = new StringBuilder();
+    public List<CardHolder> getZones(List<String> zones)
+    {
+        return null;
+    }
+
+    
+    private boolean match()
+    {
+        return true;
+    }        
+    public List<CardHolder> getGraveyard(boolean opponent) {
+        List<CardHolder> list = new ArrayList<CardHolder>();
         Address address = new Address("graveyard",false,0);
         for(int i=1;i<60;i++){
             CardHolder cardHolder = duel.getMap().get(address);
             if(cardHolder!=null)
-                stringBuilder.append(i).append(". ").append(duel.getMap().get(address).toString()).append('\n');
+                list.add(cardHolder);
             address.plusplus();
         }
-        if(stringBuilder.isEmpty()) return new Message(TypeMessage.INFO,"graveyard empty");
-        return new Message(TypeMessage.INFO,stringBuilder.toString());
+        return list;
     }
 }

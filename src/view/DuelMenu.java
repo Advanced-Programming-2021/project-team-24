@@ -17,7 +17,10 @@ public class DuelMenu {
     public DuelMenu(User user, String opponentUsername) {
         this.duelController = new DuelController(new Duel(user, User.readUser(opponentUsername)));
     }
+    private void showGraveyard()
+    {
 
+    }
     private static final String REGEX_ENTER_MENU = "menu enter (\\w+)";
 
     public void run() {
@@ -41,11 +44,13 @@ public class DuelMenu {
             } else if (command.equals("activate effect")) {
                 //TODO activate effect
             } else if (command.equals("show graveyard")) {
-                Message message = duelController.showGraveyard();
-                System.out.println(message.getContent());
+                
+                //TODO
             } else if (command.equals("card show --selected")) {
+
                 Message message = duelController.showSelectedCard();
                 System.out.println(message.getContent());
+                
             } else if (command.equals("surrender")) {
                 //TODO surrender
             } else {

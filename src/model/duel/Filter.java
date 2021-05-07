@@ -57,9 +57,8 @@ public class Filter {
         boolean answer = true;         
         if(zones != null && zones.size() > 0)
         {
-
-        }
-                
+            
+        }                
         return answer;
     }
 }

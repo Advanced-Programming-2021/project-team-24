@@ -49,6 +49,7 @@ public abstract class CardHolder {
         }
         return false;        
     }
+    
     public void addEffect(int idEffectManager)
     {
         if(haveEffectWithId(idEffectManager) == false)
@@ -56,6 +57,7 @@ public abstract class CardHolder {
             appliedEffects.add(idEffectManager);
         }
     }
+    
     public void removeEffect(int idEffectManager)
     {
         for(int i = 0; i < appliedEffects.size(); i++)
@@ -67,6 +69,7 @@ public abstract class CardHolder {
             }
         }        
     }
+
     public CardHolder(Card card, CardState cardState)
     {
         this.card = card;
@@ -85,7 +88,7 @@ public abstract class CardHolder {
     }
     
     
-    private CardState getPosition()
+    public CardState getCardState()
     {
         return this.cardState;
     }

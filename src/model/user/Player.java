@@ -1,5 +1,6 @@
 package model.user;
 
+import model.card.CardHolder;
 import model.duel.zone.*;
 import model.zones.Address;
 
@@ -50,7 +51,10 @@ public class Player {
     }
 
     public CardHolder getCardHolderById(int id) {
-        for (CardHolder cardHolder : cardHolders) if (cardHolder.getId() == id) return cardHolder;
+        for (CardHolder cardHolder : cardHolders)
+            if (cardHolder.getId() == id) 
+                return cardHolder;
+        return null;
     }
 
 }

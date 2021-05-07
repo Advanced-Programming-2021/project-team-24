@@ -13,8 +13,7 @@ public class Duel {
     Player opponent;
     Player currentPlayer;
     private static List<EffectManager> effectManagerList;
-
-
+    
     public static EffectManager getEffectManagerById(int id){
         for (int i = 0; i < effectManagerList.size(); i++) {
             if (effectManagerList.get(i).getId() == id) return effectManagerList.get(i);
@@ -47,5 +46,8 @@ public class Duel {
         {
             allCard.get(i).removeEffect(id);            
         }
+    }
+    public Object getMap() {
+        return null;
     }
 }

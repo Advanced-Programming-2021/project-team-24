@@ -10,5 +10,5 @@ public class Effect {
     private boolean askForActivation;
     private String name;
     private String askAbleMessage;
-    private List<RequiredEvent> requiredEvents;
+    private List<String> requiredEvents;
 }

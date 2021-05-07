@@ -8,7 +8,7 @@ public class Address {
     private String name;
     private Boolean opponent;
     private int place;
-    public Address(String name,Boolean opponent,int place){
+    public Address(String name, Boolean opponent, int place){
         this.name = name;
         this.opponent = opponent;
         this.place = place;
