@@ -24,6 +24,10 @@ public class EffectManager {
     {
         return this.id;
     }
+    public void endPhase()
+    {
+        this.ageRemained--;
+    }
     public int getOwnerCardHolderId()
     {
         return this.idCardHolder;

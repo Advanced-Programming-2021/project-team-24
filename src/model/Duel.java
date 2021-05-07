@@ -127,7 +127,7 @@ public class Duel {
     public void changerZone(List<Integer> cardHolders, Zone targetZone)
     {
         for (Integer cardHolderId : cardHolders) {
-                if(getCardHolderById(cardHolderId)  != null)
+            if(getCardHolderById(cardHolderId)  != null)
             {
                 addCard(getCardHolderById(cardHolderId).getCard() , targetZone);
                 removeCardHolder(cardHolderId);            
@@ -137,26 +137,35 @@ public class Duel {
 
 
     
-    public booelan filterMatch(Filter filter, CardHolder cardHolder)
+    public List<CardHolder> getCardHolderFilter(Filter filter)
     {
-        //TODO
-        if(filter.getIdCardHolder().size() > 0)
+        List<CardHolder> ans = new ArrayList<CardHolder>();
+        List<CardHolder> all = this.getAllCardHolder();
+        for(int i = 0; i < all.size(); i++)
         {
-            for(int i = 0; i < filter.getIdCardHolder().size(); i++)
+            if(filter.match(all.get(i), this))
             {
-                if(filter.getIdCardHolder().get(i) == cardHolder.getId())
-                {
-                    return true;
-                }
-            }            
-            return false;
+                ans.add(all.get(i));
+            }
         }
-        else
-        {            
-        }
-        return true;
-
+        return ans;
     }
+
+
+    public List<Integer> getIdCardHolderFilter(Filter filter)
+    {
+        List<Integer> ans = new ArrayList<Integer>();
+        List<CardHolder> all = this.getAllCardHolder();
+        for(int i = 0; i < all.size(); i++)
+        {
+            if(filter.match(all.get(i), this))
+            {
+                ans.add(all.get(i).getId());
+            }
+        }
+        return ans;
+    }
+    
     public HashMap<Address, CardHolder> getMap() {
         return map;
     }
