@@ -2,6 +2,7 @@ package model.card;
 
 import java.util.*;
 
+import model.user.Player;
 import model.user.User;
 
 
@@ -12,7 +13,7 @@ public abstract class CardHolder {
     protected static int idCounter = 1;    
     protected Card card;                    
     protected CardState cardState;
-    protected User owner;
+    protected Player owner;
     public String getOnwerName()
     {
         return this.owner.getNickname();

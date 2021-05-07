@@ -1,14 +1,16 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+
+import model.card.Card;
 import model.card.CardHolder;
-import model.effect.*;
+import model.effect.EffectManager;
 import model.user.Player;
 import model.user.User;
 import model.zone.Address;
-
-
-import java.util.HashMap;
-import java.util.List;
 
 public class Duel {
     Player user;
@@ -23,7 +25,7 @@ public class Duel {
         }
         return null;
     }
-
+    
     public Duel(User user, User opponent) {
         zones = new ArrayList<Zone>();
         zones.add(new Zone("graveyard", false));
@@ -43,16 +45,36 @@ public class Duel {
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
-
+    public Zone getCardHolderZone(CardHolder cardHolder)
+    {
+        for (Zone zone : zones) {
+            List<CardHolder> list = getZone(zone);
+            for(int i = 0; i < list.size(); i++)
+            {
+                if(list.get(i).equals(list))
+                {
+                    return zone;
+                }
+            }
+        }
+        return null;
+    }
+    public Player getOpponent()
+    {
+        return this.opponent;
+    }
 
     public void addEffectManager(EffectManager effectManager) {
         effectManagerList.add(effectManager);
     }
 
     public List<CardHolder> getAllCardHolder() {
-        return null;
+        List<CardHolder> ans = new ArrayList<CardHolder>();
+        for (Zone zone : zones) {
+            ans.addAll(getZone(zone));            
+        }
+        return ans;
     }
-
     public void removeEffect(int id) {
         List<CardHolder> allCard = this.getAllCardHolder();
         for (int i = 0; i < allCard.size(); i++) {

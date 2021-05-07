@@ -1,7 +1,6 @@
 package model.user;
 
 import model.card.CardHolder;
-import model.duel.zone.*;
 import model.zone.Address;
 
 import java.util.List;
@@ -11,20 +10,10 @@ public class Player {
     private int lifePoint;
     private Address selectedAddress;
     private List<CardHolder> cardHolders;
-    private Graveyard graveyard;
-    private MonsterZone monsterZone;
-    private MagicCardsZone magicCardsZone;
-    private DrawDeckZone drawDeckZone;
-    private FieldZone fieldZone;
 
     public Player(User user) {
         this.lifePoint = 8000;
         this.user = user;
-        this.fieldZone = new FieldZone();
-        this.drawDeckZone = new DrawDeckZone(user.getActiveDeck());
-        this.graveyard = new Graveyard();
-        this.magicCardsZone = new MagicCardsZone();
-        this.monsterZone = new MonsterZone();
     }
 
     public void selectAddress(Address address) {

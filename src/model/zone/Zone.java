@@ -7,4 +7,15 @@ public class Zone {
         this.name = name;
         this.opponent = opponent;
     };
+    public String getName()
+    {
+        return this.name;
+    }
+    public boolean getOpponent()
+    {
+        return this.opponent;
+    }
+    public static void main(String[] args) {
+        
+    }
 }

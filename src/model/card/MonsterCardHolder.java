@@ -8,9 +8,22 @@ import model.user.User;
 public class MonsterCardHolder extends CardHolder {
     //IDEA hashmap
     HashMap<String, Boolean> cardMap;// find good name
-    private boolean canChangeCardStateInRound;
-    private int age;
     
+    private int age;
+    private int attack;
+    private int defence;
+    public int getAttack()
+    {
+        return this.attack;
+    }
+    public int getDefence()
+    {
+        return this.defence;
+    }
+    public void flipSummon()
+    {
+        this.cardState = CardState.ATTACK_MONSTER;
+    }
     public void endPhase()
     {
         this.age ++;
@@ -31,7 +44,7 @@ public class MonsterCardHolder extends CardHolder {
             this.cardState = newCardState;
     }
 
-    public MonsterCardHolder(Card card, CardState cardState , User owner)
+    public MonsterCardHolder(Card card, CardState cardState ,Player owner)
     {
         this.age = 0;    
         cardMap.put("can_change_state", true);
@@ -43,10 +56,10 @@ public class MonsterCardHolder extends CardHolder {
 
     public void flip()
     {
-        if(this.cardState = CardState.SET_DEFENCE && cardMap.get("can_change_state"))
+        if(this.cardState == CardState.SET_DEFENCE)
         {
             //run maybe some effect
-            this.cardState = CardState.ATTACK_MONSTER;
+            this.cardState = CardState.SET_DEFENCE;
         }
     }
     protected void recalculateEffect() {

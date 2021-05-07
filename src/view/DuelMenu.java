@@ -3,15 +3,11 @@ package view;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import model.card.Card;
-import model.card.CardHolder;
-import model.user.User;
-
-
 import controller.DuelController;
 import controller.Message;
 import model.Duel;
-import model.zone.Address;
+import model.card.CardHolder;
+import model.user.User;
 import model.zone.Zone;
 
 public class DuelMenu {
