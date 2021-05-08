@@ -1,9 +1,15 @@
 package model.user;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 
+import com.google.gson.Gson;
 import model.deck.*;
 import controller.Message;
 import model.card.*;
@@ -17,9 +23,14 @@ public class User {
     private int coin;
     private List<String> cardNames;
     private List<Card> cards;//fill it after reading json
-    private static List<String> usernames;
     private List<Deck> decks;
     private Deck activeDeck;
+    private static List<String> usernames;
+    static{
+        //read users from json files in "/users" folder
+        initialize();
+    }
+
     public String getNickname()
     {
         return this.nickname;
@@ -54,16 +65,37 @@ public class User {
         this.cards = new ArrayList<Card>();
         this.decks = new ArrayList<Deck>();
         this.activeDeck = null;
-        //update usernames list        
-        // add json file of user to directory
+        addUser();
     }    
-    
+
+    private void addUser(){
+        try {
+            FileWriter fileWriter = new FileWriter("/users/"+this.username+".json");
+            fileWriter.write(new Gson().toJson(this));
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     
     public static void initialize()
     {
         // get list of all users from folder
+        //??but what is the List<String> usernames purpose??
         usernames = new ArrayList<String>();
-
+        try {
+            //"" means project directory
+            File directoryPath = new File("/users");
+            File[] filesList = directoryPath.listFiles();
+            assert filesList != null;
+            for(File file : filesList) {
+                String json = new String(Files.readAllBytes(Paths.get(file.getPath())));
+                User user = new Gson().fromJson(json,User.class);
+                usernames.add(user.getUsername());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     public void logout()
     {
@@ -79,11 +111,19 @@ public class User {
         else
             return false;
     }
+
+
     public static User readUser(String username)
     {
-        //TODO reading by GSON
-        return null;
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("/users/"+username+".json"));
+            return new Gson().fromJson(json,User.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+
     private boolean comparePassword(String password)
 
     {
