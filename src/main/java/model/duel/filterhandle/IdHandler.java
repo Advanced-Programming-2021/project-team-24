@@ -1,6 +1,6 @@
 package model.duel.filterhandle;
 
-import model.Duel;
+import model.duel.Duel;
 import model.card.CardHolder;
 import model.duel.Filter;
 

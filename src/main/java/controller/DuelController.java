@@ -10,6 +10,7 @@ import model.card.MagicCardHolder;
 import model.card.MonsterCardHolder;
 import model.zone.Address;
 import model.zone.Zone;
+import model.zone.Zones;
 
 public class DuelController {
     Duel duel;
@@ -69,6 +70,7 @@ public class DuelController {
         {
             //TODO
         }
+        return null;
     }
     public Message summon()
     {
@@ -110,17 +112,13 @@ public class DuelController {
 
     public Message attack(Address opponentCard)
     {
-        MonsterCardHolder attacker = duel.getMap().get(this.duel.getCurrentPlayer().getSelectedAddress());
+        MonsterCardHolder attacker = (MonsterCardHolder) duel.getMap().get(this.duel.getCurrentPlayer().getSelectedAddress());
         if(attacker.getOnwerName().compareTo(duel.getCurrentPlayer().getNickname()) == 0)
         {            
-            if(duel.getCardHolderZone(attacker).getName() == Zones.MONSTER)
+            if(duel.getCardHolderZone(attacker).getZoneName().equals(Zones.MONSTER.getValue()))
             {                
-<<<<<<< HEAD
-                MonsterCardHolder opponent = duel.getMap().get(opponentCard);
-=======
-                MonsterCardHolder opponent = duel.getMap().get(opponentCard)
->>>>>>> 5e5eee32427d7f77560304f1f93115cfebdfb50f
-                if(duel.getCardHolderZone(duel.getMap().get(opponentCard)) == Zones.Monster)
+                MonsterCardHolder opponent = (MonsterCardHolder) duel.getMap().get(opponentCard);
+                if(duel.getCardHolderZone(duel.getMap().get(opponentCard)).getZoneName().equals(Zones.MONSTER.getValue()))
                 {
                     if(attacker.getCardState() == CardState.ATTACK_MONSTER)
                     {
@@ -183,10 +181,9 @@ public class DuelController {
         {
             return null;
         }
-        
+        return null;
     }
 
-<<<<<<< HEAD
     public List<CardHolder> getZone(Zone zone){
         Address address = new Address(zone,0);
         List<CardHolder> cardHolders = new ArrayList<>();
@@ -197,9 +194,6 @@ public class DuelController {
         }
         return cardHolders;
     }
-=======
-
->>>>>>> 5e5eee32427d7f77560304f1f93115cfebdfb50f
     public static void main(String[] args) {
         
     }

@@ -116,7 +116,7 @@ public class User {
     public static User readUser(String username)
     {
         try {
-            String json = new String(Files.readAllBytes(Paths.get("/users/"+username+".json"));
+            String json = new String(Files.readAllBytes(Paths.get("/users/"+username+".json")));
             return new Gson().fromJson(json,User.class);
         } catch (IOException e) {
             e.printStackTrace();

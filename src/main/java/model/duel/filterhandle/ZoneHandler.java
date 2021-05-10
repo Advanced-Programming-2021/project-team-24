@@ -2,7 +2,7 @@ package model.duel.filterhandle;
 
 import java.util.HashMap;
 
-import model.Duel;
+import model.duel.Duel;
 import model.card.CardHolder;
 import model.duel.Filter;
 import model.zone.Zone;

@@ -16,8 +16,19 @@ public enum Zones {
     private Zones(String label) {
         this.label = label;
     }
-
-
+    public String getValue()
+    {
+        return this.label;
+    }
+    
+    public static Zones valueOfLabel(String label) {
+        for (Zones e : values()) {
+            if (e.label.equals(label)) {
+                return e;
+            }
+        }
+        return null;
+    }
     public static void main(String[] args) {
         if(Zones.GRAVEYARD.label == "grveyard")
         {

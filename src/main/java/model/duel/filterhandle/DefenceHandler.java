@@ -1,6 +1,6 @@
 package model.duel.filterhandle;
 
-import model.Duel;
+import model.duel.Duel;
 import model.card.CardHolder;
 import model.card.CardType;
 import model.card.MonsterCardHolder;
@@ -8,7 +8,6 @@ import model.duel.Filter;
 
 public class DefenceHandler extends FilterHandler {
 
-    @Override
     public boolean Handle(Filter filter, CardHolder cardHolder, Duel duel) {
         MonsterCardHolder monster = (MonsterCardHolder)cardHolder;
         if(filter.getMinDefence() != null)
