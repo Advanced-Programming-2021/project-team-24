@@ -1,3 +1,22 @@
+<<<<<<< HEAD
+=======
+<<<<<<<< HEAD:src/main/java/model/effect/Effect.java
+package model.effect;
+
+import controller.Message;
+
+import java.util.List;
+
+public class Effect {
+    private EffectType typeOfEffect;
+    private String requirement;
+    private boolean askForActivation;
+    private String name;
+    private String askAbleMessage;
+    private List<String> requiredEvents;
+}
+========
+>>>>>>> 5e5eee32427d7f77560304f1f93115cfebdfb50f
 package model.effect;
 
 import controller.Message;
@@ -81,3 +100,7 @@ public class Effect {
     private String askAbleMessage;
     private List<String> requiredEvents;
 }
+<<<<<<< HEAD
+=======
+>>>>>>>> 5e5eee32427d7f77560304f1f93115cfebdfb50f:src/model/effect/Effect.java
+>>>>>>> 5e5eee32427d7f77560304f1f93115cfebdfb50f

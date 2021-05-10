@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 
 import controller.DuelController;
 import controller.Message;
-import model.Duel;
+import model.duel.Duel;
 import model.card.CardHolder;
 import model.user.User;
 import model.zone.Address;
@@ -49,7 +49,7 @@ public class DuelMenu {
             } else if (command.equals("activate effect")) {
                 //TODO activate effect
             } else if (command.equals("show graveyard")) {
-                List<CardHolder> graveyard = duelController.getZone(new Zone("graveyard",  duelController.getDuel().getCurrentPlayer()));
+                List<CardHolder> graveyard = duelController.getDuel().getZone(new Zone("graveyard",  duelController.getDuel().getCurrentPlayer()));
                 if (graveyard.isEmpty()) System.out.println("graveyard empty");
                 else showCardList(graveyard);
             } else if (command.equals("card show --selected")) {

@@ -3,20 +3,13 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Duel;
-import model.card.Card;
+import model.duel.Duel;
 import model.card.CardHolder;
 import model.card.CardState;
-import model.card.MagicCard;
 import model.card.MagicCardHolder;
 import model.card.MonsterCardHolder;
-import model.effect.ChangeZone;
 import model.zone.Address;
 import model.zone.Zone;
-import model.zone.Zones;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DuelController {
     Duel duel;
@@ -122,7 +115,11 @@ public class DuelController {
         {            
             if(duel.getCardHolderZone(attacker).getName() == Zones.MONSTER)
             {                
+<<<<<<< HEAD
                 MonsterCardHolder opponent = duel.getMap().get(opponentCard);
+=======
+                MonsterCardHolder opponent = duel.getMap().get(opponentCard)
+>>>>>>> 5e5eee32427d7f77560304f1f93115cfebdfb50f
                 if(duel.getCardHolderZone(duel.getMap().get(opponentCard)) == Zones.Monster)
                 {
                     if(attacker.getCardState() == CardState.ATTACK_MONSTER)
@@ -189,6 +186,7 @@ public class DuelController {
         
     }
 
+<<<<<<< HEAD
     public List<CardHolder> getZone(Zone zone){
         Address address = new Address(zone,0);
         List<CardHolder> cardHolders = new ArrayList<>();
@@ -199,6 +197,9 @@ public class DuelController {
         }
         return cardHolders;
     }
+=======
+
+>>>>>>> 5e5eee32427d7f77560304f1f93115cfebdfb50f
     public static void main(String[] args) {
         
     }

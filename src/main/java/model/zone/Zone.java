@@ -13,7 +13,12 @@ public class Zone {
     {
         this.zone = zone;
         this.player = player;
-    }   
+    }
+
+    public String getZoneName() {
+        return zone;
+    }
+
     public boolean isValid()
     {
         for (String zoneString : zoneStrings) {
@@ -21,7 +26,8 @@ public class Zone {
                 return true;
         }
         return false;
-    } 
+    }
+
     public Player getPlayer()
     {
         return this.player;
@@ -29,5 +35,8 @@ public class Zone {
     public String zone()
     {
         return this.zone;
-    }    
+    }
+    public static String[] getZoneStrings() {
+        return zoneStrings;
+    }
 }
