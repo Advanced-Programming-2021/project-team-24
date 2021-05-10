@@ -3,6 +3,8 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 import model.card.Card;
@@ -165,7 +167,14 @@ public class Duel {
         }
         return ans;
     }
-    
+
+    public Zone newZone(String josn){
+        String[] zoneArgument = josn.split("_");
+        Player player = null;
+        if (zoneArgument[1].compareToIgnoreCase("my") == 0) player = currentPlayer;
+        else player = opponent;
+        return new Zone(zoneArgument[0], player);
+    }
     public HashMap<Address, CardHolder> getMap() {
         return map;
     }
