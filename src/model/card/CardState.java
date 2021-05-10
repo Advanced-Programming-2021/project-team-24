@@ -8,5 +8,6 @@ public enum CardState
   SET_MAGIC,
   ATTACK_MONSTER,
   DEFENCE_MONSTER,
-  ACTIVE_MAGIC
+  ACTIVE_MAGIC,
+  HAND
 }

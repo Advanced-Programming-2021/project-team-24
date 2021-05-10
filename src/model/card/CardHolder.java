@@ -1,7 +1,9 @@
 package model.card;
 
+import org.junit.jupiter.api.Test;
 import java.util.*;
 
+import model.user.Player;
 import model.user.User;
 
 
@@ -9,10 +11,13 @@ import model.user.User;
 
 public abstract class CardHolder {
     protected int id;
-    protected static int idCounter = 1;    
+    protected static int idCounter = 1; 
     protected Card card;                    
     protected CardState cardState;
-    protected User owner;
+    protected CardType cardType;
+
+
+    protected Player owner;
     public String getOnwerName()
     {
         return this.owner.getNickname();
@@ -24,21 +29,52 @@ public abstract class CardHolder {
         this.cardState = null;
         this.id = idCounter ++;        
         this.appliedEffects = new ArrayList<Integer>();
-        this.effectsId = new ArrayList<Integer>();        
+        this.effectManagerId = new ArrayList<Integer>();
+        //TODO effectManager should be updated by creating effectManagerId        
     }
-    
-    List <Integer> effectsId;        
-    List <Integer> appliedEffects;
-    
+    public abstract void endPhase();
+    private List <Integer> effectManagerId;        
+    private List <Integer> appliedEffects;    
+    protected abstract void recalculateEffect();    
     public void makeEmpty()
     {
         this.card = null;
         this.cardState = null;
         this.id = idCounter ++;        
-        this.effectsId = new ArrayList<Integer>();
+        this.effectManagerId = new ArrayList<Integer>();
         this.appliedEffects = new ArrayList<Integer>();
     }
     
+    public boolean haveEffectWithId(int idEffectManager)
+    {
+        for(int i = 0; i < appliedEffects.size(); i++)
+        {
+            if(this.appliedEffects.get(i) == idEffectManager)
+                return true;
+        }
+        return false;        
+    }
+    
+    public void addEffect(int idEffectManager)
+    {
+        if(haveEffectWithId(idEffectManager) == false)
+        {
+            appliedEffects.add(idEffectManager);
+        }
+    }
+    
+    public void removeEffect(int idEffectManager)
+    {
+        for(int i = 0; i < appliedEffects.size(); i++)
+        {
+            if(appliedEffects.get(i) == idEffectManager)
+            {
+                appliedEffects.remove(idEffectManager);                
+                recalculateEffect();
+            }
+        }        
+    }
+
     public CardHolder(Card card, CardState cardState)
     {
         this.card = card;
@@ -57,7 +93,7 @@ public abstract class CardHolder {
     }
     
     
-    private CardState getPosition()
+    public CardState getCardState()
     {
         return this.cardState;
     }

@@ -13,27 +13,26 @@ public class EffectManager {
     private int ageRemained;
     private int remainedToApplyEffect;
     private Effect effect;
-
-    public int getId()
+    public EffectManager(Effect effect, Player owner){
+        idCounter++;
+        this.owner = owner;
+        this.id = idCounter;
+        this.effect = effect;
+        //TODO set age remain by Effect                
+    }
+    public Integer getId()
     {
         return this.id;
     }
-    public boolean isEffectAgeEnded()
+    public void endPhase()
     {
-        if(this.ageRemained <= 0)
-            return true;
-        else
-            return false;        
-    }    
-    public EffectManager(Effect effect){
-        idCounter++;
-        this.id = idCounter;
-        this.effect = effect;
-        //TODO add this to duel effect manager list
+        this.ageRemained--;
     }
-    
+    public int getOwnerCardHolderId()
+    {
+        return this.idCardHolder;
+    }
     public boolean satisfyRequired(){
-        //TODO satisfy
         return true;
     }
     
