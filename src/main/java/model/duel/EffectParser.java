@@ -3,6 +3,7 @@ package model.duel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
 import controller.DuelController;
@@ -126,8 +127,10 @@ public class EffectParser {
     public String normSet(String command)
     {
 
-        //Norm(List<E>): return size of List in String integer        
-        return null;
+        //Norm(List<E>): return size of List in String integer
+        //List<E> set
+        String size = String.valueOf(set.size());
+        return size;
     }
     public String parseKeyWords(String keyWord)
     {
@@ -311,10 +314,32 @@ public class EffectParser {
         return duelMenu.Dice();
     }    
 
-    public String calculater(String command)
+    public int calculater(String command)
     {
-        //for multiple and sum operations
-        return null;
+        String[] operators = {"*", "+", "-", "/"};
+        String operator = null;
+        int returnNumber = 0;
+        for (int i = 0; i < 4; i++) {
+            Matcher matcher = Pattern.compile(operators[i]).matcher(command);
+            if (matcher.find()) operator = operators[i];
+        }
+        if (operator == null) returnNumber = Integer.parseInt(command);
+        else {
+            String[] stringOfNumbers = command.split(" " + operator + " ");
+            int firstNumber = Integer.parseInt(stringOfNumbers[0]);
+            int secondNumber = Integer.parseInt(stringOfNumbers[1]);
+            switch (operator){
+                case "*":
+                    returnNumber = firstNumber*secondNumber;
+                case "+":
+                    returnNumber = firstNumber+secondNumber;
+                case "-":
+                    returnNumber = firstNumber-secondNumber;
+                case "/":
+                    returnNumber = firstNumber/secondNumber;
+            }
+        }
+        return returnNumber;
     }
     
 }

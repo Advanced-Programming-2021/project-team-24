@@ -131,5 +131,10 @@ public abstract class CardHolder {
     {
         return id;
     }
-        
+    public void setCardMap(HashMap<String, String> cardMap){
+        this.cardMap = cardMap;
+    }
+    public HashMap<String, String> getCardMap(){
+        return this.cardMap;
+    }
 }
