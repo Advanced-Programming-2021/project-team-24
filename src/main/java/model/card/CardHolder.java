@@ -107,7 +107,7 @@ public abstract class CardHolder {
     public void setCardMap(HashMap<String, String> cardMap){
         this.cardMap = cardMap;
     }
-    public static HashMap<String, String> getCardMap(){
-        return cardMap;
+    public HashMap<String, String> getCardMap(){
+        return this.cardMap;
     }
 }
