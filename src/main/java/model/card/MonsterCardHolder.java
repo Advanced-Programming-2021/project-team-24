@@ -9,7 +9,10 @@ import model.user.User;
 
 public class MonsterCardHolder extends CardHolder {
     public MonsterCardHolder(MonsterCard card, CardState cardState) {
-        super(card, cardState);
+        super(card, cardState);                
+        //do in default
+        cardMap.put("attack", ((Integer)card.getAttack()).toString());
+        cardMap.put("defence",  ((Integer)card.getDefence()).toString());
         //TODO Auto-generated constructor stub
     }
     //IDEA hashmap
@@ -18,13 +21,14 @@ public class MonsterCardHolder extends CardHolder {
     private int age;
     private int attack;
     private int defence;
+    
     public int getAttack()
     {
-        return this.attack;
+        return Integer.parseInt(getValue("attack"));
     }
     public int getDefence()
     {
-        return this.defence;
+        return Integer.parseInt(getValue("defence"));
     }
     public void flipSummon()
     {
@@ -33,26 +37,18 @@ public class MonsterCardHolder extends CardHolder {
     public void endPhase()
     {
         this.age ++;
-        cardMap.put("can_change_state", false);
+        super.cardMap.put("can_change_state", "false");
     }
 
-    public boolean getMapValue(String string)
-    {
-        if(cardMap.get(string) == null)
-            return false;
-        else
-            return cardMap.get(string);
-    }
+    
     
     public void changeCardState(CardState newCardState)
     {
-        if(!cardMap.get("can_change_state"))
+        if(!super.convertStringToBool(cardMap.get("can_change_state")))
             this.cardState = newCardState;
     }
 
     
-    //TODO run hashmap or no
-
     public void flip()
     {
         if(this.cardState == CardState.SET_DEFENCE)

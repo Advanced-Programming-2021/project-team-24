@@ -137,7 +137,24 @@ public class Duel {
         }
     }
 
-
+    public void setterMap(List<Integer> cardHolders, String key, String value)
+    {
+        for (Integer integer : cardHolders) {
+            if(getCardHolderById(integer) != null)
+            {
+                getCardHolderById(integer).setMapValue(key, value);
+            }
+        }
+    }
+    public String getterMap(List<Integer> cardHolders, String key, String value)
+    {
+        if(cardHolders == null || cardHolders.size() == 0)
+            return "";
+        else
+        {
+            return getCardHolderById(cardHolders.get(0)).getValue(key);
+        }
+    }
     
     public List<CardHolder> getCardHolderFilter(Filter filter)
     {

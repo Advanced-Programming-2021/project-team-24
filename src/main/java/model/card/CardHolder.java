@@ -46,7 +46,34 @@ public abstract class CardHolder {
         this.effectManagerId = new ArrayList<Integer>();
         this.appliedEffects = new ArrayList<Integer>();
     }*/
-    
+    public void setMapValue(String key, String value)
+    {
+        cardMap.put(key, value);
+    }
+    protected Boolean convertStringToBool(String string)
+    {
+        if(string.equals("true"))
+            return true;
+        else
+        if(string.equals("false"))
+            return false;
+        return null;
+    }
+    public String getValue(String string)
+    {    
+        return cardMap.get(string);
+    }
+    public Boolean getBoolMapValue(String string)
+    {
+        if(cardMap.get(string) == null)
+            {
+                if(string.substring(0, 3).equals("can"))
+                    return true;
+                return false;
+            }
+        else
+            return convertStringToBool(cardMap.get(string));
+    }
     public boolean haveEffectWithId(int idEffectManager)
     {
         for(int i = 0; i < appliedEffects.size(); i++)

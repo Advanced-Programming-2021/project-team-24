@@ -8,6 +8,7 @@ import controller.DuelController;
 import controller.Message;
 import model.duel.Duel;
 import model.card.CardHolder;
+import model.user.Player;
 import model.user.User;
 import model.zone.Address;
 import model.zone.Zone;
@@ -133,6 +134,10 @@ public class DuelMenu {
             System.out.println(message);
         //Random then show selected by address
         return null;
+    }
+    public void changeLP(Player player, int amount)
+    {
+        
     }
     public List<Integer> selective(List<Integer> cardHolderId, int count, String message)
     {
