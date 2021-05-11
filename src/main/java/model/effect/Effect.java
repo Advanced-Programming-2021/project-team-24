@@ -4,6 +4,8 @@ import controller.Message;
 
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
+
 
 /*
     effect documentaion:
@@ -64,6 +66,7 @@ import java.util.List;
         Set("can_attack", false);
         ChangeAD(200, 300);
     }
+    
     when we recalculate effect we trace for special effect such as above not flip, changeZone and ..    
     so we have to store that on some hashMap<>
 
@@ -71,13 +74,17 @@ import java.util.List;
 
 */
 public class Effect {
+    @SerializedName("effectType")
     private EffectType typeOfEffect;
-    private String requirement;
-
-
-    
+    private String requirement;    
+    private String effect;
     private boolean askForActivation;
     private String name;
     private String askAbleMessage;
     private List<String> requiredEvents;
+    public String getEffectCommand()
+    {
+        return this.effect;
+    }
+
 }

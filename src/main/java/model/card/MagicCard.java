@@ -7,13 +7,12 @@ import model.effect.*;
 
 
 public class MagicCard extends Card {
+     
     
-    
-    
-    private boolean isActived;
-    private List<Effect> effects;    
+    private Boolean isActived;
+    private Effect effect;   
     public boolean getIsActivated()
-    {
+    {        
         return isActived;
     }
     public boolean isSpell()
@@ -23,7 +22,4 @@ public class MagicCard extends Card {
         else
             return false;
     }
-    
-    
-
 }

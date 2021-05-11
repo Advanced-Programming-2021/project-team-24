@@ -6,7 +6,8 @@ public enum Zones {
     GRAVEYARD("graveyare"),
     HAND("hand"),
     MONSTER("monster"),
-    MAGIC("magic");
+    MAGIC("magic"),
+    FIELD("field");
     
 
 

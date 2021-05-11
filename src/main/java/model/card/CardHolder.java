@@ -15,8 +15,6 @@ public abstract class CardHolder {
     protected CardType cardType;
     protected HashMap<String, String> cardMap;
 
-
-
     protected Player owner;
     public String getOnwerName()
     {
@@ -31,9 +29,8 @@ public abstract class CardHolder {
         this.effectManagerId = new ArrayList<Integer>();
         //TODO effectManager should be updated by creating effectManagerId        
     }
-    public CardHolder(MonsterCard card, CardState cardState) {
-    }
-    public CardHolder(MagicCard card, CardState cardState) {
+    public CardHolder(CardState cardState) {
+        this.cardState = cardState;        
     }
     public abstract void endPhase();
     private List <Integer> effectManagerId;        
@@ -59,6 +56,7 @@ public abstract class CardHolder {
             return false;
         return null;
     }
+    public abstract void flip();
     public String getValue(String string)
     {    
         return cardMap.get(string);

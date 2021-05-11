@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
+
 import controller.DuelController;
 import model.card.CardHolder;
 import model.card.CardState;
@@ -25,17 +26,15 @@ public class EffectParser {
     {
         this.idCardHolderOwner = idCardHolderOwner;
         this.effect = effect;
-        this.owner = owner;
+        this.owner = owner;        
         this.duelController = duelController;
-
     }    
-    public void runEffect()
+    String ans;
+    public String runEffect()
     {
-        //effect managin;
-        //first layer {}    
-
-        //check "{}" matching then split by ";"
-        //main part of effect
+        ans = null;
+        getCommandResult(effect.getEffectCommand());
+        return ans;
     }
     public String handleConditional(String command)
     {
@@ -111,17 +110,104 @@ public class EffectParser {
     public void flip(String command)
     {
         //filp(List<E>): 
+        String lString = splitByParentheses(command).get(0);
+        List<Integer> list = new Gson().fromJson(getCommandResult(lString) , new ArrayList<Integer>().getClass());
+        for(int i = 0; i < list.size(); i++)
+        {
+            duelController.getDuel().getCardHolderById(list.get(i)).flip();
+        }
+
     }
 
+    public static final String GET_STRING = "get\\(([^()]*)\\)";
     public String getCommandResult(String command)
     {
+        if(command.lastIndexOf(';') == command.length())
+        {
+            //check get
+            for(int i = 0; i < 4; i++)
+            {
+                if(command.substring(0, 8).equals("return_t") && ans != null)
+                {
+                    ans = "true";
+                }
+                if(command.substring(0, 8).equals("return_f") && ans != null)
+                {
+                    ans = "false";
+                }
+                
+                handleGetCommand(command);
+                if(command.substring(0, 2).equals("if"))
+                {
+                    return handleConditional(command);
+                }
+                if(command.substring(0, 4).equals("q_yn"))
+                {
+                    return q_yn(command);
+                }
+                if(command.substring(0, 3).equals("set"))
+                {
+                    setCommand(command);
+                }
+                handleChangeLPCommand(command);
+                handleNormCommand(command);
+                command = parseKeyWords(command);
+                //calculater            
+            }
+            return command;        
+        }
+        else
+        {
+            List<String> subCommands = splitCommands(command);
+            for(int i = 0; i < subCommands.size(); i++)
+            {
+                getCommandResult(subCommands.get(i));
+            }
+
+        }        
         // command type:
         // change zone
         //filter
-
         //TODO
         //return string as result of command, maybe some get or ...
         return command;
+    }
+    private void handleChangeLPCommand(String command) {
+        try
+        {
+            if(command.substring(0, 8).equals("changeLP"))
+            {
+                changeLP(command);
+            }
+        }
+        catch(Exception e)
+        {                
+        }
+    }
+    private void handleNormCommand(String command) {
+        while(true)
+        {
+            if(Global.regexFind(command, "Norm\\(([^()]+)\\)"))
+            {
+                Matcher matcher = Global.getMatcher(command, "Norm\\(([^()]+)\\)");
+                command.replace(matcher.group(0), normSet(matcher.group(0)));
+            }
+            else
+                break;
+        }
+    }
+    private void handleGetCommand(String command) {
+        command.replace(" ", "");
+        while(true)
+        {
+            if(Global.regexFind(command, GET_STRING))
+            {
+                Matcher matcher = Global.getMatcher(command, GET_STRING);
+                command.replace(matcher.group(0), getCommand(matcher.group(0)));
+            }
+            else
+                break;
+        }
     }
     
     public String normSet(String command)
@@ -129,13 +215,50 @@ public class EffectParser {
 
         //Norm(List<E>): return size of List in String integer
         //List<E> set
-        String size = String.valueOf(set.size());
-        return size;
+        Matcher matcher = Global.getMatcher(command, "Norm\\((.+)\\)");
+        matcher.find();      
+        String list = getCommandResult(matcher.group(1));        
+        return String.valueOf((new Gson().fromJson(list, new ArrayList<String>().getClass())).size());        
     }
-    public String parseKeyWords(String keyWord)
+    public String parseKeyWords(String command)
     {
-        //
-        return null;
+        //this
+        List<String> v = new ArrayList<String>();
+        v.add(Integer.toString(this.idCardHolderOwner));
+        command = command.replace("this", new Gson().toJson(v, new ArrayList<String>().getClass()));
+        
+        //simple zones
+        
+        Player current = this.owner;
+        Player opponent = duelController.getDuel().getOpponent();
+        if(opponent.getNickname().equals(owner.getNickname()))
+            opponent = duelController.getDuel().getCurrentPlayer();
+
+        for (String string : model.zone.Zone.zoneStrings) {
+            String zone = "$my_" + string + "$";
+            List<CardHolder> cardList = duelController.getZone(new Zone(string, current));
+            List<String> ans = new ArrayList<String>();
+            for(int i = 0; i < cardList.size(); i++)
+            {
+                ans.add(Integer.toString(cardList.get(i).getId()));
+            }
+            command = command.replaceAll(zone, new Gson().toJson(ans, new ArrayList<String>().getClass()));
+        }
+        
+        for (String string : model.zone.Zone.zoneStrings) {
+            String zone = "$opp_" + string + "$";
+            List<CardHolder> cardList = duelController.getZone(new Zone(string, opponent));
+            List<String> ans = new ArrayList<String>();
+            for(int i = 0; i < cardList.size(); i++)
+            {
+                ans.add(Integer.toString(cardList.get(i).getId()));
+            }
+            command = command.replaceAll(zone, new Gson().toJson(ans, new ArrayList<String>().getClass()));
+        }
+
+
+
+        return command;
     }
     public List<Integer> parseKeyWordsList(String keyWord)
     {
@@ -146,7 +269,7 @@ public class EffectParser {
     public void setCommand(String setCommand)
     {
         Gson gson = new Gson();
-        List<String> fields =splitCorrect(setCommand, ',');
+        List<String> fields = splitCorrect(splitByParentheses(setCommand).get(0) ,',');
         List<String> cardHolders = gson.fromJson(getCommandResult(fields.get(0)), new ArrayList<String>().getClass());
         String key = fields.get(1);
         String value = getCommandResult(fields.get(2));
@@ -155,7 +278,7 @@ public class EffectParser {
     }
     public String getCommand(String getCommand)
     {
-        List<String> fields = splitCorrect(getCommand, ',');
+        List<String> fields = splitCorrect(splitByParentheses(getCommand).get(0), ',');
         List<Integer> cardHolders = new Gson().fromJson(getCommandResult(fields.get(0)), new ArrayList<Integer>().getClass());
         return duelController.getDuel().getterMap(cardHolders, fields.get(1), getCommandResult(fields.get(2)));        
     }
@@ -228,6 +351,33 @@ public class EffectParser {
         }
         return ans;
     }
+    public static List<String> splitByParentheses(String command)
+    {
+        List<String> ans = new ArrayList<String>();
+        int pre = command.indexOf('(', 0);
+        int counter = 0;
+        for(int i = pre; i < command.length(); i++)
+        {
+            int flag = 0;
+            if(command.charAt(i) == ')')
+            {
+                flag = 1;
+                counter--;
+            }
+            if(command.charAt(i) == '(')
+            {
+                flag = 1;   
+                counter++;
+            }
+            if(counter == 0 && flag == 1)
+            {
+                ans.add(command.substring(pre, i));
+                pre = i + 1;
+            }
+        }
+        return ans;
+    }
+    
     public List<Integer> getListByFilter(String filterString)    
     {
         //#Filter#(["key":"value"]);        

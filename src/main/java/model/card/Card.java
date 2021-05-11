@@ -10,6 +10,13 @@ public abstract class Card {
     protected LimitType limitType;
     protected CardType cardType;    
     public String getDescription;
+    String flipEffect;
+    String deathEffect;
+    String summonEffect;
+    String setEffect;
+    String onAttackEffect;
+    String underAttackEffect;
+
     protected static List <Card> allCards;
     public static List <Card> getAllCards()
     {

@@ -8,7 +8,7 @@ import java.util.List;
 public class Zone {
     private String zone;
     private Player player;
-    private static final String[] zoneStrings = {"graveyard","monster","spell","hand","field"};
+    public static final String[] zoneStrings = {"graveyard","monster","spell","hand","field"};
     public Zone(String zone, Player player)
     {
         this.zone = zone;

@@ -1,6 +1,7 @@
 package model.duel.filterhandle;
 
 import java.util.HashMap;
+import java.util.List;
 
 import model.duel.Duel;
 import model.card.CardHolder;
@@ -13,11 +14,20 @@ public class ZoneHandler extends FilterHandler {
     @Override
     public boolean Handle(Filter filter, CardHolder cardHolder, Duel duel) {
         Zone zone = duel.getCardHolderZone(duel.getCardHolderById(cardHolder.getId()));
+        List<String> possibleZones = filter.getZones();
+        int flag = 0;
         if(filter.getZones() != null)
         {
-            
-            //TODO
+            for(int j = 0; j < possibleZones.size(); j++)
+            {
+                if(zone.getZoneName().equals(duel.parseZone(possibleZones.get(j)).getZoneName()) && zone.getPlayer().equals(duel.parseZone(possibleZones.get(j)).getPlayer()))
+                {
+                    flag = 1;
+                }
+            }
         }
+        if(flag == 0)
+            return false;
         if(nextFilterHandler != null)
         {
             return nextFilterHandler.Handle(filter, cardHolder, duel);

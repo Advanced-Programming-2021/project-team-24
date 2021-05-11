@@ -1,9 +1,10 @@
 package model.card;
 
 public class MagicCardHolder extends CardHolder {
-
+    private MagicCard card;
     public MagicCardHolder(MagicCard card, CardState cardState) {
-        super(card, cardState);
+        super(cardState);
+        this.card = card;
         //TODO Auto-generated constructor stub
     }
 
@@ -24,10 +25,13 @@ public class MagicCardHolder extends CardHolder {
         
     }
 
-    @Override
     public Card getCard() {
+        return this.card;
+    }
+
+    public void flip() {
         // TODO Auto-generated method stub
-        return null;
+        
     }
     
 }

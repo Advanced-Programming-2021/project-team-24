@@ -9,15 +9,14 @@ import model.user.User;
 
 public class MonsterCardHolder extends CardHolder {
     public MonsterCardHolder(MonsterCard card, CardState cardState) {
-        super(card, cardState);                
+        super(cardState);                
         //do in default
+        this.card = card;
         cardMap.put("attack", ((Integer)card.getAttack()).toString());
         cardMap.put("defence",  ((Integer)card.getDefence()).toString());
         //TODO Auto-generated constructor stub
     }
-    //IDEA hashmap
-       
-    private MagicCard card;
+    private MonsterCard card;
     private int age;
     private int attack;
     private int defence;
