@@ -106,8 +106,10 @@ public class EffectParser {
     public String normSet(String command)
     {
 
-        //Norm(List<E>): return size of List in String integer        
-        return null;
+        //Norm(List<E>): return size of List in String integer
+        //List<E> set
+        String size = String.valueOf(set.size());
+        return size;
     }
     public String parseKeyWords(String keyWord)
     {
