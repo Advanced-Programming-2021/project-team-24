@@ -103,4 +103,43 @@ public class DuelMenu {
         }
     }
 
+    public Boolean BooleanQYN(String question)
+    {
+        System.out.println(question);
+        String out = Global.nextLine();
+        if(out.toLowerCase().equals("y"))
+            return true;
+        else
+            if(out.toLowerCase().equals("n"))
+                return false;
+            else
+            {
+                System.out.println("please enter valid answer");
+                return BooleanQYN(question);
+            }
+    }
+    
+    public Integer Dice()
+    {
+        //TODO in gui
+        //return random
+        return 1;
+    }
+    public List<Integer> randomSelection(List<Integer> cardHolderId, int count, String message)
+    {
+        if(message != null && message.length() > 0)
+            System.out.println(message);
+        //Random then show selected by address
+        return null;
+    }
+    public List<Integer> selective(List<Integer> cardHolderId, int count, String message)
+    {
+        if(message != null && message.length() > 0)
+            System.out.println(message);
+        //TODO
+        //How to implement??
+        //maybe implement by address
+        return null;
+    }
+
 }

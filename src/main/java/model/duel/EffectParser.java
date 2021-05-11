@@ -8,12 +8,14 @@ public class EffectParser {
     Duel duel;
     Player owner;
     String effect;
-    public EffectParser(Duel duel, Player owner, String effect)
+    int idCardHolderOwner;
+    public EffectParser(Duel duel, Player owner, String effect, int idCardHolderOwner)
     {
+        this.idCardHolderOwner = idCardHolderOwner;
         this.effect = effect;
         this.owner = owner;
         this.duel = duel;
-    }
+    }    
     public void runEffect()
     {
         //check "{}" matching then split by ";"
@@ -32,7 +34,7 @@ public class EffectParser {
     }
     public void changeLP(String command)
     {
-
+        //own and opp key word
     }
     
     public void q_yn(String command)
