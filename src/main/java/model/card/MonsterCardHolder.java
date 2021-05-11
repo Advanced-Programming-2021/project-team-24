@@ -13,9 +13,7 @@ public class MonsterCardHolder extends CardHolder {
         //TODO Auto-generated constructor stub
     }
     //IDEA hashmap
-    HashMap<String, Boolean> cardMap;// find good name
-    HashMap<String, String> cardStringMap;
-    HashMap<String, Integer> cardIntegerMap;    
+       
     private MagicCard card;
     private int age;
     private int attack;

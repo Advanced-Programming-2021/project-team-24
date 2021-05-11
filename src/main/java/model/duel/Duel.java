@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import model.card.Card;
 import model.card.CardHolder;
+import model.card.CardState;
 import model.duel.Filter;
 import model.effect.EffectManager;
 import model.user.Player;
@@ -42,7 +43,6 @@ public class Duel {
         zones.add(new Zone("monster", this.opponent));
         zones.add(new Zone("magic", this.user));
         zones.add(new Zone("magic", this.opponent));
-
     }
 
     public Player getCurrentPlayer() {
@@ -110,28 +110,28 @@ public class Duel {
         //TODO Hesam
         // maybe just make it empty or totally remove in hand or something else
     }
-    public void addCard(Card card, Zone zone)
+    public void addCard(Card card, Zone zone, CardState cardState)
     {
         //TODO do in map class not here
     }   
 
 
-    public void changeZone(int cardHolderId, model.zone.Zone targetZone)
+    public void changeZone(int cardHolderId, model.zone.Zone targetZone, CardState cardState)
     {
         if(getCardHolderById(cardHolderId)  != null)
         {
-            addCard(getCardHolderById(cardHolderId).getCard() , targetZone);
+            addCard(getCardHolderById(cardHolderId).getCard() , targetZone, cardState);
             removeCardHolder(cardHolderId);            
         }        
     }
 
 
-    public void changerZone(List<Integer> cardHolders, Zone targetZone)
+    public void changerZone(List<Integer> cardHolders, Zone targetZone , CardState cardState)
     {
         for (Integer cardHolderId : cardHolders) {
             if(getCardHolderById(cardHolderId)  != null)
             {
-                addCard(getCardHolderById(cardHolderId).getCard() , targetZone);
+                addCard(getCardHolderById(cardHolderId).getCard() , targetZone, cardState);
                 removeCardHolder(cardHolderId);            
             }  
         }
@@ -168,7 +168,7 @@ public class Duel {
         return ans;
     }
 
-    public Zone newZone(String josn){
+    public Zone parseZone(String josn){
         String[] zoneArgument = josn.split("_");
         Player player = null;
         if (zoneArgument[1].compareToIgnoreCase("my") == 0) player = currentPlayer;

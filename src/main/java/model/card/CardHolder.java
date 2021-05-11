@@ -13,6 +13,8 @@ public abstract class CardHolder {
     protected static int idCounter = 1;                
     protected CardState cardState;
     protected CardType cardType;
+    protected HashMap<String, String> cardMap;
+
 
 
     protected Player owner;
@@ -54,6 +56,8 @@ public abstract class CardHolder {
         }
         return false;        
     }
+    
+    
     
     public void addEffect(int idEffectManager)
     {

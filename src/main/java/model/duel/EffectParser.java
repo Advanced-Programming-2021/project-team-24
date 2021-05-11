@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 
 import controller.DuelController;
 import model.card.CardHolder;
+import model.card.CardState;
 import model.user.Player;
 import model.zone.Zone;
 import view.DuelMenu;
@@ -42,13 +43,31 @@ public class EffectParser {
     }
     public void changeZone(String command)
     {
-        //changeZone(List<>, target_zone);
+        List<String> fields = splitCorrect(command, ',');
+        Gson gson = new Gson();
+        getCommandResult(fields.get(0));
+        List<Integer> cardHolders = gson.fromJson(getCommandResult(fields.get(0)), new ArrayList<Integer>().getClass());            
+        Zone targetZone = parseZone(fields.get(1));        
+        if(fields.size() == 3)
+        {
+            CardState cardState = gson.fromJson(fields.get(2), CardState.class);
+            duelController.getDuel().changerZone(cardHolders, targetZone, cardState);
+        }
+        else
+        {
+            duelController.getDuel().changerZone(cardHolders, targetZone, CardState.NONE);
+            //TODO handle none as default case
+        }
+        //changeZone(List<>, target_zone, card_state);
         //parse target zone with zoneParser
         //advanced mode : changeZone(List<>, target_zone, Card_State);
         //for putting card in monster zone this part is needed
     }
     public void changeLP(String command)
     {
+        //changeLp
+        Matcher matcher = Global.getMatcher(command, "changeLP\\((.+)\\)");
+        
         //own and opp key word
     }
     //TODO
@@ -110,6 +129,25 @@ public class EffectParser {
         //get("List<>", "key")
         // for simplify assume the first part of list as getting                
         return null;
+    }
+    public static List<String> splitCommands(String command)
+    {
+        List<String> ans = new ArrayList<String>();
+        int pre = 0;
+        int counter = 0;
+        for(int i = 0; i < command.length(); i++)
+        {
+            if(command.charAt(i) == '{' || command.charAt(i) == '(')
+                counter++;            
+            if(command.charAt(i) == '}' || command.charAt(i) == ')')
+                counter--;
+            if(counter == 0 && command.charAt(i) == ';')
+            {
+                pre = i + 1;
+                ans.add(command.substring(pre, i));
+            }
+        }
+        return ans;
     }
     public static List<String> splitCorrect(String command, char ch)
     {
@@ -201,7 +239,6 @@ public class EffectParser {
         String filter = " \"minLevel\":\"3\", \"cardType\":\"SPELL\"";
         new EffectParser(null, null, null, null, 1).getListByFilter(filter);
     }
-
     public Integer sumCommand(String command)
     {
         //sum(List<>, "key") e.g : sum(List<>, "level");
@@ -240,7 +277,7 @@ public class EffectParser {
     public Integer dice()
     {
         //handle the view part use : dice
-        return null;
+        return duelMenu.Dice();
     }    
 
     public String calculater(String command)
