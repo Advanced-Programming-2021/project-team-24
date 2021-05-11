@@ -1,20 +1,49 @@
 package view;
 
 
+import controller.DeckController;
+import controller.MainMenuController;
+import controller.Message;
+import model.card.Card;
+import model.deck.Deck;
 import model.user.User;
 
-public class MainMenu {
-    protected User user;
-    public MainMenu(User user){
-        this.user = user;
+import java.util.List;
+import java.util.regex.Matcher;
+
+public class MainMenu extends Menu {
+    controller.MainMenuController mainMenuController;
+
+    public MainMenu(User user) {
+        super(user);
+        this.mainMenuController = new MainMenuController();
     }
-    public void checkShowCurrentMenu(String command){
-        if(Global.regexFind(command , "menu show-current")){
-            System.out.println("Main Menu");
+
+    public void run() {
+        while (true) {
+            String command = Global.nextLine();
+            if (command.equals("menu exit")) {
+                return;
+            } else if (command.equals("menu show-current")) {
+                System.out.println("Main Menu");
+            } else {
+                Matcher matcher = Global.getMatcher(command, "duel (?=.*(?:--new))(?=.*(?:--second-player (?<opponentUsername>\\w)))(?=.*(?:--rounds (?<rounds>\\d)))");
+                if (matcher.find()) {
+                    String opponentUsername = matcher.group("opponentUsername");
+                    String rounds = matcher.group("rounds");
+                    Message message = mainMenuController.createDuel(user,opponentUsername,rounds);
+                    System.out.println(message.getContent());
+                    continue;
+                }
+
+                matcher = Global.getMatcher(command, "duel (?=.*(?:--new))(?=.*(?:--ai))(?=.*(?:--rounds))(?=.*(?:--rounds (?<rounds>\\d)))");
+                if (matcher.find()) {
+                    String rounds = matcher.group("rounds");
+                    //TODO ai
+                    continue;
+                }
+            }
+            System.out.println("invalid command");
         }
-    }
-    public boolean checkMenuExit(String command){
-        if(command.compareToIgnoreCase("menu exit") == 0) return true;
-        return false;
     }
 }

@@ -17,10 +17,10 @@ public class DuelMenu {
 
     DuelController duelController;
 
-    public DuelMenu(User user, String opponentUsername) {
-        this.duelController = new DuelController(new Duel(user, User.readUser(opponentUsername)));
+    public DuelMenu(User user, User opponent, String rounds) {
+        this.duelController = new DuelController(new Duel(user,opponent,rounds));
     }
-    
+
     private static final String REGEX_ENTER_MENU = "menu enter (\\w+)";
 
     public void run() {
@@ -35,25 +35,23 @@ public class DuelMenu {
                 System.out.println(message.getContent());
             } else if (command.equals("summon")) {
                 duelController.summon();
-            }
-             else if (command.equals("flip-summon")) {
+            } else if (command.equals("flip-summon")) {
                 duelController.flipSummon();
-            }
-             else if (command.equals("set")) {
+            } else if (command.equals("set")) {
                 //TODO set
             } else if (command.equals("attack direct")) {
                 //TODO
             } else if (command.equals("activate effect")) {
                 //TODO activate effect
             } else if (command.equals("show graveyard")) {
-                List<CardHolder> graveyard = duelController.getDuel().getZone(new Zone("graveyard",  duelController.getDuel().getCurrentPlayer()));
+                List<CardHolder> graveyard = duelController.getDuel().getZone(new Zone("graveyard", duelController.getDuel().getCurrentPlayer()));
                 if (graveyard.isEmpty()) System.out.println("graveyard empty");
                 else showCardList(graveyard);
             } else if (command.equals("card show --selected")) {
 
                 Message message = duelController.showSelectedCard();
                 System.out.println(message.getContent());
-                
+
             } else if (command.equals("surrender")) {
                 //TODO surrender
             } else {
@@ -101,43 +99,39 @@ public class DuelMenu {
     }
 
 
-    public Boolean BooleanQYN(String question)
-    {
+    public Boolean BooleanQYN(String question) {
         System.out.println(question);
         String out = Global.nextLine();
-        if(out.toLowerCase().equals("y"))
+        if (out.toLowerCase().equals("y"))
             return true;
-        else
-            if(out.toLowerCase().equals("n"))
-                return false;
-            else
-            {
-                System.out.println("please enter valid answer");
-                return BooleanQYN(question);
-            }
+        else if (out.toLowerCase().equals("n"))
+            return false;
+        else {
+            System.out.println("please enter valid answer");
+            return BooleanQYN(question);
+        }
     }
-    
-    public Integer Dice()
-    {
+
+    public Integer Dice() {
 
         Integer ans = Global.random.nextInt(6) + 1;
         return ans;
         //TODO in gui    
     }
-    public List<Integer> randomSelection(List<Integer> cardHolderId, int count, String message)
-    {
-        if(message != null && message.length() > 0)
+
+    public List<Integer> randomSelection(List<Integer> cardHolderId, int count, String message) {
+        if (message != null && message.length() > 0)
             System.out.println(message);
         //Random then show selected by address
         return null;
     }
-    public void changeLP(Player player, int amount)
-    {
-        
+
+    public void changeLP(Player player, int amount) {
+
     }
-    public List<Integer> selective(List<Integer> cardHolderId, int count, String message)
-    {
-        if(message != null && message.length() > 0)
+
+    public List<Integer> selective(List<Integer> cardHolderId, int count, String message) {
+        if (message != null && message.length() > 0)
             System.out.println(message);
         //TODO
         //How to implement??

@@ -24,6 +24,7 @@ public class Duel {
     private static List<EffectManager> effectManagerList;
     private HashMap<Address, CardHolder> map;
     private List<Zone> zones;
+    private int rounds;
     public static EffectManager getEffectManagerById(int id) {
         for (int i = 0; i < effectManagerList.size(); i++) {
             if (effectManagerList.get(i).getId() == id) return effectManagerList.get(i);
@@ -31,7 +32,8 @@ public class Duel {
         return null;
     }
     
-    public Duel(User user, User opponent) {
+    public Duel(User user, User opponent , String rounds) {
+        this.rounds = Integer.parseInt(rounds);
         zones = new ArrayList<Zone>();
         this.user = new Player(user);
         this.opponent = new Player(opponent);
