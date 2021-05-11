@@ -1,6 +1,7 @@
 package view;
 
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 
 import controller.DuelController;
@@ -121,9 +122,10 @@ public class DuelMenu {
     
     public Integer Dice()
     {
-        //TODO in gui
-        //return random
-        return 1;
+
+        Integer ans = Global.random.nextInt(6) + 1;
+        return ans;
+        //TODO in gui    
     }
     public List<Integer> randomSelection(List<Integer> cardHolderId, int count, String message)
     {

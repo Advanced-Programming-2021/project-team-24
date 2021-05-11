@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
+
 import model.card.CardHolder;
 import model.card.CardType;
 
@@ -12,7 +14,8 @@ public class Filter {
 
     private int minLevel;
     private int maxLevel;
-    private String cardType;
+    @SerializedName("cardType")
+    private CardType cardType;
     private Integer minAttack;
     private Integer maxAttack;
     private Integer minDefence;
@@ -38,11 +41,11 @@ public class Filter {
         this.maxLevel = maxLevel;
     }
 
-    public String getCardType() {
+    public CardType  getCardType() {
         return this.cardType;
     }
 
-    public void setCardType(String cardType) {
+    public void setCardType(CardType cardType) {
         this.cardType = cardType;
     }
 
