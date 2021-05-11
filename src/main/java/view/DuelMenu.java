@@ -20,11 +20,6 @@ public class DuelMenu {
     public DuelMenu(User user, String opponentUsername) {
         this.duelController = new DuelController(new Duel(user, User.readUser(opponentUsername)));
     }
-    private void showGraveyard()
-    {
-
-    }
-
     
     private static final String REGEX_ENTER_MENU = "menu enter (\\w+)";
 
@@ -104,6 +99,7 @@ public class DuelMenu {
             System.out.println(i + ". " + cardHolder.toString());
         }
     }
+
 
     public Boolean BooleanQYN(String question)
     {

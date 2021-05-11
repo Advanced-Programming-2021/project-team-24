@@ -23,8 +23,7 @@ public class User {
     private int coin;
     private List<String> cardNames;
     private List<Card> cards;//fill it after reading json
-    private List<Deck> decks;
-    private Deck activeDeck;
+    private Decks decks;
     private static List<String> usernames;
     static{
         //read users from json files in "/users" folder
@@ -63,8 +62,6 @@ public class User {
         usernames.add(username);
         this.cardNames = new ArrayList<String>();
         this.cards = new ArrayList<Card>();
-        this.decks = new ArrayList<Deck>();
-        this.activeDeck = null;
         addUser();
     }    
 
@@ -97,6 +94,19 @@ public class User {
             e.printStackTrace();
         }
     }
+
+    public static User getUserByNameAndPassword(String username, String password) {
+        User loging = readUser(username);
+        if (loging == null) {
+            return null;
+        } else {
+            if (loging.comparePassword(password)) {
+                return loging;
+            } else
+                return null;
+        }
+    }
+
     public void logout()
     {
         //update json file of user
@@ -139,30 +149,7 @@ public class User {
     public void addCard(Card newCard){
         cards.add(newCard);
     }
-    public void addDeck(String deckName)
-    {
-        //return Errors.DeckWithSameNameExists;
-    }
-    public Deck getActiveDeck()
-    {
-        return this.activeDeck;
-    }
-    public void removeDeck(String deckName)
-    {
-        if(activeDeck != null)
-        {
-            if(activeDeck.getName().compareTo(deckName) == 0)
-                activeDeck = null;
-        }
-        for(int i = 0; i < decks.size(); i++)
-        {
-            if(decks.get(i).getName().compareTo(deckName) == 0)
-            {
-                decks.remove(i);
-                return ;
-            }
-        }
-    }
+
     public static Message register(String username, String password, String nickname)
     {
         User register = readUser(username);
@@ -184,23 +171,6 @@ public class User {
             return new Message(TypeMessage.ERROR, "user with username " + username + " already exists");
         }        
     }
-    public static User getUserByNameAndPassword(String username, String password)
-    {
-        User loging = readUser(username);
-        if(loging == null)
-        {
-            return null;
-        }
-        else
-        {
-            if(loging.comparePassword(password))
-            {
-                return loging;
-            }
-            else
-                return null;
-        }
-    }
     public static Message login(String username, String password)
     {
         User loging = readUser(username);
@@ -217,26 +187,18 @@ public class User {
             else
                 return new Message(TypeMessage.ERROR, "Username and password didn’t match!");
         }
-    } 
+    }
+
     public void changeScore(int changeScore)
     {
         this.score += changeScore;
     }
-    public Deck getDeckByName(String deckName)
-    {
-        for(int i = 0; i < decks.size(); i++)
-        {
-            if(decks.get(i).getName().compareTo(deckName) == 0)
-            {
-                return this.decks.get(i);
-            }
-        }
-        return null;
-    }
+
     public void changeNickname(String nickname){
         this.nickname = nickname;
     }
 
-
-    //TODO
+    public Decks getDecks() {
+        return decks;
+    }
 }

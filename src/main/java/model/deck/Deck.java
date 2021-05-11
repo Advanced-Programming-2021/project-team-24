@@ -59,7 +59,32 @@ public class Deck {
     }
 
     public boolean isValid() {
-        if (this.mainCards.size() >= 40 && this.mainCards.size() <= 60) return true;
+        if (this.mainCards.size() >= 40) return true;
         return false;
+    }
+
+    public String toStringCards(boolean isMain) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Deck ").append(this.name).append('\n');
+        List<Card> cards = new ArrayList<>();
+        if (isMain) {
+            stringBuilder.append("Main deck:");
+            cards = this.mainCards;
+        } else {
+            stringBuilder.append("Side deck:");
+            cards = this.sideCards;
+        }
+        stringBuilder.append('\n');
+        stringBuilder.append("Monsters:").append('\n');
+        for (Card card : cards) {
+            if (!card.isMagic())
+                stringBuilder.append(card.toString());
+        }
+        stringBuilder.append("Spell and Traps:").append('\n');
+        for (Card card : cards) {
+            if (card.isMagic())
+                stringBuilder.append(card.toString());
+        }
+        return stringBuilder.toString();
     }
 }
