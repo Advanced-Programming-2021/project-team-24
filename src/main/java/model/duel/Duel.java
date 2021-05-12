@@ -21,6 +21,7 @@ public class Duel {
     Player user;
     Player opponent;
     Player currentPlayer;
+    Player otherPlayer;
     private static List<EffectManager> effectManagerList;
     private HashMap<Address, CardHolder> map;
     private List<Zone> zones;
@@ -50,6 +51,11 @@ public class Duel {
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
+
+    public Player getOtherPlayer() {
+        return otherPlayer;
+    }
+
     public Zone getCardHolderZone(CardHolder cardHolder)
     {
         for (Zone zone : zones) {

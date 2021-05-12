@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 
 import controller.DuelController;
 import controller.Message;
+import model.card.Card;
 import model.duel.Duel;
 import model.card.CardHolder;
 import model.user.Player;
@@ -18,7 +19,7 @@ public class DuelMenu {
     DuelController duelController;
 
     public DuelMenu(User user, User opponent, String rounds) {
-        this.duelController = new DuelController(new Duel(user,opponent,rounds));
+        this.duelController = new DuelController(new Duel(user, opponent, rounds));
     }
 
     private static final String REGEX_ENTER_MENU = "menu enter (\\w+)";
@@ -44,7 +45,7 @@ public class DuelMenu {
             } else if (command.equals("activate effect")) {
                 //TODO activate effect
             } else if (command.equals("show graveyard")) {
-                List<CardHolder> graveyard = duelController.getDuel().getZone(new Zone("graveyard", duelController.getDuel().getCurrentPlayer()));
+                List<CardHolder> graveyard = getZoneCards("graveyard",false);
                 if (graveyard.isEmpty()) System.out.println("graveyard empty");
                 else showCardList(graveyard);
             } else if (command.equals("card show --selected")) {
@@ -137,6 +138,72 @@ public class DuelMenu {
         //How to implement??
         //maybe implement by address
         return null;
+    }
+
+    public List<CardHolder> getZoneCards(String zoneName, Boolean isOpponent) {
+        Player player = getPlayer(isOpponent);
+        return duelController.getDuel().getZone(new Zone(zoneName, player));
+    }
+
+    public Player getPlayer(Boolean isOpponent){
+        if (isOpponent) return duelController.getDuel().getOtherPlayer();
+        else return duelController.getDuel().getCurrentPlayer();
+    }
+
+    public void showBoard() {
+        System.out.println(duelController.getDuel().getOtherPlayer().toString());
+
+        for(int i=0;i<getZoneCards("hand",true).size();i++) System.out.print("\tc");
+        System.out.println();
+
+        System.out.println(getZoneCards("mainDeck",true).size());
+
+        System.out.format("|%-4s|",getCard("magic",true,4));
+        System.out.format("|%-4s|",getCard("magic",true,2));
+        System.out.format("|%-4s|",getCard("magic",true,1));
+        System.out.format("|%-4s|",getCard("magic",true,3));
+        System.out.format("|%-4s|",getCard("magic",true,5));
+        System.out.println();
+
+        System.out.format("|%-4s|",getCard("monster",true,4));
+        System.out.format("|%-4s|",getCard("monster",true,2));
+        System.out.format("|%-4s|",getCard("monster",true,1));
+        System.out.format("|%-4s|",getCard("monster",true,3));
+        System.out.format("|%-4s|",getCard("monster",true,5));
+        System.out.println();
+
+        System.out.format("|%-31d|",getZoneCards("graveyard",true).size());
+        System.out.println(getZoneCards("field",true).size());
+
+        System.out.println("--------------------------");
+
+        System.out.format("|%-31d|",getZoneCards("field",false).size());
+        System.out.println(getZoneCards("graveyard",false).size());
+
+        System.out.format("|%-4s|",getCard("monster",false,5));
+        System.out.format("|%-4s|",getCard("monster",false,3));
+        System.out.format("|%-4s|",getCard("monster",false,1));
+        System.out.format("|%-4s|",getCard("monster",false,2));
+        System.out.format("|%-4s|",getCard("monster",false,4));
+        System.out.println();
+
+        System.out.format("|%-4s|",getCard("magic",false,5));
+        System.out.format("|%-4s|",getCard("magic",false,3));
+        System.out.format("|%-4s|",getCard("magic",false,1));
+        System.out.format("|%-4s|",getCard("magic",false,2));
+        System.out.format("|%-4s|",getCard("magic",false,4));
+        System.out.println();
+
+        System.out.format("|%32d|",getZoneCards("mainDeck",false).size());
+
+        for(int i=0;i<getZoneCards("hand",false).size();i++) System.out.print("c\t");
+        System.out.println();
+
+        System.out.println(duelController.getDuel().getCurrentPlayer().toString());
+    }
+
+    public String getCard(String zoneName,Boolean isOpponent,int place){
+        return duelController.getDuel().getMap().get(new Address(new Zone(zoneName,getPlayer(isOpponent)),place)).getCardState().toString();
     }
 
 }
