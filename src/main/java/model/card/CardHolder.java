@@ -10,7 +10,7 @@ import model.user.User;
 
 public abstract class CardHolder {
     protected int id;
-    protected static int idCounter = 1;                
+    protected static int idCounter = 1;
     protected CardState cardState;
     protected CardType cardType;
     protected HashMap<String, String> cardMap;
@@ -20,6 +20,11 @@ public abstract class CardHolder {
     {
         return this.owner.getNickname();
     }        
+    public Player getOwner()
+    {
+        return this.owner;
+    }
+    
     public CardHolder(Player owner)
     {        
         this.owner = owner;        
@@ -30,7 +35,7 @@ public abstract class CardHolder {
         //TODO effectManager should be updated by creating effectManagerId        
     }
     public CardHolder(CardState cardState) {
-        this.cardState = cardState;        
+        this.cardState = cardState;
     }
     public abstract void endPhase();
     private List <Integer> effectManagerId;        

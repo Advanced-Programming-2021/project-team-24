@@ -18,6 +18,8 @@ public enum CardState
   ACTIVE_MAGIC("ACTIVE_MAGIC"),
   @SerializedName("HAND")
   HAND("HAND"),
+  @SerializedName("VISIBLE_MAGIC")
+  VISIBLE_MAGIC("VISIBLE_MAGIC"),
   @SerializedName("NONE")
   NONE("NONE");
   public final String label;

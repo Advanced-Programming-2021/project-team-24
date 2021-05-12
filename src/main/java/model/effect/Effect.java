@@ -78,10 +78,37 @@ public class Effect {
     private EffectType typeOfEffect;
     private String requirement;    
     private String effect;
-    private boolean askForActivation;
+    private Boolean askForActivation;
     private String name;
     private String askAbleMessage;
     private List<String> requiredEvents;
+
+    public String getRequirementCommandString()
+    {
+        return this.requirement;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }
+    public String getAskableMessage()
+    {
+        return this.askAbleMessage;
+    }
+
+    public List<String> getRequirementEvent()
+    {
+        return this.requiredEvents;
+    }
+
+
+    
+    public Boolean getAskForActivation()
+    {
+        return askForActivation;
+    }    
+
     public String getEffectCommand()
     {
         return this.effect;
