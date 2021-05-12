@@ -152,6 +152,10 @@ public class EffectParser {
                 handleChangeLPCommand(command);
                 handleNormCommand(command);
                 command = parseKeyWords(command);
+                if(command.substring(0, 3).equals("del"))
+                {
+                    deleteListFromList(command);
+                }
                 //calculater            
             }
             return command;        
@@ -377,7 +381,34 @@ public class EffectParser {
         }
         return ans;
     }
-    
+    public List<String> deleteListFromList(String command)
+    {
+        //del(List<>, List<E>)
+        Matcher matcher = Global.getMatcher(command, "del\\((.+)\\)");
+        if(matcher.find())
+        {
+            List<String> sets = splitCorrect(matcher.group(1), ',');
+            List<Integer> first = new Gson().fromJson(getCommandResult(sets.get(1)), new ArrayList<Integer>().getClass());
+            List<Integer> second = new Gson().fromJson(getCommandResult(sets.get(2)), new ArrayList<Integer>().getClass());
+            List<String> ans = new ArrayList<String>();
+            for(int i = 0; i < first.size(); i++)
+            {   
+                int flag = 0;
+                for(int j = 0; j < second.size(); j++)
+                {
+                    if(first.get(i) == second.get(j))
+                    {
+                        flag = 1;
+                    }
+                }
+                if(flag == 0)
+                {
+                    ans.add(first.get(i));
+                }
+            }
+        }
+        return null;
+    }   
     public List<Integer> getListByFilter(String filterString)    
     {
         //#Filter#(["key":"value"]);        

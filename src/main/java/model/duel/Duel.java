@@ -11,6 +11,7 @@ import model.card.Card;
 import model.card.CardHolder;
 import model.card.CardState;
 import model.duel.Filter;
+import model.effect.Effect;
 import model.effect.EffectManager;
 import model.user.Player;
 import model.user.User;
@@ -33,6 +34,9 @@ public class Duel {
         return null;
     }
     
+    
+
+
     public Duel(User user, User opponent , String rounds) {
         this.rounds = Integer.parseInt(rounds);
         zones = new ArrayList<Zone>();

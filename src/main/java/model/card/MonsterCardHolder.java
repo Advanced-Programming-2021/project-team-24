@@ -16,7 +16,12 @@ public class MonsterCardHolder extends CardHolder {
         cardMap.put("defence",  ((Integer)card.getDefence()).toString());
         //TODO Auto-generated constructor stub
     }
-    private MonsterCard card;
+    private MonsterCard card;    
+    private HashMap<Event, String> effects;    
+    public String getEventEffect(String event)
+    {
+        return effects.get(event);
+    }
     private int age;
     private int attack;
     private int defence;
@@ -36,7 +41,6 @@ public class MonsterCardHolder extends CardHolder {
     public void endPhase()
     {
         this.age ++;
-        super.cardMap.put("can_change_state", "false");
     }
 
     

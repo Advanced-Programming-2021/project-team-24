@@ -76,12 +76,12 @@ import com.google.gson.annotations.SerializedName;
 public class Effect {
     @SerializedName("effectType")
     private EffectType typeOfEffect;
-    private String requirement;    
+    private String requirement; //BOOLEAN FUNCTION
     private String effect;
     private Boolean askForActivation;
     private String name;
     private String askAbleMessage;
-    private List<String> requiredEvents;
+    //TODO private List<String> requiredEvents;
 
     public String getRequirementCommandString()
     {
@@ -97,10 +97,10 @@ public class Effect {
         return this.askAbleMessage;
     }
 
-    public List<String> getRequirementEvent()
+    /* public List<String> getRequirementEvent()
     {
         return this.requiredEvents;
-    }
+    } */
 
 
     
