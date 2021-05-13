@@ -1,5 +1,7 @@
 package model.card;
 
+import java.util.HashMap;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
@@ -12,6 +14,8 @@ public class MonsterCard extends Card {
     private int level;
     private MonsterEffectType monsterEffectType;
     private MonsterType monsterType;
+    @SerializedName("effects")
+    private HashMap<Event, String> effects;
     public int getLevel()
     {
         return level;
@@ -37,7 +41,8 @@ public class MonsterCard extends Card {
         v.monsterEffectType = MonsterEffectType.EFFECT;
         v.monsterType = MonsterType.AQUA;
         v.description = "alireza raft khoneh";
-        
+        v.effects = new HashMap<Event, String>();
+        v.effects.put(Event.ATTACK , " nothing");
         System.out.println( new Gson().toJson(v));
 
     }
