@@ -13,7 +13,7 @@ public abstract class CardHolder {
     protected static int idCounter = 1;
     protected CardState cardState;
     protected CardType cardType;
-    protected HashMap<String, String> cardMap;
+    protected HashMap<String, String> cardMap = new HashMap<String, String>();
 
     protected Player owner;
     public String getOnwerName()
@@ -37,7 +37,18 @@ public abstract class CardHolder {
     public CardHolder(CardState cardState) {
         this.cardState = cardState;
     }
-    public abstract void endPhase();
+    public static void main(String[] args) {
+        
+    }
+    public void endPhase()
+    {
+        List<String> v = (new ArrayList<String>());
+        for(int i = 0; i < v.size(); i++)
+        {
+
+        }
+    }
+    
     private List <Integer> effectManagerId;        
     private List <Integer> appliedEffects;    
     protected abstract void recalculateEffect();    

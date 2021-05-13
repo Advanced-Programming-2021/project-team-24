@@ -17,14 +17,12 @@ public class MonsterCardHolder extends CardHolder {
         //TODO Auto-generated constructor stub
     }
     private MonsterCard card;    
-    private HashMap<Event, String> effects;    
-    public String getEventEffect(String event)
+    private HashMap<Event, String> effects;        
+    public String getEventEffect(Event event)
     {
         return effects.get(event);
     }
     private int age;
-    private int attack;
-    private int defence;
     
     public int getAttack()
     {

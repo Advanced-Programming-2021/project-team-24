@@ -1,5 +1,6 @@
 package model.card;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -9,15 +10,10 @@ public abstract class Card {
     protected Integer price;
     protected LimitType limitType;
     protected CardType cardType;    
-    public String getDescription;
-    String flipEffect;
-    String deathEffect;
-    String summonEffect;
-    String setEffect;
-    String onAttackEffect;
-    String underAttackEffect;
+    
 
-    protected static List <Card> allCards;
+    
+    static List <Card> allCards = new ArrayList<Card>();
     public static List <Card> getAllCards()
     {
         return allCards;

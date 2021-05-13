@@ -385,12 +385,12 @@ public class EffectParser {
     {
         //del(List<>, List<E>)
         Matcher matcher = Global.getMatcher(command, "del\\((.+)\\)");
+        List<String> ans = new ArrayList<String>();
         if(matcher.find())
         {
             List<String> sets = splitCorrect(matcher.group(1), ',');
             List<Integer> first = new Gson().fromJson(getCommandResult(sets.get(1)), new ArrayList<Integer>().getClass());
-            List<Integer> second = new Gson().fromJson(getCommandResult(sets.get(2)), new ArrayList<Integer>().getClass());
-            List<String> ans = new ArrayList<String>();
+            List<Integer> second = new Gson().fromJson(getCommandResult(sets.get(2)), new ArrayList<Integer>().getClass());            
             for(int i = 0; i < first.size(); i++)
             {   
                 int flag = 0;
@@ -403,11 +403,11 @@ public class EffectParser {
                 }
                 if(flag == 0)
                 {
-                    ans.add(first.get(i));
+                    ans.add(Integer.toString(first.get(i)));
                 }
             }
         }
-        return null;
+        return ans;
     }   
     public List<Integer> getListByFilter(String filterString)    
     {
