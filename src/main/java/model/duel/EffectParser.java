@@ -8,8 +8,11 @@ import java.util.regex.Pattern;
 import com.google.gson.Gson;
 
 import controller.DuelController;
+import model.card.Card;
 import model.card.CardHolder;
 import model.card.CardState;
+import model.card.CardType;
+import model.card.MonsterType;
 import model.effect.Effect;
 import model.user.Player;
 import model.zone.Zone;
@@ -155,6 +158,10 @@ public class EffectParser {
                 if(command.substring(0, 3).equals("del"))
                 {
                     deleteListFromList(command);
+                }
+                if(command.substring(0, 3).equals("sum"))
+                {
+                    getSumOverField(command);
                 }
                 //calculater            
             }
@@ -443,6 +450,28 @@ public class EffectParser {
             ansId.add(ans.get(i).getId());
         }
         return ansId;
+    }
+    public void getSumOverField(String command)
+    {
+        //sum(List<E>, "field");
+        Matcher matcher = Global.getMatcher(command, "sum\\((.+)\\)");
+        Integer ans = 0;
+        if(matcher.find())
+        {
+            List<String> fields  = splitCorrect(command, ',');
+            List<String> list = new Gson().fromJson(getCommandResult(fields.get(0)), new ArrayList<String>().getClass());
+            String value = getCommand(fields.get(1));
+            for(int i = 0; i < list.size(); i++)
+            {
+                Card card = duelController.getDuel().getCardHolderById(Integer.parseInt(list.get(i))).getCard();
+                if(card.getCardType() == CardType.MONSTER)
+                {
+                    ans += Integer.parseInt(duelController.getDuel().getCardHolderById(Integer.parseInt(list.get(i))).getValue(value));
+                }
+                
+            }
+            command.replace(matcher.group(0), ans.toString(i));
+        }
     }
     public static void main(String[] args) {
         System.out.println(splitCorrect("aa,aa(,aa,a),b,b,()()(,)(,),", ','));

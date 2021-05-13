@@ -13,9 +13,13 @@ public abstract class CardHolder {
     protected static int idCounter = 1;
     protected CardState cardState;
     protected CardType cardType;
+    protected List <Integer> effectManagerId;        
+    protected List <Integer> appliedEffects;    
+    protected abstract void recalculateEffect(); 
     protected HashMap<String, String> cardMap = new HashMap<String, String>();
-
     protected Player owner;
+
+    
     public String getOnwerName()
     {
         return this.owner.getNickname();
@@ -49,9 +53,7 @@ public abstract class CardHolder {
         }
     }
     
-    private List <Integer> effectManagerId;        
-    private List <Integer> appliedEffects;    
-    protected abstract void recalculateEffect();    
+       
     public abstract void makeEmpty();
     /*{
         this.cardState = null;

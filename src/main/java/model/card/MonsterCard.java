@@ -12,10 +12,14 @@ public class MonsterCard extends Card {
     private int defence; 
     @SerializedName("level")
     private int level;
+    @SerializedName("monsterEffectType")
     private MonsterEffectType monsterEffectType;
+    @SerializedName("monsterType")
     private MonsterType monsterType;
     @SerializedName("effects")
     private HashMap<Event, String> effects;
+    @SerializedName("monsterAttribute:")
+    private MonsterAttribute monsterAttribute;
     public int getLevel()
     {
         return level;
@@ -41,9 +45,10 @@ public class MonsterCard extends Card {
         v.monsterEffectType = MonsterEffectType.EFFECT;
         v.monsterType = MonsterType.AQUA;
         v.description = "alireza raft khoneh";
-        v.effects = new HashMap<Event, String>();
-        v.effects.put(Event.ATTACK , " nothing");
+        v.monsterAttribute = MonsterAttribute.DARK;
+        //v.effects = new HashMap<Event, String>();
+        //v.effects.put(Event.ATTACK , " nothing");
         System.out.println( new Gson().toJson(v));
-
+        MonsterCard card = new Gson().fromJson(new Gson().toJson(v), MonsterCard.class);
     }
 }
