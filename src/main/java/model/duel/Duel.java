@@ -25,7 +25,7 @@ public class Duel {
     private int rounds;
     private Phase currentPhase;
     private HashMap<Phase,Phase> nextPhase = new HashMap<Phase,Phase>();
-    private HashMap<Zone,int> zoneCount = new HashMap<Zone, int>();
+    private HashMap<Zone,int> zoneCardCount = new HashMap<Zone, int>();
     public enum Phase{
         DRAW,
         STANDBY,
@@ -45,15 +45,15 @@ public class Duel {
     }
 
     public void pickCard(Zone zone){
-        int count = zoneCount.get(zone);
+        int count = zoneCardCount.get(zone);
         count--;
-        zoneCount.put(zone,count);
+        zoneCardCount.put(zone,count);
     }
 
     public void putCard(Zone zone){
-        int count = zoneCount.get(zone);
+        int count = zoneCardCount.get(zone);
         count--;
-        zoneCount.put(zone,count);
+        zoneCardCount.put(zone,count);
     }
 
     public static EffectManager getEffectManagerById(int id) {
@@ -271,5 +271,12 @@ public class Duel {
     }
     public HashMap<Address, CardHolder> getMap() {
         return map;
+    }
+    public void setMap(Address address,CardHolder cardHolder) {
+        map.put(address,cardHolder);
+    }
+
+    public HashMap<Zone, int> getZoneCardCount() {
+        return zoneCardCount;
     }
 }
