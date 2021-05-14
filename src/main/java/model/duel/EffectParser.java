@@ -418,20 +418,10 @@ public class EffectParser {
             List<String> sets = splitCorrect(matcher.group(1), ',');
             List<Integer> first = new Gson().fromJson(getCommandResult(sets.get(1)), new ArrayList<Integer>().getClass());
             List<Integer> second = new Gson().fromJson(getCommandResult(sets.get(2)), new ArrayList<Integer>().getClass());            
-            for(int i = 0; i < first.size(); i++)
-            {   
-                int flag = 0;
-                for(int j = 0; j < second.size(); j++)
-                {
-                    if(first.get(i) == second.get(j))
-                    {
-                        flag = 1;
-                    }
-                }
-                if(flag == 0)
-                {
-                    ans.add(Integer.toString(first.get(i)));
-                }
+            List<Integer> ans1 = Global.delListFromList(first, second);
+            for(int i = 0; i < ans1.size(); i++)
+            {
+                ans.add(ans1.get(i).toString());
             }
         }
         return ans;

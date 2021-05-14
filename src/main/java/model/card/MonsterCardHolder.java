@@ -8,8 +8,8 @@ import model.user.User;
 
 
 public class MonsterCardHolder extends CardHolder {
-    public MonsterCardHolder(MonsterCard monsterCard, CardState cardState) {
-        super(cardState);                
+    public MonsterCardHolder(Player owner, MonsterCard monsterCard, CardState cardState) {
+        super(owner ,cardState);                
         //do in default
         this.card = monsterCard;
         cardMap.put("attack", ((Integer)monsterCard.getAttack()).toString());

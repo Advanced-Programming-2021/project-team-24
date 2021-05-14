@@ -112,8 +112,12 @@ public class DuelController {
 
                 if (getSelectedAddress().getZone().getName().equals("hand") && !duel.getMap().get(getSelectedAddress()).getCard().isMagic()) {
                     if (duel.getCurrentPhase().equals(Duel.Phase.MAIN1) || duel.getCurrentPhase().equals(Duel.Phase.MAIN2)) {
-                        if (duel.zoneCardCount().get(new Zone("monster", duel.getCurrentPlayer())) < 5) {
-                            
+                        if (duel.zoneCardCount().get(new Zone("monster", duel.getCurrentPlayer())) < 5) {                            
+                            if(duel.getCurrentPlayer().getMap().getBoolMapValue("add_monster_turn"))
+                            {
+                                duel.getMap().put(getSelectedAddress(), ((CardHolder)(new MonsterCardHolder(duel.getCurrentPlayer() ,(MonsterCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.ATTACK_MONSTER))));
+                                duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);                            
+                            }
                             //TODO normalSummon
                             //TODO tributeSummon
                         } else {
@@ -140,7 +144,7 @@ public class DuelController {
                         if (duel.zoneCardCount().get(new Zone("spell", duel.getCurrentPlayer())) < 5) {
                             if(duel.getCurrentPlayer().getMap().getBoolMapValue("add_magic_turn"))
                             {
-                                duel.getMap().put(getSelectedAddress(), ((CardHolder)(new MagicCardHolder((MagicCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.SET_MAGIC));
+                                duel.getMap().put(getSelectedAddress(), ((CardHolder)(new MagicCardHolder(duel.getCurrentPlayer() ,(MagicCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.SET_MAGIC))));
                                 duel.getCurrentPlayer().getMap().setMapValue("add_magic_turn", "true", 1);
                             }
                             else
@@ -157,7 +161,7 @@ public class DuelController {
                             if(!duel.getCurrentPlayer().getMap().getBoolMapValue("add_monster_turn"))
                             {
                                 //TODO                                
-                                duel.getMap().put(getSelectedAddress(), (CardHolder)(new MonsterCardHolder(((MonsterCard)duel.getMap().get(getSelectedAddress()).getCard()), CardState.SET_DEFENCE)));                                    
+                                duel.getMap().put(getSelectedAddress(), (CardHolder)(new MonsterCardHolder(duel.getCurrentPlayer() ,((MonsterCard)duel.getMap().get(getSelectedAddress()).getCard()), CardState.SET_DEFENCE)));                                    
                                 duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
                             }
                             else

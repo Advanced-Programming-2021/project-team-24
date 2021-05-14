@@ -17,7 +17,7 @@ public class Player {
     public Player(User user) {
         this.lifePoint = 8000;
         this.user = user;
-        this.card = new MonsterCardHolder(null, null);
+        this.card = new MonsterCardHolder(this, null, null);
     }
 
 

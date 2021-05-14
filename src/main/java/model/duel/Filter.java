@@ -143,5 +143,10 @@ public class Filter {
         this.ownerName = ownerName;
         //TODO others;
     }    
+    public Filter(String ownerName)
+    {
+        this.ownerName = ownerName;
+    }
+
     
 }

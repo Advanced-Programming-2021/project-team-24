@@ -276,6 +276,7 @@ public class Duel {
             }
             return false;
         } else {
+            //filter
         }
         return true;
 
