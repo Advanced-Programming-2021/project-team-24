@@ -244,7 +244,7 @@ public class DuelController {
         //check requirement event
         
         Effect effect = effectManager.getEffect();
-        EffectParser effectParser = new EffectParser(null, this, this.getDuel().getCardHolderById(idCardHolder).getOwner(), effect, idCardHolder);
+        //EffectParser effectParser = new EffectParser(null, this, this.getDuel().getCardHolderById(idCardHolder).getOwner(), effect, idCardHolder);
         
         
         return true;
