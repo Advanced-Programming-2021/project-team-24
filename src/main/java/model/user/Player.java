@@ -1,21 +1,31 @@
 package model.user;
 
 import model.card.CardHolder;
+import model.card.MonsterCardHolder;
 import model.zone.Address;
 
 import java.util.List;
 
+
 public class Player {
     private User user;
     private int lifePoint;
+    private CardHolder card;
     private Address selectedAddress;
     private List<CardHolder> cardHolders;
-
+    
     public Player(User user) {
         this.lifePoint = 8000;
         this.user = user;
+        this.card = new MonsterCardHolder(null, null);
     }
 
+
+    public CardHolder getMap()
+    {
+        return this.card;
+    }
+    
     public void selectAddress(Address address) {
         this.selectedAddress = address;
     }

@@ -8,12 +8,12 @@ import model.user.User;
 
 
 public class MonsterCardHolder extends CardHolder {
-    public MonsterCardHolder(MonsterCard card, CardState cardState) {
+    public MonsterCardHolder(MonsterCard monsterCard, CardState cardState) {
         super(cardState);                
         //do in default
-        this.card = card;
-        cardMap.put("attack", ((Integer)card.getAttack()).toString());
-        cardMap.put("defence",  ((Integer)card.getDefence()).toString());
+        this.card = monsterCard;
+        cardMap.put("attack", ((Integer)monsterCard.getAttack()).toString());
+        cardMap.put("defence",  ((Integer)monsterCard.getDefence()).toString());
         //TODO Auto-generated constructor stub
     }
     private MonsterCard card;    

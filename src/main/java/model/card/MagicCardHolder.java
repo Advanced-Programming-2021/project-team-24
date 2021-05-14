@@ -6,8 +6,7 @@ public class MagicCardHolder extends CardHolder {
         super(cardState);
         this.card = card;
         //TODO Auto-generated constructor stub
-    }
-
+    }    
     protected void recalculateEffect() {
         // TODO Auto-generated method stub
         
@@ -30,8 +29,7 @@ public class MagicCardHolder extends CardHolder {
     }
 
     public void flip() {
-        // TODO Auto-generated method stub
-        
+        this.cardState = CardState.VISIBLE_MAGIC;        
     }
     
 }

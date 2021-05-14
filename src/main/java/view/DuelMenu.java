@@ -25,7 +25,7 @@ public class DuelMenu {
 
     private static final String REGEX_ENTER_MENU = "menu enter (\\w+)";
 
-    
+
     public void run() {
         while (true) {
             String command = Global.nextLine();
@@ -85,7 +85,7 @@ public class DuelMenu {
 
                 matcher = Global.getMatcher(command, "attack (?<place>[0-4])");
                 if (matcher.find()) {
-                    duelController.attack();
+                    duelController.directAttack();
                     continue;
                 }
             }

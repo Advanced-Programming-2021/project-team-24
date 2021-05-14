@@ -11,7 +11,9 @@ import model.effect.Effect;
 import model.effect.EffectManager;
 import model.card.CardHolder;
 import model.card.CardState;
+import model.card.MagicCard;
 import model.card.MagicCardHolder;
+import model.card.MonsterCard;
 import model.card.MonsterCardHolder;
 import model.zone.Address;
 import model.zone.Zone;
@@ -90,7 +92,8 @@ public class DuelController {
                 if (cardHolder.getCardState() == CardState.SET_MAGIC) {
                     //TODO check requirement
                     MagicCardHolder magicCard = (MagicCardHolder) cardHolder;
-
+                    
+                    
                 } else if (cardHolder.getCardState() == CardState.HAND) {
                     //TODO requirement
                 }
@@ -106,21 +109,22 @@ public class DuelController {
     public Message summon() {
         if (getSelectedAddress() != null) {
             //TODO check normal summon allowed
-            if (getSelectedAddress().getZone().getName().equals("hand") && !duel.getMap().get(getSelectedAddress()).getCard().isMagic()) {
-                if (duel.getCurrentPhase().equals(Duel.Phase.MAIN1) || duel.getCurrentPhase().equals(Duel.Phase.MAIN2)) {
-                    if (duel.zoneCardCount().get(new Zone("monster", duel.getCurrentPlayer())) < 5) {
-                        //TODO check already summoned/set
-                        //TODO normalSummon
-                        //TODO tributeSummon
+
+                if (getSelectedAddress().getZone().getName().equals("hand") && !duel.getMap().get(getSelectedAddress()).getCard().isMagic()) {
+                    if (duel.getCurrentPhase().equals(Duel.Phase.MAIN1) || duel.getCurrentPhase().equals(Duel.Phase.MAIN2)) {
+                        if (duel.zoneCardCount().get(new Zone("monster", duel.getCurrentPlayer())) < 5) {
+                            
+                            //TODO normalSummon
+                            //TODO tributeSummon
+                        } else {
+                            return new Message(TypeMessage.ERROR, "monster card zone is full");
+                        }
                     } else {
-                        return new Message(TypeMessage.ERROR, "monster card zone is full");
+                        return new Message(TypeMessage.ERROR, "action not allowed in this phase");
                     }
                 } else {
-                    return new Message(TypeMessage.ERROR, "action not allowed in this phase");
+                    return new Message(TypeMessage.ERROR, "you can’t summon this card");
                 }
-            } else {
-                return new Message(TypeMessage.ERROR, "you can’t summon this card");
-            }
         } else {
             return new Message(TypeMessage.ERROR, "no card is selected yet");
         }
@@ -133,7 +137,16 @@ public class DuelController {
             if (getSelectedAddress().getZone().getName().equals("hand")) {
                 if (duel.getCurrentPhase().equals(Duel.Phase.MAIN1) || duel.getCurrentPhase().equals(Duel.Phase.MAIN2)) {
                     if (duel.getMap().get(getSelectedAddress()).getCard().isMagic()) {
-                        if (duel.zoneCardCount().get(new Zone("monster", duel.getCurrentPlayer())) < 5) {
+                        if (duel.zoneCardCount().get(new Zone("spell", duel.getCurrentPlayer())) < 5) {
+                            if(duel.getCurrentPlayer().getMap().getBoolMapValue("add_magic_turn"))
+                            {
+                                duel.getMap().put(getSelectedAddress(), ((CardHolder)(new MagicCardHolder((MagicCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.SET_MAGIC));
+                                duel.getCurrentPlayer().getMap().setMapValue("add_magic_turn", "true", 1);
+                            }
+                            else
+                            {
+                                return new Message(TypeMessage.ERROR, "You have already set magic card during the turn");
+                            }
                             //TODO check already summoned/set
                             //TODO setSpell/Trap
                         } else {
@@ -141,7 +154,17 @@ public class DuelController {
                         }
                     } else {
                         if (duel.zoneCardCount().get(new Zone("monster", duel.getCurrentPlayer())) < 5) {
-                            //TODO check already summoned/set
+                            if(!duel.getCurrentPlayer().getMap().getBoolMapValue("add_monster_turn"))
+                            {
+                                //TODO                                
+                                duel.getMap().put(getSelectedAddress(), (CardHolder)(new MonsterCardHolder(((MonsterCard)duel.getMap().get(getSelectedAddress()).getCard()), CardState.SET_DEFENCE)));                                    
+                                duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
+                            }
+                            else
+                            {
+                                return new Message(TypeMessage.ERROR, "You have already summoned the monster card during the turn");
+                            }
+                            
                             //TODO setMonster
                         } else {
                             return new Message(TypeMessage.ERROR, "monster card zone is full");
