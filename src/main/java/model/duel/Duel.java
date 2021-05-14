@@ -3,15 +3,11 @@ package model.duel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 import model.card.Card;
 import model.card.CardHolder;
 import model.card.CardState;
-import model.duel.Filter;
-import model.effect.Effect;
 import model.effect.EffectManager;
 import model.user.Player;
 import model.user.User;
@@ -27,14 +23,49 @@ public class Duel {
     private HashMap<Address, CardHolder> map;
     private List<Zone> zones;
     private int rounds;
+    private Phase currentPhase;
+    private HashMap<Phase,Phase> nextPhase = new HashMap<Phase,Phase>();
+    private HashMap<Zone, Integer> zoneCardCount = new HashMap<Zone, Integer>();
+    public enum Phase{
+        DRAW,
+        STANDBY,
+        MAIN1,
+        BATTLE,
+        MAIN2,
+        END
+    }
+
+    public void nextPhase(){
+        currentPhase = nextPhase.get(currentPhase);
+    }
+
+    public Phase getCurrentPhase() {
+        return currentPhase;
+    }
+
+    public boolean isPhase(Phase phase){
+        if(currentPhase.equals(phase)) return true;
+        return false;
+    }
+
+    public void pickCard(Zone zone){
+        int count = zoneCardCount.get(zone);
+        count--;
+        zoneCardCount.put(zone,count);
+    }
+
+    public void putCard(Zone zone){
+        int count = zoneCardCount.get(zone);
+        count--;
+        zoneCardCount.put(zone,count);
+    }
+
     public static EffectManager getEffectManagerById(int id) {
         for (int i = 0; i < effectManagerList.size(); i++) {
             if (effectManagerList.get(i).getId() == id) return effectManagerList.get(i);
         }
         return null;
     }
-    
-    
 
 
     public Duel(User user, User opponent , String rounds) {
@@ -117,10 +148,34 @@ public class Duel {
         }
         return null;
     }
-    public void removeCardHolder(int cardHolderId)
+
+    public Address getCardHolderAddressById(int cardHolderId)
     {
-        //TODO Hesam
-        // maybe just make it empty or totally remove in hand or something else
+        for (Zone zone : zones) {
+            List<CardHolder> v = getZone(zone);
+            for(int i = 0; i < v.size(); i++)
+                if(v.get(i).getId() == cardHolderId)
+                    return new Address(zone,i);
+        }
+        return null;
+    }
+
+    public void removeCardHolderByAddress(Address address){
+        Address newAddress = new Address(address), oldAddress = new Address(address);
+        String zoneName = address.getZone().getName();
+        //shifting(hand,deck,graveyard)
+        if(zoneName.equals("hand")||zoneName.equals("deck")||zoneName.equals("graveyard")){
+            newAddress.plusplus();
+            map.put(newAddress,map.get(address));
+            address.plusplus();
+        }
+        map.put(oldAddress,null);
+    }
+
+    public void removeCardHolderById(int cardHolderId)
+    {
+        Address address = getCardHolderAddressById(cardHolderId);
+        removeCardHolderByAddress(address);
     }
     public void addCard(Card card, Zone zone, CardState cardState)
     {
@@ -133,7 +188,7 @@ public class Duel {
         if(getCardHolderById(cardHolderId)  != null)
         {
             addCard(getCardHolderById(cardHolderId).getCard() , targetZone, cardState);
-            removeCardHolder(cardHolderId);            
+            removeCardHolderById(cardHolderId);
         }        
     }
 
@@ -143,14 +198,14 @@ public class Duel {
         for (Integer cardHolderId : cardHolders) {
             if(getCardHolderById(cardHolderId)  != null)
             {
-                if(targetZone.getZoneName().equals("own"))
+                if(targetZone.getName().equals("own"))
                 {
 
                 }
                 else
                 {                
                     addCard(getCardHolderById(cardHolderId).getCard() , targetZone, cardState);
-                    removeCardHolder(cardHolderId);            
+                    removeCardHolderById(cardHolderId);            
                 }
             }  
         }
@@ -227,5 +282,12 @@ public class Duel {
     }
     public HashMap<Address, CardHolder> getMap() {
         return map;
+    }
+    public void setMap(Address address,CardHolder cardHolder) {
+        map.put(address,cardHolder);
+    }
+
+    public HashMap<Zone, Integer> zoneCardCount() {
+        return zoneCardCount;
     }
 }

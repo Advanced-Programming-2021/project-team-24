@@ -3,6 +3,7 @@ package model.zone;
 import model.user.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Zone {
@@ -15,7 +16,7 @@ public class Zone {
         this.player = player;
     }
 
-    public String getZoneName() {
+    public String getName() {
         return zone;
     }
 
