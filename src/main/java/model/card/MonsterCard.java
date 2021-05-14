@@ -3,6 +3,9 @@ package model.card;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class MonsterCard extends Card {
@@ -32,7 +35,7 @@ public class MonsterCard extends Card {
     {
         return this.defence;
     }        
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         MonsterCard v = new MonsterCard();
         v.attack = 1000;
         v.defence = 1000;
@@ -49,5 +52,9 @@ public class MonsterCard extends Card {
         // v.effects.put(Event.ATTACK , " nothing");
         System.out.println( new Gson().toJson(v));
         MonsterCard card = new Gson().fromJson(new Gson().toJson(v), MonsterCard.class);
+        File file = new File("Cards/MonsterCards/" + v.name + ".json");
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write(new Gson().toJson(v));
+        fileWriter.close();
     }
 }
