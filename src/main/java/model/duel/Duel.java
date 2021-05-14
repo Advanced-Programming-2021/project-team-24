@@ -143,18 +143,25 @@ public class Duel {
         for (Integer cardHolderId : cardHolders) {
             if(getCardHolderById(cardHolderId)  != null)
             {
-                addCard(getCardHolderById(cardHolderId).getCard() , targetZone, cardState);
-                removeCardHolder(cardHolderId);            
+                if(targetZone.getZoneName().equals("own"))
+                {
+
+                }
+                else
+                {                
+                    addCard(getCardHolderById(cardHolderId).getCard() , targetZone, cardState);
+                    removeCardHolder(cardHolderId);            
+                }
             }  
         }
     }
 
-    public void setterMap(List<Integer> cardHolders, String key, String value)
+    public void setterMap(List<Integer> cardHolders, String key, String value, Integer time)
     {
         for (Integer integer : cardHolders) {
             if(getCardHolderById(integer) != null)
             {
-                getCardHolderById(integer).setMapValue(key, value);
+                getCardHolderById(integer).setMapValue(key, value, time);
             }
         }
     }
