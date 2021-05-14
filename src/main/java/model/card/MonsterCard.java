@@ -1,9 +1,13 @@
 package model.card;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+
+import model.effect.Effect;
+import model.effect.EffectManager;
 
 public class MonsterCard extends Card {
     @SerializedName("attack")
@@ -16,10 +20,14 @@ public class MonsterCard extends Card {
     private MonsterEffectType monsterEffectType;
     @SerializedName("monsterType")
     private MonsterType monsterType;
-    @SerializedName("effects")
-    private HashMap<Event, String> effects;
     @SerializedName("monsterAttribute:")
     private MonsterAttribute monsterAttribute;
+    @SerializedName("effects")    
+    private HashMap<Event, List<Effect>> effects = new HashMap<Event, List<Effect>>();
+    public HashMap<Event, List<Effect>> getEffects()
+    {
+        return this.effects;
+    }
     public int getLevel()
     {
         return level;

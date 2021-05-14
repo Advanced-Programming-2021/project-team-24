@@ -1,5 +1,6 @@
 package model.card;
 
+
 import com.google.gson.annotations.SerializedName;
 
 public enum CardState
@@ -16,6 +17,8 @@ public enum CardState
   SPECIAL_SUMMON("SPECIAL_SUMMON"),
   @SerializedName("ACTIVE_MAGIC")
   ACTIVE_MAGIC("ACTIVE_MAGIC"),
+  @SerializedName("CHAIN_MAGIC")
+  CHAIN_MAGIC("CHAIN_MAGIC"),
   @SerializedName("HAND")
   HAND("HAND"),
   @SerializedName("VISIBLE_MAGIC")

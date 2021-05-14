@@ -1,8 +1,9 @@
 package model.card;
 
 import java.util.HashMap;
+import java.util.List;
 
-
+import model.effect.EffectManager;
 import model.user.Player;
 import model.user.User;
 
@@ -17,13 +18,12 @@ public class MonsterCardHolder extends CardHolder {
         //TODO Auto-generated constructor stub
     }
     private MonsterCard card;    
-    private HashMap<Event, String> effects;        
-    public String getEventEffect(Event event)
+    private HashMap<Event, List<EffectManager>> effects = new HashMap<Event, List<EffectManager>>();     
+    public List<EffectManager> getEventEffect(Event event)
     {
         return effects.get(event);
     }
-    private int age;
-    
+    private int age;    
     public int getAttack()
     {
         return Integer.parseInt(getValue("attack"));
@@ -36,9 +36,10 @@ public class MonsterCardHolder extends CardHolder {
     {
         this.cardState = CardState.ATTACK_MONSTER;
     }
-    public void endPhase()
+    public void endTurn()
     {
         this.age ++;
+        //update cardMap
     }
 
     

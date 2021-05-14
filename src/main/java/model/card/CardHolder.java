@@ -153,6 +153,7 @@ public abstract class CardHolder {
     {
         return id;
     }
+    
     public void setCardMap(HashMap<String, String> cardMap){
         this.cardMap = cardMap;
     }
