@@ -8,9 +8,6 @@ public enum Zones {
     MONSTER("monster"),
     MAGIC("magic"),
     FIELD("field");
-    
-
-
 
 
     public final String label;
@@ -31,7 +28,7 @@ public enum Zones {
         return null;
     }
     public static void main(String[] args) {
-        if(Zones.GRAVEYARD.label == "grveyard")
+        if(Zones.GRAVEYARD.label.equals("grveyard"))
         {
             System.out.println("yse");
         }
