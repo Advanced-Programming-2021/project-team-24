@@ -17,6 +17,7 @@ public abstract class CardHolder {
     protected List <Integer> appliedEffects;    
     protected abstract void recalculateEffect(); 
     protected HashMap<String, String> cardMap = new HashMap<String, String>();
+    protected HashMap<String, Integer> ageEffects = new HashMap<String, Integer>();
     protected Player owner;
 
     
@@ -44,7 +45,7 @@ public abstract class CardHolder {
     public static void main(String[] args) {
         
     }
-    public void endPhase()
+    public void endTurn()
     {
         List<String> v = (new ArrayList<String>());
         for(int i = 0; i < v.size(); i++)
@@ -61,9 +62,13 @@ public abstract class CardHolder {
         this.effectManagerId = new ArrayList<Integer>();
         this.appliedEffects = new ArrayList<Integer>();
     }*/
-    public void setMapValue(String key, String value)
+    public void setMapValue(String key, String value, Integer time)
     {
         cardMap.put(key, value);
+        if(ageEffects.get(key) != null)
+            ageEffects.put(key ,Math.max(ageEffects.get(key) , time));
+        else
+            ageEffects.put(key, time);
     }
     protected Boolean convertStringToBool(String string)
     {

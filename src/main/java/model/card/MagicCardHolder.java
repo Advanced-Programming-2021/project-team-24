@@ -14,7 +14,7 @@ public class MagicCardHolder extends CardHolder {
     }
 
     @Override
-    public void endPhase() {
+    public void endTurn() {
         // TODO Auto-generated method stub
         
     }
