@@ -1,10 +1,5 @@
 package model.duel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-
 import model.card.Card;
 import model.card.CardHolder;
 import model.card.CardState;
@@ -13,6 +8,10 @@ import model.user.Player;
 import model.user.User;
 import model.zone.Address;
 import model.zone.Zone;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Duel {
     Player user;
@@ -25,7 +24,7 @@ public class Duel {
     private int rounds;
     private Phase currentPhase;
     private HashMap<Phase,Phase> nextPhase = new HashMap<Phase,Phase>();
-    private HashMap<Zone,int> zoneCardCount = new HashMap<Zone, int>();
+    private HashMap<Zone,Integer> zoneCardCount = new HashMap<Zone, Integer>();
     public enum Phase{
         DRAW,
         STANDBY,
@@ -280,7 +279,7 @@ public class Duel {
         map.put(address,cardHolder);
     }
 
-    public HashMap<Zone, int> zoneCardCount() {
+    public HashMap<Zone, Integer> zoneCardCount() {
         return zoneCardCount;
     }
 }

@@ -6,7 +6,9 @@ public enum MonsterEffectType {
     @SerializedName("Normal")
     NORMAL("Normal"),
     @SerializedName("Effect")
-    EFFECT("Effect");
+    EFFECT("Effect"),
+    @SerializedName("Ritual")
+    RITUAL("Ritual");
     private String label;
     private MonsterEffectType(String label)
     {

@@ -1,18 +1,16 @@
 package view;
 
-import java.util.List;
-import java.util.Random;
-import java.util.regex.Matcher;
-
 import controller.DuelController;
 import controller.Message;
-import model.card.Card;
-import model.duel.Duel;
 import model.card.CardHolder;
+import model.duel.Duel;
 import model.user.Player;
 import model.user.User;
 import model.zone.Address;
 import model.zone.Zone;
+
+import java.util.List;
+import java.util.regex.Matcher;
 
 public class DuelMenu {
 
@@ -83,7 +81,7 @@ public class DuelMenu {
 
                 matcher = Global.getMatcher(command, "attack (?<place>[0-4])");
                 if (matcher.find()) {
-                    duelController.attack();
+                    //duelController.attack();
                     continue;
                 }
             }

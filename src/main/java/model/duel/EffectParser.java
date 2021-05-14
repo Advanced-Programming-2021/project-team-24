@@ -1,23 +1,21 @@
 package model.duel;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.google.gson.Gson;
-
 import controller.DuelController;
 import model.card.Card;
 import model.card.CardHolder;
 import model.card.CardState;
 import model.card.CardType;
-import model.card.MonsterType;
 import model.effect.Effect;
 import model.user.Player;
 import model.zone.Zone;
 import view.DuelMenu;
 import view.Global;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EffectParser {    
     DuelController duelController;
@@ -470,7 +468,7 @@ public class EffectParser {
                 }
                 
             }
-            command.replace(matcher.group(0), ans.toString(i));
+            //command.replace(matcher.group(0), ans.toString(i));
         }
     }
     public static void main(String[] args) {
@@ -526,7 +524,7 @@ public class EffectParser {
 
     public int calculater(String command)
     {
-        String[] operators = {"*", "+", "-", "/"};
+        String[] operators = {"\\*", "\\+", "-", "/"};
         String operator = null;
         int returnNumber = 0;
         for (int i = 0; i < 4; i++) {

@@ -1,9 +1,9 @@
 package model.card;
 
-import java.util.HashMap;
-
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
 
 public class MonsterCard extends Card {
     @SerializedName("attack")
@@ -34,20 +34,19 @@ public class MonsterCard extends Card {
     }        
     public static void main(String[] args) {
         MonsterCard v = new MonsterCard();
-        v.attack = 100;
-        v.defence = 100;
-        v.level = 10;
-        v.price = 10;
+        v.attack = 1000;
+        v.defence = 1000;
+        v.level = 4;
+        v.price = 2100;
         v.limitType = LimitType.LIMITED;
         v.cardType = CardType.MONSTER;
-        v.name = "alireza";
-        v.description = " alireza";        
+        v.name = "Command Knight";
+        v.description = "All Warrior-Type monsters you control gain 400 ATK. If you control another monster, monsters your opponent controls cannot target this card for an attack.";
         v.monsterEffectType = MonsterEffectType.EFFECT;
-        v.monsterType = MonsterType.AQUA;
-        v.description = "alireza raft khoneh";
-        v.monsterAttribute = MonsterAttribute.DARK;
-        //v.effects = new HashMap<Event, String>();
-        //v.effects.put(Event.ATTACK , " nothing");
+        v.monsterType = MonsterType.WARRIOR;
+        v.monsterAttribute = MonsterAttribute.FIRE;
+        // v.effects = new HashMap<Event, String>();
+        // v.effects.put(Event.ATTACK , " nothing");
         System.out.println( new Gson().toJson(v));
         MonsterCard card = new Gson().fromJson(new Gson().toJson(v), MonsterCard.class);
     }
