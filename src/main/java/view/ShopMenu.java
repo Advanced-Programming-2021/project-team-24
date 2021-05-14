@@ -4,7 +4,7 @@ import model.user.User;
 
 import java.util.regex.Matcher;
 
-public class ShopMenu extends MainMenu {
+public class ShopMenu extends Menu {
     private controller.ShopMenu shopMenu = new controller.ShopMenu(user);
     private controller.MainMenu mainMenu = new controller.MainMenu(user);
     public ShopMenu(User user){

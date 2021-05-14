@@ -2,7 +2,7 @@ package view;
 
 import model.user.User;
 
-public class ScoreboardMenu extends MainMenu {
+public class ScoreboardMenu extends Menu {
     private controller.ScoreboardMenu scoreboardMenu = new controller.ScoreboardMenu(user);
     private controller.MainMenu mainMenu = new controller.MainMenu(user);
     public ScoreboardMenu(User user){

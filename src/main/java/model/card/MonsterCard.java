@@ -3,9 +3,7 @@ package model.card;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
 public class MonsterCard extends Card {
@@ -34,27 +32,37 @@ public class MonsterCard extends Card {
     public int getDefence()
     {
         return this.defence;
-    }        
+    }
+    public static String toEnumsFormatString(String string){
+        return string.toUpperCase().replace('-', '_').replace(' ', '_');
+    }
     public static void main(String[] args) throws IOException {
         MonsterCard v = new MonsterCard();
-        v.attack = 1000;
-        v.defence = 1000;
-        v.level = 4;
-        v.price = 2100;
-        v.limitType = LimitType.LIMITED;
-        v.cardType = CardType.MONSTER;
-        v.name = "Command Knight";
-        v.description = "All Warrior-Type monsters you control gain 400 ATK. If you control another monster, monsters your opponent controls cannot target this card for an attack.";
-        v.monsterEffectType = MonsterEffectType.EFFECT;
-        v.monsterType = MonsterType.WARRIOR;
-        v.monsterAttribute = MonsterAttribute.FIRE;
-        // v.effects = new HashMap<Event, String>();
-        // v.effects.put(Event.ATTACK , " nothing");
-        System.out.println( new Gson().toJson(v));
-        MonsterCard card = new Gson().fromJson(new Gson().toJson(v), MonsterCard.class);
-        File file = new File("Cards/MonsterCards/" + v.name + ".json");
-        FileWriter fileWriter = new FileWriter(file);
-        fileWriter.write(new Gson().toJson(v));
-        fileWriter.close();
+        String pathToCsv = "Monster.csv";
+        BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
+        String row;
+        csvReader.readLine();
+        while ((row = csvReader.readLine()) != null) {
+            String[] data = row.split(",(?! )");
+            v.name = data[0].replace("\"", "");
+            v.level = Integer.parseInt(data[1]);
+            v.monsterAttribute = MonsterAttribute.valueOf(data[2]);
+            v.monsterType = MonsterType.valueOf(toEnumsFormatString(data[3]));
+            v.monsterEffectType = MonsterEffectType.valueOf(toEnumsFormatString(data[4]));
+            v.attack = Integer.parseInt(data[5]);
+            v.defence = Integer.parseInt(data[6]);
+            v.description = data[7];
+            v.price = Integer.parseInt(data[8]);
+            v.limitType = LimitType.LIMITED;
+            v.cardType = CardType.MONSTER;
+            // v.effects = new HashMap<Event, String>();
+            // v.effects.put(Event.ATTACK , " nothing");
+            File file = new File("Cards/MonsterCards/" + v.name + ".json");
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(new Gson().toJson(v));
+            fileWriter.close();
+            MonsterCard card = new Gson().fromJson(new Gson().toJson(v), MonsterCard.class);
+        }
+        csvReader.close();
     }
 }

@@ -1,10 +1,10 @@
 package view;
 
-import java.util.regex.Matcher;
-
 import model.user.User;
 
-public class ProfileMenu extends MainMenu {
+import java.util.regex.Matcher;
+
+public class ProfileMenu extends Menu {
     public ProfileMenu(User user){
         super(user);
     }
