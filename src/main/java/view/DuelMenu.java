@@ -41,7 +41,7 @@ public class DuelMenu {
             } else if (command.equals("set")) {
                 duelController.set();
             } else if (command.equals("attack direct")) {
-                //TODO
+                duelController.directAttack();
             } else if (command.equals("activate effect")) {
                 //TODO activate effect
             } else if (command.equals("show graveyard")) {
@@ -77,13 +77,13 @@ public class DuelMenu {
 
                 matcher = Global.getMatcher(command, "set --position (?<position>attack|defense)");
                 if (matcher.find()) {
-                    //TODO change position
+                    duelController.changePosition();
                     continue;
                 }
 
                 matcher = Global.getMatcher(command, "attack (?<place>[0-4])");
                 if (matcher.find()) {
-                    //TODO attack
+                    duelController.attack();
                     continue;
                 }
             }
