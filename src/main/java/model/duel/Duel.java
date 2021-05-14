@@ -39,6 +39,10 @@ public class Duel {
         currentPhase = nextPhase.get(currentPhase);
     }
 
+    public Phase getCurrentPhase() {
+        return currentPhase;
+    }
+
     public boolean isPhase(Phase phase){
         if(currentPhase.equals(phase)) return true;
         return false;
@@ -276,7 +280,7 @@ public class Duel {
         map.put(address,cardHolder);
     }
 
-    public HashMap<Zone, int> getZoneCardCount() {
+    public HashMap<Zone, int> zoneCardCount() {
         return zoneCardCount;
     }
 }

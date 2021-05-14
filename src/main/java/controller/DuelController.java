@@ -24,11 +24,12 @@ public class DuelController {
         this.duel = duel;
     }
 
-    private void runPhase() {
+    private Message runPhase() {
         duel.nextPhase();
         if (duel.isPhase(Duel.Phase.DRAW)) {
             draw();
         }
+        return new Message(TypeMessage.INFO, duel.getCurrentPhase().toString());
     }
 
     private void draw() {
@@ -38,7 +39,7 @@ public class DuelController {
     }
 
     private void changeZoneOfLastCard(Zone origin, Zone destination) {
-        duel.setMap(new Address(destination, duel.getZoneCardCount().get(destination)), duel.getMap().get(new Address(origin, duel.getZoneCardCount().get(origin))));
+        duel.setMap(new Address(destination, duel.zoneCardCount().get(destination)), duel.getMap().get(new Address(origin, duel.zoneCardCount().get(origin))));
         duel.pickCard(origin);
         duel.putCard(destination);
     }
@@ -103,7 +104,59 @@ public class DuelController {
     }
 
     public Message summon() {
+        if (getSelectedAddress() != null) {
+            //TODO check normal summon allowed
+            if (getSelectedAddress().getZone().getName().equals("hand") && !duel.getMap().get(getSelectedAddress()).getCard().isMagic()) {
+                if (duel.getCurrentPhase().equals(Duel.Phase.MAIN1) || duel.getCurrentPhase().equals(Duel.Phase.MAIN2)) {
+                    if (duel.zoneCardCount().get(new Zone("monster", duel.getCurrentPlayer())) < 5) {
+                        //TODO check already summoned/set
+                        //TODO normalSummon
+                        //TODO tributeSummon
+                    } else {
+                        return new Message(TypeMessage.ERROR, "monster card zone is full");
+                    }
+                } else {
+                    return new Message(TypeMessage.ERROR, "action not allowed in this phase");
+                }
+            } else {
+                return new Message(TypeMessage.ERROR, "you can’t summon this card");
+            }
+        } else {
+            return new Message(TypeMessage.ERROR, "no card is selected yet");
+        }
+        return null;
+    }
 
+    public Message set() {
+        if (getSelectedAddress() != null) {
+            //TODO check normal summon allowed
+            if (getSelectedAddress().getZone().getName().equals("hand")) {
+                if (duel.getCurrentPhase().equals(Duel.Phase.MAIN1) || duel.getCurrentPhase().equals(Duel.Phase.MAIN2)) {
+                    if(duel.getMap().get(getSelectedAddress()).getCard().isMagic()){
+                        if (duel.zoneCardCount().get(new Zone("monster", duel.getCurrentPlayer())) < 5) {
+                            //TODO check already summoned/set
+                            //TODO setSpell/Trap
+                        } else {
+                            return new Message(TypeMessage.ERROR, "spell card zone is full");
+                        }
+                    }
+                    else{
+                        if (duel.zoneCardCount().get(new Zone("monster", duel.getCurrentPlayer())) < 5) {
+                            //TODO check already summoned/set
+                            //TODO setMonster
+                        } else {
+                            return new Message(TypeMessage.ERROR, "monster card zone is full");
+                        }
+                    }
+                } else {
+                    return new Message(TypeMessage.ERROR, "action not allowed in this phase");
+                }
+            } else {
+                return new Message(TypeMessage.ERROR, "you can’t set this card");
+            }
+        } else {
+            return new Message(TypeMessage.ERROR, "no card is selected yet");
+        }
         return null;
     }
 

@@ -39,7 +39,7 @@ public class DuelMenu {
             } else if (command.equals("flip-summon")) {
                 duelController.flipSummon();
             } else if (command.equals("set")) {
-                //TODO set
+                duelController.set();
             } else if (command.equals("attack direct")) {
                 //TODO
             } else if (command.equals("activate effect")) {
