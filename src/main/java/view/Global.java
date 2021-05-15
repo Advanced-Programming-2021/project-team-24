@@ -2,6 +2,8 @@ package view;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -23,6 +25,26 @@ public class Global {
         return Pattern.compile(regex).matcher(content);
     }
     public static Random random = new Random();
+    public static List<Integer> delListFromList(List<Integer> first, List<Integer> second)
+    {
+        List<Integer> ans = new ArrayList<Integer>();
+        for(int i = 0; i < first.size(); i++)
+            {   
+                int flag = 0;
+                for(int j = 0; j < second.size(); j++)
+                {
+                    if(first.get(i) == second.get(j))
+                    {
+                        flag = 1;
+                    }
+                }
+                if(flag == 0)
+                {
+                    ans.add(first.get(i));
+                }
+            }
+        return ans;
+    }
     public static void main(String[] args) {
     
     }

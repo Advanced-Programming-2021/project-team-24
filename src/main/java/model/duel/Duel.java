@@ -24,7 +24,7 @@ public class Duel {
     private int rounds;
     private Phase currentPhase;
     private HashMap<Phase,Phase> nextPhase = new HashMap<Phase,Phase>();
-    private HashMap<Zone,Integer> zoneCardCount = new HashMap<Zone, Integer>();
+    private HashMap<Zone, Integer> zoneCardCount = new HashMap<Zone, Integer>();
     public enum Phase{
         DRAW,
         STANDBY,
@@ -198,18 +198,25 @@ public class Duel {
         for (Integer cardHolderId : cardHolders) {
             if(getCardHolderById(cardHolderId)  != null)
             {
-                addCard(getCardHolderById(cardHolderId).getCard() , targetZone, cardState);
-                removeCardHolderById(cardHolderId);
+                if(targetZone.getName().equals("own"))
+                {
+
+                }
+                else
+                {                
+                    addCard(getCardHolderById(cardHolderId).getCard() , targetZone, cardState);
+                    removeCardHolderById(cardHolderId);            
+                }
             }  
         }
     }
 
-    public void setterMap(List<Integer> cardHolders, String key, String value)
+    public void setterMap(List<Integer> cardHolders, String key, String value, Integer time)
     {
         for (Integer integer : cardHolders) {
             if(getCardHolderById(integer) != null)
             {
-                getCardHolderById(integer).setMapValue(key, value);
+                getCardHolderById(integer).setMapValue(key, value, time);
             }
         }
     }
@@ -269,6 +276,7 @@ public class Duel {
             }
             return false;
         } else {
+            //filter
         }
         return true;
 

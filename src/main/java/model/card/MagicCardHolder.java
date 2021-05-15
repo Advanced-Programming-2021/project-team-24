@@ -1,20 +1,28 @@
 package model.card;
 
+import model.effect.EffectManager;
+import model.user.Player;
+
 public class MagicCardHolder extends CardHolder {
     private MagicCard card;
-    public MagicCardHolder(MagicCard card, CardState cardState) {
-        super(cardState);
+    private EffectManager effectManager;
+    public MagicCardHolder(Player owner, MagicCard card, CardState cardState) {
+        super(owner ,cardState);
         this.card = card;
+        this.effectManager = new EffectManager(null, owner);
         //TODO Auto-generated constructor stub
+    }    
+    public EffectManager getEffectManager()
+    {
+        return this.effectManager;
     }
-
     protected void recalculateEffect() {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void endPhase() {
+    public void endTurn() {
         // TODO Auto-generated method stub
         
     }
@@ -30,8 +38,7 @@ public class MagicCardHolder extends CardHolder {
     }
 
     public void flip() {
-        // TODO Auto-generated method stub
-        
+        this.cardState = CardState.VISIBLE_MAGIC;        
     }
     
 }
