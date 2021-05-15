@@ -65,9 +65,4 @@ public class MonsterCardHolder extends CardHolder {
     public Card getCard() {        
         return this.card;
     }
-    @Override
-    public void makeEmpty() {
-        // TODO Auto-generated method stub
-        
-    }
 }

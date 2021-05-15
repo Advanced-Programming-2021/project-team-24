@@ -1,6 +1,7 @@
 package model.effect;
 
 import controller.Message;
+import model.card.Event;
 
 import java.util.List;
 
@@ -80,9 +81,18 @@ public class Effect {
     private String effect;
     private Boolean askForActivation;
     private String name;
-    private String askAbleMessage;
-    //TODO private List<String> requiredEvents;
+    private String reverse;
+    private String askAbleMessage;    
+    private List<Event> requiredEvents;
 
+    public List<Event> getRequirEvents()
+    {
+        return this.requiredEvents;
+    }
+    public String getReverseEffect()
+    {
+        return this.reverse;
+    }
     public String getRequirementCommandString()
     {
         return this.requirement;

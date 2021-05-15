@@ -49,7 +49,7 @@ public class MonsterCard extends Card {
         return string.toUpperCase().replace('-', '_').replace(' ', '_');
     }
     public static void main(String[] args) throws IOException {
-        MonsterCard v = new MonsterCard();
+        /*MonsterCard v = new MonsterCard();
         String pathToCsv = "Monster.csv";
         BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
         String row;
@@ -75,6 +75,6 @@ public class MonsterCard extends Card {
             fileWriter.close();
             MonsterCard card = new Gson().fromJson(new Gson().toJson(v), MonsterCard.class);
         }
-        csvReader.close();
+        csvReader.close();*/
     }
 }

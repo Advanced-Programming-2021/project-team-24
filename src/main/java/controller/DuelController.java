@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.lang.model.util.ElementScanner14;
@@ -13,6 +14,7 @@ import model.effect.Effect;
 import model.effect.EffectManager;
 import model.card.CardHolder;
 import model.card.CardState;
+import model.card.Event;
 import model.card.MagicCard;
 import model.card.MagicCardHolder;
 import model.card.MonsterCard;
@@ -23,7 +25,21 @@ import model.zone.Zones;
 
 public class DuelController {
     Duel duel;
+    public HashMap<Event, Integer> duelEvents;
 
+
+    public void resetDuelEvents()
+    {
+        duelEvents = new HashMap<Event, Integer>();
+    }
+    public HashMap<Event, Integer> getDuelEvents()
+    {
+        return this.duelEvents;
+    }
+    public void setEvent(Event event, Integer idCardHolder)
+    {
+        this.duelEvents.put(event, idCardHolder);
+    }
     public DuelController(Duel duel) {
         this.duel = duel;
     }

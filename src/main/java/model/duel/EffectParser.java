@@ -13,6 +13,7 @@ import model.card.Card;
 import model.card.CardHolder;
 import model.card.CardState;
 import model.card.CardType;
+import model.card.Event;
 import model.effect.Effect;
 import model.effect.EffectManager;
 import model.user.Player;
@@ -32,10 +33,14 @@ public class EffectParser {
     EffectManager effectManager;
     Effect effect;
     int idCardHolderOwner;
-    private HashMap<String, String> extraKeyWords;
+    private HashMap<String, String> extraKeyWords;    
+    public DuelController getDuelController()
+    {
+        return this.duelController;
+    }
     public EffectParser(DuelMenu duelMenu, DuelController duelController, Player owner, EffectManager effectManager, Integer idCardHolderOwner)
     {
-        this.extraKeyWords = new HashMap<String,String>();
+        this.extraKeyWords = effectManager.getExtraKeyWords();
         this.idCardHolderOwner = idCardHolderOwner;
         this.effect = effectManager.getEffect();
         this.owner = owner;        
@@ -47,6 +52,10 @@ public class EffectParser {
         ans = null;
         getCommandResult(effect.getEffectCommand());
         return ans;
+    }
+    public Player getOwner()
+    {
+        return owner;
     }
     public void setExtraKeyWord(String key, String value)
     {
@@ -90,6 +99,18 @@ public class EffectParser {
         //parse target zone with zoneParser
         //advanced mode : changeZone(List<>, target_zone, Card_State);
         //for putting card in monster zone this part is needed
+    }
+    public void addEffectCommand(String command)
+    {   
+        //add(List<E> ,Event, Effect);
+        Matcher matcher = Global.getMatcher("add", "add\\((.+)\\)");
+        if(matcher.find())
+        {
+            List<String> arguemnts = splitCorrect(matcher.group(1), ',');
+            List<Integer> card = new Gson().fromJson(getCommandResult(arguemnts.get(0)), new ArrayList<Integer>().getClass());
+            Event event = new Gson().fromJson(arguemnts.get(1), Event.class);
+            Effect effect = new Gson().fromJson(arguemnts.get(2), Effect.class);            
+        }
     }
     public void changeLP(String command)
     {
@@ -308,7 +329,7 @@ public class EffectParser {
         String key = fields.get(1);
         String value = getCommandResult(fields.get(2));
         duelController.getDuel().setterMap(cardHolders, key, value, 1);//TODO
-        //set("List<>" , "key" , "value");
+        //set("List<>" , "key" , "value"):rev(List<E>, "key", value);
     }
     public String getCommand(String getCommand)
     {

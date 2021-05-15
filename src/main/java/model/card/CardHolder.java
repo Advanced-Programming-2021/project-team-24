@@ -13,6 +13,7 @@ public abstract class CardHolder {
     protected static int idCounter = 1;
     protected CardState cardState;
     protected CardType cardType;
+    protected Boolean isEmpty;
     protected List <Integer> effectManagerId;        
     protected List <Integer> appliedEffects;    
     protected abstract void recalculateEffect(); 
@@ -31,32 +32,31 @@ public abstract class CardHolder {
     }
     
     public CardHolder(Player owner)
-    {        
+    {                
         this.owner = owner;        
         this.cardState = null;
         this.id = idCounter ++;        
         this.appliedEffects = new ArrayList<Integer>();
-        this.effectManagerId = new ArrayList<Integer>();
+        this.effectManagerId = new ArrayList<Integer>();        
         //TODO effectManager should be updated by creating effectManagerId        
     }
     public CardHolder(Player owner, CardState cardState) {
         this.owner = owner;
         this.cardState = cardState;
-    }
-    public static void main(String[] args) {
-        
-    }
+    }    
     public void endTurn()
-    {
-        List<String> v = (new ArrayList<String>());
-        for(int i = 0; i < v.size(); i++)
+    {    
+        for(Map.Entry<String, Integer> mapEntry : ageEffects.entrySet())
         {
-
+            if(ageEffects.get(mapEntry.getKey()) == 0)
+            {
+                ageEffects.put(mapEntry.getKey(), null);
+                cardMap.put(mapEntry.getKey(), null);
+            }
         }
     }
     
        
-    public abstract void makeEmpty();
     /*{
         this.cardState = null;
         this.id = idCounter ++;        

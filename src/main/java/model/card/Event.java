@@ -3,6 +3,8 @@ package model.card;
 import com.google.gson.annotations.SerializedName;
 
 public enum Event {
+    @SerializedName("ANY")
+    ANY("ANY"),
     @SerializedName("ATTACK_OWNER")
     ATTACK_OWNER("ATTACK_OWNER"),
     @SerializedName("UNDER_ATTACK_OWNER")
@@ -40,4 +42,8 @@ public enum Event {
     {
         this.label = label;
     }    
+    public String getValue()
+    {
+        return this.label;
+    }
 }

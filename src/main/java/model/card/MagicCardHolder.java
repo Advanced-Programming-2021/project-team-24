@@ -1,5 +1,7 @@
 package model.card;
 
+import java.util.Map;
+
 import model.effect.EffectManager;
 import model.user.Player;
 
@@ -19,20 +21,7 @@ public class MagicCardHolder extends CardHolder {
     protected void recalculateEffect() {
         // TODO Auto-generated method stub
         
-    }
-
-    @Override
-    public void endTurn() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void makeEmpty() {
-        // TODO Auto-generated method stub
-        
-    }
-
+    }   
     public Card getCard() {
         return this.card;
     }
