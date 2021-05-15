@@ -80,6 +80,7 @@ public class Duel {
         zones.add(new Zone("monster", this.opponent));
         zones.add(new Zone("magic", this.user));
         zones.add(new Zone("magic", this.opponent));
+        this.currentPhase = Phase.DRAW;
     }
 
     public Player getCurrentPlayer() {

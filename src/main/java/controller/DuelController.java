@@ -24,7 +24,7 @@ public class DuelController {
         this.duel = duel;
     }
 
-    private Message runPhase() {
+    public Message runPhase() {
         duel.nextPhase();
         if (duel.isPhase(Duel.Phase.DRAW)) {
             draw();

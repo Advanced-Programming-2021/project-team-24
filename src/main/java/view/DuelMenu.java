@@ -42,7 +42,11 @@ public class DuelMenu {
                 duelController.directAttack();
             } else if (command.equals("activate effect")) {
                 //TODO activate effect
-            } else if (command.equals("show graveyard")) {
+            }
+            else if (command.equals("next phase")){
+                duelController.runPhase();
+            }
+            else if (command.equals("show graveyard")) {
                 List<CardHolder> graveyard = getZoneCards("graveyard",false);
                 if (graveyard.isEmpty()) System.out.println("graveyard empty");
                 else showCardList(graveyard);
