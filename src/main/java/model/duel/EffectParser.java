@@ -12,9 +12,7 @@ import model.card.Card;
 import model.card.CardHolder;
 import model.card.CardState;
 import model.card.CardType;
-import model.card.Event;
 import model.effect.Effect;
-import model.effect.EffectManager;
 import model.user.Player;
 import model.zone.Zone;
 import view.DuelMenu;
@@ -25,7 +23,6 @@ public class EffectParser {
     DuelController duelController;
     DuelMenu duelMenu;
     Player owner;
-    EffectManager effectManager;
     Effect effect;
     int idCardHolderOwner;
     private HashMap<String, String> extraKeyWords;    
@@ -49,15 +46,6 @@ public class EffectParser {
         getCommandResult(effect.getEffectCommand());
         return ans;
     }
-    public Player getOwner()
-    {
-        return owner;
-    }
-    public void setExtraKeyWord(String key, String value)
-    {
-        extraKeyWords.put(key, value);
-    }
-
     public String handleConditional(String command)
     {
         Matcher matcher = Global.getMatcher(command, "if\\(#(.+)#[<>]#(.+)#\\){(.+)}");
@@ -95,18 +83,6 @@ public class EffectParser {
         //parse target zone with zoneParser
         //advanced mode : changeZone(List<>, target_zone, Card_State);
         //for putting card in monster zone this part is needed
-    }
-    public void addEffectCommand(String command)
-    {   
-        //add(List<E> ,Event, Effect);
-        Matcher matcher = Global.getMatcher("add", "add\\((.+)\\)");
-        if(matcher.find())
-        {
-            List<String> arguemnts = splitCorrect(matcher.group(1), ',');
-            List<Integer> card = new Gson().fromJson(getCommandResult(arguemnts.get(0)), new ArrayList<Integer>().getClass());
-            Event event = new Gson().fromJson(arguemnts.get(1), Event.class);
-            Effect effect = new Gson().fromJson(arguemnts.get(2), Effect.class);            
-        }
     }
     public void changeLP(String command)
     {
@@ -152,18 +128,6 @@ public class EffectParser {
         }
 
     }
-    
-    public void coin(String command)
-    {
-        Matcher matcher = Global.getMatcher(command, "coin()");
-        if(matcher.find())
-        {
-            Integer coin = duelMenu.coin();
-            command = command.replace("coin()", coin.toString());
-        }        
-
-    }
-
 
     public static final String GET_STRING = "get\\(([^()]*)\\)";
     public String getCommandResult(String command)
@@ -181,10 +145,7 @@ public class EffectParser {
                 {
                     ans = "false";
                 }
-                if(Global.regexFind(command ,"coin"))
-                {
-                    coin(command);
-                }
+                
                 handleGetCommand(command);
                 if(command.substring(0, 2).equals("if"))
                 {
@@ -313,19 +274,25 @@ public class EffectParser {
             command = command.replaceAll(zone, new Gson().toJson(ans, new ArrayList<String>().getClass()));
         }
 
-        
+
 
         return command;
     }
+    public List<Integer> parseKeyWordsList(String keyWord)
+    {
+        //this and attacker and ...
+        return null;
+    }
+
     public void setCommand(String setCommand)
     {
         Gson gson = new Gson();
         List<String> fields = splitCorrect(splitByParentheses(setCommand).get(0) ,',');
-        List<Integer> cardHolders = gson.fromJson(getCommandResult(fields.get(0)), new ArrayList<Integer>().getClass());
+        List<String> cardHolders = gson.fromJson(getCommandResult(fields.get(0)), new ArrayList<String>().getClass());
         String key = fields.get(1);
         String value = getCommandResult(fields.get(2));
-        duelController.getDuel().setterMap(cardHolders, key, value, 1);//TODO
-        //set("List<>" , "key" , "value"):rev(List<E>, "key", value);
+        
+        //set("List<>" , "key" , "value");
     }
     public String getCommand(String getCommand)
     {
@@ -438,10 +405,20 @@ public class EffectParser {
             List<String> sets = splitCorrect(matcher.group(1), ',');
             List<Integer> first = new Gson().fromJson(getCommandResult(sets.get(1)), new ArrayList<Integer>().getClass());
             List<Integer> second = new Gson().fromJson(getCommandResult(sets.get(2)), new ArrayList<Integer>().getClass());            
-            List<Integer> ans1 = Global.delListFromList(first, second);
-            for(int i = 0; i < ans1.size(); i++)
-            {
-                ans.add(ans1.get(i).toString());
+            for(int i = 0; i < first.size(); i++)
+            {   
+                int flag = 0;
+                for(int j = 0; j < second.size(); j++)
+                {
+                    if(first.get(i) == second.get(j))
+                    {
+                        flag = 1;
+                    }
+                }
+                if(flag == 0)
+                {
+                    ans.add(Integer.toString(first.get(i)));
+                }
             }
         }
         return ans;
@@ -500,7 +477,7 @@ public class EffectParser {
                 }
                 
             }
-            command.replace(matcher.group(0), ans.toString());
+            //command.replace(matcher.group(0), ans.toString(i));
         }
     }
     public static void main(String[] args) {
@@ -516,9 +493,8 @@ public class EffectParser {
     public Zone parseZone(String josn){
         String[] zoneArgument = josn.split("_");
         Player player = null;
-        if (zoneArgument[0].compareToIgnoreCase("my") == 0) player = owner;
+        if (zoneArgument[1].compareToIgnoreCase("my") == 0) player = owner;
         else 
-        if(zoneArgument[0].compareTo("opp") == 0)
         {            
             Player a1 = duelController.getDuel().getCurrentPlayer();
             Player a2 = duelController.getDuel().getOpponent();
@@ -529,24 +505,15 @@ public class EffectParser {
             else
                 player = a1;
         }
-        else      
-            player = null;      
-        return new Zone(zoneArgument[1], player);
+        return new Zone(zoneArgument[0], player);
     }
     public List<Integer> selective(String command)
     {   
         List<String> fields = splitCorrect(command, ',');
-        
         Gson gson = new Gson();
         List<Integer> array = gson.fromJson(getCommand(fields.get(0)), new ArrayList<Integer>().getClass());       
-        int count = Integer.parseInt(fields.get(1));            
-        List<Integer> selected ;
-        if(fields.size() == 3)
-            selected =  duelMenu.selective(array, count, fields.get(2));
-        else
-        {
-            selected = duelMenu.selective(array, count, fields.get(2), fields.get(3));
-        }
+        int count = Integer.parseInt(fields.get(1));    
+        List<Integer> selected = duelMenu.selective(array, count, fields.get(2));
         return selected;
     }
     public List<Integer> randomSelection(String command)
@@ -562,7 +529,8 @@ public class EffectParser {
     {
         //handle the view part use : dice
         return duelMenu.Dice();
-    }
+    }    
+
     public int calculater(String command)
     {
         String[] operators = {"\\*", "\\+", "-", "/"};

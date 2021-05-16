@@ -1,18 +1,10 @@
 package model.card;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
-import model.effect.Effect;
-import model.effect.EffectManager;
+import java.io.*;
+import java.util.HashMap;
 
 public class MonsterCard extends Card {
     @SerializedName("attack")
@@ -25,14 +17,10 @@ public class MonsterCard extends Card {
     private MonsterEffectType monsterEffectType;
     @SerializedName("monsterType")
     private MonsterType monsterType;
+    @SerializedName("effects")
+    private HashMap<Event, String> effects;
     @SerializedName("monsterAttribute:")
     private MonsterAttribute monsterAttribute;
-    @SerializedName("effects")    
-    private HashMap<Event, List<Effect>> effects = new HashMap<Event, List<Effect>>();
-    public HashMap<Event, List<Effect>> getEffects()
-    {
-        return this.effects;
-    }
     public int getLevel()
     {
         return level;
@@ -49,7 +37,7 @@ public class MonsterCard extends Card {
         return string.toUpperCase().replace('-', '_').replace(' ', '_');
     }
     public static void main(String[] args) throws IOException {
-        /*MonsterCard v = new MonsterCard();
+        MonsterCard v = new MonsterCard();
         String pathToCsv = "Monster.csv";
         BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
         String row;
@@ -75,6 +63,6 @@ public class MonsterCard extends Card {
             fileWriter.close();
             MonsterCard card = new Gson().fromJson(new Gson().toJson(v), MonsterCard.class);
         }
-        csvReader.close();*/
+        csvReader.close();
     }
 }

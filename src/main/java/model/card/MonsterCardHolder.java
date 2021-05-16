@@ -1,9 +1,8 @@
 package model.card;
 
 import java.util.HashMap;
-import java.util.List;
 
-import model.effect.EffectManager;
+
 import model.user.Player;
 import model.user.User;
 
@@ -18,8 +17,8 @@ public class MonsterCardHolder extends CardHolder {
 
     }
     private MonsterCard card;    
-    private HashMap<Event, List<EffectManager>> effects = new HashMap<Event, List<EffectManager>>();     
-    public List<EffectManager> getEventEffect(Event event)
+    private HashMap<Event, String> effects;        
+    public String getEventEffect(Event event)
     {
         return effects.get(event);
     }
@@ -54,5 +53,10 @@ public class MonsterCardHolder extends CardHolder {
     }
     public Card getCard() {        
         return this.card;
+    }
+    @Override
+    public void makeEmpty() {
+        // TODO Auto-generated method stub
+        
     }
 }

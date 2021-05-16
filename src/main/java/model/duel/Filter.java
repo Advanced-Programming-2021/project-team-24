@@ -7,7 +7,6 @@ import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 import model.card.CardHolder;
-import model.card.CardState;
 import model.card.CardType;
 
 public class Filter {
@@ -23,16 +22,6 @@ public class Filter {
     private Integer maxDefence;
     private List<String> cardNames;
     private List<Integer> idCardHolder;
-    protected List<CardState> cardStates;
-
-    public List<CardState> getCardStates() {
-        return this.cardStates;
-    }
-
-    public void setCardStates(List<CardState> cardStates) {
-        this.cardStates = cardStates;
-    }
-
     private List<String> zones;
     private String ownerName;
 
@@ -154,10 +143,5 @@ public class Filter {
         this.ownerName = ownerName;
         //TODO others;
     }    
-    public Filter(String ownerName)
-    {
-        this.ownerName = ownerName;
-    }
-
     
 }

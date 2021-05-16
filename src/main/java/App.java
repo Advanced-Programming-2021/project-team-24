@@ -1,6 +1,3 @@
-import java.util.HashMap;
-import java.util.Map;
-
 import model.card.Card;
 import model.user.User;
 import view.LoginMenu;

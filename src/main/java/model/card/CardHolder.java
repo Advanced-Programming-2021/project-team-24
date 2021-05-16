@@ -13,12 +13,10 @@ public abstract class CardHolder {
     protected static int idCounter = 1;
     protected CardState cardState;
     protected CardType cardType;
-    protected Boolean isEmpty;
     protected List <Integer> effectManagerId;        
     protected List <Integer> appliedEffects;   
     protected EffectManager onDeath;     
     protected HashMap<String, String> cardMap = new HashMap<String, String>();
-    protected HashMap<String, Integer> ageEffects = new HashMap<String, Integer>();
     protected Player owner;
 
     
@@ -32,27 +30,26 @@ public abstract class CardHolder {
     }
     
     public CardHolder(Player owner)
-    {                
+    {        
         this.owner = owner;        
         this.cardState = null;
         this.id = idCounter ++;        
         this.appliedEffects = new ArrayList<Integer>();
-        this.effectManagerId = new ArrayList<Integer>();        
+        this.effectManagerId = new ArrayList<Integer>();
         //TODO effectManager should be updated by creating effectManagerId        
     }
-    public CardHolder(Player owner, CardState cardState) {
-        this.owner = owner;
+    public CardHolder(CardState cardState) {
         this.cardState = cardState;
-    }    
-    public void endTurn()
-    {    
-        for(Map.Entry<String, Integer> mapEntry : ageEffects.entrySet())
+    }
+    public static void main(String[] args) {
+        
+    }
+    public void endPhase()
+    {
+        List<String> v = (new ArrayList<String>());
+        for(int i = 0; i < v.size(); i++)
         {
-            if(ageEffects.get(mapEntry.getKey()) == 0)
-            {
-                ageEffects.put(mapEntry.getKey(), null);
-                cardMap.put(mapEntry.getKey(), null);
-            }
+
         }
     }
     
@@ -65,19 +62,16 @@ public abstract class CardHolder {
     }
     
        
+    public abstract void makeEmpty();
     /*{
         this.cardState = null;
         this.id = idCounter ++;        
         this.effectManagerId = new ArrayList<Integer>();
         this.appliedEffects = new ArrayList<Integer>();
     }*/
-    public void setMapValue(String key, String value, Integer time)
+    public void setMapValue(String key, String value)
     {
         cardMap.put(key, value);
-        if(ageEffects.get(key) != null)
-            ageEffects.put(key ,Math.max(ageEffects.get(key) , time));
-        else
-            ageEffects.put(key, time);
     }
     protected Boolean convertStringToBool(String string)
     {
@@ -166,7 +160,6 @@ public abstract class CardHolder {
     {
         return id;
     }
-    
     public void setCardMap(HashMap<String, String> cardMap){
         this.cardMap = cardMap;
     }
