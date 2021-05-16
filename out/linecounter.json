@@ -1,0 +1,1140 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "c:\\AP\\New folder (3)\\project-team-24",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2021-05-16 20:21:43",
+            "filesum": 173,
+            "codesum": 4658,
+            "commentsum": 182,
+            "blanksum": 513,
+            "statistics": {
+                ".java": {
+                    "code": 3611,
+                    "comment": 180,
+                    "blank": 505
+                },
+                ".xml": {
+                    "code": 906,
+                    "comment": 2,
+                    "blank": 7
+                },
+                ".md": {
+                    "code": 6,
+                    "comment": 0,
+                    "blank": 1
+                },
+                ".iml": {
+                    "code": 79,
+                    "comment": 0,
+                    "blank": 0
+                },
+                "": {
+                    "code": 56,
+                    "comment": 0,
+                    "blank": 0
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 0,
+                    "code": 48,
+                    "comment": 0,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": ".idea\\.gitignore"
+                },
+                {
+                    "blank": 0,
+                    "code": 16,
+                    "comment": 0,
+                    "filename": ".idea\\compiler.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 20,
+                    "comment": 0,
+                    "filename": ".idea\\jarRepositories.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__com_google_code_findbugs_jsr305_3_0_2.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__com_google_code_gson_gson_2_8_6.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__com_google_errorprone_error_prone_annotations_2_5_1.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__com_google_guava_failureaccess_1_0_1.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__com_google_guava_guava_30_1_1_jre.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__com_google_guava_listenablefuture_9999_0_empty_to_avoid_conflict_with_guava.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__com_google_j2objc_j2objc_annotations_1_3.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__com_thoughtworks_qdox_qdox_2_0_M8.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__commons_io_commons_io_2_5.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_apache_maven_maven_aether_provider_3_0.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_apache_maven_maven_artifact_3_0.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_apache_maven_maven_core_3_0.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_apache_maven_maven_model_3_0.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_apache_maven_maven_model_builder_3_0.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_apache_maven_maven_plugin_api_3_0.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_apache_maven_maven_repository_metadata_3_0.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_apache_maven_maven_settings_3_0.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_apache_maven_maven_settings_builder_3_0.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_apache_maven_plugins_maven_compiler_plugin_3_8_1.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_apache_maven_shared_maven_shared_incremental_1_1.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_apache_maven_shared_maven_shared_utils_3_2_1.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_checkerframework_checker_qual_3_8_0.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_codehaus_plexus_plexus_classworlds_2_2_3.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_codehaus_plexus_plexus_compiler_api_2_8_4.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_codehaus_plexus_plexus_compiler_javac_2_8_4.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_codehaus_plexus_plexus_compiler_manager_2_8_4.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_codehaus_plexus_plexus_component_annotations_1_5_5.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_codehaus_plexus_plexus_interpolation_1_14.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_codehaus_plexus_plexus_java_0_9_10.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_codehaus_plexus_plexus_utils_2_0_4.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_ow2_asm_asm_6_2.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_sonatype_aether_aether_api_1_7.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_sonatype_aether_aether_impl_1_7.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_sonatype_aether_aether_spi_1_7.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_sonatype_aether_aether_util_1_7.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_sonatype_plexus_plexus_cipher_1_4.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_sonatype_plexus_plexus_sec_dispatcher_1_3.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_sonatype_sisu_sisu_guice_noaop_2_1_7.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_sonatype_sisu_sisu_inject_bean_1_4_2.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\libraries\\Maven__org_sonatype_sisu_sisu_inject_plexus_1_4_2.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": ".idea\\misc.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": ".idea\\modules.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 124,
+                    "comment": 0,
+                    "filename": ".idea\\uiDesigner.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": ".idea\\vcs.xml"
+                },
+                {
+                    "blank": 7,
+                    "code": 35,
+                    "comment": 2,
+                    "filename": "pom.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 57,
+                    "comment": 0,
+                    "filename": "project-team-24.iml"
+                },
+                {
+                    "blank": 1,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": "README.md"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\.idea\\vcs.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 76,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\.idea\\workspace.xml"
+                },
+                {
+                    "blank": 9,
+                    "code": 18,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\App.java"
+                },
+                {
+                    "blank": 13,
+                    "code": 93,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\controller\\DeckController.java"
+                },
+                {
+                    "blank": 36,
+                    "code": 407,
+                    "comment": 13,
+                    "filename": "src\\main\\java\\controller\\DuelController.java"
+                },
+                {
+                    "blank": 2,
+                    "code": 3,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\controller\\LoginMenu.java"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\controller\\MainMenu.java"
+                },
+                {
+                    "blank": 2,
+                    "code": 40,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\controller\\MainMenuController.java"
+                },
+                {
+                    "blank": 3,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\controller\\Menu.java"
+                },
+                {
+                    "blank": 0,
+                    "code": 18,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\controller\\Message.java"
+                },
+                {
+                    "blank": 3,
+                    "code": 24,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\controller\\ProfileMenu.java"
+                },
+                {
+                    "blank": 4,
+                    "code": 29,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\controller\\ScoreboardMenu.java"
+                },
+                {
+                    "blank": 5,
+                    "code": 24,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\controller\\ShopMenu.java"
+                },
+                {
+                    "blank": 2,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\controller\\TypeMessage.java"
+                },
+                {
+                    "blank": 6,
+                    "code": 55,
+                    "comment": 2,
+                    "filename": "src\\main\\java\\model\\card\\Card.java"
+                },
+                {
+                    "blank": 28,
+                    "code": 140,
+                    "comment": 8,
+                    "filename": "src\\main\\java\\model\\card\\CardHolder.java"
+                },
+                {
+                    "blank": 4,
+                    "code": 29,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\card\\CardState.java"
+                },
+                {
+                    "blank": 4,
+                    "code": 16,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\card\\CardType.java"
+                },
+                {
+                    "blank": 3,
+                    "code": 46,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\card\\Event.java"
+                },
+                {
+                    "blank": 2,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\card\\LimitType.java"
+                },
+                {
+                    "blank": 7,
+                    "code": 23,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\card\\MagicCard.java"
+                },
+                {
+                    "blank": 6,
+                    "code": 24,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\card\\MagicCardHolder.java"
+                },
+                {
+                    "blank": 7,
+                    "code": 21,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\card\\MonsterAttribute.java"
+                },
+                {
+                    "blank": 4,
+                    "code": 49,
+                    "comment": 27,
+                    "filename": "src\\main\\java\\model\\card\\MonsterCard.java"
+                },
+                {
+                    "blank": 10,
+                    "code": 48,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\card\\MonsterCardHolder.java"
+                },
+                {
+                    "blank": 3,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\card\\MonsterEffectType.java"
+                },
+                {
+                    "blank": 3,
+                    "code": 40,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\card\\MonsterType.java"
+                },
+                {
+                    "blank": 14,
+                    "code": 76,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\deck\\Deck.java"
+                },
+                {
+                    "blank": 13,
+                    "code": 55,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\deck\\Decks.java"
+                },
+                {
+                    "blank": 32,
+                    "code": 258,
+                    "comment": 4,
+                    "filename": "src\\main\\java\\model\\duel\\Duel.java"
+                },
+                {
+                    "blank": 12,
+                    "code": 102,
+                    "comment": 2,
+                    "filename": "src\\main\\java\\model\\duel\\EffectChainer.java"
+                },
+                {
+                    "blank": 26,
+                    "code": 539,
+                    "comment": 30,
+                    "filename": "src\\main\\java\\model\\duel\\EffectParser.java"
+                },
+                {
+                    "blank": 35,
+                    "code": 127,
+                    "comment": 1,
+                    "filename": "src\\main\\java\\model\\duel\\Filter.java"
+                },
+                {
+                    "blank": 4,
+                    "code": 34,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\duel\\filterhandle\\AttackHandler.java"
+                },
+                {
+                    "blank": 4,
+                    "code": 24,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\duel\\filterhandle\\CardNameHandler.java"
+                },
+                {
+                    "blank": 5,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\duel\\filterhandle\\CardStateHandler.java"
+                },
+                {
+                    "blank": 5,
+                    "code": 25,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\duel\\filterhandle\\CardTypeHandler.java"
+                },
+                {
+                    "blank": 4,
+                    "code": 34,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\duel\\filterhandle\\DefenceHandler.java"
+                },
+                {
+                    "blank": 6,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\duel\\filterhandle\\FilterHandler.java"
+                },
+                {
+                    "blank": 3,
+                    "code": 24,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\duel\\filterhandle\\IdHandler.java"
+                },
+                {
+                    "blank": 4,
+                    "code": 34,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\duel\\filterhandle\\LevelHandler.java"
+                },
+                {
+                    "blank": 5,
+                    "code": 31,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\duel\\filterhandle\\ZoneHandler.java"
+                },
+                {
+                    "blank": 13,
+                    "code": 44,
+                    "comment": 71,
+                    "filename": "src\\main\\java\\model\\effect\\Effect.java"
+                },
+                {
+                    "blank": 8,
+                    "code": 95,
+                    "comment": 1,
+                    "filename": "src\\main\\java\\model\\effect\\EffectManager.java"
+                },
+                {
+                    "blank": 3,
+                    "code": 20,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\effect\\EffectType.java"
+                },
+                {
+                    "blank": 14,
+                    "code": 45,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\user\\Player.java"
+                },
+                {
+                    "blank": 19,
+                    "code": 179,
+                    "comment": 7,
+                    "filename": "src\\main\\java\\model\\user\\User.java"
+                },
+                {
+                    "blank": 8,
+                    "code": 27,
+                    "comment": 1,
+                    "filename": "src\\main\\java\\model\\zone\\Address.java"
+                },
+                {
+                    "blank": 6,
+                    "code": 37,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\zone\\Zone.java"
+                },
+                {
+                    "blank": 6,
+                    "code": 30,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\model\\zone\\Zones.java"
+                },
+                {
+                    "blank": 0,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\project-team-24.iml"
+                },
+                {
+                    "blank": 15,
+                    "code": 103,
+                    "comment": 1,
+                    "filename": "src\\main\\java\\view\\DeckMenu.java"
+                },
+                {
+                    "blank": 40,
+                    "code": 190,
+                    "comment": 10,
+                    "filename": "src\\main\\java\\view\\DuelMenu.java"
+                },
+                {
+                    "blank": 5,
+                    "code": 46,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\view\\Global.java"
+                },
+                {
+                    "blank": 8,
+                    "code": 48,
+                    "comment": 1,
+                    "filename": "src\\main\\java\\view\\LoginMenu.java"
+                },
+                {
+                    "blank": 7,
+                    "code": 37,
+                    "comment": 1,
+                    "filename": "src\\main\\java\\view\\MainMenu.java"
+                },
+                {
+                    "blank": 3,
+                    "code": 17,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\view\\Menu.java"
+                },
+                {
+                    "blank": 3,
+                    "code": 43,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\view\\ProfileMenu.java"
+                },
+                {
+                    "blank": 2,
+                    "code": 22,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\view\\ScoreboardMenu.java"
+                },
+                {
+                    "blank": 3,
+                    "code": 28,
+                    "comment": 0,
+                    "filename": "src\\main\\java\\view\\ShopMenu.java"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src\\test\\TestFile.java"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": "target\\classes\\.idea\\vcs.xml"
+                },
+                {
+                    "blank": 0,
+                    "code": 76,
+                    "comment": 0,
+                    "filename": "target\\classes\\.idea\\workspace.xml"
+                },
+                {
+                    "filename": "target\\classes\\App.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\controller\\DeckController.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\controller\\DuelController.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\controller\\LoginMenu.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\controller\\MainMenu.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\controller\\MainMenuController.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\controller\\Menu.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\controller\\Message.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\controller\\ProfileMenu.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\controller\\ScoreboardMenu.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\controller\\ShopMenu.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\controller\\TypeMessage.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\card\\Card.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\card\\CardHolder.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\card\\CardState.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\card\\CardType.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\card\\Event.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\card\\LimitType.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\card\\MagicCard.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\card\\MagicCardHolder.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\card\\MonsterAttribute.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\card\\MonsterCard.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\card\\MonsterCardHolder.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\card\\MonsterEffectType.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\card\\MonsterType.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\deck\\Deck.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\deck\\Decks.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\duel\\Duel$Phase.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\duel\\Duel.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\duel\\EffectChainer.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\duel\\EffectParser.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\duel\\Filter.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\duel\\filterhandle\\AttackHandler.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\duel\\filterhandle\\CardNameHandler.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\duel\\filterhandle\\CardStateHandler.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\duel\\filterhandle\\CardTypeHandler.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\duel\\filterhandle\\DefenceHandler.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\duel\\filterhandle\\FilterHandler.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\duel\\filterhandle\\IdHandler.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\duel\\filterhandle\\LevelHandler.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\duel\\filterhandle\\ZoneHandler.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\effect\\Effect.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\effect\\EffectManager.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\effect\\EffectType.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\user\\Player.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\user\\User.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\zone\\Address.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\zone\\Zone.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\model\\zone\\Zones.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "target\\classes\\project-team-24.iml"
+                },
+                {
+                    "filename": "target\\classes\\view\\DeckMenu.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\view\\DuelMenu.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\view\\Global.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\view\\LoginMenu.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\view\\MainMenu.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\view\\Menu.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\view\\ProfileMenu.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\view\\ScoreboardMenu.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "target\\classes\\view\\ShopMenu.class",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                }
+            ]
+        }
+    ]
+}

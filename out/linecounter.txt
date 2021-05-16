@@ -1,0 +1,194 @@
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2021-05-16 20:21:43
+count workspace : c:\AP\New folder (3)\project-team-24
+total files : 173
+total code lines : 4658
+total comment lines : 182
+total blank lines : 513
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |          .java|           3611|            180|            505|     78|
+   |           .xml|            906|              2|              7|     19|
+   |            .md|              6|              0|              1|   0.13|
+   |           .iml|             79|              0|              0|    1.7|
+   |               |             56|              0|              0|    1.2|
+   -------------------------------------------------------------------------
+.gitignore, code is 48, comment is 0, blank is 0.
+.idea\.gitignore, code is 8, comment is 0, blank is 0.
+.idea\compiler.xml, code is 16, comment is 0, blank is 0.
+.idea\jarRepositories.xml, code is 20, comment is 0, blank is 0.
+.idea\libraries\Maven__com_google_code_findbugs_jsr305_3_0_2.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__com_google_code_gson_gson_2_8_6.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__com_google_errorprone_error_prone_annotations_2_5_1.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__com_google_guava_failureaccess_1_0_1.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__com_google_guava_guava_30_1_1_jre.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__com_google_guava_listenablefuture_9999_0_empty_to_avoid_conflict_with_guava.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__com_google_j2objc_j2objc_annotations_1_3.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__com_thoughtworks_qdox_qdox_2_0_M8.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__commons_io_commons_io_2_5.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_apache_maven_maven_aether_provider_3_0.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_apache_maven_maven_artifact_3_0.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_apache_maven_maven_core_3_0.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_apache_maven_maven_model_3_0.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_apache_maven_maven_model_builder_3_0.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_apache_maven_maven_plugin_api_3_0.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_apache_maven_maven_repository_metadata_3_0.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_apache_maven_maven_settings_3_0.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_apache_maven_maven_settings_builder_3_0.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_apache_maven_plugins_maven_compiler_plugin_3_8_1.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_apache_maven_shared_maven_shared_incremental_1_1.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_apache_maven_shared_maven_shared_utils_3_2_1.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_checkerframework_checker_qual_3_8_0.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_codehaus_plexus_plexus_classworlds_2_2_3.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_codehaus_plexus_plexus_compiler_api_2_8_4.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_codehaus_plexus_plexus_compiler_javac_2_8_4.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_codehaus_plexus_plexus_compiler_manager_2_8_4.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_codehaus_plexus_plexus_component_annotations_1_5_5.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_codehaus_plexus_plexus_interpolation_1_14.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_codehaus_plexus_plexus_java_0_9_10.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_codehaus_plexus_plexus_utils_2_0_4.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_ow2_asm_asm_6_2.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_sonatype_aether_aether_api_1_7.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_sonatype_aether_aether_impl_1_7.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_sonatype_aether_aether_spi_1_7.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_sonatype_aether_aether_util_1_7.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_sonatype_plexus_plexus_cipher_1_4.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_sonatype_plexus_plexus_sec_dispatcher_1_3.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_sonatype_sisu_sisu_guice_noaop_2_1_7.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_sonatype_sisu_sisu_inject_bean_1_4_2.xml, code is 13, comment is 0, blank is 0.
+.idea\libraries\Maven__org_sonatype_sisu_sisu_inject_plexus_1_4_2.xml, code is 13, comment is 0, blank is 0.
+.idea\misc.xml, code is 13, comment is 0, blank is 0.
+.idea\modules.xml, code is 8, comment is 0, blank is 0.
+.idea\uiDesigner.xml, code is 124, comment is 0, blank is 0.
+.idea\vcs.xml, code is 6, comment is 0, blank is 0.
+pom.xml, code is 35, comment is 2, blank is 7.
+project-team-24.iml, code is 57, comment is 0, blank is 0.
+README.md, code is 6, comment is 0, blank is 1.
+src\main\java\.idea\vcs.xml, code is 6, comment is 0, blank is 0.
+src\main\java\.idea\workspace.xml, code is 76, comment is 0, blank is 0.
+src\main\java\App.java, code is 18, comment is 0, blank is 9.
+src\main\java\controller\DeckController.java, code is 93, comment is 0, blank is 13.
+src\main\java\controller\DuelController.java, code is 407, comment is 13, blank is 36.
+src\main\java\controller\LoginMenu.java, code is 3, comment is 0, blank is 2.
+src\main\java\controller\MainMenu.java, code is 11, comment is 0, blank is 2.
+src\main\java\controller\MainMenuController.java, code is 40, comment is 0, blank is 2.
+src\main\java\controller\Menu.java, code is 8, comment is 0, blank is 3.
+src\main\java\controller\Message.java, code is 18, comment is 0, blank is 0.
+src\main\java\controller\ProfileMenu.java, code is 24, comment is 0, blank is 3.
+src\main\java\controller\ScoreboardMenu.java, code is 29, comment is 0, blank is 4.
+src\main\java\controller\ShopMenu.java, code is 24, comment is 0, blank is 5.
+src\main\java\controller\TypeMessage.java, code is 6, comment is 0, blank is 2.
+src\main\java\model\card\Card.java, code is 55, comment is 2, blank is 6.
+src\main\java\model\card\CardHolder.java, code is 140, comment is 8, blank is 28.
+src\main\java\model\card\CardState.java, code is 29, comment is 0, blank is 4.
+src\main\java\model\card\CardType.java, code is 16, comment is 0, blank is 4.
+src\main\java\model\card\Event.java, code is 46, comment is 0, blank is 3.
+src\main\java\model\card\LimitType.java, code is 13, comment is 0, blank is 2.
+src\main\java\model\card\MagicCard.java, code is 23, comment is 0, blank is 7.
+src\main\java\model\card\MagicCardHolder.java, code is 24, comment is 0, blank is 6.
+src\main\java\model\card\MonsterAttribute.java, code is 21, comment is 0, blank is 7.
+src\main\java\model\card\MonsterCard.java, code is 49, comment is 27, blank is 4.
+src\main\java\model\card\MonsterCardHolder.java, code is 48, comment is 0, blank is 10.
+src\main\java\model\card\MonsterEffectType.java, code is 15, comment is 0, blank is 3.
+src\main\java\model\card\MonsterType.java, code is 40, comment is 0, blank is 3.
+src\main\java\model\deck\Deck.java, code is 76, comment is 0, blank is 14.
+src\main\java\model\deck\Decks.java, code is 55, comment is 0, blank is 13.
+src\main\java\model\duel\Duel.java, code is 258, comment is 4, blank is 32.
+src\main\java\model\duel\EffectChainer.java, code is 102, comment is 2, blank is 12.
+src\main\java\model\duel\EffectParser.java, code is 539, comment is 30, blank is 26.
+src\main\java\model\duel\Filter.java, code is 127, comment is 1, blank is 35.
+src\main\java\model\duel\filterhandle\AttackHandler.java, code is 34, comment is 0, blank is 4.
+src\main\java\model\duel\filterhandle\CardNameHandler.java, code is 24, comment is 0, blank is 4.
+src\main\java\model\duel\filterhandle\CardStateHandler.java, code is 15, comment is 0, blank is 5.
+src\main\java\model\duel\filterhandle\CardTypeHandler.java, code is 25, comment is 0, blank is 5.
+src\main\java\model\duel\filterhandle\DefenceHandler.java, code is 34, comment is 0, blank is 4.
+src\main\java\model\duel\filterhandle\FilterHandler.java, code is 11, comment is 0, blank is 6.
+src\main\java\model\duel\filterhandle\IdHandler.java, code is 24, comment is 0, blank is 3.
+src\main\java\model\duel\filterhandle\LevelHandler.java, code is 34, comment is 0, blank is 4.
+src\main\java\model\duel\filterhandle\ZoneHandler.java, code is 31, comment is 0, blank is 5.
+src\main\java\model\effect\Effect.java, code is 44, comment is 71, blank is 13.
+src\main\java\model\effect\EffectManager.java, code is 95, comment is 1, blank is 8.
+src\main\java\model\effect\EffectType.java, code is 20, comment is 0, blank is 3.
+src\main\java\model\user\Player.java, code is 45, comment is 0, blank is 14.
+src\main\java\model\user\User.java, code is 179, comment is 7, blank is 19.
+src\main\java\model\zone\Address.java, code is 27, comment is 1, blank is 8.
+src\main\java\model\zone\Zone.java, code is 37, comment is 0, blank is 6.
+src\main\java\model\zone\Zones.java, code is 30, comment is 0, blank is 6.
+src\main\java\project-team-24.iml, code is 11, comment is 0, blank is 0.
+src\main\java\view\DeckMenu.java, code is 103, comment is 1, blank is 15.
+src\main\java\view\DuelMenu.java, code is 190, comment is 10, blank is 40.
+src\main\java\view\Global.java, code is 46, comment is 0, blank is 5.
+src\main\java\view\LoginMenu.java, code is 48, comment is 1, blank is 8.
+src\main\java\view\MainMenu.java, code is 37, comment is 1, blank is 7.
+src\main\java\view\Menu.java, code is 17, comment is 0, blank is 3.
+src\main\java\view\ProfileMenu.java, code is 43, comment is 0, blank is 3.
+src\main\java\view\ScoreboardMenu.java, code is 22, comment is 0, blank is 2.
+src\main\java\view\ShopMenu.java, code is 28, comment is 0, blank is 3.
+src\test\TestFile.java, code is 11, comment is 0, blank is 2.
+target\classes\.idea\vcs.xml, code is 6, comment is 0, blank is 0.
+target\classes\.idea\workspace.xml, code is 76, comment is 0, blank is 0.
+target\classes\App.class, it is a binary file.
+target\classes\controller\DeckController.class, it is a binary file.
+target\classes\controller\DuelController.class, it is a binary file.
+target\classes\controller\LoginMenu.class, it is a binary file.
+target\classes\controller\MainMenu.class, it is a binary file.
+target\classes\controller\MainMenuController.class, it is a binary file.
+target\classes\controller\Menu.class, it is a binary file.
+target\classes\controller\Message.class, it is a binary file.
+target\classes\controller\ProfileMenu.class, it is a binary file.
+target\classes\controller\ScoreboardMenu.class, it is a binary file.
+target\classes\controller\ShopMenu.class, it is a binary file.
+target\classes\controller\TypeMessage.class, it is a binary file.
+target\classes\model\card\Card.class, it is a binary file.
+target\classes\model\card\CardHolder.class, it is a binary file.
+target\classes\model\card\CardState.class, it is a binary file.
+target\classes\model\card\CardType.class, it is a binary file.
+target\classes\model\card\Event.class, it is a binary file.
+target\classes\model\card\LimitType.class, it is a binary file.
+target\classes\model\card\MagicCard.class, it is a binary file.
+target\classes\model\card\MagicCardHolder.class, it is a binary file.
+target\classes\model\card\MonsterAttribute.class, it is a binary file.
+target\classes\model\card\MonsterCard.class, it is a binary file.
+target\classes\model\card\MonsterCardHolder.class, it is a binary file.
+target\classes\model\card\MonsterEffectType.class, it is a binary file.
+target\classes\model\card\MonsterType.class, it is a binary file.
+target\classes\model\deck\Deck.class, it is a binary file.
+target\classes\model\deck\Decks.class, it is a binary file.
+target\classes\model\duel\Duel$Phase.class, it is a binary file.
+target\classes\model\duel\Duel.class, it is a binary file.
+target\classes\model\duel\EffectChainer.class, it is a binary file.
+target\classes\model\duel\EffectParser.class, it is a binary file.
+target\classes\model\duel\Filter.class, it is a binary file.
+target\classes\model\duel\filterhandle\AttackHandler.class, it is a binary file.
+target\classes\model\duel\filterhandle\CardNameHandler.class, it is a binary file.
+target\classes\model\duel\filterhandle\CardStateHandler.class, it is a binary file.
+target\classes\model\duel\filterhandle\CardTypeHandler.class, it is a binary file.
+target\classes\model\duel\filterhandle\DefenceHandler.class, it is a binary file.
+target\classes\model\duel\filterhandle\FilterHandler.class, it is a binary file.
+target\classes\model\duel\filterhandle\IdHandler.class, it is a binary file.
+target\classes\model\duel\filterhandle\LevelHandler.class, it is a binary file.
+target\classes\model\duel\filterhandle\ZoneHandler.class, it is a binary file.
+target\classes\model\effect\Effect.class, it is a binary file.
+target\classes\model\effect\EffectManager.class, it is a binary file.
+target\classes\model\effect\EffectType.class, it is a binary file.
+target\classes\model\user\Player.class, it is a binary file.
+target\classes\model\user\User.class, it is a binary file.
+target\classes\model\zone\Address.class, it is a binary file.
+target\classes\model\zone\Zone.class, it is a binary file.
+target\classes\model\zone\Zones.class, it is a binary file.
+target\classes\project-team-24.iml, code is 11, comment is 0, blank is 0.
+target\classes\view\DeckMenu.class, it is a binary file.
+target\classes\view\DuelMenu.class, it is a binary file.
+target\classes\view\Global.class, it is a binary file.
+target\classes\view\LoginMenu.class, it is a binary file.
+target\classes\view\MainMenu.class, it is a binary file.
+target\classes\view\Menu.class, it is a binary file.
+target\classes\view\ProfileMenu.class, it is a binary file.
+target\classes\view\ScoreboardMenu.class, it is a binary file.
+target\classes\view\ShopMenu.class, it is a binary file.
+===============================================================================
