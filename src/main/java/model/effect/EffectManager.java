@@ -1,7 +1,11 @@
 package model.effect;
 
+import model.card.Event;
+import model.duel.EffectParser;
 import model.user.Player;
 
+
+import java.util.*;
 import java.util.List;
 
 public class EffectManager {
@@ -9,9 +13,8 @@ public class EffectManager {
     private int id;
     private static int idCounter = 0;
     private int idCardHolder;
-    private Boolean isActivated;
-    private int ageRemained;
-    private int remainedToApplyEffect;
+    private Boolean isActivated;    
+    private HashMap<String, String> extraKeyWords;
     private Effect effect;
     public EffectManager(Effect effect, Player owner){
         idCounter++;
@@ -35,7 +38,7 @@ public class EffectManager {
     }
     
     public Boolean getActivated()
-    {
+    {        
         return this.isActivated;
     }
     

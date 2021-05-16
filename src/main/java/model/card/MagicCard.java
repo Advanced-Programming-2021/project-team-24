@@ -10,7 +10,12 @@ public class MagicCard extends Card {
      
     
     private Boolean isActived;
-    private Effect effect;   
+    private Effect effect;  
+    private Integer speed; 
+    public Integer getSpeed()
+    {
+        return this.speed;
+    }
     public boolean getIsActivated()
     {        
         return isActived;
