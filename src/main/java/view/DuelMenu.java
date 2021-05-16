@@ -1,10 +1,5 @@
 package view;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.regex.Matcher;
-
 import controller.DuelController;
 import controller.Message;
 import model.card.CardHolder;
@@ -27,7 +22,6 @@ public class DuelMenu {
 
     private static final String REGEX_ENTER_MENU = "menu enter (\\w+)";
 
-
     public void run() {
         while (true) {
             String command = Global.nextLine();
@@ -48,11 +42,7 @@ public class DuelMenu {
                 duelController.directAttack();
             } else if (command.equals("activate effect")) {
                 //TODO activate effect
-            }
-            else if (command.equals("next phase")){
-                duelController.runPhase();
-            }
-            else if (command.equals("show graveyard")) {
+            } else if (command.equals("show graveyard")) {
                 List<CardHolder> graveyard = getZoneCards("graveyard",false);
                 if (graveyard.isEmpty()) System.out.println("graveyard empty");
                 else showCardList(graveyard);
@@ -91,7 +81,7 @@ public class DuelMenu {
 
                 matcher = Global.getMatcher(command, "attack (?<place>[0-4])");
                 if (matcher.find()) {
-                    duelController.directAttack();
+                    //duelController.attack();
                     continue;
                 }
             }
@@ -142,32 +132,10 @@ public class DuelMenu {
     public List<Integer> selective(List<Integer> cardHolderId, int count, String message) {
         if (message != null && message.length() > 0)
             System.out.println(message);
-        List<Integer> ans = new ArrayList<Integer>();
-            //TODO
+        //TODO
         //How to implement??
         //maybe implement by address
-        return ans;
-    }
-
-    public List<Integer> selective(List<Integer> cardHolderId, int count, String message, String condition)
-    {
-        if(message != null && message.length() > 0)
-        {
-            System.out.println(message);
-        }        
-        List<Integer> ans = new ArrayList<Integer>();
-        while(true)
-        {
-            if(true)//condition is satisfied
-                break;
-        }
-        //two case 
-        return ans;
-    }
-    public Integer coin()
-    {
-        Integer ans = Global.random.nextInt(2);
-        return ans;
+        return null;
     }
 
     public List<CardHolder> getZoneCards(String zoneName, Boolean isOpponent) {

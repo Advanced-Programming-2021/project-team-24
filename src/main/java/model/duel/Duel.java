@@ -24,7 +24,7 @@ public class Duel {
     private int rounds;
     private Phase currentPhase;
     private HashMap<Phase,Phase> nextPhase = new HashMap<Phase,Phase>();
-    private HashMap<Zone, Integer> zoneCardCount = new HashMap<Zone, Integer>();
+    private HashMap<Zone,Integer> zoneCardCount = new HashMap<Zone, Integer>();
     public enum Phase{
         DRAW,
         STANDBY,
@@ -80,7 +80,6 @@ public class Duel {
         zones.add(new Zone("monster", this.opponent));
         zones.add(new Zone("magic", this.user));
         zones.add(new Zone("magic", this.opponent));
-        this.currentPhase = Phase.DRAW;
     }
 
     public Player getCurrentPlayer() {
@@ -198,25 +197,18 @@ public class Duel {
         for (Integer cardHolderId : cardHolders) {
             if(getCardHolderById(cardHolderId)  != null)
             {
-                if(targetZone.getName().equals("own"))
-                {
-
-                }
-                else
-                {                
-                    addCard(getCardHolderById(cardHolderId).getCard() , targetZone, cardState);
-                    removeCardHolderById(cardHolderId);            
-                }
+                addCard(getCardHolderById(cardHolderId).getCard() , targetZone, cardState);
+                removeCardHolderById(cardHolderId);
             }  
         }
     }
 
-    public void setterMap(List<Integer> cardHolders, String key, String value, Integer time)
+    public void setterMap(List<Integer> cardHolders, String key, String value)
     {
         for (Integer integer : cardHolders) {
             if(getCardHolderById(integer) != null)
             {
-                getCardHolderById(integer).setMapValue(key, value, time);
+                getCardHolderById(integer).setMapValue(key, value);
             }
         }
     }
@@ -276,7 +268,6 @@ public class Duel {
             }
             return false;
         } else {
-            //filter
         }
         return true;
 
