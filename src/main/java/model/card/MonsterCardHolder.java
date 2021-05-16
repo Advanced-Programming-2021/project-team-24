@@ -10,12 +10,12 @@ import model.user.User;
 
 public class MonsterCardHolder extends CardHolder {
     public MonsterCardHolder(Player owner, MonsterCard monsterCard, CardState cardState) {
-        super(owner ,cardState);                
-        //do in default
+        super(owner ,cardState);             
         this.card = monsterCard;
+        this.onDeath = new EffectManager(card.onDeath, owner);
         cardMap.put("attack", ((Integer)monsterCard.getAttack()).toString());
         cardMap.put("defence",  ((Integer)monsterCard.getDefence()).toString());
-        //TODO Auto-generated constructor stub
+
     }
     private MonsterCard card;    
     private HashMap<Event, List<EffectManager>> effects = new HashMap<Event, List<EffectManager>>();     
@@ -23,7 +23,6 @@ public class MonsterCardHolder extends CardHolder {
     {
         return effects.get(event);
     }
-    private int age;    
     public int getAttack()
     {
         return Integer.parseInt(getValue("attack"));
@@ -35,11 +34,6 @@ public class MonsterCardHolder extends CardHolder {
     public void flipSummon()
     {
         this.cardState = CardState.ATTACK_MONSTER;
-    }
-    public void endTurn()
-    {
-        this.age ++;
-        //update cardMap
     }
 
     
@@ -55,12 +49,8 @@ public class MonsterCardHolder extends CardHolder {
     {
         if(this.cardState == CardState.SET_DEFENCE)
         {
-            //run maybe some effect
             this.cardState = CardState.SET_DEFENCE;
         }
-    }
-    protected void recalculateEffect() {
-        // TODO Auto-generated method stub        
     }
     public Card getCard() {        
         return this.card;

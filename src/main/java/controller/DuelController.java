@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.lang.model.util.ElementScanner14;
-
-import com.google.common.graph.ElementOrder.Type;
-
 import model.duel.Duel;
+import model.duel.EffectChainer;
 import model.duel.EffectParser;
 import model.effect.Effect;
 import model.effect.EffectManager;
@@ -97,7 +94,6 @@ public class DuelController {
         return new Message(TypeMessage.INFO, duel.getMap().get(duel.getCurrentPlayer().getSelectedAddress()).toString());
     }
 
-    private List<String> zoneStrings = new ArrayList<String>();
 
     public List<CardHolder> getZones(List<String> zones) {
         return null;
@@ -107,10 +103,15 @@ public class DuelController {
         CardHolder cardHolder = duel.getMap().get(selectedAddress);
         if (cardHolder.getOnwerName().equals(duel.getCurrentPlayer().getNickname())) {
             if (cardHolder.getBoolMapValue("can_active")) {
-                if (cardHolder.getCardState() == CardState.SET_MAGIC) {
-                    //TODO check requirement
+                if (cardHolder.getCardState() == CardState.SET_MAGIC) {              
                     MagicCardHolder magicCard = (MagicCardHolder) cardHolder;
-                    
+                    if(magicCard.getEffectManager().isConditionSatified(new EffectParser(null, this, magicCard.getEffectManager())))//TODO
+                    {
+                        duelEvents.put(Event.ACTIVE_SPELL, -1);
+                        new EffectChainer(Event.ACTIVE_SPELL, magicCard, duel.getOpponent()).askForChain(duel.getOpponent());
+                    }
+                    else
+                        return new Message(TypeMessage.ERROR, "Activation conditions are not provided");
                     
                 } else if (cardHolder.getCardState() == CardState.HAND) {
                     //TODO requirement
@@ -132,11 +133,24 @@ public class DuelController {
                         if (duel.zoneCardCount().get(new Zone("monster", duel.getCurrentPlayer())) < 5) {                            
                             if(duel.getCurrentPlayer().getMap().getBoolMapValue("add_monster_turn"))
                             {
-                                duel.getMap().put(getSelectedAddress(), ((CardHolder)(new MonsterCardHolder(duel.getCurrentPlayer() ,(MonsterCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.ATTACK_MONSTER))));
-                                duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);                            
+                                if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON__OWNER) == null)
+                                {
+                                    duel.getMap().put(getSelectedAddress(), ((CardHolder)(new MonsterCardHolder(duel.getCurrentPlayer() ,(MonsterCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.ATTACK_MONSTER))));
+                                    duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);                            
+                                }
+                                else
+                                {
+                                    if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON__OWNER).get(0).isConditionSatified(new EffectParser(null, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON__OWNER).get(0))))//TODO;
+                                    {
+                                        new EffectParser(null, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON).get(0)).runEffect();
+                                        duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
+                                    }
+                                    else
+                                    {
+                                        return new Message(TypeMessage.ERROR, "summon conditions are not provided");
+                                    }
+                                }
                             }
-                            //TODO normalSummon
-                            //TODO tributeSummon
                         } else {
                             return new Message(TypeMessage.ERROR, "monster card zone is full");
                         }
@@ -173,8 +187,6 @@ public class DuelController {
                                 {
                                     return new Message(TypeMessage.ERROR, "You have already set magic card during the turn");
                                 }
-                                //TODO check already summoned/set
-                                //TODO setSpell/Trap
                             } else {
                                 return new Message(TypeMessage.ERROR, "spell card zone is full");
                             }
@@ -182,16 +194,29 @@ public class DuelController {
                             if (duel.zoneCardCount().get(new Zone("monster", duel.getCurrentPlayer())) < 5) {
                                 if(!duel.getCurrentPlayer().getMap().getBoolMapValue("add_monster_turn"))
                                 {
-                                    //TODO                                
-                                    duel.getMap().put(getSelectedAddress(), (CardHolder)(new MonsterCardHolder(duel.getCurrentPlayer() ,((MonsterCard)duel.getMap().get(getSelectedAddress()).getCard()), CardState.SET_DEFENCE)));                                    
-                                    duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
+                                    if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER) == null)
+                                    {
+                                        duel.getMap().put(getSelectedAddress(), ((CardHolder)(new MonsterCardHolder(duel.getCurrentPlayer() ,(MonsterCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.ATTACK_MONSTER))));
+                                        duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);                            
+                                    }
+                                    else
+                                    {
+                                        if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0).isConditionSatified(new EffectParser(null, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0))))//TODO;
+                                        {
+                                            new EffectParser(null, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0)).runEffect();
+                                            duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
+                                        }
+                                        else
+                                        {
+                                            return new Message(TypeMessage.ERROR, "summon conditions are not provided");
+                                        }
+                                    }
                                 }
                                 else
                                 {
                                     return new Message(TypeMessage.ERROR, "You have already summoned the monster card during the turn");
                                 }
                                 
-                                //TODO setMonster
                             } else {
                                 return new Message(TypeMessage.ERROR, "monster card zone is full");
                             }
@@ -231,6 +256,13 @@ public class DuelController {
                             if (selected.getCardState() == CardState.SET_DEFENCE)
                                 select.flip();
                             select.flipSummon();
+                            if(select.getEventEffect(Event.FLIP_OWNER) != null)
+                            {
+                                if(select.getEventEffect(Event.FLIP_OWNER).get(0).isConditionSatified(new EffectParser(null, this, select.getEventEffect(Event.FLIP_OWNER).get(0))))
+                                {
+                                    new EffectParser(null, this, select.getEventEffect(Event.FLIP_OWNER).get(0)).runEffect();                                    
+                                }                                
+                            }
                         } else {
                             return new Message(TypeMessage.ERROR, "You can't flip summon this card");
                         }

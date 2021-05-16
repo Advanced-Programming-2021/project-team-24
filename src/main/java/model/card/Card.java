@@ -3,6 +3,8 @@ package model.card;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.effect.Effect;
+
 
 public abstract class Card {
     protected String name;
@@ -10,7 +12,7 @@ public abstract class Card {
     protected Integer price;
     protected LimitType limitType;
     protected CardType cardType;    
-    
+    protected Effect onDeath;
 
     
     static List <Card> allCards = new ArrayList<Card>();

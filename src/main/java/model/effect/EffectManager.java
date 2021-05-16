@@ -24,6 +24,10 @@ public class EffectManager {
         this.effect = effect;
         //TODO set age remain by Effect                
     }
+    public Player getOwner()
+    {
+        return this.owner;
+    }
     public HashMap<String,String> getExtraKeyWords()
     {
         return this.extraKeyWords;
@@ -55,43 +59,45 @@ public class EffectManager {
     {
         if(this.effect.getRequirEvents() == null || this.effect.getRequirEvents().size() == 0)
         {
-            boolean flag = false;
-            for(int i = 0; i < this.effect.getRequirEvents().size(); i++)
+            if(effectParser.getDuelController().getDuel().getCardHolderById(this.idCardHolder).getBoolMapValue("can_active"))
             {
-                if(effect.getRequirEvents().get(i) == Event.ANY)
+                boolean flag = false;
+                for(int i = 0; i < this.effect.getRequirEvents().size(); i++)
                 {
-                    flag = true;
-                    break;
-                }
-                if(effectParser.getDuelController().getDuelEvents().get(effect.getRequirEvents().get(i)) != null)
-                {
-                    Event temp_event = effect.getRequirEvents().get(i);
-                    String a[] = temp_event.getValue().split("_");
-                    if(a.length == 1)
+                    if(effect.getRequirEvents().get(i) == Event.ANY)
                     {
                         flag = true;
                         break;
                     }
-                    if(a.length == 2)
+                    if(effectParser.getDuelController().getDuelEvents().get(effect.getRequirEvents().get(i)) != null)
                     {
-                        if(this.idCardHolder == effectParser.getDuelController().getDuelEvents().get(effect.getRequirEvents().get(i)))
+                        Event temp_event = effect.getRequirEvents().get(i);
+                        String a[] = temp_event.getValue().split("_");
+                        if(a.length == 1)
                         {
                             flag = true;
                             break;
                         }
-                    }                   
+                        if(a.length == 2)
+                        {
+                            if(this.idCardHolder == effectParser.getDuelController().getDuelEvents().get(effect.getRequirEvents().get(i)))
+                            {
+                                flag = true;
+                                break;
+                            }
+                        }                   
+                    }
                 }
+                if(flag)
+                {
+                    return Boolean.parseBoolean(effectParser.getCommandResult(effect.getRequirementCommandString()));
+                }
+                else
+                {
+                    return false;
+                }            
             }
-            if(flag)
-            {
-                return Boolean.parseBoolean(effectParser.getCommandResult(effect.getRequirementCommandString()));
-            }
-            else
-            {
-                return false;
-            }            
         }   
-        else
         return false;
         
     }

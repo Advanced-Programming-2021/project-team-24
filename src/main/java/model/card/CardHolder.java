@@ -2,8 +2,8 @@ package model.card;
 
 import java.util.*;
 
+import model.effect.EffectManager;
 import model.user.Player;
-import model.user.User;
 
 
 
@@ -15,8 +15,8 @@ public abstract class CardHolder {
     protected CardType cardType;
     protected Boolean isEmpty;
     protected List <Integer> effectManagerId;        
-    protected List <Integer> appliedEffects;    
-    protected abstract void recalculateEffect(); 
+    protected List <Integer> appliedEffects;   
+    protected EffectManager onDeath;     
     protected HashMap<String, String> cardMap = new HashMap<String, String>();
     protected HashMap<String, Integer> ageEffects = new HashMap<String, Integer>();
     protected Player owner;
@@ -54,6 +54,14 @@ public abstract class CardHolder {
                 cardMap.put(mapEntry.getKey(), null);
             }
         }
+    }
+    
+    public CardType getCardType() {
+        return this.cardType;
+    }
+
+    public void setCardType(CardType cardType) {
+        this.cardType = cardType;
     }
     
        
@@ -96,6 +104,11 @@ public abstract class CardHolder {
         else
             return convertStringToBool(cardMap.get(string));
     }
+
+    public void prepareForDeath()
+    {
+
+    }
     public boolean haveEffectWithId(int idEffectManager)
     {
         for(int i = 0; i < appliedEffects.size(); i++)
@@ -122,8 +135,8 @@ public abstract class CardHolder {
         {
             if(appliedEffects.get(i) == idEffectManager)
             {
-                appliedEffects.remove(idEffectManager);                
-                recalculateEffect();
+                appliedEffects.remove(idEffectManager); 
+                //TODO
             }
         }        
     }    

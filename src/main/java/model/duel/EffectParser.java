@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.common.io.Files;
 import com.google.gson.Gson;
 import controller.DuelController;
 import model.card.Card;
@@ -21,10 +20,6 @@ import model.zone.Zone;
 import view.DuelMenu;
 import view.Global;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class EffectParser {    
     DuelController duelController;
@@ -38,12 +33,13 @@ public class EffectParser {
     {
         return this.duelController;
     }
-    public EffectParser(DuelMenu duelMenu, DuelController duelController, Player owner, EffectManager effectManager, Integer idCardHolderOwner)
+    public EffectParser(DuelMenu duelMenu, DuelController duelController, EffectManager effectManager)
     {
+        
         this.extraKeyWords = effectManager.getExtraKeyWords();
-        this.idCardHolderOwner = idCardHolderOwner;
+        this.idCardHolderOwner = effectManager.getOwnerCardHolderId();
         this.effect = effectManager.getEffect();
-        this.owner = owner;        
+        this.owner = this.effectManager.getOwner();        
         this.duelController = duelController;
     }    
     String ans;
@@ -510,7 +506,7 @@ public class EffectParser {
     public static void main(String[] args) {
         System.out.println(splitCorrect("aa,aa(,aa,a),b,b,()()(,)(,),", ','));
         String filter = " \"minLevel\":\"3\", \"cardType\":\"SPELL\"";
-        new EffectParser(null, null, null, null, 1).getListByFilter(filter);
+        new EffectParser(null, null , null).getListByFilter(filter);
     }
     public Integer sumCommand(String command)
     {
