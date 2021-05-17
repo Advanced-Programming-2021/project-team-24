@@ -12,13 +12,12 @@ public class MonsterCardHolder extends CardHolder {
     public MonsterCardHolder(Player owner, MonsterCard monsterCard, CardState cardState) {
         super(owner ,cardState);             
         this.card = monsterCard;
-        this.onDeath = new EffectManager(card.onDeath, owner);
         cardMap.put("attack", ((Integer)monsterCard.getAttack()).toString());
         cardMap.put("defence",  ((Integer)monsterCard.getDefence()).toString());
 
     }
     private MonsterCard card;    
-    private HashMap<Event, List<EffectManager>> effects = new HashMap<Event, List<EffectManager>>();     
+    
     public List<EffectManager> getEventEffect(Event event)
     {
         return effects.get(event);
@@ -40,7 +39,7 @@ public class MonsterCardHolder extends CardHolder {
     
     public void changeCardState(CardState newCardState)
     {
-        if(!super.convertStringToBool(cardMap.get("can_change_state")))
+        if(!Boolean.parseBoolean(cardMap.get("can_change_state")))
             this.cardState = newCardState;
     }
 

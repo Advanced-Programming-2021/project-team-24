@@ -66,15 +66,44 @@ import com.google.gson.annotations.SerializedName;
 */
 public class Effect {
     @SerializedName("effectType")
-    private EffectType typeOfEffect;
+    private EffectType effectType;
     private String requirement; //BOOLEAN FUNCTION
     private String effect;
     private Boolean askForActivation;
     private String name;
     private String reverse;
-    private String askAbleMessage;    
+    private String askAbleMessage;        
     private List<Event> requiredEvents;
+    private Integer speed;
 
+    public Integer getSpeed() {
+        return this.speed;
+    }
+
+    public void setSpeed(Integer speed) {
+        this.speed = speed;
+    }
+    public void setEffectType(EffectType effectType)
+    {
+        this.effectType = effectType;
+    }
+    public void setReverse(String reverse)
+    {
+        this.reverse = reverse;
+    }
+    public String getReverse()
+    {
+        return this.reverse;
+    }
+    public void setEffect(String effect)
+    {
+        this.effect = effect;
+    }
+
+    public EffectType getEffectType()
+    {
+        return this.effectType;
+    }
     public List<Event> getRequirEvents()
     {
         return this.requiredEvents;

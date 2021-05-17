@@ -1,9 +1,11 @@
   
 package model.card;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
 import model.effect.Effect;
 
 
@@ -59,6 +61,19 @@ public abstract class Card {
             return false;
         else
             return true;
+    }
+    public static String toEnumsFormatString(String string){
+        return string.toUpperCase().replace('-', '_').replace(' ', '_');
+    }
+    public BufferedReader getCsvReader(String pathToCsv) throws FileNotFoundException {
+        //return BufferedReader(new FileReader(pathToCsv));
+        return null;
+    }
+    public void writeJson (String path) throws IOException {
+        File file = new File(path + this.name + ".json");
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write(new Gson().toJson(this));
+        fileWriter.close();
     }
     //TODO
 }

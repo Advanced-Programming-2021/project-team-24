@@ -3,6 +3,7 @@ package controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.duel.Duel;
 import model.duel.EffectChainer;
@@ -19,16 +20,33 @@ import model.card.MonsterCardHolder;
 import model.zone.Address;
 import model.zone.Zone;
 import model.zone.Zones;
+import view.DuelMenu;
 
 public class DuelController {
     Duel duel;
+    DuelMenu duelMenu;
     public HashMap<Event, Integer> duelEvents;
 
 
     public void resetDuelEvents()
     {
+        for(Map.Entry event : duelEvents.entrySet())
+        {
+            if((Integer)event.getValue() == -1)
+            {
+                duelEvents.put((Event)event.getKey(), null);
+            }
+        }
+        
+    }
+    public void resetDuelEventTurn()
+    {
         duelEvents = new HashMap<Event, Integer>();
     }
+    public void setDuelMenu(DuelMenu duelMenu)
+    {
+        this.duelMenu = duelMenu;
+    }  
     public HashMap<Event, Integer> getDuelEvents()
     {
         return this.duelEvents;
@@ -81,8 +99,7 @@ public class DuelController {
 
     public Message showSelectedCard() {
         if (duel.getCurrentPlayer().getSelectedAddress() == null)
-            return new Message(TypeMessage.ERROR, "no card is selected yet");
-        //TODO check "card is not visible"
+            return new Message(TypeMessage.ERROR, "no card is selected yet");        
         if (duel.getMap().get(duel.getCurrentPlayer().getSelectedAddress()).getOwner().equals(duel.getOpponent())) {
             CardState cardHolderState = duel.getMap().get(duel.getCurrentPlayer().getSelectedAddress()).getCardState();
             if (cardHolderState == CardState.ACTIVE_MAGIC || cardHolderState == CardState.ATTACK_MONSTER || cardHolderState == CardState.VISIBLE_MAGIC || CardState.DEFENCE_MONSTER == cardHolderState) {
@@ -105,10 +122,11 @@ public class DuelController {
             if (cardHolder.getBoolMapValue("can_active")) {
                 if (cardHolder.getCardState() == CardState.SET_MAGIC) {              
                     MagicCardHolder magicCard = (MagicCardHolder) cardHolder;
-                    if(magicCard.getEffectManager().isConditionSatified(new EffectParser(null, this, magicCard.getEffectManager())))//TODO
+                    if(magicCard.getEffectManager().isConditionSatified(new EffectParser(duelMenu, this, magicCard.getEffectManager())))//TODO
                     {
                         duelEvents.put(Event.ACTIVE_SPELL, -1);
                         new EffectChainer(Event.ACTIVE_SPELL, magicCard, duel.getOpponent()).askForChain(duel.getOpponent());
+                        
                     }
                     else
                         return new Message(TypeMessage.ERROR, "Activation conditions are not provided");
@@ -260,7 +278,7 @@ public class DuelController {
                             {
                                 if(select.getEventEffect(Event.FLIP_OWNER).get(0).isConditionSatified(new EffectParser(null, this, select.getEventEffect(Event.FLIP_OWNER).get(0))))
                                 {
-                                    new EffectParser(null, this, select.getEventEffect(Event.FLIP_OWNER).get(0)).runEffect();                                    
+                                    new EffectParser(null, this, select.getEventEffect(Event.FLIP_OWNER).get(0)).runEffect();
                                 }                                
                             }
                         } else {

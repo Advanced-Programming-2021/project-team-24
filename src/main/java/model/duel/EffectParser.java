@@ -3,6 +3,7 @@ package model.duel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +16,7 @@ import model.card.CardType;
 import model.card.Event;
 import model.effect.Effect;
 import model.effect.EffectManager;
+import model.effect.EffectType;
 import model.user.Player;
 import model.zone.Zone;
 import view.DuelMenu;
@@ -39,8 +41,47 @@ public class EffectParser {
         this.extraKeyWords = effectManager.getExtraKeyWords();
         this.idCardHolderOwner = effectManager.getOwnerCardHolderId();
         this.effect = effectManager.getEffect();
+        this.effectManager = effectManager;
         this.owner = this.effectManager.getOwner();        
         this.duelController = duelController;
+        if(effectManager.getEffect().getEffectType() == EffectType.QUICK_PLAY)
+        {
+            //add reverse to the player
+            //clone
+            //ADD  effect hashMap to the hashMap of player
+            Effect reverseEffect = effect;
+            reverseEffect.setEffect(effect.getReverse());
+            reverseEffect.setReverse(null);
+            if(owner.getMap().getEffects().get(Event.END_TURN) == null)
+            {
+                owner.getMap().getEffects().put(Event.END_TURN, new ArrayList<EffectManager>());
+            }
+            for(HashMap.Entry entry : effectManager.getExtraKeyWords().entrySet())
+            {
+                //add value to original hashMap
+                owner.getMap().getCardMap().put((String)entry.getKey(), (String)entry.getValue());
+            }
+            EffectManager deathEffectManager = new EffectManager(reverseEffect, owner, owner.getMap().getId());
+            owner.getMap().getEffects().get(Event.END_TURN).add(deathEffectManager);
+        }
+        else
+        {
+            //add death event as reverse
+            //TODO
+            Effect reverseEffect = effect;
+            reverseEffect.setEffect(effect.getReverse());
+            reverseEffect.setReverse(null);
+            if(owner.getMap().getEffects().get(Event.END_TURN) == null)
+            {
+                owner.getMap().getEffects().put(Event.END_TURN, new ArrayList<EffectManager>());
+            }
+            EffectManager deathEffectManager = new EffectManager(reverseEffect, owner, effectManager.getOwnerCardHolderId());
+            if(duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().get(Event.DEATH_OWNER) == null)
+            {
+                duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().put(Event.DEATH_OWNER , new ArrayList<EffectManager>());
+            }
+            duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().get(Event.DEATH_OWNER).add(deathEffectManager);
+        }
     }    
     String ans;
     public String runEffect()

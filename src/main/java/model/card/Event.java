@@ -35,7 +35,10 @@ public enum Event {
     SET("SET"),
     @SerializedName("ACTIVE_SPELL")
     ACTIVE_SPELL("ACTIVE_SPELL"),
-
+    @SerializedName("REVERSE")
+    REVERSE("REVERSE"),
+    @SerializedName("END_TURN")
+    END_TURN("END_TURN")
     ;
     private String label;
     private Event(String label)

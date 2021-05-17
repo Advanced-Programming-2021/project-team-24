@@ -2,8 +2,11 @@ package model.card;
 
 import java.util.*;
 
+import controller.DuelController;
+import model.duel.EffectParser;
 import model.effect.EffectManager;
 import model.user.Player;
+import view.DuelMenu;
 
 
 
@@ -14,13 +17,18 @@ public abstract class CardHolder {
     protected CardState cardState;
     protected CardType cardType;
     protected Boolean isEmpty;
-    protected List <Integer> effectManagerId;        
-    protected List <Integer> appliedEffects;   
-    protected EffectManager onDeath;     
+    protected List <EffectManager> effectManagerList;        
+    protected List <Integer> appliedEffects;       
     protected HashMap<String, String> cardMap = new HashMap<String, String>();
     protected HashMap<String, Integer> ageEffects = new HashMap<String, Integer>();
+    protected HashMap<Event, List<EffectManager>> effects = new HashMap<Event, List<EffectManager>>();    
     protected Player owner;
 
+
+    public HashMap<Event, List<EffectManager>> getEffects()
+    {
+        return this.effects;
+    }
     
     public String getOnwerName()
     {
@@ -37,7 +45,7 @@ public abstract class CardHolder {
         this.cardState = null;
         this.id = idCounter ++;        
         this.appliedEffects = new ArrayList<Integer>();
-        this.effectManagerId = new ArrayList<Integer>();        
+        this.effectManagerList = new ArrayList<EffectManager>();        
         //TODO effectManager should be updated by creating effectManagerId        
     }
     public CardHolder(Player owner, CardState cardState) {
@@ -63,14 +71,7 @@ public abstract class CardHolder {
     public void setCardType(CardType cardType) {
         this.cardType = cardType;
     }
-    
-       
-    /*{
-        this.cardState = null;
-        this.id = idCounter ++;        
-        this.effectManagerId = new ArrayList<Integer>();
-        this.appliedEffects = new ArrayList<Integer>();
-    }*/
+           
     public void setMapValue(String key, String value, Integer time)
     {
         cardMap.put(key, value);
@@ -78,15 +79,6 @@ public abstract class CardHolder {
             ageEffects.put(key ,Math.max(ageEffects.get(key) , time));
         else
             ageEffects.put(key, time);
-    }
-    protected Boolean convertStringToBool(String string)
-    {
-        if(string.equals("true"))
-            return true;
-        else
-        if(string.equals("false"))
-            return false;
-        return null;
     }
     public abstract void flip();
     public String getValue(String string)
@@ -102,12 +94,19 @@ public abstract class CardHolder {
                 return false;
             }
         else
-            return convertStringToBool(cardMap.get(string));
+            return Boolean.parseBoolean(cardMap.get(string));
     }
 
-    public void prepareForDeath()
+    public void prepareForDeath(DuelMenu duelMenu, DuelController duelController)
     {
-
+        for(int i = 0; i < effects.get(Event.DEATH_OWNER).size(); i++)
+        {
+            if(effects.get(Event.DEATH_OWNER).get(i).isConditionSatified(new EffectParser(duelMenu, duelController, effects.get(Event.DEATH_OWNER).get(i))))
+            {
+                EffectParser temp = new EffectParser(duelMenu, duelController, effects.get(Event.DEATH_OWNER).get(i));
+                temp.runEffect();
+            }
+        }
     }
     public boolean haveEffectWithId(int idEffectManager)
     {
@@ -136,7 +135,6 @@ public abstract class CardHolder {
             if(appliedEffects.get(i) == idEffectManager)
             {
                 appliedEffects.remove(idEffectManager); 
-                //TODO
             }
         }        
     }    
@@ -152,7 +150,10 @@ public abstract class CardHolder {
             return false;        
     }
     
-    
+    protected void addEffectManager(EffectManager effectManager)
+    {
+        this.effectManagerList.add(effectManager);
+    }
     public CardState getCardState()
     {
         return this.cardState;

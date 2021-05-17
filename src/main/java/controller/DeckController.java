@@ -3,7 +3,6 @@ package controller;
 import model.card.Card;
 import model.deck.Deck;
 import model.deck.Decks;
-import model.user.User;
 
 import java.util.List;
 

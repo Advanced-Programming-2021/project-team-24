@@ -16,12 +16,13 @@ public class EffectManager {
     private Boolean isActivated;    
     private HashMap<String, String> extraKeyWords;
     private Effect effect;
-    public EffectManager(Effect effect, Player owner){
+    public EffectManager(Effect effect, Player owner, Integer idCardHolder){
         idCounter++;
         isActivated = false;
         this.owner = owner;
         this.id = idCounter;
         this.effect = effect;
+        this.idCardHolder = idCardHolder;
         //TODO set age remain by Effect                
     }
     public Player getOwner()
@@ -34,7 +35,7 @@ public class EffectManager {
     }
     public void setActivated()
     {
-        this.isActivated = true;
+        this.isActivated = true;        
     }
     
     public Boolean getActivated()
