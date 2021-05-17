@@ -13,8 +13,7 @@ public class MagicCard extends Card {
      
     
     private Boolean isActived;
-    private Effect effect;  
-    private Integer speed;
+    private Effect effect; 
     @SerializedName("magicIcon")
     private MagicIcon magicIcon;
     @SerializedName("magicType")
