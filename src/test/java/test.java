@@ -8,6 +8,7 @@ import java.util.Scanner;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import org.checkerframework.checker.units.qual.A;
 import org.junit.Test;
 
 import controller.DuelController;
@@ -35,26 +36,42 @@ public class test {
         MonsterCard u = new Gson().fromJson(
             fileRead("Battle warrior.json"),
              MonsterCard.class);
-        Player vvvv = new Player(null);
-        MonsterCardHolder temp = new MonsterCardHolder(vvvv, u, CardState.ATTACK_MONSTER);
-        //User a = new User("alireza", "haqi", "alirezaaaaa");
-        //User b = new User("b   ", "b " , "alirezaa aaa aa a ");
         model.user.User.register("behzad", "password", "nickname");
         model.user.User.register("alireza", "haqi", "hesam");
         User a = User.readUser("alireza");
         User b= User.readUser("behzad");
-        DuelController duelController = new DuelController(new Duel(a, b, Integer.toString(1)));
         DuelMenu duelMenu = new DuelMenu(a, b, "1");
+        
+        MonsterCardHolder temp = new MonsterCardHolder(duelMenu.getPlayer(true), u, CardState.ATTACK_MONSTER);
+        //User a = new User("alireza", "haqi", "alirezaaaaa");
+        //User b = new User("b   ", "b " , "alirezaa aaa aa a ");        
+        
         Effect effect = new Effect();
-        effect.setEffect("");
-        effect.setReverse("reverse");
+        effect.setEffect("if(#1#>#2#)&return_t&else&return_f&");
+        effect.setReverse("if(#1#>#2#)&return_t&else&return_f&");
         effect.setEffectType(EffectType.CONTINUES);
-        EffectManager vvvvvvv = new EffectManager(effect, vvvv , temp.getId());
-        duelController.setDuelMenu(duelMenu);
-        EffectParser v = new EffectParser(duelMenu, duelController, vvvvvvv);
-        String command = "if(#1#>#2#){return_t}else{return_f}";
-        String ans = v.getCommandResult(command);
+        EffectManager vvvvvvv = new EffectManager(effect,
+         duelMenu.getPlayer(true) 
+         , temp.getId());
+        duelMenu.getDuelController().setDuelMenu(duelMenu);
+        EffectParser v = new EffectParser(duelMenu, duelMenu.getDuelController(), vvvvvvv);
+        String command = "if(#1#>#2#)&return_t&else&return_f&";
+        String ans = v.runEffect();
         assertEquals(ans, "false");
+        // boolean q_yn checking
+        /*effect.setEffect("q_yn(halet chetoreh){return_t}{return_f}");
+        effect.setReverse("q_yn(halet chetoreh){return_t}{return_f}");
+        effect.setEffectType(EffectType.CONTINUES);
+        vvvvvvv = new EffectManager(effect,
+         duelMenu.getPlayer(true) 
+         , temp.getId());
+        duelMenu.getDuelController().setDuelMenu(duelMenu);
+        v = new EffectParser(duelMenu, duelMenu.getDuelController(), vvvvvvv);
+        command = "if(#1#>#2#)&return_t&else&return_f&";
+        ans = v.runEffect();*/
+        assertEquals(ans, "true");
+        
+        
 
     }
     public void listFilesForFolder(final File folder) {
