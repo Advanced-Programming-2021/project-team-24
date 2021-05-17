@@ -33,13 +33,9 @@ public class MonsterCard extends Card {
     {
         return this.defence;
     }
-    public static String toEnumsFormatString(String string){
-        return string.toUpperCase().replace('-', '_').replace(' ', '_');
-    }
     public static void main(String[] args) throws IOException {
         MonsterCard v = new MonsterCard();
-        String pathToCsv = "Monster.csv";
-        BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
+        BufferedReader csvReader = v.getCsvReader("Monster.csv");
         String row;
         csvReader.readLine();
         while ((row = csvReader.readLine()) != null) {
@@ -53,14 +49,11 @@ public class MonsterCard extends Card {
             v.defence = Integer.parseInt(data[6]);
             v.description = data[7];
             v.price = Integer.parseInt(data[8]);
-            v.limitType = LimitType.LIMITED;
+            v.limitType = LimitType.UNLIMITED;
             v.cardType = CardType.MONSTER;
             // v.effects = new HashMap<Event, String>();
             // v.effects.put(Event.ATTACK , " nothing");
-            File file = new File("Cards/MonsterCards/" + v.name + ".json");
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(new Gson().toJson(v));
-            fileWriter.close();
+            v.writeJson("Cards/MonsterCards/");
             MonsterCard card = new Gson().fromJson(new Gson().toJson(v), MonsterCard.class);
         }
         csvReader.close();
