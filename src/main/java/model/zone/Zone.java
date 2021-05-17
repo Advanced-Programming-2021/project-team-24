@@ -15,7 +15,7 @@ public class Zone {
 
     public static void init(Player player) {
         for (String zoneName : zoneStrings) {
-            zones.add(Zone.get(zoneName, player));
+            zones.add(new Zone(zoneName, player));
         }
     }
 
