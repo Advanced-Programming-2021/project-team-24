@@ -3,18 +3,20 @@ package model.zone;
 
 
 public enum Zones {
-    GRAVEYARD("graveyard",60),
-    HAND("hand",5),
-    MONSTER("monster",5),
-    MAGIC("magic",5),
-    FIELD("field",1);
+    GRAVEYARD("graveyard",60,false),
+    HAND("hand",5,false),
+    MONSTER("monster",5,true),
+    MAGIC("magic",5,true),
+    FIELD("field",1,true);
 
 
     public final String label;
     public final int capacity;
-    private Zones(String label,int capacity) {
+    public final boolean isDiscrete;
+    private Zones(String label,int capacity,boolean isDiscrete) {
         this.label = label;
         this.capacity = capacity;
+        this.isDiscrete = isDiscrete;
     }
     public String getValue()
     {

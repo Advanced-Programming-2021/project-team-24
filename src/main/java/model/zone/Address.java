@@ -45,8 +45,8 @@ public class Address {
         this.place = address.place;
     }
 
-    public void plusplus() {
-        this.place++;
+    public Address getNextPlace() {
+        return get(zone,place+1);
     }
 
     public int getPlace() {
