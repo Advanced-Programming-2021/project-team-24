@@ -24,10 +24,10 @@ public class User {
     private List<String> cardNames;
     private List<Card> cards;//fill it after reading json
     private Decks decks;
-    private static List<String> usernames;
+    private static List<String> usernames = new ArrayList<>();
     static{
         //read users from json files in "/users" folder
-        initialize();
+        //initialize();
     }
 
     public String getNickname()
@@ -67,14 +67,16 @@ public class User {
 
     private void addUser(){
         try {
-            FileWriter fileWriter = new FileWriter("/users/"+this.username+".json");
+            File file = new File("users/"+this.username+".json");
+            file.createNewFile();
+            FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(new Gson().toJson(this));
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
     public static void initialize()
     {
         // get list of all users from folder
@@ -126,8 +128,12 @@ public class User {
     public static User readUser(String username)
     {
         try {
-            String json = new String(Files.readAllBytes(Paths.get("/users/"+username+".json")));
-            return new Gson().fromJson(json,User.class);
+            File file = new File("Users/"+username+".json");
+            if (file.exists()) {
+                String json = new String(Files.readAllBytes(Paths.get("Users/" + username + ".json")));
+                return new Gson().fromJson(json, User.class);
+            }
+            else return null;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

@@ -42,7 +42,8 @@ public class EffectParser {
         this.idCardHolderOwner = effectManager.getOwnerCardHolderId();
         this.effect = effectManager.getEffect();
         this.effectManager = effectManager;
-        this.owner = this.effectManager.getOwner();        
+        this.owner = this.effectManager.getOwner();  
+        this.duelMenu = duelMenu;      
         this.duelController = duelController;
         if(effectManager.getEffect().getEffectType() == EffectType.QUICK_PLAY)
         {
@@ -87,7 +88,9 @@ public class EffectParser {
     public String runEffect()
     {
         ans = null;
-        getCommandResult(effect.getEffectCommand());
+        getCommandResult
+        (effect.getEffectCommand()
+        );
         return ans;
     }
     public Player getOwner()
@@ -101,19 +104,18 @@ public class EffectParser {
 
     public String handleConditional(String command)
     {
-        Matcher matcher = Global.getMatcher(command, "if\\(#(.+)#[<>]#(.+)#\\){(.+)}");
+        Matcher matcher = Global.getMatcher(command, "if\\(#(.+)#[<>]#(.+)#\\)(&.+&)");
         matcher.find();
         String s1 = matcher.group(1);
         String s2 = matcher.group(2);
         if(s1.compareTo(s2) > 0)
         {
-            return getCommandResult(splitByBracket(matcher.group(3)).get(0));
+            return getCommandResult(splitCorrect(matcher.group(3), '&').get(1));
         }
         else
         {
-            return getCommandResult(splitByBracket(matcher.group(3)).get(1));
-        }
-        // if(#statement# [<>] #statement#)        
+            return getCommandResult(splitCorrect(matcher.group(3), '&').get(3));
+        }      
     }
     public void changeZone(String command)
     {
@@ -168,7 +170,8 @@ public class EffectParser {
     //TODO
     public String q_yn(String command)
     {
-        Matcher matcher = Global.getMatcher(command, "q_yn\\(\"(.+)\"\\)(.+)");
+        Matcher matcher = Global.getMatcher(command, "q_yn\\(([^{}]+)\\)(.+)");
+        matcher.find();
         String queString = matcher.group(1);
         Boolean ans = duelMenu.BooleanQYN(queString);        
         List<String> ifElsePart = splitByBracket(matcher.group(2));
@@ -209,16 +212,16 @@ public class EffectParser {
     public static final String GET_STRING = "get\\(([^()]*)\\)";
     public String getCommandResult(String command)
     {
-        if(command.lastIndexOf(';') == command.length())
+        if(command.lastIndexOf(';') == -1)
         {
             //check get
             for(int i = 0; i < 4; i++)
             {
-                if(command.substring(0, 8).equals("return_t") && ans != null)
+                if(command.length() >= 8 && command.substring(0, 8).equals("return_t") && ans == null)
                 {
                     ans = "true";
                 }
-                if(command.substring(0, 8).equals("return_f") && ans != null)
+                if(command.length() >= 8 && command.substring(0, 8).equals("return_f") && ans == null)
                 {
                     ans = "false";
                 }
@@ -227,26 +230,26 @@ public class EffectParser {
                     coin(command);
                 }
                 handleGetCommand(command);
-                if(command.substring(0, 2).equals("if"))
+                if(command.length() >= 2 && command.substring(0, 2).equals("if"))
                 {
                     return handleConditional(command);
                 }
-                if(command.substring(0, 4).equals("q_yn"))
+                if(command.length() >= 4 && command.substring(0, 4).equals("q_yn"))
                 {
                     return q_yn(command);
                 }
-                if(command.substring(0, 3).equals("set"))
+                if(command.length() >= 3 && command.substring(0, 3).equals("set"))
                 {
                     setCommand(command);
                 }
                 handleChangeLPCommand(command);
                 handleNormCommand(command);
                 command = parseKeyWords(command);
-                if(command.substring(0, 3).equals("del"))
+                if(command.length() >= 3 && command.substring(0, 3).equals("del"))
                 {
                     deleteListFromList(command);
                 }
-                if(command.substring(0, 3).equals("sum"))
+                if(command.length() >= 3 && command.substring(0, 3).equals("sum"))
                 {
                     getSumOverField(command);
                 }
@@ -400,7 +403,7 @@ public class EffectParser {
         int pre = 0;
         for(int i = 0; i < command.length(); i++)
         {
-            if(command.charAt(i) == ',' && counter == 0)
+            if(command.charAt(i) == ch && counter == 0)
             {
                 list.add(command.substring(pre, i));
                 pre = i + 1;                
@@ -432,6 +435,8 @@ public class EffectParser {
             }
             if(command.charAt(i) == '{')
             {
+                if(counter == 0)
+                    pre = i + 1;
                 flag = 1;   
                 counter++;
             }

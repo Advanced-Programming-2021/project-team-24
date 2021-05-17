@@ -98,7 +98,10 @@ public class DuelMenu {
             System.out.println("invalid command");
         }
     }
-
+    public DuelController getDuelController()
+    {
+        return this.duelController;
+    }
     private void showCardList(List<CardHolder> cardHolders) {
         int i = 0;
         for (CardHolder cardHolder : cardHolders) {
@@ -110,7 +113,8 @@ public class DuelMenu {
 
     public Boolean BooleanQYN(String question) {
         System.out.println(question);
-        String out = Global.nextLine();
+        return true;
+        /*String out = Global.nextLine();
         if (out.toLowerCase().equals("y"))
             return true;
         else if (out.toLowerCase().equals("n"))
@@ -118,7 +122,7 @@ public class DuelMenu {
         else {
             System.out.println("please enter valid answer");
             return BooleanQYN(question);
-        }
+        }*/
     }
 
     public Integer Dice() {
@@ -176,12 +180,12 @@ public class DuelMenu {
     }
 
     public Player getPlayer(Boolean isOpponent){
-        if (isOpponent) return duelController.getDuel().getOtherPlayer();
+        if (isOpponent) return duelController.getDuel().getOpponent();
         else return duelController.getDuel().getCurrentPlayer();
     }
 
     public void showBoard() {
-        System.out.println(duelController.getDuel().getOtherPlayer().toString());
+        System.out.println(duelController.getDuel().getOpponent().toString());
 
         for(int i=0;i<getZoneCards("hand",true).size();i++) System.out.print("\tc");
         System.out.println();

@@ -81,6 +81,8 @@ public class Duel {
         zones.add(new Zone("magic", this.user));
         zones.add(new Zone("magic", this.opponent));
         this.currentPhase = Phase.DRAW;
+        this.currentPlayer = this.user;        
+        this.map = new HashMap<Address, CardHolder>();
     }
 
     public Player getCurrentPlayer() {
@@ -146,6 +148,10 @@ public class Duel {
                 if(v.get(i).getId() == cardHolderId)
                     return v.get(i);
         }
+        if(currentPlayer.getMap().getId() == cardHolderId)
+            return currentPlayer.getMap();
+        if(opponent.getMap().getId() == cardHolderId)
+            return opponent.getMap();
         return null;
     }
 
