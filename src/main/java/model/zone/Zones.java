@@ -3,16 +3,18 @@ package model.zone;
 
 
 public enum Zones {
-    GRAVEYARD("graveyare"),
-    HAND("hand"),
-    MONSTER("monster"),
-    MAGIC("magic"),
-    FIELD("field");
+    GRAVEYARD("graveyard",60),
+    HAND("hand",5),
+    MONSTER("monster",5),
+    MAGIC("magic",5),
+    FIELD("field",1);
 
 
     public final String label;
-    private Zones(String label) {
+    public final int capacity;
+    private Zones(String label,int capacity) {
         this.label = label;
+        this.capacity = capacity;
     }
     public String getValue()
     {
@@ -28,7 +30,7 @@ public enum Zones {
         return null;
     }
     public static void main(String[] args) {
-        if(Zones.GRAVEYARD.label.equals("grveyard"))
+        if(Zones.GRAVEYARD.label.equals("graveyard"))
         {
             System.out.println("yse");
         }

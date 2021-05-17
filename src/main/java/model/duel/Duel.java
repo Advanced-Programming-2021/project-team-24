@@ -1,8 +1,6 @@
 package model.duel;
 
-import model.card.Card;
-import model.card.CardHolder;
-import model.card.CardState;
+import model.card.*;
 import model.effect.EffectManager;
 import model.user.Player;
 import model.user.User;
@@ -19,7 +17,7 @@ public class Duel {
     Player currentPlayer;
     Player otherPlayer;
     private static List<EffectManager> effectManagerList;
-    private HashMap<Address, CardHolder> map;
+    private HashMap<Address, CardHolder> map = new HashMap<>();
     private List<Zone> zones;
     private int rounds;
     private Phase currentPhase;
@@ -72,15 +70,24 @@ public class Duel {
         zones = new ArrayList<Zone>();
         this.user = new Player(user);
         this.opponent = new Player(opponent);
-        zones.add(new Zone("graveyard", this.user));
-        zones.add(new Zone("graveyard", this.opponent));
-        zones.add(new Zone("hand", this.user));
-        zones.add(new Zone("hand", this.opponent));
-        zones.add(new Zone("monster", this.user));
-        zones.add(new Zone("monster", this.opponent));
-        zones.add(new Zone("magic", this.user));
-        zones.add(new Zone("magic", this.opponent));
+        this.currentPlayer = this.user;
+        this.otherPlayer = this.opponent;
+        zones.add(Zone.get("graveyard", this.user));
+        zones.add(Zone.get("graveyard", this.opponent));
+        zones.add(Zone.get("hand", this.user));
+        zones.add(Zone.get("hand", this.opponent));
+        zones.add(Zone.get("monster", this.user));
+        zones.add(Zone.get("monster", this.opponent));
+        zones.add(Zone.get("magic", this.user));
+        zones.add(Zone.get("magic", this.opponent));
         this.currentPhase = Phase.DRAW;
+        Address address = Address.get(Zone.get("monster",currentPlayer),2);
+        map.put(address,new MonsterCardHolder(currentPlayer,new MonsterCard(),CardState.ATTACK_MONSTER));
+        System.out.println(address);
+        Zone.init(this.user);
+        Zone.init(this.opponent);
+        Address.init(this.user);
+        Address.init(this.opponent);
     }
 
     public Player getCurrentPlayer() {
@@ -128,7 +135,7 @@ public class Duel {
         }
     }
     public List<CardHolder> getZone(Zone zone){
-        Address address = new Address(zone , 0);
+        Address address = Address.get(zone , 0);
         List<CardHolder> cardHolders = new ArrayList<>();
         for(int i=1;i<=60;i++){
             CardHolder cardHolder = getMap().get(address);
@@ -155,13 +162,13 @@ public class Duel {
             List<CardHolder> v = getZone(zone);
             for(int i = 0; i < v.size(); i++)
                 if(v.get(i).getId() == cardHolderId)
-                    return new Address(zone,i);
+                    return Address.get(zone,i);
         }
         return null;
     }
 
     public void removeCardHolderByAddress(Address address){
-        Address newAddress = new Address(address), oldAddress = new Address(address);
+        Address newAddress = Address.get(address), oldAddress = Address.get(address);
         String zoneName = address.getZone().getName();
         //shifting(hand,deck,graveyard)
         if(zoneName.equals("hand")||zoneName.equals("deck")||zoneName.equals("graveyard")){
@@ -264,7 +271,7 @@ public class Duel {
         Player player = null;
         if (zoneArgument[1].compareToIgnoreCase("my") == 0) player = currentPlayer;
         else player = opponent;
-        return new Zone(zoneArgument[0], player);
+        return Zone.get(zoneArgument[0], player);
     }
     public boolean filterMatch(Filter filter, CardHolder cardHolder) {
         //TODO
