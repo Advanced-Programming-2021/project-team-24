@@ -1,6 +1,8 @@
 package model.user;
 
 import model.card.CardHolder;
+import model.card.CardState;
+import model.card.MonsterCard;
 import model.card.MonsterCardHolder;
 import model.zone.Address;
 
@@ -17,7 +19,7 @@ public class Player {
     public Player(User user) {
         this.lifePoint = 8000;
         this.user = user;
-        this.card = new MonsterCardHolder(this, null, null);
+        this.card = new MonsterCardHolder(this, new MonsterCard(), CardState.NONE);
     }
 
 

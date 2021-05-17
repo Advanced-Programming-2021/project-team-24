@@ -41,6 +41,7 @@ public class EffectParser {
         this.extraKeyWords = effectManager.getExtraKeyWords();
         this.idCardHolderOwner = effectManager.getOwnerCardHolderId();
         this.effect = effectManager.getEffect();
+        this.effectManager = effectManager;
         this.owner = this.effectManager.getOwner();        
         this.duelController = duelController;
         if(effectManager.getEffect().getEffectType() == EffectType.QUICK_PLAY)

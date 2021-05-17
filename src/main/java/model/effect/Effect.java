@@ -83,7 +83,10 @@ public class Effect {
     public void setSpeed(Integer speed) {
         this.speed = speed;
     }
-
+    public void setEffectType(EffectType effectType)
+    {
+        this.effectType = effectType;
+    }
     public void setReverse(String reverse)
     {
         this.reverse = reverse;
