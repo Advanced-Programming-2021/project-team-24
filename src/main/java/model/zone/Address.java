@@ -20,7 +20,7 @@ public class Address {
 
     private static void initZone(Zones zone,Player player) {
         for(int i=0;i<zone.capacity;i++){
-            addresses.add(Address.get(Zone.get(zone.label, player),i));
+            addresses.add(new Address(Zone.get(zone.label, player),i));
         }
     }
 
