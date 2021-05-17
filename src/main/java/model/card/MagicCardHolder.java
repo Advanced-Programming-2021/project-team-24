@@ -11,8 +11,7 @@ public class MagicCardHolder extends CardHolder {
     public MagicCardHolder(Player owner, MagicCard card, CardState cardState) {
         super(owner ,cardState);
         this.card = card;
-        this.onDeath = new EffectManager(card.onDeath, owner);
-        this.effectManager = new EffectManager(null, owner);
+        this.effectManager = new EffectManager(card.getEffect(), owner, super.idCounter);
     }        
     public EffectManager getEffectManager()
     {

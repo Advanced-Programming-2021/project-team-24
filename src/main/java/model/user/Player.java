@@ -21,6 +21,7 @@ public class Player {
     }
 
 
+    
     public CardHolder getMap()
     {
         return this.card;

@@ -9,12 +9,21 @@ import model.effect.*;
 public class MagicCard extends Card {
      
     
-    private Boolean isActived;
-    private Effect effect;  
-    private Integer speed; 
+    private Boolean isActived;    
+     
+    private Effect effect;
+
+    public Effect getEffect() {
+        return this.effect;
+    }
+
+    public void setEffect(Effect effect) {
+        this.effect = effect;
+    }
+ 
     public Integer getSpeed()
     {
-        return this.speed;
+        return this.effect.getSpeed();
     }
     public boolean getIsActivated()
     {        
