@@ -33,7 +33,7 @@ public class User {
     public String getNickname()
     {
         return this.nickname;
-    }
+    }       
     public String getUsername()
     {
         return this.username;
@@ -63,7 +63,7 @@ public class User {
         this.cardNames = new ArrayList<String>();
         this.cards = new ArrayList<Card>();
         addUser();
-    }
+    }    
 
     private void addUser(){
         try {
@@ -76,7 +76,7 @@ public class User {
             e.printStackTrace();
         }
     }
-
+    
     public static void initialize()
     {
         // get list of all users from folder
@@ -112,7 +112,7 @@ public class User {
     public void logout()
     {
         //update json file of user
-    }
+    }    
     public boolean changePassword(String oldPassword, String newPassword)
     {
         if(this.password.compareTo(oldPassword) == 0)
@@ -169,13 +169,13 @@ public class User {
                 }
             }
             //add new user
-            new User(username, password, nickname);
+            new User(username, password, nickname);   
             return new Message(TypeMessage.SUCCESSFUL, "user created successfully!");
         }
         else
         {
             return new Message(TypeMessage.ERROR, "user with username " + username + " already exists");
-        }
+        }        
     }
     public static Message login(String username, String password)
     {

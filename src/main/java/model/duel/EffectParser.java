@@ -337,7 +337,7 @@ public class EffectParser {
 
         for (String string : model.zone.Zone.zoneStrings) {
             String zone = "$my_" + string + "$";
-            List<CardHolder> cardList = duelController.getZone(new Zone(string, current));
+            List<CardHolder> cardList = duelController.getZone(Zone.get(string, current));
             List<String> ans = new ArrayList<String>();
             for(int i = 0; i < cardList.size(); i++)
             {
@@ -348,7 +348,7 @@ public class EffectParser {
         
         for (String string : model.zone.Zone.zoneStrings) {
             String zone = "$opp_" + string + "$";
-            List<CardHolder> cardList = duelController.getZone(new Zone(string, opponent));
+            List<CardHolder> cardList = duelController.getZone(Zone.get(string, opponent));
             List<String> ans = new ArrayList<String>();
             for(int i = 0; i < cardList.size(); i++)
             {
@@ -577,7 +577,7 @@ public class EffectParser {
         }
         else      
             player = null;      
-        return new Zone(zoneArgument[1], player);
+        return Zone.get(zoneArgument[1], player);
     }
     public List<Integer> selective(String command)
     {   
