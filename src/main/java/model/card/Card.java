@@ -2,15 +2,11 @@
 package model.card;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
 import model.effect.Effect;
-import model.user.User;
-import org.checkerframework.checker.units.qual.C;
 
 
 public abstract class Card {
@@ -29,20 +25,7 @@ public abstract class Card {
     }
     public static void intialize()
     {
-        allCards = new ArrayList<Card>();
-        try {
-            //"" means project directory
-            File directoryPath = new File("Cards");
-            File[] filesList = directoryPath.listFiles();
-            assert filesList != null;
-            for(File file : filesList) {
-                String json = new String(Files.readAllBytes(Paths.get(file.getPath())));
-                Card card = new Gson().fromJson(json,Card.class);
-                allCards.add(card);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // TODO add all cards, parse from json to Card       
     }
     public static Card getCardByName(String cardName)
     {
@@ -83,7 +66,8 @@ public abstract class Card {
         return string.toUpperCase().replace('-', '_').replace(' ', '_');
     }
     public BufferedReader getCsvReader(String pathToCsv) throws FileNotFoundException {
-        return new BufferedReader(new FileReader(pathToCsv));
+        //return BufferedReader(new FileReader(pathToCsv));
+        return null;
     }
     public void writeJson (String path) throws IOException {
         File file = new File(path + this.name + ".json");

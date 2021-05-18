@@ -58,22 +58,60 @@ public class test {
         String command = "if(#1#>#2#)&return_t&else&return_f&";
         String ans = v.runEffect();
         assertEquals(ans, "false");
-        // boolean q_yn checking
-        /*effect.setEffect("q_yn(halet chetoreh){return_t}{return_f}");
-        effect.setReverse("q_yn(halet chetoreh){return_t}{return_f}");
-        effect.setEffectType(EffectType.CONTINUES);
-        vvvvvvv = new EffectManager(effect,
-         duelMenu.getPlayer(true) 
-         , temp.getId());
-        duelMenu.getDuelController().setDuelMenu(duelMenu);
-        v = new EffectParser(duelMenu, duelMenu.getDuelController(), vvvvvvv);
-        command = "if(#1#>#2#)&return_t&else&return_f&";
-        ans = v.runEffect();*/
-        assertEquals(ans, "true");
         
         
 
     }
+    public void checkBooleanQuestion() throws JsonSyntaxException, IOException
+    {
+        MonsterCard u = new Gson().fromJson(
+            fileRead("Battle warrior.json"),
+             MonsterCard.class);
+        model.user.User.register("behzad", "password", "nickname");
+        model.user.User.register("alireza", "haqi", "hesam");
+        User a = User.readUser("alireza");
+        User b= User.readUser("behzad");
+        DuelMenu duelMenu = new DuelMenu(a, b, "1");
+        
+        MonsterCardHolder temp = new MonsterCardHolder(duelMenu.getPlayer(true), u, CardState.ATTACK_MONSTER);
+        
+        Effect effect = new Effect();
+        effect.setEffect("q_yn(halet chetoreh){return_t}{return_f}");
+        effect.setReverse("q_yn(halet chetoreh){return_t}{return_f}");
+        effect.setEffectType(EffectType.CONTINUES);
+        EffectManager vvvvvvv = new EffectManager(effect,
+         duelMenu.getPlayer(true) 
+         , temp.getId());
+        duelMenu.getDuelController().setDuelMenu(duelMenu);
+        EffectParser v = new EffectParser(duelMenu, duelMenu.getDuelController(), vvvvvvv);
+        String ans = v.runEffect();    
+    }
+    @Test
+    public void testFilter() throws JsonSyntaxException, IOException
+    {
+        MonsterCard u = new Gson().fromJson(
+            fileRead("Battle warrior.json"),
+             MonsterCard.class);
+        model.user.User.register("behzad", "password", "nickname");
+        model.user.User.register("alireza", "haqi", "hesam");
+        User a = User.readUser("alireza");
+        User b= User.readUser("behzad");
+        DuelMenu duelMenu = new DuelMenu(a, b, "1");
+        
+        MonsterCardHolder temp = new MonsterCardHolder(duelMenu.getPlayer(true), u, CardState.ATTACK_MONSTER);
+        
+        Effect effect = new Effect();
+        effect.setEffect("set(boz,1300);set(hesam,bemazeh);");
+        effect.setReverse("set(boz,1300);set(hesam,bemazeh);");
+        effect.setEffectType(EffectType.CONTINUES);
+        EffectManager vvvvvvv = new EffectManager(effect,
+         duelMenu.getPlayer(true) 
+         , temp.getId());
+        duelMenu.getDuelController().setDuelMenu(duelMenu);
+        EffectParser v = new EffectParser(duelMenu, duelMenu.getDuelController(), vvvvvvv);
+        String ans = v.runEffect();    
+    }
+    
     public void listFilesForFolder(final File folder) {
         for (final File fileEntry : folder.listFiles()) {
             if (fileEntry.isDirectory()) {

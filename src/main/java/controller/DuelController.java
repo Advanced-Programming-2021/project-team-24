@@ -56,6 +56,7 @@ public class DuelController {
         this.duelEvents.put(event, idCardHolder);
     }
     public DuelController(Duel duel) {
+        
         this.duel = duel;
     }
 

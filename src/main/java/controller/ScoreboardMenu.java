@@ -7,7 +7,6 @@ import java.util.List;
 
 
 public class ScoreboardMenu extends MainMenu {
-
     private List<String> usernames = User.getUsernames();
     public ScoreboardMenu(User user){
         super(user);

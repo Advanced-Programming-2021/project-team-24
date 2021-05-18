@@ -74,6 +74,7 @@ public class Duel {
         this.opponent = new Player(opponent);
         this.currentPlayer = this.user;
         this.otherPlayer = this.opponent;
+        Zone.init();
         zones.add(Zone.get("graveyard", this.user));
         zones.add(Zone.get("graveyard", this.opponent));
         zones.add(Zone.get("hand", this.user));

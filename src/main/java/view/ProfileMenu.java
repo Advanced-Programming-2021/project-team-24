@@ -13,17 +13,7 @@ public class ProfileMenu extends Menu {
     public void run(){
         while(true) {
             String command = Global.nextLine();
-            if (command.equals("menu show-current")) {
-                System.out.println("Profile Menu");
-            }
-            else if (checkMenuExit(command)) {
-                exitMenu("Profile");
-                return;
-            }
-            else if(checkEnterMenu(command)) {
-                enterMenu("Profile", command );
-            }
-            else if (Global.regexFind(command, "profile change --nickname .*")){
+            if (Global.regexFind(command, "profile change --nickname .*")){
                 Matcher matcher = Global.getMatcher(command, "(?<=profile change --nickname ).*");
                 if (matcher.find()){
                     String nickname = matcher.group();
@@ -46,7 +36,11 @@ public class ProfileMenu extends Menu {
                     System.out.printf(profileMenu.changePassword(oldPassword, newPassword).getContent());
                 }
             }
-            else   System.out.println("invalid command");
+            checkShowCurrentMenu(command);
+            if(checkMenuExit(command)) {
+                mainMenu.menuExit();
+                return;
+            }
         }
     }
 }

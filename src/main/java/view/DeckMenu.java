@@ -30,17 +30,11 @@ public class DeckMenu extends Menu {
     public void run() {
         while (true) {
             String command = Global.nextLine();
-            if (checkMenuExit(command)) {
-                exitMenu("Deck");
+            if (command.equals("menu exit")) {
                 return;
-            }
-            else if (command.equals("menu show-current")) {
+            } else if (command.equals("menu show-current")) {
                 System.out.println("Deck Menu");
-            }
-            else if(checkEnterMenu(command)) {
-                enterMenu("Deck", command );
-            }
-            else if (command.equals("deck show -all")) {
+            } else if (command.equals("deck show -all")) {
 
                 System.out.println("Decks:");
                 System.out.println("Active deck:");
@@ -50,14 +44,12 @@ public class DeckMenu extends Menu {
                 for (Deck deck : decks)
                     System.out.println(decks.toString());
 
-            }
-            else if (command.equals("deck show -cards")) {
+            } else if (command.equals("deck show -cards")) {
                 List<Card> cards = Card.getAllCards();
                 for (Card card : cards) {
                     System.out.println(card.toString());
                 }
-            }
-            else {
+            } else {
                 Matcher matcher = Global.getMatcher(command, "deck create (?<name>\\w)");
                 if (matcher.find()) {
                     String deckName = matcher.group("name");
@@ -119,8 +111,8 @@ public class DeckMenu extends Menu {
                     System.out.println(message.getContent());
                     continue;
                 }
-                System.out.println("invalid command");
             }
+            System.out.println("invalid command");
         }
     }
 

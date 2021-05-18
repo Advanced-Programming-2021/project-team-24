@@ -17,23 +17,21 @@ public class LoginMenu {
         while (true) {
             String command = Global.nextLine();
             if (command.equals("menu exit")) {
-                System.exit(0);
-            }
-            else if (command.equals("menu show-current")) {
+                return;
+            } else if (command.equals("menu show-current")) {
                 System.out.println("Login Menu");
-            }
-            else {
+            } else {
                 Matcher matcher = Global.getMatcher(command, "menu enter (?<menuName>\\w+)");
                 if (matcher.find()) {
                     System.out.println("please login first");
                     continue;
                 }
-                matcher = Global.getMatcher(command, "user create (?=.*(?:--username (?<username>\\w+)))(?=.*(?:--nickname (?<nickname>\\w+)))(?=.*(?:--password (?<password>\\w+)))");
+                matcher = Global.getMatcher(command, "user create (?=.*(?:--username (?<username>\\w)))(?=.*(?:--nickname (?<nickname>\\w)))(?=.*(?:--password (?<password>\\w)))");
                 if (matcher.find()) {
                     register(matcher.group("username"),matcher.group("password"),matcher.group("nickname"));
                     continue;
                 }
-                matcher = Global.getMatcher(command, "user login (?=.*(?:--username (?<username>\\w+)))(?=.*(?:--password (?<password>\\w+)))");
+                matcher = Global.getMatcher(command, "user login (?=.*(?:--username (?<username>\\w)))(?=.*(?:--nickname (?<nickname>\\w)))");
                 if (matcher.find()) {
                     login(matcher.group("username"),matcher.group("password"));
                     continue;
