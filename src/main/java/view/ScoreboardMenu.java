@@ -14,11 +14,17 @@ public class ScoreboardMenu extends Menu {
             if (command.compareToIgnoreCase("scoreboard show") == 0){
                 System.out.printf(scoreboardMenu.showScoreboard().getContent());
             }
-            checkShowCurrentMenu(command);
-            if(checkMenuExit(command)) {
-                mainMenu.menuExit();
+            else if (command.equals("menu show-current")) {
+                System.out.println("Scoreboard Menu");
+            }
+            else if (checkMenuExit(command)) {
+                exitMenu("Scoreboard");
                 return;
             }
+            else if(checkEnterMenu(command)) {
+                enterMenu("Scoreboard", command );
+            }
+            else System.out.println("invalid command");
         }
     }
 }

@@ -67,7 +67,7 @@ public class User {
 
     private void addUser(){
         try {
-            File file = new File("users/"+this.username+".json");
+            File file = new File("Users/"+this.username+".json");
             file.createNewFile();
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(new Gson().toJson(this));
@@ -84,7 +84,7 @@ public class User {
         usernames = new ArrayList<String>();
         try {
             //"" means project directory
-            File directoryPath = new File("/users");
+            File directoryPath = new File("Users");
             File[] filesList = directoryPath.listFiles();
             assert filesList != null;
             for(File file : filesList) {
@@ -96,7 +96,6 @@ public class User {
             e.printStackTrace();
         }
     }
-
     public static User getUserByNameAndPassword(String username, String password) {
         User loging = readUser(username);
         if (loging == null) {
@@ -118,6 +117,7 @@ public class User {
         if(this.password.compareTo(oldPassword) == 0)
         {
             this.password = newPassword;
+            addUser();
             return true;
         }
         else
@@ -202,6 +202,7 @@ public class User {
 
     public void changeNickname(String nickname){
         this.nickname = nickname;
+        addUser();
     }
 
     public Decks getDecks() {

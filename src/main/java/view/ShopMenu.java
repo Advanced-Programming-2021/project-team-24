@@ -21,11 +21,17 @@ public class ShopMenu extends Menu {
                 }
             }
             else if (command.compareToIgnoreCase("shop show --all") == 0) System.out.printf(shopMenu.getInfo().getContent());
-            checkShowCurrentMenu(command);
-            if(checkMenuExit(command)) {
-                mainMenu.menuExit();
+            else if (command.equals("menu show-current")) {
+                System.out.println("Shop Menu");
+            }
+            else if (checkMenuExit(command)) {
+                exitMenu("Shop");
                 return;
             }
+            else if(checkEnterMenu(command)) {
+                enterMenu("Shop", command );
+            }
+            else System.out.println("invalid command");
         }
     }
 }
