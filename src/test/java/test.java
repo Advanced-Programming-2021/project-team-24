@@ -8,7 +8,6 @@ import java.util.Scanner;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.Test;
 
 import controller.DuelController;

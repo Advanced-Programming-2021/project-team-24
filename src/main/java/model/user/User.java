@@ -57,11 +57,12 @@ public class User {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
-        this.cards = new ArrayList<Card>();
+        this.cards = new ArrayList<>();
         this.score = 8000;
+        this.coin = 100000;
         usernames.add(username);
-        this.cardNames = new ArrayList<String>();
-        this.cards = new ArrayList<Card>();
+        this.cardNames = new ArrayList<>();
+        this.cards = new ArrayList<>();
         addUser();
     }
 
@@ -81,10 +82,10 @@ public class User {
     {
         // get list of all users from folder
         //??but what is the List<String> usernames purpose??
-        usernames = new ArrayList<String>();
+        usernames = new ArrayList<>();
         try {
             //"" means project directory
-            File directoryPath = new File("/users");
+            File directoryPath = new File("users");
             File[] filesList = directoryPath.listFiles();
             assert filesList != null;
             for(File file : filesList) {
@@ -96,7 +97,6 @@ public class User {
             e.printStackTrace();
         }
     }
-
     public static User getUserByNameAndPassword(String username, String password) {
         User loging = readUser(username);
         if (loging == null) {
@@ -118,6 +118,7 @@ public class User {
         if(this.password.compareTo(oldPassword) == 0)
         {
             this.password = newPassword;
+            addUser();
             return true;
         }
         else
@@ -128,9 +129,9 @@ public class User {
     public static User readUser(String username)
     {
         try {
-            File file = new File("Users/"+username+".json");
+            File file = new File("users/"+username+".json");
             if (file.exists()) {
-                String json = new String(Files.readAllBytes(Paths.get("Users/" + username + ".json")));
+                String json = new String(Files.readAllBytes(Paths.get("users/" + username + ".json")));
                 return new Gson().fromJson(json, User.class);
             }
             else return null;
@@ -143,10 +144,7 @@ public class User {
     private boolean comparePassword(String password)
 
     {
-        if(password.compareTo(this.password) == 0)
-        {
-            return true;
-        }
+        if(password.compareTo(this.password) == 0) return true;
         else
         {
             return false;
@@ -154,6 +152,7 @@ public class User {
     }
     public void addCard(Card newCard){
         cards.add(newCard);
+        addUser();
     }
 
     public static Message register(String username, String password, String nickname)
@@ -202,6 +201,7 @@ public class User {
 
     public void changeNickname(String nickname){
         this.nickname = nickname;
+        addUser();
     }
 
     public Decks getDecks() {

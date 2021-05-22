@@ -18,11 +18,21 @@ public class MainMenu extends Menu {
     public void run() {
         while (true) {
             String command = Global.nextLine();
-            if (command.equals("menu exit")) {
+            if (checkMenuExit(command)) {
+                exitMenu("Main");
                 return;
             } else if (command.equals("menu show-current")) {
                 System.out.println("Main Menu");
-            } else {
+            }
+            else if(command.equals("user logout")){
+                System.out.println("user logged out successfully!");
+                exitMenu("Main");
+                return;
+            }
+            else if(checkEnterMenu(command)) {
+                enterMenu("Main", command );
+            }
+            else {
                 Matcher matcher = Global.getMatcher(command, "duel (?=.*(?:--new))(?=.*(?:--second-player (?<opponentUsername>\\w)))(?=.*(?:--rounds (?<rounds>\\d)))");
                 if (matcher.find()) {
                     String opponentUsername = matcher.group("opponentUsername");
@@ -38,8 +48,8 @@ public class MainMenu extends Menu {
                     //TODO ai
                     continue;
                 }
+                System.out.println("invalid command");
             }
-            System.out.println("invalid command");
         }
     }
 }
