@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import model.duel.AutomaticEffectHandler;
 import model.duel.Duel;
 import model.duel.EffectChainer;
 import model.duel.EffectParser;
@@ -27,7 +28,11 @@ public class DuelController {
     DuelMenu duelMenu;
     public HashMap<Event, Integer> duelEvents;
 
-
+    public void updateAutomaticEffect()
+    {
+        //TODO
+        new AutomaticEffectHandler(this, duelMenu).update();
+    }
     public void resetDuelEvents()
     {
         for(Map.Entry event : duelEvents.entrySet())
@@ -56,6 +61,7 @@ public class DuelController {
         this.duelEvents.put(event, idCardHolder);
     }
     public DuelController(Duel duel) {
+        
         this.duel = duel;
     }
 
@@ -118,7 +124,7 @@ public class DuelController {
 
     public Message activeMagicCard(Address selectedAddress) {
         CardHolder cardHolder = duel.getMap().get(selectedAddress);
-        if (cardHolder.getOnwerName().equals(duel.getCurrentPlayer().getNickname())) {
+        if (cardHolder.getOnwerName().equals(duel.getCurrentPlayer().getNickname())) {            
             if (cardHolder.getBoolMapValue("can_active")) {
                 if (cardHolder.getCardState() == CardState.SET_MAGIC) {              
                     MagicCardHolder magicCard = (MagicCardHolder) cardHolder;
@@ -133,6 +139,10 @@ public class DuelController {
                     
                 } else if (cardHolder.getCardState() == CardState.HAND) {
                     //TODO requirement
+                    if(1 == 1)
+                    {
+                        return new Message(TypeMessage.ERROR, "This card is already activated");
+                    }
                 }
             } else {
                 return new Message(TypeMessage.ERROR, "You can't active this card");
@@ -427,9 +437,6 @@ public class DuelController {
                     else{
                         return new Message(TypeMessage.ERROR, "you changed position of this card before");
                     }                    
-                    //TODO check if pointless try
-                    //TODO check if already changed position once
-                    //TODO change position
                 } else {
                     return new Message(TypeMessage.ERROR, "action not allowed in this phase");
                 }
@@ -451,18 +458,6 @@ public class DuelController {
             address.getNextPlace();
         }
         return cardHolders;
-    }
-
-    public Boolean satisfyCondition(Integer idCardHolder, EffectManager effectManager) {
-        //check phase
-        //check requirement event
-
-        Effect effect = effectManager.getEffect();
-        //EffectParser effectParser = new EffectParser(null, this, this.getDuel().getCardHolderById(idCardHolder).getOwner(), effect, idCardHolder);
-        
-        
-        return true;
-
     }
 
     public static void main(String[] args) {

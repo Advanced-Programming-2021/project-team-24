@@ -123,16 +123,20 @@ public class EffectParser {
         Gson gson = new Gson();
         getCommandResult(fields.get(0));
         List<Integer> cardHolders = gson.fromJson(getCommandResult(fields.get(0)), new ArrayList<Integer>().getClass());            
-        Zone targetZone = parseZone(fields.get(1));        
-        if(fields.size() == 3)
+        Zone targetZone = null;//parseZone(fields.get(1));        
+        for(int i = 0; i < cardHolders.size(); i++)
         {
-            CardState cardState = gson.fromJson(fields.get(2), CardState.class);
-            duelController.getDuel().changerZone(cardHolders, targetZone, cardState);
-        }
-        else
-        {
-            duelController.getDuel().changerZone(cardHolders, targetZone, CardState.NONE);
-            //TODO handle none as default case
+            targetZone = parseZone(fields.get(1), cardHolders.get(i));
+            if(fields.size() == 3)
+            {            
+                
+                CardState cardState = gson.fromJson(fields.get(2), CardState.class);
+                duelController.getDuel().changerZone(cardHolders, targetZone, cardState);
+            }
+            else
+            {
+                duelController.getDuel().changerZone(cardHolders, targetZone, CardState.NONE);                
+            }
         }
         //changeZone(List<>, target_zone, card_state);
         //parse target zone with zoneParser
@@ -559,10 +563,10 @@ public class EffectParser {
         //sum(List<>, "key") e.g : sum(List<>, "level");
         return null;
     }
-    public Zone parseZone(String josn){
+    public Zone parseZone(String josn, Integer cardHolderId){
         String[] zoneArgument = josn.split("_");
         Player player = null;
-        if (zoneArgument[0].compareToIgnoreCase("my") == 0) player = owner;
+        if (zoneArgument[0].compareTo("my") == 0) player = owner;
         else 
         if(zoneArgument[0].compareTo("opp") == 0)
         {            
@@ -575,8 +579,16 @@ public class EffectParser {
             else
                 player = a1;
         }
-        else      
-            player = null;      
+        else if(zoneArgument[0].compareTo("owner") == 0){
+                if(duelController.getDuel().getCardHolderAddressById(cardHolderId) != null)
+                    player = duelController.getDuel().getCardHolderById(cardHolderId).getOwner();
+                else
+                    return null;
+            }     
+            else
+            {
+                return null;
+            }
         return Zone.get(zoneArgument[1], player);
     }
     public List<Integer> selective(String command)
