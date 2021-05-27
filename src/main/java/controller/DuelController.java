@@ -11,6 +11,7 @@ import model.duel.EffectChainer;
 import model.duel.EffectParser;
 import model.effect.Effect;
 import model.effect.EffectManager;
+import model.effect.EffectType;
 import model.card.CardHolder;
 import model.card.CardState;
 import model.card.Event;
@@ -205,6 +206,20 @@ public class DuelController {
                 if (getSelectedAddress().getZone().getName().equals("hand")) {
                     if (duel.getCurrentPhase().equals(Duel.Phase.MAIN1) || duel.getCurrentPhase().equals(Duel.Phase.MAIN2)) {
                         if (duel.getMap().get(getSelectedAddress()).getCard().isMagic()) {
+                            if(((MagicCard) duel.getMap().get(getSelectedAddress()).getCard()).getEffect().getEffectType() == EffectType.FIELD)
+                            {
+                                //TODO check if it is full
+                                if(getZone(Zone.get("field", duel.getCurrentPlayer())).size() > 0)
+                                {
+                                    MagicCardHolder temp = (MagicCardHolder)getZone(Zone.get("field", duel.getCurrentPlayer())).get(0);
+                                    new EffectParser(duelMenu, this, temp.getEffectManager()).getCommandResult(((MagicCard)(temp.getCard())).getEffect().getReverse());
+                                    changeZoneOfLastCard(Zone.get("field", duel.getCurrentPlayer()), null);//TODO                                                                         
+                                    //TODO do reverse
+                                    //replace new card
+                                }
+                                duel.getMap().put(Address.get(Zone.get("field", duel.getCurrentPlayer()), 0), new MagicCardHolder(duel.getCurrentPlayer(), (MagicCard)(duel.getMap().get(Address.get(Zone.get("field", duel.getCurrentPlayer()), 0)).getCard()), CardState.ACTIVE_MAGIC));
+                            }
+                            else
                             if (duel.zoneCardCount().get(Zone.get("spell", duel.getCurrentPlayer())) < 5) {
                                 if(duel.getCurrentPlayer().getMap().getBoolMapValue("add_magic_turn"))
                                 {
