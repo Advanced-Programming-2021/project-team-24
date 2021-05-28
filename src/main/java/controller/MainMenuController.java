@@ -5,7 +5,7 @@ import model.user.User;
 import view.DuelMenu;
 
 public class MainMenuController {
-    public Message createDuel(User user, String opponentUsername, String rounds) {
+    public Message createDuel(User user, String opponentUsername, String rounds){
         User opponent = User.readUser(opponentUsername);
         if (opponent != null) {
             Deck userDeck = user.getDecks().getActiveDeck();

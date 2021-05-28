@@ -52,7 +52,7 @@ public class User {
         return cards;
     }
 
-    private User(String username, String password, String nickname)
+    public User(String username, String password, String nickname)
     {
         this.username = username;
         this.password = password;
@@ -206,5 +206,17 @@ public class User {
 
     public Decks getDecks() {
         return decks;
+    }
+    //for test
+    public static void deleteUser(String username){
+        try {
+            File file = new File("users/"+username+".json");
+            if (file.exists()) file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void setCoin(int coin){
+        this.coin = coin;
     }
 }
