@@ -23,7 +23,7 @@ public class User {
     private int coin;
     private List<String> cardNames;
     private List<Card> cards;//fill it after reading json
-    private Decks decks;
+    private Decks decks = new Decks();
     private static List<String> usernames = new ArrayList<>();
     static{
         //read users from json files in "/users" folder
@@ -206,6 +206,9 @@ public class User {
 
     public Decks getDecks() {
         return decks;
+    }
+    public void setDecks(Decks decks){
+        this.decks = decks;
     }
     //for test
     public static void deleteUser(String username){

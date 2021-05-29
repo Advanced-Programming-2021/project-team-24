@@ -41,7 +41,7 @@ public class DeckController {
             decks.remove(name);
             return new Message(TypeMessage.SUCCESSFUL, "deck deleted successfully");
         } else {
-            return new Message(TypeMessage.ERROR, "deck with name " + name + "  does not exist");
+            return new Message(TypeMessage.ERROR, "deck with name " + name + " does not exist");
         }
     }
 
@@ -50,7 +50,7 @@ public class DeckController {
             decks.setActiveDeck(getDeckByName(name));
             return new Message(TypeMessage.SUCCESSFUL, "deck activated successfully");
         } else {
-            return new Message(TypeMessage.ERROR, "deck with name " + name + "  does not exist");
+            return new Message(TypeMessage.ERROR, "deck with name " + name + " does not exist");
         }
     }
 
@@ -72,10 +72,10 @@ public class DeckController {
                         return new Message(TypeMessage.ERROR, "side deck is full");
                 }
             } else {
-                return new Message(TypeMessage.ERROR, "deck with name " + deckName + "  does not exist");
+                return new Message(TypeMessage.ERROR, "deck with name " + deckName + " does not exist");
             }
         } else {
-            return new Message(TypeMessage.ERROR, "card with name " + cardName + "  does not exist");
+            return new Message(TypeMessage.ERROR, "card with name " + cardName + " does not exist");
         }
     }
 
@@ -86,11 +86,11 @@ public class DeckController {
                 return new Message(TypeMessage.SUCCESSFUL, "card removed form deck successfully");
             } else {
                 if (isMainCard)
-                    return new Message(TypeMessage.ERROR, "card with name " + cardName + "  does not exist in main deck");
-                return new Message(TypeMessage.ERROR, "card with name " + cardName + "  does not exist in side deck");
+                    return new Message(TypeMessage.ERROR, "card with name " + cardName + " does not exist in main deck");
+                return new Message(TypeMessage.ERROR, "card with name " + cardName + " does not exist in side deck");
             }
         } else {
-            return new Message(TypeMessage.ERROR, "deck with name " + deckName + "  does not exist");
+            return new Message(TypeMessage.ERROR, "deck with name " + deckName + " does not exist");
         }
     }
 
@@ -98,7 +98,7 @@ public class DeckController {
         if (getDeckByName(name) != null) {
             return new Message(TypeMessage.ERROR, getDeckByName(name).toStringCards(isMain));
         } else {
-            return new Message(TypeMessage.ERROR, "deck with name " + name + "  does not exist");
+            return new Message(TypeMessage.ERROR, "deck with name " + name + " does not exist");
         }
     }
 

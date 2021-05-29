@@ -31,7 +31,7 @@ public class Duel {
         MAIN1,
         BATTLE,
         MAIN2,
-        END
+        END;
     }
 
     public void nextPhase() {
@@ -69,12 +69,12 @@ public class Duel {
 
     public Duel(User user, User opponent, String rounds) {
         this.rounds = Integer.parseInt(rounds);
-        zones = new ArrayList<Zone>();
+        zones = new ArrayList<>();
         this.user = new Player(user);
         this.opponent = new Player(opponent);
         this.currentPlayer = this.user;
         this.otherPlayer = this.opponent;
-        Zone.init();
+        //Zone.init();
         zones.add(Zone.get("graveyard", this.user));
         zones.add(Zone.get("graveyard", this.opponent));
         zones.add(Zone.get("hand", this.user));
@@ -84,6 +84,7 @@ public class Duel {
         zones.add(Zone.get("magic", this.user));
         zones.add(Zone.get("magic", this.opponent));
         this.currentPhase = Phase.DRAW;
+        setNextPhaseHashMap();
         Address address = Address.get(Zone.get("monster", currentPlayer), 2);
         map.put(address, new MonsterCardHolder(currentPlayer, new MonsterCard(), CardState.ATTACK_MONSTER));
         System.out.println(address);
@@ -292,5 +293,13 @@ public class Duel {
 
     public HashMap<Zone, Integer> zoneCardCount() {
         return zoneCardCount;
+    }
+    public void setNextPhaseHashMap(){
+        nextPhase.put(Phase.DRAW, Phase.STANDBY);
+        nextPhase.put(Phase.STANDBY, Phase.MAIN1);
+        nextPhase.put(Phase.MAIN1, Phase.BATTLE);
+        nextPhase.put(Phase.BATTLE, Phase.MAIN2);
+        nextPhase.put(Phase.MAIN2, Phase.END);
+        nextPhase.put(Phase.END, Phase.DRAW);
     }
 }
