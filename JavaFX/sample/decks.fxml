@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import sample.DeckControls?>
+<?import sample.Deck?>
+<SplitPane fx:id="splitPane" dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+           minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/16"
+           xmlns:fx="http://javafx.com/fxml/1">
+    <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" onMouseEntered="#rotateLeft" onMouseExited="#pauseRotateLeft"
+                    prefHeight="160.0" prefWidth="100.0">
+            <children>
+                <ImageView fx:id="blackBack" fitHeight="900.0" fitWidth="900.0" layoutX="-200.0" layoutY="-160.0">
+                    <image>
+                        <Image url="@../resources/images/cardBackgroundBlack.jpg"/>
+                    </image>
+                </ImageView>
+                <BorderPane layoutX="2.0" prefHeight="575.0" prefWidth="509.0" AnchorPane.bottomAnchor="0.0"
+                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <center>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <FontAwesomeIcon fill="WHITE" iconName="TH" size="2em"
+                                                 wrappingWidth="19.02854824066162"/>
+                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                    <children>
+                                        <Label text="Active" textFill="WHITE">
+                                            <font>
+                                                <Font name="Quicksand-Bold" size="51.0"/>
+                                            </font>
+                                        </Label>
+                                        <Label text="Deck" textFill="WHITE">
+                                            <font>
+                                                <Font name="Quicksand-Light" size="51.0"/>
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <Deck isActive="true"/>
+                            </children>
+                        </VBox>
+                    </center>
+                    <bottom>
+                        <BorderPane prefHeight="65.0" prefWidth="508.0" BorderPane.alignment="CENTER">
+                            <left>
+                                <FontAwesomeIcon onMouseClicked="#back" styleClass="hoverable" fill="WHITE" iconName="ARROW_LEFT" size="3em"
+                                                 wrappingWidth="32.62852382659912" BorderPane.alignment="CENTER">
+                                    <BorderPane.margin>
+                                        <Insets left="20.0"/>
+                                    </BorderPane.margin>
+                                </FontAwesomeIcon>
+                            </left>
+                            <right>
+                                <HBox styleClass="hoverable" alignment="CENTER" prefHeight="66.0" prefWidth="196.0"
+                                      BorderPane.alignment="CENTER">
+                                    <children>
+                                        <Label text="Create New Deck" textFill="WHITE">
+                                            <font>
+                                                <Font name="Quicksand-Bold" size="14.0"/>
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets right="10.0"/>
+                                            </HBox.margin>
+                                        </Label>
+                                        <FontAwesomeIcon fill="WHITE" iconName="PLUS_CIRCLE" size="3em"
+                                                         wrappingWidth="32.62852382659912"/>
+                                    </children>
+                                </HBox>
+                            </right>
+                        </BorderPane>
+                    </bottom>
+                </BorderPane>
+            </children>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" onMouseEntered="#rotateRight" onMouseExited="#pauseRotateRight"
+                    prefHeight="160.0" prefWidth="100.0">
+            <children>
+                <ImageView fx:id="brownBack" fitHeight="900.0" fitWidth="900.0" layoutX="-200.0" layoutY="-160.0">
+                    <image>
+                        <Image url="@../resources/images/cardBackgroundBrown.jpg"/>
+                    </image>
+                </ImageView>
+                <BorderPane prefHeight="200.0" prefWidth="200.0"/>
+                <ScrollPane hbarPolicy="NEVER" prefHeight="575.0" prefWidth="484.0"
+                            style="-fx-background-color: transparent;" styleClass="scroll-pane"
+                            stylesheets="@../resources/styles/style.css" AnchorPane.bottomAnchor="0.0"
+                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="506.0">
+                            <children>
+                                <GridPane
+                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                          AnchorPane.topAnchor="0.0">
+
+                                    <children>
+                                        <Deck isActive="false"/>
+                                        <Deck isActive="false" GridPane.columnIndex="1"/>
+                                        <Deck isActive="false" GridPane.columnIndex="2"/>
+                                        <Deck isActive="false" GridPane.rowIndex="1"/>
+                                        <Deck isActive="false" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                        <Deck isActive="false" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                                        <Deck isActive="false" GridPane.rowIndex="2"/>
+                                        <Deck isActive="false" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                                        <Deck isActive="false" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+                                        <Deck isActive="false" GridPane.rowIndex="3"/>
+                                        <Deck isActive="false" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                                        <Deck isActive="false" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
+                                    </children>
+                                </GridPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </ScrollPane>
+            </children>
+        </AnchorPane>
+    </items>
+    <stylesheets>
+        <URL value="@../resources/styles/style.css"/>
+    </stylesheets>
+</SplitPane>
