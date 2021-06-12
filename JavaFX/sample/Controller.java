@@ -31,6 +31,10 @@ public class Controller {
         return decksController;
     }
 
+    public void init(){
+        Common.disableDivider();
+    }
+
     public void switchToSceneSignup(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("signup.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -48,12 +52,12 @@ public class Controller {
         stage.show();
     }
 
-    public void switchToSceneMainMenu(MouseEvent event) throws IOException{
+    public void switchToSceneMainMenu() throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("mainMenu.fxml"));
         loader.setController(menuController);
         Parent root = loader.load();
         scene = new Scene(root);
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Stage stage = Common.stage;
         stage.setScene(scene);
         menuController.init();
         stage.setResizable(false);
@@ -71,7 +75,6 @@ public class Controller {
         stage.setResizable(false);
         stage.show();
     }
-
 
 
 }

@@ -8,9 +8,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.*;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -34,10 +35,6 @@ public class DecksController {
 
 
     private RotateTransition rotateLeft = new RotateTransition(), rotateRight = new RotateTransition();
-
-    public void init() {
-        disableDivider();
-    }
 
     public void disableDivider() {
         splitPane.lookupAll(".split-pane-divider").stream()
@@ -89,7 +86,10 @@ public class DecksController {
     }
 
     public void back(MouseEvent mouseEvent) throws IOException {
-        new Controller().switchToSceneMainMenu(mouseEvent);
+        new Controller().switchToSceneMainMenu();
     }
 
+    public void initialize() {
+        disableDivider();
+    }
 }

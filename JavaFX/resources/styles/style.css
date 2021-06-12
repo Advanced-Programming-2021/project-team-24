@@ -46,3 +46,13 @@
 .handCursor{
     -fx-cursor: hand;
 }
+
+.shopLeft{
+    -fx-background-image: url("../images/backgrounds/shopLeft.gif");
+    -fx-background-size: cover;
+}
+
+.shopRight{
+    -fx-background-image: url("../images/backgrounds/shopLeft.gif");
+    -fx-background-size: cover;
+}
