@@ -6,34 +6,33 @@ import controller.Message;
 import controller.TypeMessage;
 import model.user.User;
 
-import static model.user.User.login;
-import static model.user.User.register;
+import controller.LoginController;
 
 public class LoginMenu {
-
-
-
+    private LoginController loginController = new LoginController();
     public void run() {
         while (true) {
             String command = Global.nextLine();
             if (command.equals("menu exit")) {
-                return;
-            } else if (command.equals("menu show-current")) {
+                System.exit(0);
+            }
+            else if (command.equals("menu show-current")) {
                 System.out.println("Login Menu");
-            } else {
+            }
+            else {
                 Matcher matcher = Global.getMatcher(command, "menu enter (?<menuName>\\w+)");
                 if (matcher.find()) {
                     System.out.println("please login first");
                     continue;
                 }
-                matcher = Global.getMatcher(command, "user create (?=.*(?:--username (?<username>\\w)))(?=.*(?:--nickname (?<nickname>\\w)))(?=.*(?:--password (?<password>\\w)))");
+                matcher = Global.getMatcher(command, "user create (?=.*(?:--username (?<username>\\w+)))(?=.*(?:--nickname (?<nickname>\\w+)))(?=.*(?:--password (?<password>\\w+)))");
                 if (matcher.find()) {
-                    register(matcher.group("username"),matcher.group("password"),matcher.group("nickname"));
+                    loginController.register(matcher.group("username"),matcher.group("password"),matcher.group("nickname"));
                     continue;
                 }
-                matcher = Global.getMatcher(command, "user login (?=.*(?:--username (?<username>\\w)))(?=.*(?:--nickname (?<nickname>\\w)))");
+                matcher = Global.getMatcher(command, "user login (?=.*(?:--username (?<username>\\w+)))(?=.*(?:--password (?<password>\\w+)))");
                 if (matcher.find()) {
-                    login(matcher.group("username"),matcher.group("password"));
+                    loginController.login(matcher.group("username"),matcher.group("password"));
                     continue;
                 }
                 System.out.println("invalid command");

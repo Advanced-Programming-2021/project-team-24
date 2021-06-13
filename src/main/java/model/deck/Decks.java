@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Decks {
-    List<Deck> decks;
+    List<Deck> decks = new ArrayList<>();
     Deck activeDeck;
 
     public void add(Deck deck) {

@@ -35,7 +35,9 @@ public class DuelMenu {
                 return;
             } else if (command.equals("menu show-current")) {
                 System.out.println("Duel Menu");
-            } else if (command.equals("select -d")) {
+                continue;
+            }
+            else if (command.equals("select -d")) {
                 Message message = duelController.deselect();
                 System.out.println(message.getContent());
             } else if (command.equals("summon")) {
@@ -147,7 +149,7 @@ public class DuelMenu {
         if (message != null && message.length() > 0)
             System.out.println(message);
         List<Integer> ans = new ArrayList<Integer>();
-            //TODO
+        //TODO
         //How to implement??
         //maybe implement by address
         return ans;
@@ -158,7 +160,7 @@ public class DuelMenu {
         if(message != null && message.length() > 0)
         {
             System.out.println(message);
-        }        
+        }
         List<Integer> ans = new ArrayList<Integer>();
         while(true)
         {

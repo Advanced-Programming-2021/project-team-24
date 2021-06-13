@@ -11,21 +11,19 @@ public class ScoreboardMenu extends MainMenu {
     public ScoreboardMenu(User user){
         super(user);
     }
-    private void sortUserList(List<String> usernames){
+    protected List<String> sortUserList(List<String> usernames){
         for (int i = 0; i < usernames.size(); i++) {
             for (int j = i+1; j < usernames.size(); j++) {
                 User userI = User.readUser(usernames.get(i));
                 User userJ = User.readUser(usernames.get(j));
-                if (userI.getScore() < userJ.getScore())  
-                {
-                    Collections.swap(usernames, i, j);
-                }
+                if (userI.getScore() < userJ.getScore())    Collections.swap(usernames, i, j);
                 else if (userI.getScore() == userJ.getScore() && userI.getNickname().compareTo(userJ.getNickname()) > 0) Collections.swap(usernames, i, j);
             }
         }
+        return usernames;
     }
     public Message showScoreboard(){
-        sortUserList(usernames);
+        usernames = sortUserList(usernames);
         String content = "";
         for (int i = 1; i < usernames.size()+1; i++) {
             User user = User.readUser(usernames.get(i-1));
