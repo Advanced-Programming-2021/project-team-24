@@ -15,10 +15,10 @@ import model.effect.EffectType;
 import model.card.CardHolder;
 import model.card.CardState;
 import model.card.Event;
-import model.card.MagicCard;
-import model.card.MagicCardHolder;
-import model.card.MonsterCard;
-import model.card.MonsterCardHolder;
+import model.card.magic.MagicCard;
+import model.card.magic.MagicCardHolder;
+import model.card.monster.MonsterCard;
+import model.card.monster.MonsterCardHolder;
 import model.zone.Address;
 import model.zone.Zone;
 import model.zone.Zones;
@@ -64,6 +64,8 @@ public class DuelController {
     public DuelController(Duel duel) {
         
         this.duel = duel;
+        //TODO wirte 5 card drawing in start of game
+
     }
 
     public Message runPhase() {
@@ -71,6 +73,8 @@ public class DuelController {
         if (duel.isPhase(Duel.Phase.DRAW)) {
             draw();
         }
+        //TODO change current player
+
         return new Message(TypeMessage.INFO, duel.getCurrentPhase().toString());
     }
 
@@ -116,11 +120,6 @@ public class DuelController {
             }
         }
         return new Message(TypeMessage.INFO, duel.getMap().get(duel.getCurrentPlayer().getSelectedAddress()).toString());
-    }
-
-
-    public List<CardHolder> getZones(List<String> zones) {
-        return null;
     }
 
     public Message activeMagicCard(Address selectedAddress) {

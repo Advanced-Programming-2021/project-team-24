@@ -12,8 +12,8 @@ import org.junit.Test;
 
 import controller.DuelController;
 import model.card.CardState;
-import model.card.MonsterCard;
-import model.card.MonsterCardHolder;
+import model.card.monster.MonsterCard;
+import model.card.monster.MonsterCardHolder;
 import model.duel.Duel;
 import model.duel.EffectParser;
 import model.effect.Effect;

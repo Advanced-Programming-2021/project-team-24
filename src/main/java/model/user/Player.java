@@ -2,8 +2,8 @@ package model.user;
 
 import model.card.CardHolder;
 import model.card.CardState;
-import model.card.MonsterCard;
-import model.card.MonsterCardHolder;
+import model.card.monster.MonsterCard;
+import model.card.monster.MonsterCardHolder;
 import model.zone.Address;
 
 import java.util.List;

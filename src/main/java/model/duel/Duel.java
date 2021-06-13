@@ -1,6 +1,8 @@
 package model.duel;
 
 import model.card.*;
+import model.card.monster.MonsterCard;
+import model.card.monster.MonsterCardHolder;
 import model.effect.EffectManager;
 import model.user.Player;
 import model.user.User;
@@ -36,6 +38,8 @@ public class Duel {
 
     public void nextPhase() {
         currentPhase = nextPhase.get(currentPhase);
+        //TODO change player
+
     }
 
     public Phase getCurrentPhase() {
@@ -201,8 +205,12 @@ public class Duel {
 
     public void changeZone(int cardHolderId, model.zone.Zone targetZone, CardState cardState) {
         if (getCardHolderById(cardHolderId) != null) {
-            addCard(getCardHolderById(cardHolderId).getCard(), targetZone, cardState);
-            removeCardHolderById(cardHolderId);
+            if (targetZone.getName().equals("own")) {
+                    //TODO
+                } else {
+                    addCard(getCardHolderById(cardHolderId).getCard(), targetZone, cardState);
+                    removeCardHolderById(cardHolderId);
+                }
         }
     }
 
@@ -211,7 +219,7 @@ public class Duel {
         for (Integer cardHolderId : cardHolders) {
             if (getCardHolderById(cardHolderId) != null) {
                 if (targetZone.getName().equals("own")) {
-
+                    //TODO
                 } else {
                     addCard(getCardHolderById(cardHolderId).getCard(), targetZone, cardState);
                     removeCardHolderById(cardHolderId);

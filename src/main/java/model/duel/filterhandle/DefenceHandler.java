@@ -3,7 +3,7 @@ package model.duel.filterhandle;
 import model.duel.Duel;
 import model.card.CardHolder;
 import model.card.CardType;
-import model.card.MonsterCardHolder;
+import model.card.monster.MonsterCardHolder;
 import model.duel.Filter;
 
 public class DefenceHandler extends FilterHandler {
