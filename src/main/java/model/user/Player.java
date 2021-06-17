@@ -45,6 +45,12 @@ public class Player {
         this.lifePoint += change;
     }
 
+
+    public int getLifePoint()
+    {
+        return this.lifePoint;
+    }
+
     public boolean isDead() {
         if (lifePoint <= 0)
             return true;

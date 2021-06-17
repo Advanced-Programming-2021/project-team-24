@@ -155,7 +155,7 @@ public class EffectParser {
             Effect effect = new Gson().fromJson(arguemnts.get(2), Effect.class);            
         }
     }
-    public void changeLP(String command)
+    public String changeLP(String command)
     {
         //changeLp
         Matcher matcher = Global.getMatcher(command, "changeLP\\((.+),(.+)\\)");
@@ -167,11 +167,12 @@ public class EffectParser {
         }
         else
         {
-            duelController.getDuel().opponent.changeLifePoint(Integer.parseInt(getCommandResult(command)));
+            duelController.getDuel().opponent.changeLifePoint(Integer.parseInt(getCommandResult(matcher.group(2))));
         }        
-        //own and opp key word
+        String result = matcher.group(0);
+        command = command.replace(result, "");
+        return command;        
     }
-    //TODO
     public String q_yn(String command)
     {
         Matcher matcher = Global.getMatcher(command, "q_yn\\(([^{}]+)\\)(.+)");
@@ -235,7 +236,7 @@ public class EffectParser {
                 {
                     coin(command);
                 }
-                handleGetCommand(command);
+                command = handleGetCommand(command);
                 if(command.length() >= 2 && command.substring(0, 2).equals("if"))
                 {
                     return handleConditional(command);
@@ -248,8 +249,8 @@ public class EffectParser {
                 {
                     setCommand(command);
                 }
-                handleChangeLPCommand(command);
-                handleNormCommand(command);
+                command = handleChangeLPCommand(command);
+                command = handleNormCommand(command);
                 command = parseKeyWords(command);
                 if(command.length() >= 3 && command.substring(0, 3).equals("del"))
                 {
@@ -279,42 +280,46 @@ public class EffectParser {
         //return string as result of command, maybe some get or ...
         return command;
     }
-    private void handleChangeLPCommand(String command) {
+    private String handleChangeLPCommand(String command) {
         try
         {
             if(command.substring(0, 8).equals("changeLP"))
             {
-                changeLP(command);
+                command = changeLP(command);                
             }
         }
         catch(Exception e)
-        {                
+        {    
+
         }
+        return command;
     }
-    private void handleNormCommand(String command) {
+    private String handleNormCommand(String command) {
         while(true)
         {
             if(Global.regexFind(command, "Norm\\(([^()]+)\\)"))
             {
                 Matcher matcher = Global.getMatcher(command, "Norm\\(([^()]+)\\)");
-                command.replace(matcher.group(0), normSet(matcher.group(0)));
+                command = command.replace(matcher.group(0), normSet(matcher.group(0)));
             }
             else
                 break;
         }
+        return command;
     }
-    private void handleGetCommand(String command) {
-        command.replace(" ", "");
+    private String handleGetCommand(String command) {
+        command = command.replace(" ", "");
         while(true)
         {
             if(Global.regexFind(command, GET_STRING))
             {
                 Matcher matcher = Global.getMatcher(command, GET_STRING);
-                command.replace(matcher.group(0), getCommand(matcher.group(0)));
+                command = command.replace(matcher.group(0), getCommand(matcher.group(0)));
             }
             else
                 break;
         }
+        return command;
     }
     
     public String normSet(String command)
@@ -395,9 +400,9 @@ public class EffectParser {
             if(command.charAt(i) == '}' || command.charAt(i) == ')')
                 counter--;
             if(counter == 0 && command.charAt(i) == ';')
-            {
-                pre = i + 1;
+            {                
                 ans.add(command.substring(pre, i));
+                pre = i + 1;
             }
         }
         return ans;
