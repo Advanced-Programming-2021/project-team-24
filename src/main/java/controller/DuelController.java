@@ -11,6 +11,7 @@ import model.duel.AutomaticEffectHandler;
 import model.duel.Duel;
 import model.duel.EffectChainer;
 import model.duel.EffectParser;
+import model.duel.Duel.Phase;
 import model.effect.Effect;
 import model.effect.EffectManager;
 import model.effect.EffectType;
@@ -70,26 +71,22 @@ public class DuelController {
 
     }
 
-    public Message runPhase() {
+    public Message nextPhase() {
         duel.nextPhase();
-        if (duel.isPhase(Duel.Phase.DRAW)) {
-            draw();
-        }
-        //TODO change current player
 
         return new Message(TypeMessage.INFO, duel.getCurrentPhase().toString());
     }
 
-    private void draw() {
+    public Message draw() {
         Zone deck = Zone.get("deck", duel.getCurrentPlayer());
         Zone hand = Zone.get("hand", duel.getCurrentPlayer());
         changeZoneOfLastCard(deck, hand);
+        //TODO
+        return null;
     }
 
     private void changeZoneOfLastCard(Zone origin, Zone destination) {
-        duel.setMap(Address.get(destination, duel.zoneCardCount().get(destination)), duel.getMap().get(Address.get(origin, duel.zoneCardCount().get(origin))));
-        duel.pickCard(origin);
-        duel.putCard(destination);
+        duel.setMap(Address.get(destination, duel.zoneCardCount().get(destination)), duel.getMap().get(Address.get(origin, duel.zoneCardCount().get(origin) - 1)));
     }
 
     public Duel getDuel() {

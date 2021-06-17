@@ -11,6 +11,7 @@ import controller.DuelController;
 import controller.Message;
 import model.card.CardHolder;
 import model.duel.Duel;
+import model.duel.Duel.Phase;
 import model.user.Player;
 import model.user.User;
 import model.zone.Address;
@@ -32,6 +33,16 @@ public class DuelMenu {
 
     public void run() {
         while (true) {
+            if(duelController.getDuel().getCurrentPhase() == Phase.DRAW)
+            {
+                System.out.println(duelController.draw().getContent());                
+                duelController.nextPhase();
+            }
+            else
+            if(duelController.getDuel().getCurrentPhase() == Phase.STANDBY)
+            {
+                //TODO handle standby phase
+            }            
             String command = Global.nextLine();
             if (command.equals("menu exit")) {
                 return;
@@ -43,18 +54,18 @@ public class DuelMenu {
                 Message message = duelController.deselect();
                 System.out.println(message.getContent());
             } else if (command.equals("summon")) {
-                duelController.summon();
+                System.out.println(duelController.summon().getContent());
             } else if (command.equals("flip-summon")) {
-                duelController.flipSummon();
+                System.out.println(duelController.flipSummon().getContent());
             } else if (command.equals("set")) {
-                duelController.set();
+                System.out.println(duelController.set().getContent());
             } else if (command.equals("attack direct")) {
-                duelController.directAttack();
+                System.out.println(duelController.directAttack().getContent());
             } else if (command.equals("activate effect")) {
                 //TODO activate effect
             }
             else if (command.equals("next phase")){
-                duelController.runPhase();
+                System.out.println(duelController.nextPhase().getContent());
             }
             else if (command.equals("show graveyard")) {
                 List<CardHolder> graveyard = getZoneCards("graveyard",false);

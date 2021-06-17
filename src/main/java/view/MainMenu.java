@@ -1,11 +1,14 @@
 package view;
 
 
+import controller.DuelController;
 import controller.MainMenuController;
 import controller.Message;
 import model.card.Card;
 import model.deck.Deck;
 import model.user.User;
+import model.zone.Address;
+import model.zone.Zone;
 
 import java.util.regex.Matcher;
 
@@ -66,6 +69,11 @@ public class MainMenu extends Menu {
         a.getDecks().setActiveDeck(a.getDecks().getDeckByName("alireza"));
         b.getDecks().add(alireza);
         b.getDecks().setActiveDeck(b.getDecks().getDeckByName("alireza"));
-        new DuelMenu(a, b, "1").run();
+        DuelMenu duelMenu = new DuelMenu(a, b, "1");
+        DuelController dControleer = duelMenu.duelController;
+        duelMenu.run();
+        duelMenu.duelController.select(Address.get(Zone.get("hand", dControleer.getDuel().getCurrentPlayer()), 1));
+        System.out.println(dControleer.set().getContent());
+
     }
 }

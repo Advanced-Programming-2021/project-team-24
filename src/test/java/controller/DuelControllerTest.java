@@ -26,7 +26,7 @@ public class DuelControllerTest {
 
 
         
-        assertEquals(duelController.runPhase().getContent(), "STANDBY");
+        assertEquals(duelController.nextPhase().getContent(), "STANDBY");
         // DRAW TEST
         User.deleteUser("user1");
         User.deleteUser("user2");

@@ -22,13 +22,13 @@ public class Duel {
     Player user;
     Player opponent;
     Player currentPlayer;
-    Player otherPlayer;
     private static List<EffectManager> effectManagerList;
     private HashMap<Address, CardHolder> map = new HashMap<>();
     private List<Zone> zones;
     private int rounds;
     private Phase currentPhase;
     private HashMap<Phase, Phase> nextPhase = new HashMap<Phase, Phase>();
+    private boolean changeTurnPairity;
     private HashMap<Zone, Integer> zoneCardCount = new HashMap<Zone, Integer>();
 
     public enum Phase {
@@ -42,7 +42,10 @@ public class Duel {
 
     public void nextPhase() {
         currentPhase = nextPhase.get(currentPhase);
-        //TODO change player
+        if(currentPhase == Phase.END)
+        {
+
+        }
 
     }
 
@@ -55,17 +58,7 @@ public class Duel {
         return false;
     }
 
-    public void pickCard(Zone zone) {
-        int count = zoneCardCount.get(zone);
-        count--;
-        zoneCardCount.put(zone, count);
-    }
 
-    public void putCard(Zone zone) {
-        int count = zoneCardCount.get(zone);
-        count--;
-        zoneCardCount.put(zone, count);
-    }
 
     public static EffectManager getEffectManagerById(int id) {
         for (int i = 0; i < effectManagerList.size(); i++) {
@@ -79,11 +72,11 @@ public class Duel {
         this.rounds = Integer.parseInt(rounds);
         zones = new ArrayList<>();
         this.user = new Player(user);
+        changeTurnPairity = true;
         this.opponent = new Player(opponent);
-        this.currentPlayer = this.user;
-        this.otherPlayer = this.opponent;
+        this.currentPlayer = this.user;    
         Zone.init(currentPlayer);
-        Zone.init(otherPlayer);
+        Zone.init(this.opponent);
         zones.add(Zone.get("graveyard", this.user));
         zones.add(Zone.get("graveyard", this.opponent));
         zones.add(Zone.get("hand", this.user));
@@ -96,9 +89,8 @@ public class Duel {
         zones.add(Zone.get("deck", this.opponent));
         this.currentPhase = Phase.DRAW;
         setNextPhaseHashMap();
-        Address.init(otherPlayer);
+        Address.init(this.opponent);        
         Address.init(currentPlayer);
-        //TODO draw five cards
         setTheIntialStateOfHandCards(user, currentPlayer);
         setTheIntialStateOfHandCards(opponent, this.opponent);
         Address address = Address.get(Zone.get("monster", currentPlayer), 2);
@@ -130,12 +122,12 @@ public class Duel {
     }
 
     public Player getCurrentPlayer() {
-        return currentPlayer;
+        if(changeTurnPairity)
+            return currentPlayer;
+        else
+            return opponent;
     }
 
-    public Player getOtherPlayer() {
-        return otherPlayer;
-    }
 
     public Zone getCardHolderZone(CardHolder cardHolder) {
         for (Zone zone : zones) {
@@ -150,7 +142,10 @@ public class Duel {
     }
 
     public Player getOpponent() {
-        return this.opponent;
+        if(changeTurnPairity)
+            return this.opponent;
+        else
+            return currentPlayer;
     }
 
     public void addEffectManager(EffectManager effectManager) {
@@ -330,9 +325,6 @@ public class Duel {
         map.put(address, cardHolder);
     }
 
-    public HashMap<Zone, Integer> zoneCardCount() {
-        return zoneCardCount;
-    }
     public void setNextPhaseHashMap(){
         nextPhase.put(Phase.DRAW, Phase.STANDBY);
         nextPhase.put(Phase.STANDBY, Phase.MAIN1);
@@ -340,5 +332,13 @@ public class Duel {
         nextPhase.put(Phase.BATTLE, Phase.MAIN2);
         nextPhase.put(Phase.MAIN2, Phase.END);
         nextPhase.put(Phase.END, Phase.DRAW);
+    }
+    public void changePlayerTurn()
+    {
+        changeTurnPairity = !changeTurnPairity;
+    }
+
+    public HashMap<Zone, Integer> zoneCardCount() {
+        return null;
     }
 }
