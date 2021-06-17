@@ -128,9 +128,8 @@ public class DuelMenu {
 
 
     public Boolean BooleanQYN(String question) {
-        System.out.println(question);
-        return true;
-        /*String out = Global.nextLine();
+        System.out.println(question);        
+        String out = Global.nextLine();
         if (out.toLowerCase().equals("y"))
             return true;
         else if (out.toLowerCase().equals("n"))
@@ -138,7 +137,7 @@ public class DuelMenu {
         else {
             System.out.println("please enter valid answer");
             return BooleanQYN(question);
-        }*/
+        }
     }
 
     public Integer Dice() {

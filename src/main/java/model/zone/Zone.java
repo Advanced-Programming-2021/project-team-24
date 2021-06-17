@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Zone {
     private String zone;
     private Player player;
-    public static final String[] zoneStrings = {"graveyard", "monster", "spell", "hand", "field", "deck"};
+    public static final String[] zoneStrings = {"graveyard", "monster", "magic", "hand", "field", "deck"};
     private static List<Zone> zones = new ArrayList<>();
 
     public static void init(Player player) {

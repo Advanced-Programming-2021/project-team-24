@@ -16,14 +16,39 @@ import model.effect.Effect;
 public class MagicCard extends Card {
      
     
-    private Boolean isActived;
     private Effect effect; 
     @SerializedName("magicIcon")
     private MagicIcon magicIcon;
     @SerializedName("magicType")
     private MagicType magicType;
+
+
+    
+    public MagicType getMagicType() {
+        return this.magicType;
+    }
+
+    
+    public MagicIcon getMagicIcon() {
+        return this.magicIcon;
+    }
+
+    public void setMagicIcon(MagicIcon magicIcon) {
+        this.magicIcon = magicIcon;
+    }
+    public void setMagicType(MagicType magicType) {
+        this.magicType = magicType;
+    }
+
     public Effect getEffect() {
-        return this.effect;
+        if(this.effect != null)
+        {
+            return this.effect;
+        }
+        else
+        {
+            return new Effect();
+        }
     }
 
     public void setEffect(Effect effect) {
@@ -32,10 +57,6 @@ public class MagicCard extends Card {
     public Integer getSpeed()
     {
         return this.effect.getSpeed();
-    }
-    public boolean getIsActivated()
-    {        
-        return isActived;
     }
     public boolean isSpell()
     {

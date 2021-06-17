@@ -42,8 +42,7 @@ public class Duel {
 
     public void nextPhase() {
         currentPhase = nextPhase.get(currentPhase);
-        if(currentPhase == Phase.END)
-        {
+        if (currentPhase == Phase.END) {
 
         }
 
@@ -57,7 +56,6 @@ public class Duel {
         if (currentPhase.equals(phase)) return true;
         return false;
     }
-
 
 
     public static EffectManager getEffectManagerById(int id) {
@@ -74,7 +72,7 @@ public class Duel {
         this.user = new Player(user);
         changeTurnPairity = true;
         this.opponent = new Player(opponent);
-        this.currentPlayer = this.user;    
+        this.currentPlayer = this.user;
         Zone.init(currentPlayer);
         Zone.init(this.opponent);
         zones.add(Zone.get("graveyard", this.user));
@@ -89,40 +87,36 @@ public class Duel {
         zones.add(Zone.get("deck", this.opponent));
         this.currentPhase = Phase.DRAW;
         setNextPhaseHashMap();
-        Address.init(this.opponent);        
+        Address.init(this.opponent);
         Address.init(currentPlayer);
         setTheIntialStateOfHandCards(user, currentPlayer);
         setTheIntialStateOfHandCards(opponent, this.opponent);
         Address address = Address.get(Zone.get("monster", currentPlayer), 2);
         map.put(address, new MonsterCardHolder(currentPlayer, new MonsterCard(), CardState.ATTACK_MONSTER));
-        System.out.println(address);        
+        System.out.println(address);
     }
 
     private void setTheIntialStateOfHandCards(User user, Player player) {
-        Deck firstUserDeck = user.getDecks().getActiveDeck();        
+        Deck firstUserDeck = user.getDecks().getActiveDeck();
         Collections.shuffle(firstUserDeck.getMainCards());
-        for(int i = 0; i < firstUserDeck.getMainCards().size(); i++)
-        {
-            if(i < 5)
-            {
-                if(firstUserDeck.getMainCards().get(i).isMagic())
-                    getMap().put(Address.get(Zone.get("hand", player), i), new MagicCardHolder(player, (MagicCard)firstUserDeck.getMainCards().get(i), CardState.HAND));
+        for (int i = 0; i < firstUserDeck.getMainCards().size(); i++) {
+            if (i < 5) {
+                if (firstUserDeck.getMainCards().get(i).isMagic())
+                    getMap().put(Address.get(Zone.get("hand", player), i), new MagicCardHolder(player, (MagicCard) firstUserDeck.getMainCards().get(i), CardState.HAND));
                 else
-                    getMap().put(Address.get(Zone.get("hand", player), i), new MonsterCardHolder(player,  (MonsterCard)firstUserDeck.getMainCards().get(i), CardState.HAND));
-            }
-            else
-            {
-                if(firstUserDeck.getMainCards().get(i).isMagic())
-                    getMap().put(Address.get(Zone.get("deck", player), i - 5), new MagicCardHolder(player, (MagicCard)firstUserDeck.getMainCards().get(i), CardState.HAND));
+                    getMap().put(Address.get(Zone.get("hand", player), i), new MonsterCardHolder(player, (MonsterCard) firstUserDeck.getMainCards().get(i), CardState.HAND));
+            } else {
+                if (firstUserDeck.getMainCards().get(i).isMagic())
+                    getMap().put(Address.get(Zone.get("deck", player), i - 5), new MagicCardHolder(player, (MagicCard) firstUserDeck.getMainCards().get(i), CardState.HAND));
                 else
-                    getMap().put(Address.get(Zone.get("deck", player), i - 5), new MonsterCardHolder(player,  (MonsterCard)firstUserDeck.getMainCards().get(i), CardState.HAND));
+                    getMap().put(Address.get(Zone.get("deck", player), i - 5), new MonsterCardHolder(player, (MonsterCard) firstUserDeck.getMainCards().get(i), CardState.HAND));
             }
 
         }
     }
 
     public Player getCurrentPlayer() {
-        if(changeTurnPairity)
+        if (changeTurnPairity)
             return currentPlayer;
         else
             return opponent;
@@ -142,7 +136,7 @@ public class Duel {
     }
 
     public Player getOpponent() {
-        if(changeTurnPairity)
+        if (changeTurnPairity)
             return this.opponent;
         else
             return currentPlayer;
@@ -172,8 +166,12 @@ public class Duel {
         List<CardHolder> cardHolders = new ArrayList<>();
         for (int i = 1; i <= 60; i++) {
             CardHolder cardHolder = getMap().get(address);
-            if (cardHolder != null) cardHolders.add(cardHolder);
-            address.getNextPlace();
+            if (cardHolder != null) cardHolders.add(cardHolder);        
+            address = address.getNextPlace();
+            if(address == null)
+            {
+                break;
+            }
         }
         return cardHolders;
     }
@@ -185,9 +183,9 @@ public class Duel {
                 if (v.get(i).getId() == cardHolderId)
                     return v.get(i);
         }
-        if(currentPlayer.getMap().getId() == cardHolderId)
+        if (currentPlayer.getMap().getId() == cardHolderId)
             return currentPlayer.getMap();
-        if(opponent.getMap().getId() == cardHolderId)
+        if (opponent.getMap().getId() == cardHolderId)
             return opponent.getMap();
         return null;
     }
@@ -204,17 +202,14 @@ public class Duel {
 
     public void removeCardHolderByAddress(Address address) {
         Address newAddress = address.getNextPlace(), oldAddress = address;
+        Zones zone = Zones.valueOf(address.getZone().getName());
+        map.put(oldAddress, null);
         //shifting(hand,deck,graveyard)
-        for (Zones zone : Zones.values()) {
-            if (!zone.isDiscrete) {
-                for (int i = 0; i < zone.capacity; i++) {
-                    map.put(newAddress, map.get(oldAddress));
-                    newAddress = newAddress.getNextPlace();
-                    oldAddress = oldAddress.getNextPlace();
-                }
-                map.put(oldAddress, null);
-                newAddress = address.getNextPlace();
-                oldAddress = address;
+        if (!zone.isDiscrete) {
+            for (int i = 0; i < zone.capacity; i++) {
+                map.put(newAddress, map.get(oldAddress));
+                newAddress = newAddress.getNextPlace();
+                oldAddress = oldAddress.getNextPlace();
             }
         }
     }
@@ -224,22 +219,30 @@ public class Duel {
         removeCardHolderByAddress(address);
     }
 
-    public void addCard(Card card, Zone zone, CardState cardState) {
-        //TODO do in map class not here
+    public void addCard(Card card, Zone zone1, CardState cardState) {
+        Zones zone = Zones.valueOf(zone1.getName());
+        for (int i = 0; i < zone.capacity; i++) {
+            if (map.get(Address.get(zone1, i)) == null) {
+                if (card.getCardType().equals(CardType.MONSTER))
+                    map.put(Address.get(zone1, i), new MonsterCardHolder(zone1.getPlayer(), (MonsterCard) card, cardState));
+                else
+                    map.put(Address.get(zone1, i), new MagicCardHolder(zone1.getPlayer(), (MagicCard) card, cardState));
+                return;
+            }
+        }
     }
 
 
     public void changeZone(int cardHolderId, model.zone.Zone targetZone, CardState cardState) {
         if (getCardHolderById(cardHolderId) != null) {
             if (targetZone.getName().equals("own")) {
-                    //TODO
-                } else {
-                    addCard(getCardHolderById(cardHolderId).getCard(), targetZone, cardState);
-                    removeCardHolderById(cardHolderId);
-                }
+                //TODO
+            } else {
+                addCard(getCardHolderById(cardHolderId).getCard(), targetZone, cardState);
+                removeCardHolderById(cardHolderId);
+            }
         }
     }
-
 
     public void changerZone(List<Integer> cardHolders, Zone targetZone, CardState cardState) {
         for (Integer cardHolderId : cardHolders) {
@@ -325,7 +328,7 @@ public class Duel {
         map.put(address, cardHolder);
     }
 
-    public void setNextPhaseHashMap(){
+    public void setNextPhaseHashMap() {
         nextPhase.put(Phase.DRAW, Phase.STANDBY);
         nextPhase.put(Phase.STANDBY, Phase.MAIN1);
         nextPhase.put(Phase.MAIN1, Phase.BATTLE);
@@ -333,12 +336,17 @@ public class Duel {
         nextPhase.put(Phase.MAIN2, Phase.END);
         nextPhase.put(Phase.END, Phase.DRAW);
     }
-    public void changePlayerTurn()
-    {
+
+    public void changePlayerTurn() {
         changeTurnPairity = !changeTurnPairity;
     }
 
     public HashMap<Zone, Integer> zoneCardCount() {
-        return null;
+        HashMap<Zone, Integer> zoneCount = new HashMap<Zone, Integer>();
+        for(Zone zone : zones)
+        {
+            zoneCount.put(zone, getZone(zone).size());
+        }
+        return zoneCount;
     }
-}
+} 

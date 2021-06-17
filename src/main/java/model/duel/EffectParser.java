@@ -69,7 +69,7 @@ public class EffectParser {
         {
             //add death event as reverse
             //TODO
-            Effect reverseEffect = effect;
+            Effect reverseEffect = effect.clone();//TODO it is wrong
             reverseEffect.setEffect(effect.getReverse());
             reverseEffect.setReverse(null);
             if(owner.getMap().getEffects().get(Event.END_TURN) == null)
@@ -224,10 +224,12 @@ public class EffectParser {
                 if(command.length() >= 8 && command.substring(0, 8).equals("return_t") && ans == null)
                 {
                     ans = "true";
+                    return "true";
                 }
                 if(command.length() >= 8 && command.substring(0, 8).equals("return_f") && ans == null)
                 {
                     ans = "false";
+                    return "false";
                 }
                 if(Global.regexFind(command ,"coin"))
                 {
@@ -456,6 +458,11 @@ public class EffectParser {
     {
         List<String> ans = new ArrayList<String>();
         int pre = command.indexOf('(', 0);
+        if(pre > command.length() || pre < 0)
+        {
+            ans.add(command);
+            return ans;
+        }
         int counter = 0;
         for(int i = pre; i < command.length(); i++)
         {
