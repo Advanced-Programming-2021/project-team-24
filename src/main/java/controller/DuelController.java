@@ -482,7 +482,9 @@ public class DuelController {
         for (int i = 1; i <= 60; i++) {
             CardHolder cardHolder = duel.getMap().get(address);
             if (cardHolder != null) cardHolders.add(cardHolder);
-            address.getNextPlace();
+            address = address.getNextPlace();
+            if(address == null)
+                break;
         }
         return cardHolders;
     }

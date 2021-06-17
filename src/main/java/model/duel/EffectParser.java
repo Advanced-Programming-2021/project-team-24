@@ -106,8 +106,8 @@ public class EffectParser {
     {
         Matcher matcher = Global.getMatcher(command, "if\\(#(.+)#[<>]#(.+)#\\)(&.+&)");
         matcher.find();
-        String s1 = matcher.group(1);
-        String s2 = matcher.group(2);
+        String s1 = getCommandResult(matcher.group(1));
+        String s2 = getCommandResult(matcher.group(2));
         if(s1.compareTo(s2) > 0)
         {
             return getCommandResult(splitCorrect(matcher.group(3), '&').get(1));
@@ -122,7 +122,7 @@ public class EffectParser {
         List<String> fields = splitCorrect(command, ',');
         Gson gson = new Gson();
         getCommandResult(fields.get(0));
-        List<Integer> cardHolders = gson.fromJson(getCommandResult(fields.get(0)), new ArrayList<Integer>().getClass());            
+        List<Integer> cardHolders = getArray(fields.get(0));
         Zone targetZone = null;//parseZone(fields.get(1));        
         for(int i = 0; i < cardHolders.size(); i++)
         {
@@ -150,7 +150,7 @@ public class EffectParser {
         if(matcher.find())
         {
             List<String> arguemnts = splitCorrect(matcher.group(1), ',');
-            List<Integer> card = new Gson().fromJson(getCommandResult(arguemnts.get(0)), new ArrayList<Integer>().getClass());
+            List<Integer> card = getArray(arguemnts.get(0));
             Event event = new Gson().fromJson(arguemnts.get(1), Event.class);
             Effect effect = new Gson().fromJson(arguemnts.get(2), Effect.class);            
         }
@@ -194,7 +194,7 @@ public class EffectParser {
     {
         //filp(List<E>): 
         String lString = splitByParentheses(command).get(0);
-        List<Integer> list = new Gson().fromJson(getCommandResult(lString) , new ArrayList<Integer>().getClass());
+        List<Integer> list = getArray(lString);
         for(int i = 0; i < list.size(); i++)
         {
             duelController.getDuel().getCardHolderById(list.get(i)).flip();
@@ -222,6 +222,7 @@ public class EffectParser {
             //check get
             for(int i = 0; i < 4; i++)
             {
+                command = parseKeyWords(command);
                 if(command.length() >= 8 && command.substring(0, 8).equals("return_t") && ans == null)
                 {
                     ans = "true";
@@ -251,7 +252,7 @@ public class EffectParser {
                 }
                 command = handleChangeLPCommand(command);
                 command = handleNormCommand(command);
-                command = parseKeyWords(command);
+                
                 if(command.length() >= 3 && command.substring(0, 3).equals("del"))
                 {
                     deleteListFromList(command);
@@ -300,7 +301,8 @@ public class EffectParser {
             if(Global.regexFind(command, "Norm\\(([^()]+)\\)"))
             {
                 Matcher matcher = Global.getMatcher(command, "Norm\\(([^()]+)\\)");
-                command = command.replace(matcher.group(0), normSet(matcher.group(0)));
+                matcher.find();
+                command = command.replace(matcher.group(0), normSet((matcher.group(0))));
             }
             else
                 break;
@@ -355,7 +357,9 @@ public class EffectParser {
             {
                 ans.add(cardList.get(i).getId());
             }
-            command = command.replaceAll(zone, new Gson().toJson(ans, new ArrayList<Integer>().getClass()));
+            String u;
+            
+            command = command.replace(zone, new Gson().toJson(ans, new ArrayList<Integer>().getClass()));
         }
         
         for (String string : model.zone.Zone.zoneStrings) {

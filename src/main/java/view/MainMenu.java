@@ -102,7 +102,8 @@ public class MainMenu extends Menu {
             dControleer.nextPhase();
             System.out.println(dControleer.directAttack().getContent());
         }
-        String command = "set(this, can_attack, 0); if(#get(this,can_attack)#>#1#)&changeLP(own,200)&else&changeLP(own,-200)&;";
+        String command = "if(#Norm($my_hand$)#>#7#)&changeLP(own,200)&else&changeLP(own,-200)&";
+
         System.out.println(new EffectParser(duelMenu, dControleer, ((MagicCardHolder)dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0))).getEffectManager()).getCommandResult(command));
         System.out.println(dControleer.getDuel().getCurrentPlayer().getLifePoint());
         System.out.println(dControleer.getDuel().getOpponent().getLifePoint());
