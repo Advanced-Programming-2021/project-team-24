@@ -5,18 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import model.duel.AutomaticEffectHandler;
 import model.duel.Duel;
 import model.duel.EffectChainer;
 import model.duel.EffectParser;
 import model.effect.Effect;
 import model.effect.EffectManager;
+import model.effect.EffectType;
 import model.card.CardHolder;
 import model.card.CardState;
 import model.card.Event;
-import model.card.MagicCard;
-import model.card.MagicCardHolder;
-import model.card.MonsterCard;
-import model.card.MonsterCardHolder;
+import model.card.magic.MagicCard;
+import model.card.magic.MagicCardHolder;
+import model.card.monster.MonsterCard;
+import model.card.monster.MonsterCardHolder;
 import model.zone.Address;
 import model.zone.Zone;
 import model.zone.Zones;
@@ -27,7 +29,11 @@ public class DuelController {
     DuelMenu duelMenu;
     public HashMap<Event, Integer> duelEvents;
 
-
+    public void updateAutomaticEffect()
+    {
+        //TODO
+        new AutomaticEffectHandler(this, duelMenu).update();
+    }
     public void resetDuelEvents()
     {
         for(Map.Entry event : duelEvents.entrySet())
@@ -58,6 +64,8 @@ public class DuelController {
     public DuelController(Duel duel) {
         
         this.duel = duel;
+        //TODO wirte 5 card drawing in start of game
+
     }
 
     public Message runPhase() {
@@ -65,6 +73,8 @@ public class DuelController {
         if (duel.isPhase(Duel.Phase.DRAW)) {
             draw();
         }
+        //TODO change current player
+
         return new Message(TypeMessage.INFO, duel.getCurrentPhase().toString());
     }
 
@@ -112,14 +122,9 @@ public class DuelController {
         return new Message(TypeMessage.INFO, duel.getMap().get(duel.getCurrentPlayer().getSelectedAddress()).toString());
     }
 
-
-    public List<CardHolder> getZones(List<String> zones) {
-        return null;
-    }
-
     public Message activeMagicCard(Address selectedAddress) {
         CardHolder cardHolder = duel.getMap().get(selectedAddress);
-        if (cardHolder.getOnwerName().equals(duel.getCurrentPlayer().getNickname())) {
+        if (cardHolder.getOnwerName().equals(duel.getCurrentPlayer().getNickname())) {            
             if (cardHolder.getBoolMapValue("can_active")) {
                 if (cardHolder.getCardState() == CardState.SET_MAGIC) {              
                     MagicCardHolder magicCard = (MagicCardHolder) cardHolder;
@@ -134,6 +139,10 @@ public class DuelController {
                     
                 } else if (cardHolder.getCardState() == CardState.HAND) {
                     //TODO requirement
+                    if(1 == 1)
+                    {
+                        return new Message(TypeMessage.ERROR, "This card is already activated");
+                    }
                 }
             } else {
                 return new Message(TypeMessage.ERROR, "You can't active this card");
@@ -196,6 +205,20 @@ public class DuelController {
                 if (getSelectedAddress().getZone().getName().equals("hand")) {
                     if (duel.getCurrentPhase().equals(Duel.Phase.MAIN1) || duel.getCurrentPhase().equals(Duel.Phase.MAIN2)) {
                         if (duel.getMap().get(getSelectedAddress()).getCard().isMagic()) {
+                            if(((MagicCard) duel.getMap().get(getSelectedAddress()).getCard()).getEffect().getEffectType() == EffectType.FIELD)
+                            {
+                                //TODO check if it is full
+                                if(getZone(Zone.get("field", duel.getCurrentPlayer())).size() > 0)
+                                {
+                                    MagicCardHolder temp = (MagicCardHolder)getZone(Zone.get("field", duel.getCurrentPlayer())).get(0);
+                                    new EffectParser(duelMenu, this, temp.getEffectManager()).getCommandResult(((MagicCard)(temp.getCard())).getEffect().getReverse());
+                                    changeZoneOfLastCard(Zone.get("field", duel.getCurrentPlayer()), null);//TODO                                                                         
+                                    //TODO do reverse
+                                    //replace new card
+                                }
+                                duel.getMap().put(Address.get(Zone.get("field", duel.getCurrentPlayer()), 0), new MagicCardHolder(duel.getCurrentPlayer(), (MagicCard)(duel.getMap().get(Address.get(Zone.get("field", duel.getCurrentPlayer()), 0)).getCard()), CardState.ACTIVE_MAGIC));
+                            }
+                            else
                             if (duel.zoneCardCount().get(Zone.get("spell", duel.getCurrentPlayer())) < 5) {
                                 if(duel.getCurrentPlayer().getMap().getBoolMapValue("add_magic_turn"))
                                 {
@@ -428,9 +451,6 @@ public class DuelController {
                     else{
                         return new Message(TypeMessage.ERROR, "you changed position of this card before");
                     }                    
-                    //TODO check if pointless try
-                    //TODO check if already changed position once
-                    //TODO change position
                 } else {
                     return new Message(TypeMessage.ERROR, "action not allowed in this phase");
                 }
@@ -452,18 +472,6 @@ public class DuelController {
             address.getNextPlace();
         }
         return cardHolders;
-    }
-
-    public Boolean satisfyCondition(Integer idCardHolder, EffectManager effectManager) {
-        //check phase
-        //check requirement event
-
-        Effect effect = effectManager.getEffect();
-        //EffectParser effectParser = new EffectParser(null, this, this.getDuel().getCardHolderById(idCardHolder).getOwner(), effect, idCardHolder);
-        
-        
-        return true;
-
     }
 
     public static void main(String[] args) {
