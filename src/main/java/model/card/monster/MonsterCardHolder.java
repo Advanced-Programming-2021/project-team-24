@@ -18,6 +18,7 @@ public class MonsterCardHolder extends CardHolder {
         this.card = monsterCard;
         cardMap.put("attack", ((Integer)monsterCard.getAttack()).toString());
         cardMap.put("defence",  ((Integer)monsterCard.getDefence()).toString());
+        cardMap.put("level", ((Integer)monsterCard.getLevel()).toString());
 
     }
     private MonsterCard card;    

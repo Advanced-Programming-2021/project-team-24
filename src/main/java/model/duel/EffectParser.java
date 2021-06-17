@@ -259,7 +259,7 @@ public class EffectParser {
                 }
                 if(command.length() >= 3 && command.substring(0, 3).equals("sum"))
                 {
-                    getSumOverField(command);
+                    command = getSumOverField(command);
                 }
                 //calculater            
             }
@@ -352,25 +352,23 @@ public class EffectParser {
         for (String string : model.zone.Zone.zoneStrings) {
             String zone = "$my_" + string + "$";
             List<CardHolder> cardList = duelController.getZone(Zone.get(string, current));
-            List<Integer> ans = new ArrayList<Integer>();
+            List<String> ans = new ArrayList<String>();
             for(int i = 0; i < cardList.size(); i++)
             {
-                ans.add(cardList.get(i).getId());
-            }
-            String u;
-            
-            command = command.replace(zone, new Gson().toJson(ans, new ArrayList<Integer>().getClass()));
+                ans.add(Integer.toString(cardList.get(i).getId()));
+            }        
+            command = command.replace(zone, new Gson().toJson(ans, new ArrayList<String>().getClass()));
         }
         
         for (String string : model.zone.Zone.zoneStrings) {
             String zone = "$opp_" + string + "$";
             List<CardHolder> cardList = duelController.getZone(Zone.get(string, opponent));
-            List<Integer> ans = new ArrayList<Integer>();
+            List<String> ans = new ArrayList<String>();
             for(int i = 0; i < cardList.size(); i++)
             {
-                ans.add(cardList.get(i).getId());
+                ans.add(Integer.toString(cardList.get(i).getId()));
             }
-            command = command.replaceAll(zone, new Gson().toJson(ans, new ArrayList<Integer>().getClass()));
+            command = command.replace(zone, new Gson().toJson(ans, new ArrayList<String>().getClass()));
         }
 
         
@@ -440,11 +438,11 @@ public class EffectParser {
                 list.add(command.substring(pre, i));
                 pre = i + 1;                
             }        
-            if(command.charAt(i) == '(')
+            if(command.charAt(i) == '(' || command.charAt(i) == '[')
             {
                 counter ++;
             }
-            if(command.charAt(i) == ')')
+            if(command.charAt(i) == ')' || command.charAt(i) == ']')
             {
                 counter --;
             }
@@ -564,27 +562,31 @@ public class EffectParser {
         }
         return ansId;
     }
-    public void getSumOverField(String command)
+    public String getSumOverField(String command)
     {
         //sum(List<E>, "field");
         Matcher matcher = Global.getMatcher(command, "sum\\((.+)\\)");
         Integer ans = 0;
         if(matcher.find())
         {
-            List<String> fields  = splitCorrect(command, ',');
+            List<String> fields  = splitCorrect(matcher.group(1), ',');
             List<Integer> list = getArray(fields.get(0));
-            String value = getCommand(fields.get(1));
+            String value = getCommandResult(fields.get(1));
             for(int i = 0; i < list.size(); i++)
             {
                 Card card = duelController.getDuel().getCardHolderById(list.get(i)).getCard();
                 if(card.getCardType() == CardType.MONSTER)
                 {
-                    ans += Integer.parseInt(duelController.getDuel().getCardHolderById(list.get(i)).getValue(value));
+                    try{
+                        ans += Integer.parseInt(duelController.getDuel().getCardHolderById(list.get(i)).getValue(value));
+                    }catch(Exception e){                        
+                    }                
                 }
                 
             }
-            command.replace(matcher.group(0), ans.toString());
+            command = command.replace(matcher.group(0), ans.toString());
         }
+        return command;
     }
     public static void main(String[] args) {
         System.out.println(splitCorrect("aa,aa(,aa,a),b,b,()()(,)(,),", ','));
