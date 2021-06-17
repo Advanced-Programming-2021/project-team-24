@@ -185,7 +185,7 @@ public class EffectParser {
         }
         else
         {
-            return getCommand(ifElsePart.get(1));
+            return getCommandResult(ifElsePart.get(1));
         }
     }
     
