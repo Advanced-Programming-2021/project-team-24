@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 
+import com.thoughtworks.qdox.model.expression.Add;
+
 import controller.DuelController;
 import controller.Message;
 import model.card.CardHolder;
@@ -78,7 +80,7 @@ public class DuelMenu {
                         if (matcher.group("opponent") != null) {
                             opponent = true;
                         }
-                        Address address = new Address(new Zone(zoneName, duelController.getDuel().getCurrentPlayer()), place);
+                        Address address = Address.get(Zone.get(zoneName, duelController.getDuel().getCurrentPlayer()), place);
                         Message message = duelController.select(address);
                         System.out.println(message.getContent());
                     } else System.out.println("invalid selection");
@@ -178,7 +180,7 @@ public class DuelMenu {
 
     public List<CardHolder> getZoneCards(String zoneName, Boolean isOpponent) {
         Player player = getPlayer(isOpponent);
-        return duelController.getDuel().getZone(new Zone(zoneName, player));
+        return duelController.getDuel().getZone(Zone.get(zoneName, player));
     }
 
     public Player getPlayer(Boolean isOpponent){
@@ -239,7 +241,7 @@ public class DuelMenu {
     }
 
     public String getCard(String zoneName,Boolean isOpponent,int place){
-        return duelController.getDuel().getMap().get(new Address(new Zone(zoneName,getPlayer(isOpponent)),place)).getCardState().toString();
+        return duelController.getDuel().getMap().get(Address.get(Zone.get(zoneName,getPlayer(isOpponent)),place)).getCardState().toString();
     }
 
 }

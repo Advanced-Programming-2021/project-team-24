@@ -3,6 +3,7 @@ package model.duel;
 import model.card.*;
 import model.card.monster.MonsterCard;
 import model.card.monster.MonsterCardHolder;
+import model.deck.Deck;
 import model.effect.EffectManager;
 import model.user.Player;
 import model.user.User;
@@ -78,7 +79,8 @@ public class Duel {
         this.opponent = new Player(opponent);
         this.currentPlayer = this.user;
         this.otherPlayer = this.opponent;
-        //Zone.init();
+        Zone.init(currentPlayer);
+        Zone.init(otherPlayer);
         zones.add(Zone.get("graveyard", this.user));
         zones.add(Zone.get("graveyard", this.opponent));
         zones.add(Zone.get("hand", this.user));
@@ -89,13 +91,14 @@ public class Duel {
         zones.add(Zone.get("magic", this.opponent));
         this.currentPhase = Phase.DRAW;
         setNextPhaseHashMap();
+        Address.init(otherPlayer);
+        Address.init(currentPlayer);
+        //TODO draw five cards
+        Deck firstUser = user.getDecks().getActiveDeck();
+        
         Address address = Address.get(Zone.get("monster", currentPlayer), 2);
         map.put(address, new MonsterCardHolder(currentPlayer, new MonsterCard(), CardState.ATTACK_MONSTER));
-        System.out.println(address);
-        Zone.init(this.user);
-        Zone.init(this.opponent);
-        Address.init(this.user);
-        Address.init(this.opponent);
+        System.out.println(address);        
     }
 
     public Player getCurrentPlayer() {

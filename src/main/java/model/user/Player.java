@@ -19,7 +19,7 @@ public class Player {
     public Player(User user) {
         this.lifePoint = 8000;
         this.user = user;
-        this.card = new MonsterCardHolder(this, new MonsterCard(), CardState.NONE);
+        this.card = new MonsterCardHolder(this, new MonsterCard(), CardState.NONE);//TODO That's general Dictionary maybe fixed later
     }
 
 

@@ -37,7 +37,7 @@ public class MainMenu extends Menu {
                 if (matcher.find()) {
                     String opponentUsername = matcher.group("opponentUsername");
                     String rounds = matcher.group("rounds");
-                    Message message = mainMenuController.createDuel(user, opponentUsername, rounds);
+                    Message message = mainMenuController.createDuel(user, User.readUser(opponentUsername), rounds);
                     System.out.println(message.getContent());
                     continue;
                 }
@@ -51,5 +51,10 @@ public class MainMenu extends Menu {
                 System.out.println("invalid command");
             }
         }
+    }
+    public static void main(String[] args) {
+        User a = new User("alireza", "alireza", "alireza");
+        User b = new User("alir", "alir", "alir");
+        new DuelMenu(a, b, "1").run();
     }
 }

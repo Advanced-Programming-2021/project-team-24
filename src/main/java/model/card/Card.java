@@ -102,5 +102,4 @@ public abstract class Card {
         fileWriter.write(new Gson().toJson(this));
         fileWriter.close();
     }
-    //TODO
 }

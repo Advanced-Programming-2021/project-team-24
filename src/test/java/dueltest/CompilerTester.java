@@ -30,7 +30,7 @@ public class CompilerTester {
         DuelController duelController = duelMenu.getDuelController();
         Duel duel = duelController.getDuel();
         duelController.setDuelMenu(duelMenu);
-
+        
         duelController.runPhase();
         System.out.println(duelController.select(Address.get(Zone.get("hand", duelMenu.getPlayer(false)), 1)).getContent());
         //EffectParser effectParser = new EffectParser(duelMenu, duelController, new EffectManager(effect, owner, idCardHolder));
