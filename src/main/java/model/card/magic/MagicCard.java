@@ -69,13 +69,13 @@ public class MagicCard extends Card {
     @Override
     public String toString() {
         String ans = "";
-        ans.concat("Name :" + name + "\n");
+        ans = ans.concat("Name :" + name + "\n");
         if(isSpell())
-            ans.concat("Spell\n");
+            ans = ans.concat("Spell\n");
         else
-            ans.concat("Trap\n");
-        ans.concat("Type: " + (magicType.toString()));
-        ans.concat("Description:" + description);
+             ans = ans.concat("Trap\n");
+        ans = ans.concat("Type: " + (limitType.toString()) + "\n");
+        ans = ans.concat("Description:" + description + "\n");
         return ans;
     }
 }

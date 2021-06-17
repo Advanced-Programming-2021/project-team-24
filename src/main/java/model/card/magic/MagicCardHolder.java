@@ -30,15 +30,7 @@ public class MagicCardHolder extends CardHolder {
     }
     @Override
     public String toString() {
-        String ans = "";
-        ans.concat("Name :" + card.getName() + "\n");
-        if(card.isSpell())
-            ans.concat("Spell\n");
-        else
-            ans.concat("Trap\n");
-        ans.concat("Type: " + (card.getCardType().toString()));
-        ans.concat("Description:" + getCard().getDescription());
-        return ans;    
+        return card.toString();
     }
     
 }
