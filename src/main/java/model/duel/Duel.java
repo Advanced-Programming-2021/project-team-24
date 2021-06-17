@@ -1,6 +1,8 @@
 package model.duel;
 
 import model.card.*;
+import model.card.magic.MagicCard;
+import model.card.magic.MagicCardHolder;
 import model.card.monster.MonsterCard;
 import model.card.monster.MonsterCardHolder;
 import model.deck.Deck;
@@ -12,6 +14,7 @@ import model.zone.Zone;
 import model.zone.Zones;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -89,16 +92,41 @@ public class Duel {
         zones.add(Zone.get("monster", this.opponent));
         zones.add(Zone.get("magic", this.user));
         zones.add(Zone.get("magic", this.opponent));
+        zones.add(Zone.get("deck", this.user));
+        zones.add(Zone.get("deck", this.opponent));
         this.currentPhase = Phase.DRAW;
         setNextPhaseHashMap();
         Address.init(otherPlayer);
         Address.init(currentPlayer);
         //TODO draw five cards
-        Deck firstUser = user.getDecks().getActiveDeck();
-        
+        setTheIntialStateOfHandCards(user, currentPlayer);
+        setTheIntialStateOfHandCards(opponent, this.opponent);
         Address address = Address.get(Zone.get("monster", currentPlayer), 2);
         map.put(address, new MonsterCardHolder(currentPlayer, new MonsterCard(), CardState.ATTACK_MONSTER));
         System.out.println(address);        
+    }
+
+    private void setTheIntialStateOfHandCards(User user, Player player) {
+        Deck firstUserDeck = user.getDecks().getActiveDeck();        
+        Collections.shuffle(firstUserDeck.getMainCards());
+        for(int i = 0; i < firstUserDeck.getMainCards().size(); i++)
+        {
+            if(i < 5)
+            {
+                if(firstUserDeck.getMainCards().get(i).isMagic())
+                    getMap().put(Address.get(Zone.get("hand", player), i), new MagicCardHolder(player, (MagicCard)firstUserDeck.getMainCards().get(i), CardState.HAND));
+                else
+                    getMap().put(Address.get(Zone.get("hand", player), i), new MonsterCardHolder(player,  (MonsterCard)firstUserDeck.getMainCards().get(i), CardState.HAND));
+            }
+            else
+            {
+                if(firstUserDeck.getMainCards().get(i).isMagic())
+                    getMap().put(Address.get(Zone.get("deck", player), i - 5), new MagicCardHolder(player, (MagicCard)firstUserDeck.getMainCards().get(i), CardState.HAND));
+                else
+                    getMap().put(Address.get(Zone.get("deck", player), i - 5), new MonsterCardHolder(player,  (MonsterCard)firstUserDeck.getMainCards().get(i), CardState.HAND));
+            }
+
+        }
     }
 
     public Player getCurrentPlayer() {

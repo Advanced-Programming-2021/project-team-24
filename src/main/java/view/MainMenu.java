@@ -3,6 +3,8 @@ package view;
 
 import controller.MainMenuController;
 import controller.Message;
+import model.card.Card;
+import model.deck.Deck;
 import model.user.User;
 
 import java.util.regex.Matcher;
@@ -55,6 +57,15 @@ public class MainMenu extends Menu {
     public static void main(String[] args) {
         User a = new User("alireza", "alireza", "alireza");
         User b = new User("alir", "alir", "alir");
+        Deck alireza = new Deck("alireza");
+        for(int i = 0; i < Card.getAllCards().size(); i++)
+        {
+            alireza.addMainCard(Card.getAllCards().get(i));
+        }
+        a.getDecks().add(alireza);
+        a.getDecks().setActiveDeck(a.getDecks().getDeckByName("alireza"));
+        b.getDecks().add(alireza);
+        b.getDecks().setActiveDeck(b.getDecks().getDeckByName("alireza"));
         new DuelMenu(a, b, "1").run();
     }
 }

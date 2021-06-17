@@ -21,7 +21,7 @@ public class Decks {
         return decks;
     }
 
-    private Deck getDeckByName(String name) {
+    public Deck getDeckByName(String name) {
         for (Deck deck : decks) {
             if (deck.getName().equals(name))
                 return deck;
