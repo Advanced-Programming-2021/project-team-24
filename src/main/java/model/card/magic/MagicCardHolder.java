@@ -28,5 +28,17 @@ public class MagicCardHolder extends CardHolder {
     public void flip() {
         this.cardState = CardState.VISIBLE_MAGIC;        
     }
+    @Override
+    public String toString() {
+        String ans = "";
+        ans.concat("Name :" + card.getName() + "\n");
+        if(card.isSpell())
+            ans.concat("Spell\n");
+        else
+            ans.concat("Trap\n");
+        ans.concat("Type: " + (card.getCardType().toString()));
+        ans.concat("Description:" + getCard().getDescription());
+        return ans;    
+    }
     
 }

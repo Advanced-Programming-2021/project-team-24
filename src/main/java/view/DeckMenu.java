@@ -1,19 +1,13 @@
 package view;
 
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Matcher;
 
 import controller.DeckController;
-import controller.DuelController;
 import controller.Message;
 import model.card.Card;
 import model.deck.Deck;
-import model.duel.Duel;
-import model.card.CardHolder;
 import model.user.User;
-import model.zone.Address;
-import model.zone.Zone;
 
 public class DeckMenu extends Menu {
     //TODO toStrings

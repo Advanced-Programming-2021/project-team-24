@@ -65,4 +65,17 @@ public class MagicCard extends Card {
         }
         csvReader.close();
     }
+
+    @Override
+    public String toString() {
+        String ans = "";
+        ans.concat("Name :" + name + "\n");
+        if(isSpell())
+            ans.concat("Spell\n");
+        else
+            ans.concat("Trap\n");
+        ans.concat("Type: " + (magicType.toString()));
+        ans.concat("Description:" + description);
+        return ans;
+    }
 }

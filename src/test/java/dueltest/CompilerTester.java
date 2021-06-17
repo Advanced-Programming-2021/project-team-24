@@ -19,8 +19,7 @@ public class CompilerTester {
     public void checkCommands()
     {    
         User user1 = new User("testUser1", "1234", "qwer1");
-        User user2 = new User("testUser2", "1234", "qwer1");                
-        Card.intialize();
+        User user2 = new User("testUser2", "1234", "qwer1");        
         
         user1.getCards().addAll(Card.getAllCards());
         user2.getCards().addAll(Card.getAllCards());        

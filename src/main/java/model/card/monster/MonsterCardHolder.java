@@ -58,4 +58,15 @@ public class MonsterCardHolder extends CardHolder {
     public Card getCard() {        
         return this.card;
     }
+    @Override
+    public String toString() {
+        String ans = "";
+        ans.concat("Name :" + card.getName() + "\n");
+        ans.concat("Monster\n");
+        ans.concat("Type: " +  card.getMonsterType().toString() + "\n");
+        ans.concat("ATK :" + getAttack() + "\n");
+        ans.concat("DEF :" + getDefence() + "\n");
+        ans.concat("Description: " + card.getDescription() + "\n");                
+        return ans;
+    }
 }

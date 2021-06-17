@@ -52,6 +52,7 @@ public abstract class CardHolder {
         this.owner = owner;
         this.cardState = cardState;
     }    
+    public abstract String toString();
     public void endTurn()
     {    
         for(Map.Entry<String, Integer> mapEntry : ageEffects.entrySet())

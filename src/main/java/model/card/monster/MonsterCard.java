@@ -63,4 +63,19 @@ public class MonsterCard extends Card {
         }
         csvReader.close();
     }
+    public MonsterType getMonsterType()
+    {
+        return this.monsterType;
+    }
+    @Override
+    public String toString() {
+        String ans = "";
+        ans.concat("Name :" + name + "\n");
+        ans.concat("Monster\n");
+        ans.concat("Type: " +  monsterType.toString() + "\n");
+        ans.concat("ATK :" + Integer.toString(attack) + "\n");
+        ans.concat("DEF :" + Integer.toString(defence) + "\n");
+        ans.concat("Description: " + description  + "\n");                
+        return ans;
+    }
 }

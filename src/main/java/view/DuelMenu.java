@@ -69,13 +69,14 @@ public class DuelMenu {
                 //TODO surrender
             } else {
                 //<select>
-                Matcher matcher = Global.getMatcher(command, "select (?<address>(?:--\\w+\\s*\\d*){1,2})");
+                Matcher matcher = Global.getMatcher(command, "select (?<zone>(?:--\\w+\\s*\\d*){1,2})");
                 if (matcher.find()) {
                     String zone = matcher.group("zone");
                     matcher = Global.getMatcher(zone, "(?=.*(?<name>--(?:monster|spell|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}");
                     if (matcher.find()) {
                         int place = Integer.parseInt(matcher.group("place"));
-                        String zoneName = matcher.group("name");
+
+                        String zoneName = matcher.group("name").replaceAll("-", "");
                         Boolean opponent = false;
                         if (matcher.group("opponent") != null) {
                             opponent = true;
