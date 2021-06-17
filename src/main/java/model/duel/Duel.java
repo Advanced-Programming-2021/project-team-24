@@ -258,14 +258,15 @@ public class Duel {
     }
 
     public void setterMap(List<Integer> cardHolders, String key, String value, Integer time) {
-        for (Integer integer : cardHolders) {
+        for (int i = 0; i < cardHolders.size(); i++) {
+            Integer integer = cardHolders.get(i);
             if (getCardHolderById(integer) != null) {
                 getCardHolderById(integer).setMapValue(key, value, time);
             }
         }
     }
 
-    public String getterMap(List<Integer> cardHolders, String key, String value) {
+    public String getterMap(List<Integer> cardHolders, String key) {
         if (cardHolders == null || cardHolders.size() == 0)
             return "";
         else {

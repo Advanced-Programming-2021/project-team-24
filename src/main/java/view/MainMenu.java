@@ -102,15 +102,15 @@ public class MainMenu extends Menu {
             dControleer.nextPhase();
             System.out.println(dControleer.directAttack().getContent());
         }
-        String command = "changeLP(own,200);changeLP(opp, 100);";
+        String command = "set(this, can_attack, 0); if(#get(this,can_attack)#>#1#)&changeLP(own,200)&else&changeLP(own,-200)&;";
         System.out.println(new EffectParser(duelMenu, dControleer, ((MagicCardHolder)dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0))).getEffectManager()).getCommandResult(command));
         System.out.println(dControleer.getDuel().getCurrentPlayer().getLifePoint());
         System.out.println(dControleer.getDuel().getOpponent().getLifePoint());
+        
         //duelMenu.run();
         //duelMenu.duelController.select(Address.get(Zone.get("hand", dControleer.getDuel().getCurrentPlayer()), 1));
         //System.out.println(dControleer.set().getContent());
-        String p = "alireza ";
-        System.out.println("alireza  " + soso(p));
+        
     }
     private static String soso(String v)
     {

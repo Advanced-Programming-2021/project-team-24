@@ -89,6 +89,8 @@ public abstract class CardHolder {
     public abstract void flip();
     public String getValue(String string)
     {    
+        if(cardMap.get(string) == null)
+            return "";
         return cardMap.get(string);
     }
     public Boolean getBoolMapValue(String string)
