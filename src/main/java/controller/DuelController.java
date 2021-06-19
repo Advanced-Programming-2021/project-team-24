@@ -5,15 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.graph.ElementOrder.Type;
-
 import model.duel.AutomaticEffectHandler;
 import model.duel.Duel;
 import model.duel.EffectChainer;
 import model.duel.EffectParser;
-import model.duel.Duel.Phase;
-import model.effect.Effect;
-import model.effect.EffectManager;
 import model.effect.EffectType;
 import model.card.CardHolder;
 import model.card.CardState;
@@ -50,7 +45,7 @@ public class DuelController {
     }
     public void resetDuelEventTurn()
     {
-        duelEvents = new HashMap<Event, Integer>();
+        duelEvents = new HashMap<>();
     }
     public void setDuelMenu(DuelMenu duelMenu)
     {
@@ -123,11 +118,11 @@ public class DuelController {
 
     public Message activeMagicCard(Address selectedAddress) {
         CardHolder cardHolder = duel.getMap().get(selectedAddress);
-        if (cardHolder.getOnwerName().equals(duel.getCurrentPlayer().getNickname())) {            
+        if (cardHolder.getOwnerName().equals(duel.getCurrentPlayer().getNickname())) {
             if (cardHolder.getBoolMapValue("can_active")) {
                 if (cardHolder.getCardState() == CardState.SET_MAGIC) {              
                     MagicCardHolder magicCard = (MagicCardHolder) cardHolder;
-                    if(magicCard.getEffectManager().isConditionSatified(new EffectParser(duelMenu, this, magicCard.getEffectManager())))//TODO
+                    if(magicCard.getEffectManager().isConditionSatisfied(new EffectParser(duelMenu, this, magicCard.getEffectManager())))//TODO
                     {
                         duelEvents.put(Event.ACTIVE_SPELL, -1);
                         new EffectChainer(Event.ACTIVE_SPELL, magicCard, duel.getOpponent()).askForChain(duel.getOpponent());
@@ -167,7 +162,7 @@ public class DuelController {
                                 }
                                 else
                                 {
-                                    if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON__OWNER).get(0).isConditionSatified(new EffectParser(null, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON__OWNER).get(0))))//TODO;
+                                    if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON__OWNER).get(0).isConditionSatisfied(new EffectParser(null, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON__OWNER).get(0))))//TODO;
                                     {
                                         new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON).get(0)).runEffect();
                                         duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
@@ -239,7 +234,7 @@ public class DuelController {
                 }
                 else
                 {
-                    if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0).isConditionSatified(new EffectParser(null, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0))))//TODO;
+                    if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0).isConditionSatisfied(new EffectParser(null, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0))))//TODO;
                     {
                         new EffectParser(null, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0)).runEffect();
                         duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
@@ -303,7 +298,7 @@ public class DuelController {
     public Message flipSummon() {
         CardHolder selected = duel.getMap().get(duel.getCurrentPlayer().getSelectedAddress());
         if (selected != null) {
-            if (selected.getOnwerName().equals(duel.getCurrentPlayer().getNickname())) {
+            if (selected.getOwnerName().equals(duel.getCurrentPlayer().getNickname())) {
                 if (selected.getCardState() != CardState.ACTIVE_MAGIC && selected.getCardState() != CardState.SET_MAGIC) {
                     if (duel.getCurrentPhase().equals(Duel.Phase.MAIN1) || duel.getCurrentPhase().equals(Duel.Phase.MAIN2)) {
                         if (selected.getCardState() == CardState.SET_DEFENCE || selected.getCardState() == CardState.DEFENCE_MONSTER) {
@@ -313,7 +308,7 @@ public class DuelController {
                             select.flipSummon();
                             if(select.getEventEffect(Event.FLIP_OWNER) != null)
                             {
-                                if(select.getEventEffect(Event.FLIP_OWNER).get(0).isConditionSatified(new EffectParser(null, this, select.getEventEffect(Event.FLIP_OWNER).get(0))))
+                                if(select.getEventEffect(Event.FLIP_OWNER).get(0).isConditionSatisfied(new EffectParser(null, this, select.getEventEffect(Event.FLIP_OWNER).get(0))))
                                 {
                                     new EffectParser(null, this, select.getEventEffect(Event.FLIP_OWNER).get(0)).runEffect();
                                 }                                
@@ -339,7 +334,7 @@ public class DuelController {
     public Message attack(Address opponentCard) {
         MonsterCardHolder attacker = (MonsterCardHolder) duel.getMap().get(this.duel.getCurrentPlayer().getSelectedAddress());
         if (attacker != null) {
-            if (attacker.getOnwerName().compareTo(duel.getCurrentPlayer().getNickname()) == 0) {
+            if (attacker.getOwnerName().compareTo(duel.getCurrentPlayer().getNickname()) == 0) {
                 if (duel.getCardHolderZone(attacker).getName().equals(Zones.MONSTER.getValue())) {
                     MonsterCardHolder opponent = (MonsterCardHolder) duel.getMap().get(opponentCard);
                     if (duel.getCardHolderZone(duel.getMap().get(opponentCard)).getName().equals(Zones.MONSTER.getValue())) {

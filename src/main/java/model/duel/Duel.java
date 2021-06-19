@@ -89,14 +89,14 @@ public class Duel {
         setNextPhaseHashMap();
         Address.init(this.opponent);
         Address.init(currentPlayer);
-        setTheIntialStateOfHandCards(user, currentPlayer);
-        setTheIntialStateOfHandCards(opponent, this.opponent);
+        setTheInitialStateOfHandCards(user, currentPlayer);
+        setTheInitialStateOfHandCards(opponent, this.opponent);
         Address address = Address.get(Zone.get("monster", currentPlayer), 2);
         map.put(address, new MonsterCardHolder(currentPlayer, new MonsterCard(), CardState.ATTACK_MONSTER));
         System.out.println(address);
     }
 
-    private void setTheIntialStateOfHandCards(User user, Player player) {
+    private void setTheInitialStateOfHandCards(User user, Player player) {
         Deck firstUserDeck = user.getDecks().getActiveDeck();
         Collections.shuffle(firstUserDeck.getMainCards());
         for (int i = 0; i < firstUserDeck.getMainCards().size(); i++) {

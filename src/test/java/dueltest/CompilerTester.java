@@ -7,8 +7,6 @@ import org.junit.Test;
 import controller.DuelController;
 import model.card.Card;
 import model.duel.Duel;
-import model.duel.EffectParser;
-import model.effect.EffectManager;
 import model.user.User;
 import model.zone.Address;
 import model.zone.Zone;
@@ -30,7 +28,7 @@ public class CompilerTester {
         Duel duel = duelController.getDuel();
         duelController.setDuelMenu(duelMenu);
         
-        duelController.runPhase();
+        //duelController.runPhase();
         System.out.println(duelController.select(Address.get(Zone.get("hand", duelMenu.getPlayer(false)), 1)).getContent());
         //EffectParser effectParser = new EffectParser(duelMenu, duelController, new EffectManager(effect, owner, idCardHolder));
     

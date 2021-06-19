@@ -105,7 +105,7 @@ public class Effect {
     {
         return this.effectType;
     }
-    public List<Event> getRequirEvents()
+    public List<Event> getRequireEvents()
     {
         return this.requiredEvents;
     }
