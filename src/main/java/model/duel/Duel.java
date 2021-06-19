@@ -6,6 +6,14 @@ import model.card.magic.MagicCardHolder;
 import model.card.monster.MonsterCard;
 import model.card.monster.MonsterCardHolder;
 import model.deck.Deck;
+import model.duel.filterhandle.AttackHandler;
+import model.duel.filterhandle.CardNameHandler;
+import model.duel.filterhandle.CardStateHandler;
+import model.duel.filterhandle.CardTypeHandler;
+import model.duel.filterhandle.DefenceHandler;
+import model.duel.filterhandle.IdHandler;
+import model.duel.filterhandle.LevelHandler;
+import model.duel.filterhandle.ZoneHandler;
 import model.effect.EffectManager;
 import model.user.Player;
 import model.user.User;
@@ -17,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
+import com.google.j2objc.annotations.ReflectionSupport.Level;
 
 public class Duel {
     Player user;
@@ -312,19 +322,22 @@ public class Duel {
     }
 
     public boolean filterMatch(Filter filter, CardHolder cardHolder) {
-        //TODO
-        if (filter.getIdCardHolder().size() > 0) {
-            for (int i = 0; i < filter.getIdCardHolder().size(); i++) {
-                if (filter.getIdCardHolder().get(i) == cardHolder.getId()) {
-                    return true;
-                }
-            }
-            return false;
-        } else {
-            //filter
-        }
-        return true;
-
+        AttackHandler attack = new AttackHandler();
+        CardNameHandler cardName = new CardNameHandler();
+        CardStateHandler cardState = new CardStateHandler();
+        CardTypeHandler cardType = new CardTypeHandler();
+        DefenceHandler defence = new DefenceHandler();
+        IdHandler id = new IdHandler();
+        LevelHandler level = new LevelHandler();
+        ZoneHandler zone = new ZoneHandler();
+        attack.setNextFilterHandler(cardName);
+        cardName.setNextFilterHandler(cardState);
+        cardState.setNextFilterHandler(cardType);        
+        cardType.setNextFilterHandler(defence);
+        defence.setNextFilterHandler(id);
+        id.setNextFilterHandler(level);
+        level.setNextFilterHandler(zone);        
+        return attack.Handle(filter, cardHolder, this);
     }
 
     public HashMap<Address, CardHolder> getMap() {

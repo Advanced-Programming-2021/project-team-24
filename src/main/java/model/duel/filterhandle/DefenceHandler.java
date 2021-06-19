@@ -9,24 +9,34 @@ import model.duel.Filter;
 public class DefenceHandler extends FilterHandler {
 
     public boolean Handle(Filter filter, CardHolder cardHolder, Duel duel) {
-        MonsterCardHolder monster = (MonsterCardHolder)cardHolder;
-        if(filter.getMinDefence() != null)
+        if(filter.getMinDefence() != null || filter.getMaxDefence() != null)
         {
-            if(cardHolder.getCard().getCardType() == CardType.MONSTER)
-            {
-                if(monster.getDefence() < filter.getMinDefence())   
-                    return false;
+            int flag = 0;
+            try{
+                MonsterCardHolder monster = (MonsterCardHolder)cardHolder;    
+                if(filter.getMinDefence() != null)
+                {
+                    if(cardHolder.getCard().getCardType() == CardType.MONSTER)
+                    {
+                        if(monster.getDefence() < filter.getMinDefence())   
+                            return false;
+                    }
+                    else
+                        return false;            
+                }
+                if(filter.getMaxDefence() != null)
+                {
+                    if(cardHolder.getCard().getCardType() == CardType.MONSTER)
+                    {
+                        if(monster.getDefence() > filter.getMaxDefence())
+                            return false;
+                    }
+                }
+            }catch(Exception e){
+                flag = 1;
             }
-            else
-                return false;            
-        }
-        if(filter.getMaxDefence() != null)
-        {
-            if(cardHolder.getCard().getCardType() == CardType.MONSTER)
-            {
-                if(monster.getDefence() > filter.getMaxDefence())
-                    return false;
-            }
+            if(flag == 1)
+                return false;
         }
         if(nextFilterHandler != null)
         {

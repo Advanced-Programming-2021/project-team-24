@@ -104,7 +104,7 @@ public class EffectParser {
 
     public String handleConditional(String command)
     {
-        Matcher matcher = Global.getMatcher(command, "if\\(#(.+)#[<>]#(.+)#\\)(&.+&)");
+        Matcher matcher = Global.getMatcher(command, "if\\(#([^#]*)#[<>]#([^#]*)#\\)(&.+&)");
         matcher.find();
         String s1 = getCommandResult(matcher.group(1));
         String s2 = getCommandResult(matcher.group(2));
@@ -254,7 +254,7 @@ public class EffectParser {
                 }
                 if(Global.regexFind(command, "filter"))
                 {
-                    //TODO
+                    command = getListByFilter(command);
                 }
                 if(Global.regexFind(command ,"coin"))
                 {
@@ -394,7 +394,7 @@ public class EffectParser {
             command = command.replace(zone, new Gson().toJson(ans, new ArrayList<String>().getClass()));
         }
 
-        
+
 
         return command;
     }
@@ -410,7 +410,11 @@ public class EffectParser {
     public List<Integer> getArray(String array)
     {
         Gson gson = new Gson();
-        return convertToInteger(gson.fromJson(getCommandResult(getCommandResult(array)), new ArrayList<String>().getClass()));
+        return convertToInteger(
+            gson.fromJson(
+                getCommandResult(
+                    getCommandResult(array)
+                    ), new ArrayList<String>().getClass()));
     }
     public void setCommand(String setCommand)
     {
@@ -425,8 +429,11 @@ public class EffectParser {
     public String getCommand(String getCommand)
     {
         List<String> fields = splitCorrect(splitByParentheses(getCommand).get(0), ',');
-        List<Integer> cardHolders = getArray(getCommandResult(fields.get(0)));
-        return duelController.getDuel().getterMap(cardHolders, fields.get(1));        
+        List<Integer> cardHolders = getArray(
+            getCommandResult(fields.get(0))
+            );
+        return
+         duelController.getDuel().getterMap(cardHolders, fields.get(1));        
     }
     public static List<String> splitCommands(String command)
     {
@@ -550,41 +557,27 @@ public class EffectParser {
         }
         return ans;
     }   
-    public List<String> getListByFilter(String filterString)    
+    public String getListByFilter(String filterString)    
     {
         //#Filter#(["key":"value"]);        
-
-        List<String> list = new ArrayList<String>();
-        list = splitCorrect(filterString, ',');
-        //format = json
-        List<String> key = new ArrayList<String>(), value = new ArrayList<String>();
-        for(int i = 0; i < list.size(); i++)
+        Matcher matcher = Global.getMatcher(filterString, "filter\\(([^()]*)\\)");
+        if(matcher.find())
         {
-
-            Matcher mathcer = Global.getMatcher(list.get(i).replaceAll(" ", ""), "(\".+\"):\"(.+)\"");
-            if(mathcer.find())
+            
+            String filterJson = "{"+ matcher.group(1) + "}";
+            Gson gson = new Gson();;
+            Filter filter =  gson.fromJson(filterJson, Filter.class);
+            List<CardHolder> ans = duelController.getDuel().getCardHolderFilter(filter);        
+            List<Integer> ansId = new ArrayList<Integer>();
+            for(int i = 0; i < ans.size(); i++)
             {
-                key.add(mathcer.group(1));
-                value.add(getCommandResult(mathcer.group(2)));
+                ansId.add(ans.get(i).getId());
             }
+            filterString = filterString.replace(matcher.group(0), new Gson().toJson(ansId));
+            return filterString;
         }
-        String filterJson = "{";
-        for(int i = 0; i < key.size(); i++)
-        {
-            filterJson += key.get(i) + ":\"" + value.get(i) + "\"";
-            if(i != key.size() - 1)
-                filterJson += ",";                            
-        }
-        filterJson += "}";
-        Gson gson = new Gson();;
-        Filter filter =  gson.fromJson(filterJson, Filter.class);
-        List<CardHolder> ans = duelController.getDuel().getCardHolderFilter(filter);        
-        List<Integer> ansId = new ArrayList<Integer>();
-        for(int i = 0; i < ans.size(); i++)
-        {
-            ansId.add(ans.get(i).getId());
-        }
-        return convertToString(ansId);
+        else
+            return filterString;
     }
     public String getSumOverField(String command)
     {
