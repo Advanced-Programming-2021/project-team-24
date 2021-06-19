@@ -14,7 +14,7 @@ import static org.junit.Assert.assertNull;
 public class MainMenuControllerTest {
     @Test
     public void createDuelTest(){
-        Card.intialize();
+        
         Deck deck1 = new Deck("deck1");
         Deck deck2 = new Deck("deck2");
         Decks decks1 = new Decks();

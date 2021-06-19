@@ -69,7 +69,7 @@ public class EffectParser {
         {
             //add death event as reverse
             //TODO
-            Effect reverseEffect = effect;
+            Effect reverseEffect = effect.clone();//TODO it is wrong
             reverseEffect.setEffect(effect.getReverse());
             reverseEffect.setReverse(null);
             if(owner.getMap().getEffects().get(Event.END_TURN) == null)
@@ -106,8 +106,8 @@ public class EffectParser {
     {
         Matcher matcher = Global.getMatcher(command, "if\\(#(.+)#[<>]#(.+)#\\)(&.+&)");
         matcher.find();
-        String s1 = matcher.group(1);
-        String s2 = matcher.group(2);
+        String s1 = getCommandResult(matcher.group(1));
+        String s2 = getCommandResult(matcher.group(2));
         if(s1.compareTo(s2) > 0)
         {
             return getCommandResult(splitCorrect(matcher.group(3), '&').get(1));
@@ -122,7 +122,7 @@ public class EffectParser {
         List<String> fields = splitCorrect(command, ',');
         Gson gson = new Gson();
         getCommandResult(fields.get(0));
-        List<Integer> cardHolders = gson.fromJson(getCommandResult(fields.get(0)), new ArrayList<Integer>().getClass());            
+        List<Integer> cardHolders = getArray(fields.get(0));
         Zone targetZone = null;//parseZone(fields.get(1));        
         for(int i = 0; i < cardHolders.size(); i++)
         {
@@ -150,12 +150,12 @@ public class EffectParser {
         if(matcher.find())
         {
             List<String> arguemnts = splitCorrect(matcher.group(1), ',');
-            List<Integer> card = new Gson().fromJson(getCommandResult(arguemnts.get(0)), new ArrayList<Integer>().getClass());
+            List<Integer> card = getArray(arguemnts.get(0));
             Event event = new Gson().fromJson(arguemnts.get(1), Event.class);
             Effect effect = new Gson().fromJson(arguemnts.get(2), Effect.class);            
         }
     }
-    public void changeLP(String command)
+    public String changeLP(String command)
     {
         //changeLp
         Matcher matcher = Global.getMatcher(command, "changeLP\\((.+),(.+)\\)");
@@ -167,11 +167,12 @@ public class EffectParser {
         }
         else
         {
-            duelController.getDuel().opponent.changeLifePoint(Integer.parseInt(getCommandResult(command)));
+            duelController.getDuel().opponent.changeLifePoint(Integer.parseInt(getCommandResult(matcher.group(2))));
         }        
-        //own and opp key word
+        String result = matcher.group(0);
+        command = command.replace(result, "");
+        return command;        
     }
-    //TODO
     public String q_yn(String command)
     {
         Matcher matcher = Global.getMatcher(command, "q_yn\\(([^{}]+)\\)(.+)");
@@ -185,7 +186,7 @@ public class EffectParser {
         }
         else
         {
-            return getCommand(ifElsePart.get(1));
+            return getCommandResult(ifElsePart.get(1));
         }
     }
     
@@ -193,7 +194,7 @@ public class EffectParser {
     {
         //filp(List<E>): 
         String lString = splitByParentheses(command).get(0);
-        List<Integer> list = new Gson().fromJson(getCommandResult(lString) , new ArrayList<Integer>().getClass());
+        List<Integer> list = getArray(lString);
         for(int i = 0; i < list.size(); i++)
         {
             duelController.getDuel().getCardHolderById(list.get(i)).flip();
@@ -221,19 +222,22 @@ public class EffectParser {
             //check get
             for(int i = 0; i < 4; i++)
             {
+                command = parseKeyWords(command);
                 if(command.length() >= 8 && command.substring(0, 8).equals("return_t") && ans == null)
                 {
                     ans = "true";
+                    return "true";
                 }
                 if(command.length() >= 8 && command.substring(0, 8).equals("return_f") && ans == null)
                 {
                     ans = "false";
+                    return "false";
                 }
                 if(Global.regexFind(command ,"coin"))
                 {
                     coin(command);
                 }
-                handleGetCommand(command);
+                command = handleGetCommand(command);
                 if(command.length() >= 2 && command.substring(0, 2).equals("if"))
                 {
                     return handleConditional(command);
@@ -246,16 +250,16 @@ public class EffectParser {
                 {
                     setCommand(command);
                 }
-                handleChangeLPCommand(command);
-                handleNormCommand(command);
-                command = parseKeyWords(command);
+                command = handleChangeLPCommand(command);
+                command = handleNormCommand(command);
+                
                 if(command.length() >= 3 && command.substring(0, 3).equals("del"))
                 {
                     deleteListFromList(command);
                 }
                 if(command.length() >= 3 && command.substring(0, 3).equals("sum"))
                 {
-                    getSumOverField(command);
+                    command = getSumOverField(command);
                 }
                 //calculater            
             }
@@ -277,42 +281,48 @@ public class EffectParser {
         //return string as result of command, maybe some get or ...
         return command;
     }
-    private void handleChangeLPCommand(String command) {
+    private String handleChangeLPCommand(String command) {
         try
         {
             if(command.substring(0, 8).equals("changeLP"))
             {
-                changeLP(command);
+                command = changeLP(command);                
             }
         }
         catch(Exception e)
-        {                
+        {    
+
         }
+        return command;
     }
-    private void handleNormCommand(String command) {
+    private String handleNormCommand(String command) {
         while(true)
         {
             if(Global.regexFind(command, "Norm\\(([^()]+)\\)"))
             {
                 Matcher matcher = Global.getMatcher(command, "Norm\\(([^()]+)\\)");
-                command.replace(matcher.group(0), normSet(matcher.group(0)));
+                matcher.find();
+                command = command.replace(matcher.group(0), normSet((matcher.group(0))));
             }
             else
                 break;
         }
+        return command;
     }
-    private void handleGetCommand(String command) {
-        command.replace(" ", "");
+    private String handleGetCommand(String command) {
+        command = command.replace(" ", "");
         while(true)
         {
             if(Global.regexFind(command, GET_STRING))
             {
                 Matcher matcher = Global.getMatcher(command, GET_STRING);
-                command.replace(matcher.group(0), getCommand(matcher.group(0)));
+                matcher.find();
+                command = command.replace(matcher.group(0), getCommand(matcher.group(0)));
             }
             else
                 break;
         }
+        return command;
     }
     
     public String normSet(String command)
@@ -330,7 +340,7 @@ public class EffectParser {
         //this
         List<String> v = new ArrayList<String>();
         v.add(Integer.toString(this.idCardHolderOwner));
-        command = command.replace("this", new Gson().toJson(v, new ArrayList<String>().getClass()));
+        command = command.replace("this", new Gson().toJson(v, new ArrayList<Integer>().getClass()));
         
         //simple zones
         
@@ -346,8 +356,8 @@ public class EffectParser {
             for(int i = 0; i < cardList.size(); i++)
             {
                 ans.add(Integer.toString(cardList.get(i).getId()));
-            }
-            command = command.replaceAll(zone, new Gson().toJson(ans, new ArrayList<String>().getClass()));
+            }        
+            command = command.replace(zone, new Gson().toJson(ans, new ArrayList<String>().getClass()));
         }
         
         for (String string : model.zone.Zone.zoneStrings) {
@@ -358,18 +368,32 @@ public class EffectParser {
             {
                 ans.add(Integer.toString(cardList.get(i).getId()));
             }
-            command = command.replaceAll(zone, new Gson().toJson(ans, new ArrayList<String>().getClass()));
+            command = command.replace(zone, new Gson().toJson(ans, new ArrayList<String>().getClass()));
         }
 
         
 
         return command;
     }
+    public static List<Integer> convertToInteger(List<String> stringNumbers)
+    {
+        List<Integer> temp = new ArrayList<Integer>();        
+        for(String string: stringNumbers)
+        {
+            temp.add(Integer.parseInt(string));
+        }
+        return temp;
+    }
+    public List<Integer> getArray(String array)
+    {
+        Gson gson = new Gson();
+        return convertToInteger(gson.fromJson(getCommandResult(getCommandResult(array)), new ArrayList<String>().getClass()));
+    }
     public void setCommand(String setCommand)
     {
         Gson gson = new Gson();
         List<String> fields = splitCorrect(splitByParentheses(setCommand).get(0) ,',');
-        List<Integer> cardHolders = gson.fromJson(getCommandResult(fields.get(0)), new ArrayList<Integer>().getClass());
+        List<Integer> cardHolders = getArray(fields.get(0));
         String key = fields.get(1);
         String value = getCommandResult(fields.get(2));
         duelController.getDuel().setterMap(cardHolders, key, value, 1);//TODO
@@ -378,8 +402,8 @@ public class EffectParser {
     public String getCommand(String getCommand)
     {
         List<String> fields = splitCorrect(splitByParentheses(getCommand).get(0), ',');
-        List<Integer> cardHolders = new Gson().fromJson(getCommandResult(fields.get(0)), new ArrayList<Integer>().getClass());
-        return duelController.getDuel().getterMap(cardHolders, fields.get(1), getCommandResult(fields.get(2)));        
+        List<Integer> cardHolders = getArray( getCommandResult(fields.get(0)));
+        return duelController.getDuel().getterMap(cardHolders, fields.get(1));        
     }
     public static List<String> splitCommands(String command)
     {
@@ -393,11 +417,13 @@ public class EffectParser {
             if(command.charAt(i) == '}' || command.charAt(i) == ')')
                 counter--;
             if(counter == 0 && command.charAt(i) == ';')
-            {
-                pre = i + 1;
+            {                
                 ans.add(command.substring(pre, i));
+                pre = i + 1;
             }
         }
+        if(pre < command.length())
+            ans.add(command.substring(pre, command.length()));
         return ans;
     }
     public static List<String> splitCorrect(String command, char ch)
@@ -412,11 +438,11 @@ public class EffectParser {
                 list.add(command.substring(pre, i));
                 pre = i + 1;                
             }        
-            if(command.charAt(i) == '(')
+            if(command.charAt(i) == '(' || command.charAt(i) == '[')
             {
                 counter ++;
             }
-            if(command.charAt(i) == ')')
+            if(command.charAt(i) == ')' || command.charAt(i) == ']')
             {
                 counter --;
             }
@@ -456,6 +482,11 @@ public class EffectParser {
     {
         List<String> ans = new ArrayList<String>();
         int pre = command.indexOf('(', 0);
+        if(pre > command.length() || pre < 0)
+        {
+            ans.add(command);
+            return ans;
+        }
         int counter = 0;
         for(int i = pre; i < command.length(); i++)
         {
@@ -472,26 +503,26 @@ public class EffectParser {
             }
             if(counter == 0 && flag == 1)
             {
-                ans.add(command.substring(pre, i));
+                ans.add(command.substring(pre + 1, i));                
                 pre = i + 1;
             }
         }
         return ans;
     }
-    public List<String> deleteListFromList(String command)
+    public List<Integer> deleteListFromList(String command)
     {
         //del(List<>, List<E>)
         Matcher matcher = Global.getMatcher(command, "del\\((.+)\\)");
-        List<String> ans = new ArrayList<String>();
+        List<Integer> ans = new ArrayList<Integer>();
         if(matcher.find())
         {
             List<String> sets = splitCorrect(matcher.group(1), ',');
-            List<Integer> first = new Gson().fromJson(getCommandResult(sets.get(1)), new ArrayList<Integer>().getClass());
-            List<Integer> second = new Gson().fromJson(getCommandResult(sets.get(2)), new ArrayList<Integer>().getClass());            
+            List<Integer> first = getArray(sets.get(1));
+            List<Integer> second = getArray(sets.get(2));
             List<Integer> ans1 = Global.delListFromList(first, second);
             for(int i = 0; i < ans1.size(); i++)
             {
-                ans.add(ans1.get(i).toString());
+                ans.add(ans1.get(i));
             }
         }
         return ans;
@@ -531,27 +562,31 @@ public class EffectParser {
         }
         return ansId;
     }
-    public void getSumOverField(String command)
+    public String getSumOverField(String command)
     {
         //sum(List<E>, "field");
         Matcher matcher = Global.getMatcher(command, "sum\\((.+)\\)");
         Integer ans = 0;
         if(matcher.find())
         {
-            List<String> fields  = splitCorrect(command, ',');
-            List<String> list = new Gson().fromJson(getCommandResult(fields.get(0)), new ArrayList<String>().getClass());
-            String value = getCommand(fields.get(1));
+            List<String> fields  = splitCorrect(matcher.group(1), ',');
+            List<Integer> list = getArray(fields.get(0));
+            String value = getCommandResult(fields.get(1));
             for(int i = 0; i < list.size(); i++)
             {
-                Card card = duelController.getDuel().getCardHolderById(Integer.parseInt(list.get(i))).getCard();
+                Card card = duelController.getDuel().getCardHolderById(list.get(i)).getCard();
                 if(card.getCardType() == CardType.MONSTER)
                 {
-                    ans += Integer.parseInt(duelController.getDuel().getCardHolderById(Integer.parseInt(list.get(i))).getValue(value));
+                    try{
+                        ans += Integer.parseInt(duelController.getDuel().getCardHolderById(list.get(i)).getValue(value));
+                    }catch(Exception e){                        
+                    }                
                 }
                 
             }
-            command.replace(matcher.group(0), ans.toString());
+            command = command.replace(matcher.group(0), ans.toString());
         }
+        return command;
     }
     public static void main(String[] args) {
         System.out.println(splitCorrect("aa,aa(,aa,a),b,b,()()(,)(,),", ','));
@@ -596,7 +631,7 @@ public class EffectParser {
         List<String> fields = splitCorrect(command, ',');
         
         Gson gson = new Gson();
-        List<Integer> array = gson.fromJson(getCommand(fields.get(0)), new ArrayList<Integer>().getClass());       
+        List<Integer> array = getArray(fields.get(0));
         int count = Integer.parseInt(fields.get(1));            
         List<Integer> selected ;
         if(fields.size() == 3)
@@ -611,7 +646,7 @@ public class EffectParser {
     {
         List<String> fields = splitCorrect(command, ',');
         Gson gson = new Gson();
-        List<Integer> array = gson.fromJson(getCommand(fields.get(0)), new ArrayList<Integer>().getClass());       
+        List<Integer> array = getArray(fields.get(0));
         int count = Integer.parseInt(fields.get(1));    
         List<Integer> selected = duelMenu.randomSelection(array, count, fields.get(2));
         return selected;

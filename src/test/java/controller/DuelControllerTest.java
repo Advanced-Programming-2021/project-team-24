@@ -13,7 +13,7 @@ public class DuelControllerTest {
     public void runPhaseTest(){
         User user1 = new User("testUser1", "1234", "qwer1");
         User user2 = new User("testUser2", "1234", "qwer1");        
-        Card.intialize();
+        //Card.intialize();
         
         user1.getCards().addAll(Card.getAllCards());
         user2.getCards().addAll(Card.getAllCards());        
@@ -26,7 +26,7 @@ public class DuelControllerTest {
 
 
         
-        assertEquals(duelController.runPhase().getContent(), "STANDBY");
+        assertEquals(duelController.nextPhase().getContent(), "STANDBY");
         // DRAW TEST
         User.deleteUser("user1");
         User.deleteUser("user2");

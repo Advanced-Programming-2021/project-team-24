@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 
+import com.thoughtworks.qdox.model.expression.Add;
+
 import controller.DuelController;
 import controller.Message;
 import model.card.CardHolder;
 import model.duel.Duel;
+import model.duel.Duel.Phase;
 import model.user.Player;
 import model.user.User;
 import model.zone.Address;
@@ -30,6 +33,16 @@ public class DuelMenu {
 
     public void run() {
         while (true) {
+            if(duelController.getDuel().getCurrentPhase() == Phase.DRAW)
+            {
+                System.out.println(duelController.draw().getContent());                
+                duelController.nextPhase();
+            }
+            else
+            if(duelController.getDuel().getCurrentPhase() == Phase.STANDBY)
+            {
+                //TODO handle standby phase
+            }            
             String command = Global.nextLine();
             if (command.equals("menu exit")) {
                 return;
@@ -41,18 +54,18 @@ public class DuelMenu {
                 Message message = duelController.deselect();
                 System.out.println(message.getContent());
             } else if (command.equals("summon")) {
-                duelController.summon();
+                System.out.println(duelController.summon().getContent());
             } else if (command.equals("flip-summon")) {
-                duelController.flipSummon();
+                System.out.println(duelController.flipSummon().getContent());
             } else if (command.equals("set")) {
-                duelController.set();
+                System.out.println(duelController.set().getContent());
             } else if (command.equals("attack direct")) {
-                duelController.directAttack();
+                System.out.println(duelController.directAttack().getContent());
             } else if (command.equals("activate effect")) {
                 //TODO activate effect
             }
             else if (command.equals("next phase")){
-                duelController.runPhase();
+                System.out.println(duelController.nextPhase().getContent());
             }
             else if (command.equals("show graveyard")) {
                 List<CardHolder> graveyard = getZoneCards("graveyard",false);
@@ -67,18 +80,19 @@ public class DuelMenu {
                 //TODO surrender
             } else {
                 //<select>
-                Matcher matcher = Global.getMatcher(command, "select (?<address>(?:--\\w+\\s*\\d*){1,2})");
+                Matcher matcher = Global.getMatcher(command, "select (?<zone>(?:--\\w+\\s*\\d*){1,2})");
                 if (matcher.find()) {
                     String zone = matcher.group("zone");
                     matcher = Global.getMatcher(zone, "(?=.*(?<name>--(?:monster|spell|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}");
                     if (matcher.find()) {
                         int place = Integer.parseInt(matcher.group("place"));
-                        String zoneName = matcher.group("name");
+
+                        String zoneName = matcher.group("name").replaceAll("-", "");
                         Boolean opponent = false;
                         if (matcher.group("opponent") != null) {
                             opponent = true;
                         }
-                        Address address = new Address(new Zone(zoneName, duelController.getDuel().getCurrentPlayer()), place);
+                        Address address = Address.get(Zone.get(zoneName, duelController.getDuel().getCurrentPlayer()), place);
                         Message message = duelController.select(address);
                         System.out.println(message.getContent());
                     } else System.out.println("invalid selection");
@@ -114,9 +128,8 @@ public class DuelMenu {
 
 
     public Boolean BooleanQYN(String question) {
-        System.out.println(question);
-        return true;
-        /*String out = Global.nextLine();
+        System.out.println(question);        
+        String out = Global.nextLine();
         if (out.toLowerCase().equals("y"))
             return true;
         else if (out.toLowerCase().equals("n"))
@@ -124,7 +137,7 @@ public class DuelMenu {
         else {
             System.out.println("please enter valid answer");
             return BooleanQYN(question);
-        }*/
+        }
     }
 
     public Integer Dice() {
@@ -178,7 +191,7 @@ public class DuelMenu {
 
     public List<CardHolder> getZoneCards(String zoneName, Boolean isOpponent) {
         Player player = getPlayer(isOpponent);
-        return duelController.getDuel().getZone(new Zone(zoneName, player));
+        return duelController.getDuel().getZone(Zone.get(zoneName, player));
     }
 
     public Player getPlayer(Boolean isOpponent){
@@ -239,7 +252,7 @@ public class DuelMenu {
     }
 
     public String getCard(String zoneName,Boolean isOpponent,int place){
-        return duelController.getDuel().getMap().get(new Address(new Zone(zoneName,getPlayer(isOpponent)),place)).getCardState().toString();
+        return duelController.getDuel().getMap().get(Address.get(Zone.get(zoneName,getPlayer(isOpponent)),place)).getCardState().toString();
     }
 
 }

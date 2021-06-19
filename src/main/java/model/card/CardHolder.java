@@ -43,7 +43,8 @@ public abstract class CardHolder {
     {                
         this.owner = owner;        
         this.cardState = null;
-        this.id = idCounter ++;        
+        this.id = idCounter;   
+        idCounter++;    
         this.appliedEffects = new ArrayList<Integer>();
         this.effectManagerList = new ArrayList<EffectManager>();        
         //TODO effectManager should be updated by creating effectManagerId        
@@ -51,7 +52,12 @@ public abstract class CardHolder {
     public CardHolder(Player owner, CardState cardState) {
         this.owner = owner;
         this.cardState = cardState;
+        id = idCounter;
+        idCounter++;
+        this.appliedEffects = new ArrayList<Integer>();
+        this.effectManagerList = new ArrayList<EffectManager>();
     }    
+    public abstract String toString();
     public void endTurn()
     {    
         for(Map.Entry<String, Integer> mapEntry : ageEffects.entrySet())
@@ -83,6 +89,8 @@ public abstract class CardHolder {
     public abstract void flip();
     public String getValue(String string)
     {    
+        if(cardMap.get(string) == null)
+            return "";
         return cardMap.get(string);
     }
     public Boolean getBoolMapValue(String string)

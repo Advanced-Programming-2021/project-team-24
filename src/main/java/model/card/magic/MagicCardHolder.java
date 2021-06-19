@@ -14,7 +14,7 @@ public class MagicCardHolder extends CardHolder {
     public MagicCardHolder(Player owner, MagicCard card, CardState cardState) {
         super(owner ,cardState);
         this.card = card;
-        this.effectManager = new EffectManager(card.getEffect(), owner, super.idCounter);
+        this.effectManager = new EffectManager(card.getEffect(), owner, getId());
     }        
     public EffectManager getEffectManager()
     {
@@ -27,6 +27,10 @@ public class MagicCardHolder extends CardHolder {
 
     public void flip() {
         this.cardState = CardState.VISIBLE_MAGIC;        
+    }
+    @Override
+    public String toString() {
+        return card.toString();
     }
     
 }

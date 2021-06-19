@@ -18,6 +18,7 @@ public class MonsterCardHolder extends CardHolder {
         this.card = monsterCard;
         cardMap.put("attack", ((Integer)monsterCard.getAttack()).toString());
         cardMap.put("defence",  ((Integer)monsterCard.getDefence()).toString());
+        cardMap.put("level", ((Integer)monsterCard.getLevel()).toString());
 
     }
     private MonsterCard card;    
@@ -57,5 +58,16 @@ public class MonsterCardHolder extends CardHolder {
     }
     public Card getCard() {        
         return this.card;
+    }
+    @Override
+    public String toString() {
+        String ans = "";
+        ans = ans.concat("Name :" + card.getName() + "\n");
+        ans = ans.concat("Monster\n");
+        ans = ans.concat("Type: " +  card.getMonsterType().toString() + "\n");
+        ans = ans.concat("ATK :" + getAttack() + "\n");
+        ans = ans.concat("DEF :" + getDefence() + "\n");
+        ans = ans.concat("Description: " + card.getDescription() + "\n");                
+        return ans;
     }
 }

@@ -7,7 +7,8 @@ public enum Zones {
     HAND("hand",5,false),
     MONSTER("monster",5,true),
     MAGIC("magic",5,true),
-    FIELD("field",1,true);
+    FIELD("field",1,true),
+    DECK("deck", 60, false);
 
 
     public final String label;

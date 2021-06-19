@@ -1,11 +1,25 @@
 package view;
 
 
+import controller.DuelController;
 import controller.MainMenuController;
 import controller.Message;
+import model.card.Card;
+import model.card.CardState;
+import model.card.magic.MagicCard;
+import model.card.magic.MagicCardHolder;
+import model.card.magic.MagicIcon;
+import model.deck.Deck;
+import model.duel.EffectParser;
+import model.effect.Effect;
+import model.effect.EffectType;
 import model.user.User;
+import model.zone.Address;
+import model.zone.Zone;
 
 import java.util.regex.Matcher;
+
+import com.thoughtworks.qdox.model.expression.Add;
 
 public class MainMenu extends Menu {
     controller.MainMenuController mainMenuController;
@@ -37,7 +51,7 @@ public class MainMenu extends Menu {
                 if (matcher.find()) {
                     String opponentUsername = matcher.group("opponentUsername");
                     String rounds = matcher.group("rounds");
-                    Message message = mainMenuController.createDuel(user, opponentUsername, rounds);
+                    Message message = mainMenuController.createDuel(user, User.readUser(opponentUsername), rounds);
                     System.out.println(message.getContent());
                     continue;
                 }
@@ -51,5 +65,57 @@ public class MainMenu extends Menu {
                 System.out.println("invalid command");
             }
         }
+    }
+    public static void main(String[] args) {
+        User a = new User("alireza", "alireza", "alireza");
+        User b = new User("alir", "alir", "alir");
+        Deck alireza = new Deck("alireza");
+        for(int i = 0; i < Card.getAllCards().size(); i++)
+        {
+            alireza.addMainCard(Card.getAllCards().get(i));
+        }
+        a.getDecks().add(alireza);
+        a.getDecks().setActiveDeck(a.getDecks().getDeckByName("alireza"));
+        b.getDecks().add(alireza);
+        b.getDecks().setActiveDeck(b.getDecks().getDeckByName("alireza"));
+        DuelMenu duelMenu = new DuelMenu(a, b, "1");
+        DuelController dControleer = duelMenu.duelController;
+        dControleer.select(Address.get(Zone.get("hand", dControleer.getDuel().getCurrentPlayer()), 0));
+        dControleer.nextPhase();
+        dControleer.nextPhase();
+        MagicCard magic = new MagicCard();
+        Effect effect = new Effect();
+        effect.setEffectType(EffectType.CONTINUES);
+        effect.setReverse("");
+        effect.setSpeed(1);
+        effect.setEffect("changeLP(own,1000);");
+        magic.setEffect(effect);
+        magic.setMagicIcon(MagicIcon.CONTINUOUS);
+        
+
+        dControleer.getDuel().getMap().put(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0), new MagicCardHolder(dControleer.getDuel().getCurrentPlayer(), magic, CardState.SET_MAGIC));
+        dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0));
+        if(!dControleer.getDuel().getMap().get(dControleer.getSelectedAddress()).getCard().isMagic())
+        {
+            dControleer.summon();
+            dControleer.nextPhase();
+            dControleer.nextPhase();
+            System.out.println(dControleer.directAttack().getContent());
+        }
+        String command = "if(#sum($opp_hand$,level)#>#7#)&changeLP(own,200)&else&changeLP(own,-200)&";
+
+        System.out.println(new EffectParser(duelMenu, dControleer, ((MagicCardHolder)dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0))).getEffectManager()).getCommandResult(command));
+        System.out.println(dControleer.getDuel().getCurrentPlayer().getLifePoint());
+        System.out.println(dControleer.getDuel().getOpponent().getLifePoint());
+        
+        //duelMenu.run();
+        //duelMenu.duelController.select(Address.get(Zone.get("hand", dControleer.getDuel().getCurrentPlayer()), 1));
+        //System.out.println(dControleer.set().getContent());
+        
+    }
+    private static String soso(String v)
+    {
+        v = "";
+        return v;
     }
 }

@@ -42,7 +42,6 @@ public class DeckControllerTest {
     }
     @Test
     public void addCardTest(){
-        Card.intialize();
         Deck deck = new Deck("deck");
         Decks decks = new Decks();
         decks.add(deck);
@@ -60,7 +59,6 @@ public class DeckControllerTest {
     }
     @Test
     public void removeCardTest(){
-        Card.intialize();
         Deck deck = new Deck("deck");
         Decks decks = new Decks();
         decks.add(deck);
@@ -74,7 +72,6 @@ public class DeckControllerTest {
     }
     @Test
     public void showDeckCardsTest(){
-        Card.intialize();
         Deck deck = new Deck("deck");
         Decks decks = new Decks();
         decks.add(deck);

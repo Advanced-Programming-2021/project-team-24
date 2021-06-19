@@ -5,6 +5,7 @@ import model.card.Event;
 
 import java.util.List;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 
@@ -141,6 +142,13 @@ public class Effect {
     public String getEffectCommand()
     {
         return this.effect;
+    }
+    public Effect clone()
+    {
+        Effect temp = new Effect();
+        Gson gson = new Gson();
+        temp = gson.fromJson(gson.toJson(this), this.getClass());
+        return temp;
     }
 
 }

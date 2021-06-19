@@ -27,11 +27,12 @@ public abstract class Card {
 
 
     static List <Card> allCards = new ArrayList<>();
+    public abstract String toString();
     public static List <Card> getAllCards()
     {
         return allCards;
     }
-    public static void intialize()
+    static
     {
         allCards = new ArrayList<>();
         try {
@@ -102,5 +103,4 @@ public abstract class Card {
         fileWriter.write(new Gson().toJson(this));
         fileWriter.close();
     }
-    //TODO
 }

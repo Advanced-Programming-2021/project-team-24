@@ -12,7 +12,6 @@ import static org.junit.Assert.assertNull;
 public class ShopMenuTest {
     @Test
     public void buyCardTest(){
-        Card.intialize();
         User user = new User("user", "123", "asd");
         ShopMenu shopMenu = new ShopMenu(user);
         assertEquals("there is no card with this name", shopMenu.buyCard("aaaaaaa").getContent());
@@ -37,14 +36,12 @@ public class ShopMenuTest {
     public void buyCardNotEnoughMoneyTest(){
         User user = new User("user", "123", "asd");
         user.setCoin(0);
-        Card.intialize();
         assertEquals("not enough money", new ShopMenu(user).buyCard("Axe Raider").getContent());
         User.deleteUser("user");
     }
     @Test
     public void buyCardSuccessfullyTest(){
         User user = new User("user", "123", "asd");
-        Card.intialize();
         assertEquals(null, new ShopMenu(user).buyCard("Axe Raider").getContent());
         User.deleteUser("user");
     }
