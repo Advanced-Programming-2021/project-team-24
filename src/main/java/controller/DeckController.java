@@ -83,7 +83,7 @@ public class DeckController {
         if (getDeckByName(deckName) != null) {
             if (decks.getCardByName(cardName, deckName, isMainCard) != null) {
                 decks.removeCard(Card.getCardByName(cardName), deckName, isMainCard);
-                return new Message(TypeMessage.SUCCESSFUL, "card removed form deck successfully");
+                return new Message(TypeMessage.SUCCESSFUL, "card removed from deck successfully");
             } else {
                 if (isMainCard)
                     return new Message(TypeMessage.ERROR, "card with name " + cardName + " does not exist in main deck");

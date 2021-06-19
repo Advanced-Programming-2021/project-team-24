@@ -88,8 +88,7 @@ public abstract class Card {
     public boolean isMagic()
     {
         if(this.cardType == CardType.MONSTER) return false;
-        else
-            return true;
+        return true;
     }
     public static String toEnumsFormatString(String string){
         return string.toUpperCase().replace('-', '_').replace(' ', '_');

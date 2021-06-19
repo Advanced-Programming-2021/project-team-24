@@ -60,10 +60,10 @@ public class MagicCard extends Card {
     }
     public boolean isSpell()
     {
-        if(super.getCardType() == CardType.SPELL)
-            return true;
-        else
-            return false;
+        if(super.getCardType() == CardType.MAGIC){
+            return magicType == MagicType.SPELL;
+        }
+        return false;
     }
     public static void main(String[] args) throws IOException {
         MagicCard v = new MagicCard();

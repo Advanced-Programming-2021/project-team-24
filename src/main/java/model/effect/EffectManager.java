@@ -6,7 +6,6 @@ import model.user.Player;
 
 
 import java.util.*;
-import java.util.List;
 
 public class EffectManager {
     private Player owner;
@@ -56,23 +55,23 @@ public class EffectManager {
         return this.idCardHolder;
     }
 
-    public Boolean isConditionSatified(EffectParser effectParser)
+    public Boolean isConditionSatisfied(EffectParser effectParser)
     {
-        if(this.effect.getRequirEvents() == null || this.effect.getRequirEvents().size() == 0)
+        if(this.effect.getRequireEvents() == null || this.effect.getRequireEvents().size() == 0)
         {
             if(effectParser.getDuelController().getDuel().getCardHolderById(this.idCardHolder).getBoolMapValue("can_active"))
             {
                 boolean flag = false;
-                for(int i = 0; i < this.effect.getRequirEvents().size(); i++)
+                for(int i = 0; i < this.effect.getRequireEvents().size(); i++)
                 {
-                    if(effect.getRequirEvents().get(i) == Event.ANY)
+                    if(effect.getRequireEvents().get(i) == Event.ANY)
                     {
                         flag = true;
                         break;
                     }
-                    if(effectParser.getDuelController().getDuelEvents().get(effect.getRequirEvents().get(i)) != null)
+                    if(effectParser.getDuelController().getDuelEvents().get(effect.getRequireEvents().get(i)) != null)
                     {
-                        Event temp_event = effect.getRequirEvents().get(i);
+                        Event temp_event = effect.getRequireEvents().get(i);
                         String a[] = temp_event.getValue().split("_");
                         if(a.length == 1)
                         {
@@ -81,7 +80,7 @@ public class EffectManager {
                         }
                         if(a.length == 2)
                         {
-                            if(this.idCardHolder == effectParser.getDuelController().getDuelEvents().get(effect.getRequirEvents().get(i)))
+                            if(this.idCardHolder == effectParser.getDuelController().getDuelEvents().get(effect.getRequireEvents().get(i)))
                             {
                                 flag = true;
                                 break;

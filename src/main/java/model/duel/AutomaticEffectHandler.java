@@ -5,7 +5,6 @@ import java.util.Map;
 
 import controller.DuelController;
 import model.card.CardHolder;
-import model.card.Event;
 import model.effect.EffectManager;
 import view.DuelMenu;
 
@@ -31,7 +30,7 @@ public class AutomaticEffectHandler {
                 {
                     if(currenList.get(q).getEffect().getAskForActivation() == false)
                     {
-                        if(currenList.get(q).isConditionSatified(new EffectParser(duelMenu, duelController, currenList.get(q))))
+                        if(currenList.get(q).isConditionSatisfied(new EffectParser(duelMenu, duelController, currenList.get(q))))
                         {
                             new EffectParser(duelMenu, duelController, currenList.get(q)).runEffect();
                         }

@@ -52,7 +52,7 @@ public class EffectChainer {
         for(int i = 0; i < v.size(); i++)
         {
             MagicCardHolder magic = (MagicCardHolder)duelController.getDuel().getCardHolderById(vv.get(i));
-            if(magic.getEffectManager().isConditionSatified(new EffectParser(duelMenu, duelController, magic.getEffectManager())))
+            if(magic.getEffectManager().isConditionSatisfied(new EffectParser(duelMenu, duelController, magic.getEffectManager())))
             {
                 v.add(vv.get(i));
             }

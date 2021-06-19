@@ -68,7 +68,7 @@ public class DeckControllerTest {
         assertEquals("card with name Axe Raider does not exist in side deck", deckController.removeCard("Axe Raider", "deck", false).getContent());
         Card axeRaider = Card.getCardByName("Axe Raider");
         deck.addMainCard(axeRaider);
-        assertEquals("card removed form deck successfully", deckController.removeCard("Axe Raider", "deck", true).getContent());
+        assertEquals("card removed from deck successfully", deckController.removeCard("Axe Raider", "deck", true).getContent());
     }
     @Test
     public void showDeckCardsTest(){
@@ -81,9 +81,20 @@ public class DeckControllerTest {
         deck.addMainCard(blackPendant);
         DeckController deckController = new DeckController(decks);
         assertEquals("deck with name deck2 does not exist", deckController.showDeckCards("deck2", true).getContent());
-        assertEquals("Deck deck\nMain deck:\nMonsters:\nAxe Raider : An axe-wielding monster of tremendous strength and agility.\n" +
-                        "Spell and Traps:\nBlack Pendant : The equipped monster gains 500 ATK." +
-                        " When this card is sent from the field to the Graveyard: Inflict 500 damage to your opponent."
+        assertEquals("Deck deck\n" +
+                        "Main deck:\n" +
+                        "Monsters:\n" +
+                        "Name :Axe Raider\n" +
+                        "Monster\n" +
+                        "Type: WARRIOR\n" +
+                        "ATK :1700\n" +
+                        "DEF :1150\n" +
+                        "Description: An axe-wielding monster of tremendous strength and agility.\n" +
+                        "Spell and Traps:\n" +
+                        "Name :Black Pendant\n" +
+                        "Trap\n" +
+                        "Type: UNLIMITED\n" +
+                        "Description:The equipped monster gains 500 ATK. When this card is sent from the field to the Graveyard: Inflict 500 damage to your opponent.\n"
                 , deckController.showDeckCards("deck", true).getContent());
     }
     @Test

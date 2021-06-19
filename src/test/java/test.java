@@ -1,20 +1,18 @@
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import model.user.UserTest;
 import org.junit.Test;
 
-import controller.DuelController;
 import model.card.CardState;
 import model.card.monster.MonsterCard;
 import model.card.monster.MonsterCardHolder;
-import model.duel.Duel;
 import model.duel.EffectParser;
 import model.effect.Effect;
 import model.effect.EffectManager;
@@ -35,8 +33,8 @@ public class test {
         MonsterCard u = new Gson().fromJson(
             fileRead("Battle warrior.json"),
              MonsterCard.class);
-        model.user.User.register("behzad", "password", "nickname");
-        model.user.User.register("alireza", "haqi", "hesam");
+        User.register("behzad", "password", "nickname");
+        User.register("alireza", "haqi", "hesam");
         User a = User.readUser("alireza");
         User b= User.readUser("behzad");
         DuelMenu duelMenu = new DuelMenu(a, b, "1");
@@ -66,8 +64,8 @@ public class test {
         MonsterCard u = new Gson().fromJson(
             fileRead("Battle warrior.json"),
              MonsterCard.class);
-        model.user.User.register("behzad", "password", "nickname");
-        model.user.User.register("alireza", "haqi", "hesam");
+        User.register("behzad", "password", "nickname");
+        User.register("alireza", "haqi", "hesam");
         User a = User.readUser("alireza");
         User b= User.readUser("behzad");
         DuelMenu duelMenu = new DuelMenu(a, b, "1");
@@ -91,8 +89,8 @@ public class test {
         MonsterCard u = new Gson().fromJson(
             fileRead("Battle warrior.json"),
              MonsterCard.class);
-        model.user.User.register("behzad", "password", "nickname");
-        model.user.User.register("alireza", "haqi", "hesam");
+        User.register("behzad", "password", "nickname");
+        User.register("alireza", "haqi", "hesam");
         User a = User.readUser("alireza");
         User b= User.readUser("behzad");
         DuelMenu duelMenu = new DuelMenu(a, b, "1");

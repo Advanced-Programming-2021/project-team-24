@@ -90,7 +90,7 @@ public class User {
             assert filesList != null;
             for(File file : filesList) {
                 String json = new String(Files.readAllBytes(Paths.get(file.getPath())));
-                User user = new Gson().fromJson(json,User.class);
+                User user = new Gson().fromJson(json, User.class);
                 usernames.add(user.getUsername());
             }
         } catch (IOException e) {

@@ -30,7 +30,7 @@ public abstract class CardHolder {
         return this.effects;
     }
     
-    public String getOnwerName()
+    public String getOwnerName()
     {
         return this.owner.getNickname();
     }        
@@ -109,7 +109,7 @@ public abstract class CardHolder {
     {
         for(int i = 0; i < effects.get(Event.DEATH_OWNER).size(); i++)
         {
-            if(effects.get(Event.DEATH_OWNER).get(i).isConditionSatified(new EffectParser(duelMenu, duelController, effects.get(Event.DEATH_OWNER).get(i))))
+            if(effects.get(Event.DEATH_OWNER).get(i).isConditionSatisfied(new EffectParser(duelMenu, duelController, effects.get(Event.DEATH_OWNER).get(i))))
             {
                 EffectParser temp = new EffectParser(duelMenu, duelController, effects.get(Event.DEATH_OWNER).get(i));
                 temp.runEffect();
