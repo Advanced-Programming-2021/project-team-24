@@ -343,11 +343,11 @@ public class DuelController {
                                 if (opponent.getBoolMapValue("can_be_under_attack")) {
                                     if (attacker.getCardState() == CardState.ATTACK_MONSTER) 
                                     {
-                                        attackCalculater(attacker, opponent);
+                                        attackCalculator(attacker, opponent);
                                     } else {
                                         if(attacker.getBoolMapValue("can_attack_in_defence"))
                                         {
-                                            attackCalculater(attacker, opponent);
+                                            attackCalculator(attacker, opponent);
                                         }
                                     }
                                 } else {
@@ -374,7 +374,7 @@ public class DuelController {
         return null;
     }
 
-    private void attackCalculater(MonsterCardHolder attacker, MonsterCardHolder opponent) {
+    private void attackCalculator(MonsterCardHolder attacker, MonsterCardHolder opponent) {
         //2 poss
         if (opponent.getCardState() == CardState.SET_DEFENCE) {
             opponent.flip();
