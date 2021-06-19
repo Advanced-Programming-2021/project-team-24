@@ -11,6 +11,7 @@ import model.card.magic.MagicCardHolder;
 import model.card.magic.MagicIcon;
 import model.deck.Deck;
 import model.duel.EffectParser;
+import model.duel.Filter;
 import model.effect.Effect;
 import model.effect.EffectType;
 import model.user.User;
@@ -19,6 +20,7 @@ import model.zone.Zone;
 
 import java.util.regex.Matcher;
 
+import com.google.gson.Gson;
 import com.thoughtworks.qdox.model.expression.Add;
 
 public class MainMenu extends Menu {
@@ -102,12 +104,14 @@ public class MainMenu extends Menu {
             dControleer.nextPhase();
             System.out.println(dControleer.directAttack().getContent());
         }
-        String command = "if(#sum($opp_hand$,level)#>#7#)&changeLP(own,200)&else&changeLP(own,-200)&";
+        String command = "select($my_hand$,2,kore khar)";
 
+        Filter filter = new Filter();
+        System.out.println(new Gson().toJson(filter));
         System.out.println(new EffectParser(duelMenu, dControleer, ((MagicCardHolder)dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0))).getEffectManager()).getCommandResult(command));
         System.out.println(dControleer.getDuel().getCurrentPlayer().getLifePoint());
         System.out.println(dControleer.getDuel().getOpponent().getLifePoint());
-        
+
         //duelMenu.run();
         //duelMenu.duelController.select(Address.get(Zone.get("hand", dControleer.getDuel().getCurrentPlayer()), 1));
         //System.out.println(dControleer.set().getContent());

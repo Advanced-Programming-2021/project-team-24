@@ -219,6 +219,7 @@ public class EffectParser {
     {
         if(command.lastIndexOf(';') == -1)
         {
+            command = command.replace(" ", "");
             //check get
             for(int i = 0; i < 4; i++)
             {
@@ -228,10 +229,24 @@ public class EffectParser {
                     ans = "true";
                     return "true";
                 }
+                if(command.length() >= new String("select").length() && command.substring(0, 6).equals("select"))
+                {
+                    command = selective(command);
+                }
+                //TODO random_selection
+                if(command.length() >= new String("random_selection").length() && command.substring(0, 16).equals("random_selection"))
+                {
+                    command = randomSelection(command);
+                }
+
                 if(command.length() >= 8 && command.substring(0, 8).equals("return_f") && ans == null)
                 {
                     ans = "false";
                     return "false";
+                }
+                if(Global.regexFind(command, "filter"))
+                {
+                    //TODO
                 }
                 if(Global.regexFind(command ,"coin"))
                 {
@@ -402,7 +417,7 @@ public class EffectParser {
     public String getCommand(String getCommand)
     {
         List<String> fields = splitCorrect(splitByParentheses(getCommand).get(0), ',');
-        List<Integer> cardHolders = getArray( getCommandResult(fields.get(0)));
+        List<Integer> cardHolders = getArray(getCommandResult(fields.get(0)));
         return duelController.getDuel().getterMap(cardHolders, fields.get(1));        
     }
     public static List<String> splitCommands(String command)
@@ -527,9 +542,10 @@ public class EffectParser {
         }
         return ans;
     }   
-    public List<Integer> getListByFilter(String filterString)    
+    public List<String> getListByFilter(String filterString)    
     {
         //#Filter#(["key":"value"]);        
+
         List<String> list = new ArrayList<String>();
         list = splitCorrect(filterString, ',');
         //format = json
@@ -560,7 +576,7 @@ public class EffectParser {
         {
             ansId.add(ans.get(i).getId());
         }
-        return ansId;
+        return convertToString(ansId);
     }
     public String getSumOverField(String command)
     {
@@ -626,30 +642,50 @@ public class EffectParser {
             }
         return Zone.get(zoneArgument[1], player);
     }
-    public List<Integer> selective(String command)
-    {   
-        List<String> fields = splitCorrect(command, ',');
-        
-        Gson gson = new Gson();
-        List<Integer> array = getArray(fields.get(0));
-        int count = Integer.parseInt(fields.get(1));            
-        List<Integer> selected ;
-        if(fields.size() == 3)
-            selected =  duelMenu.selective(array, count, fields.get(2));
-        else
-        {
-            selected = duelMenu.selective(array, count, fields.get(2), fields.get(3));
-        }
-        return selected;
-    }
-    public List<Integer> randomSelection(String command)
+    public String selective(String command)
     {
-        List<String> fields = splitCorrect(command, ',');
-        Gson gson = new Gson();
-        List<Integer> array = getArray(fields.get(0));
-        int count = Integer.parseInt(fields.get(1));    
-        List<Integer> selected = duelMenu.randomSelection(array, count, fields.get(2));
-        return selected;
+        Matcher ans = Global.getMatcher(command,"select\\(([^()]*)\\)");
+        if(ans.find())
+        {            
+            List<String> fields = splitCorrect(ans.group(1), ',');            
+            List<Integer> array = getArray(fields.get(0));
+            int count = Integer.parseInt(getCommandResult(fields.get(1)));
+            List<Integer> selected;
+            if(fields.size() == 3)
+                selected =  duelMenu.selective(array, count, fields.get(2));
+            else
+            {
+                selected = duelMenu.selective(array, count, fields.get(2), fields.get(3));
+            }
+            command = command.replace(ans.group(0), new Gson().toJson(convertToString(selected), new ArrayList<String>().getClass()));
+            return command;
+        }
+        else
+            return command;
+    }
+    public String randomSelection(String command)
+    {
+        Matcher ans = Global.getMatcher(command,"random_select\\(([^()]*)\\)");
+        if(ans.find())
+        {
+            List<String> fields = splitCorrect(command, ',');
+            List<Integer> array = getArray(fields.get(0));
+            int count = Integer.parseInt(fields.get(1));    
+            List<Integer> selected = duelMenu.randomSelection(array, count, fields.get(2));        
+            command = command.replace(ans.group(0), new Gson().toJson(convertToString(selected), new ArrayList<String>().getClass()));
+            return command;
+        }
+        else
+            return command;
+    }
+    public List<String> convertToString(List<Integer> integerList)
+    {
+        List<String> ans = new ArrayList<String>();        
+        for(int i = 0; i < integerList.size(); i++)
+        {
+            ans.add(String.valueOf(integerList.get(i)));
+        }
+        return ans;
     }
     public Integer dice()
     {
