@@ -201,14 +201,21 @@ public class Duel {
 
     public void removeCardHolderByAddress(Address address) {
         Address newAddress = address.getNextPlace(), oldAddress = address;
-        Zones zone = Zones.valueOf(address.getZone().getName());
+        Zones zone = Zones.valueOfLabel(address.getZone().getName());
         map.put(oldAddress, null);
         //shifting(hand,deck,graveyard)
         if (!zone.isDiscrete) {
             for (int i = 0; i < zone.capacity; i++) {
-                map.put(newAddress, map.get(oldAddress));
+                map.put(oldAddress ,map.get(newAddress));
                 newAddress = newAddress.getNextPlace();
+                if(newAddress == null)
+                {
+                    map.put(oldAddress.getNextPlace(), null);
+                    break;
+                }    
                 oldAddress = oldAddress.getNextPlace();
+                if(oldAddress == null)
+                    break;
             }
         }
     }
@@ -219,7 +226,7 @@ public class Duel {
     }
 
     public void addCard(Card card, Zone zone1, CardState cardState) {
-        Zones zone = Zones.valueOf(zone1.getName());
+        Zones zone = Zones.valueOfLabel(zone1.getName());
         for (int i = 0; i < zone.capacity; i++) {
             if (map.get(Address.get(zone1, i)) == null) {
                 if (card.getCardType().equals(CardType.MONSTER))

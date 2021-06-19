@@ -119,23 +119,27 @@ public class EffectParser {
     }
     public void changeZone(String command)
     {
-        List<String> fields = splitCorrect(command, ',');
-        Gson gson = new Gson();
-        getCommandResult(fields.get(0));
-        List<Integer> cardHolders = getArray(fields.get(0));
-        Zone targetZone = null;//parseZone(fields.get(1));        
-        for(int i = 0; i < cardHolders.size(); i++)
+        Matcher matcher = Global.getMatcher(command, "changeZone\\(([^()]+)\\)");
+        if(matcher.find())
         {
-            targetZone = parseZone(fields.get(1), cardHolders.get(i));
-            if(fields.size() == 3)
-            {            
-                
-                CardState cardState = gson.fromJson(fields.get(2), CardState.class);
-                duelController.getDuel().changerZone(cardHolders, targetZone, cardState);
-            }
-            else
+            List<String> fields = splitCorrect(matcher.group(1), ',');
+            Gson gson = new Gson();
+            String changeList = getCommandResult(fields.get(0));
+            List<Integer> cardHolders = getArray(changeList);
+            Zone targetZone = null;//parseZone(fields.get(1));        
+            for(int i = 0; i < cardHolders.size(); i++)
             {
-                duelController.getDuel().changerZone(cardHolders, targetZone, CardState.NONE);                
+                targetZone = parseZone(fields.get(1), cardHolders.get(i));
+                if(fields.size() == 3)
+                {            
+                    
+                    CardState cardState = gson.fromJson(fields.get(2), CardState.class);
+                    duelController.getDuel().changerZone(cardHolders, targetZone, cardState);
+                }
+                else
+                {
+                    duelController.getDuel().changerZone(cardHolders, targetZone, CardState.NONE);                
+                }
             }
         }
         //changeZone(List<>, target_zone, card_state);
