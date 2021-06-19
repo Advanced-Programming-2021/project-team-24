@@ -80,7 +80,7 @@ public class MainMenu extends Menu {
         a.getDecks().setActiveDeck(a.getDecks().getDeckByName("alireza"));
         b.getDecks().add(alireza);
         b.getDecks().setActiveDeck(b.getDecks().getDeckByName("alireza"));
-        DuelMenu duelMenu = new DuelMenu(a, b, "1");
+        DuelMenu duelMenu = new DuelMenu(a, b);
         DuelController dControleer = duelMenu.duelController;
         dControleer.select(Address.get(Zone.get("hand", dControleer.getDuel().getCurrentPlayer()), 0));
         dControleer.nextPhase();
@@ -104,8 +104,8 @@ public class MainMenu extends Menu {
             dControleer.nextPhase();
             System.out.println(dControleer.directAttack().getContent());
         }
-        String command = "select($my_hand$,2,kore khar)";
-
+        String command = "changeZone($my_hand$,$my_monster$,CardState.Attack)";
+        System.out.println(new Gson().toJson(CardState.ACTIVE_MAGIC));
         Filter filter = new Filter();
         System.out.println(new Gson().toJson(filter));
         System.out.println(new EffectParser(duelMenu, dControleer, ((MagicCardHolder)dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0))).getEffectManager()).getCommandResult(command));
@@ -116,10 +116,5 @@ public class MainMenu extends Menu {
         //duelMenu.duelController.select(Address.get(Zone.get("hand", dControleer.getDuel().getCurrentPlayer()), 1));
         //System.out.println(dControleer.set().getContent());
         
-    }
-    private static String soso(String v)
-    {
-        v = "";
-        return v;
     }
 }

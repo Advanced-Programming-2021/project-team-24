@@ -238,6 +238,10 @@ public class EffectParser {
                 {
                     command = randomSelection(command);
                 }
+                if(command.length() >= new String("changeZone").length() && command.substring(0, new String("changeZone").length()).equals("changeZone"))
+                {
+                    changeZone(command);
+                }
 
                 if(command.length() >= 8 && command.substring(0, 8).equals("return_f") && ans == null)
                 {
