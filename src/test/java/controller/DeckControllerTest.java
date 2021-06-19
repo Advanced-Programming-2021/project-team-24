@@ -92,7 +92,7 @@ public class DeckControllerTest {
                         "Description: An axe-wielding monster of tremendous strength and agility.\n" +
                         "Spell and Traps:\n" +
                         "Name :Black Pendant\n" +
-                        "Trap\n" +
+                        "Spell\n" +
                         "Type: UNLIMITED\n" +
                         "Description:The equipped monster gains 500 ATK. When this card is sent from the field to the Graveyard: Inflict 500 damage to your opponent.\n"
                 , deckController.showDeckCards("deck", true).getContent());
