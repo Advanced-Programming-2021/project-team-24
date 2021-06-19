@@ -104,7 +104,7 @@ public class MainMenu extends Menu {
             dControleer.nextPhase();
             System.out.println(dControleer.directAttack().getContent());
         }
-        String command = "changeZone($my_hand$,$my_monster$,CardState.Attack)";
+        String command = "changeZone($my_hand$,my_monster,ATTACK_MONSTER);changeLP(own,Norm($my_monster$))";
         System.out.println(new Gson().toJson(CardState.ACTIVE_MAGIC));
         Filter filter = new Filter();
         System.out.println(new Gson().toJson(filter));
