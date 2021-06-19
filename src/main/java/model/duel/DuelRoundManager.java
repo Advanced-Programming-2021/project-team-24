@@ -47,6 +47,5 @@ public class DuelRoundManager {
     }
     private void calculateScore(Player player){
         if (!isLoser(player)) player.getUser().changeScore(rounds * 1000);
-
     }
 }
