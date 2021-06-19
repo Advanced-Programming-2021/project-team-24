@@ -190,7 +190,9 @@ public class DuelMenu {
                 String command = Global.scanner.nextLine();
                 Matcher matcher = Global.getMatcher(command, "select (?<zone>(?:--\\w+\\s*\\d*){1,2})");
                 Address address = getAddress(matcher);
-                if(address != null && getDuelController().getDuel().getMap().get(address) != null && checkCardHolderInList(cardHolderId, getDuelController().getDuel().getMap().get(address)))
+                if(address != null &&
+                 getDuelController().getDuel().getMap().get(address) != null &&
+                 checkCardHolderInList(cardHolderId, getDuelController().getDuel().getMap().get(address)))
                 {                    
                     ans.add(getDuelController().getDuel().getMap().get(address).getId());
                 }
