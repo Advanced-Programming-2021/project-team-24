@@ -159,5 +159,8 @@ public class Filter {
         this.ownerName = ownerName;
     }
 
+    public Filter() {
+    }
+
     
 }

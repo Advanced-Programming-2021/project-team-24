@@ -9,6 +9,7 @@ import com.thoughtworks.qdox.model.expression.Add;
 
 import controller.DuelController;
 import controller.Message;
+import controller.TypeMessage;
 import model.card.CardHolder;
 import model.duel.Duel;
 import model.duel.Duel.Phase;
@@ -84,16 +85,9 @@ public class DuelMenu {
                 if (matcher.find()) {
                     String zone = matcher.group("zone");
                     matcher = Global.getMatcher(zone, "(?=.*(?<name>--(?:monster|spell|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}");
-                    if (matcher.find()) {
-                        int place = Integer.parseInt(matcher.group("place"));
-
-                        String zoneName = matcher.group("name").replaceAll("-", "");
-                        Boolean opponent = false;
-                        if (matcher.group("opponent") != null) {
-                            opponent = true;
-                        }
-                        Address address = Address.get(Zone.get(zoneName, duelController.getDuel().getCurrentPlayer()), place);
-                        Message message = duelController.select(address);
+                    Address selectionAddress = getAddress(matcher);
+                    if (Global.regexFind(zone, "(?=.*(?<name>--(?:monster|spell|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}")) {
+                        Message message = duelController.select(selectionAddress);
                         System.out.println(message.getContent());
                     } else System.out.println("invalid selection");
                     continue;
@@ -153,18 +147,77 @@ public class DuelMenu {
         //Random then show selected by address
         return null;
     }
+    private Address getAddress(Matcher matcher)
+    {
+        if(matcher.find())
+        {
+            int place = Integer.parseInt(matcher.group("place"));
 
+            String zoneName = matcher.group("name").replaceAll("-", "");
+            Boolean opponent = false;
+            if (matcher.group("opponent") != null) {
+                opponent = true;
+            }
+            Address address;
+            if(!opponent)
+                address = Address.get(Zone.get(zoneName, duelController.getDuel().getCurrentPlayer()), place);
+            else
+                address = Address.get(Zone.get(zoneName, duelController.getDuel().getOpponent()), place);
+            return address;       
+        }
+        else
+            return null;
+    }
     public void changeLP(Player player, int amount) {
 
     }
-
-    public List<Integer> selective(List<Integer> cardHolderId, int count, String message) {
-        if (message != null && message.length() > 0)
-            System.out.println(message);
+    private boolean checkCardHolderInList(List<Integer> cardHolderId, CardHolder cardHolder)
+    {
+        for(int i = 0; i < cardHolderId.size(); i++)
+            if(cardHolderId.get(i) == cardHolder.getId())
+                return true;
+        return false;
+    }
+    public List<Integer> selective(List<Integer> cardHolderId, int count, String messageSelection) {
+        if (messageSelection != null && messageSelection.length() > 0)
+            System.out.println(messageSelection);
+        
         List<Integer> ans = new ArrayList<Integer>();
-        //TODO
-        //How to implement??
-        //maybe implement by address
+        while(true)
+        {
+            for(int i = 0; i < count; i++)
+            {
+                String command = Global.scanner.nextLine();
+                Matcher matcher = Global.getMatcher(command, "select (?<zone>(?:--\\w+\\s*\\d*){1,2})");
+                Address address = getAddress(matcher);
+                if(address != null &&
+                 getDuelController().getDuel().getMap().get(address) != null &&
+                 checkCardHolderInList(cardHolderId, getDuelController().getDuel().getMap().get(address)))
+                {                    
+                    ans.add(getDuelController().getDuel().getMap().get(address).getId());
+                }
+                else
+                {
+                    i--;
+                    System.out.println("invalid selection");
+                }
+            }
+            int flag = 0;
+            for(int i = 0; i < count; i++)
+            {
+                for(int j = 0; j < count; j++)
+                {
+                    if(i != j && ans.get((i)) == ans.get(j))
+                    {
+                        flag = 1;
+                    }
+                }
+            }
+            if(flag == 0)
+                break;                
+            else
+                System.out.println("You have same number in your input");
+        }
         return ans;
     }
 
