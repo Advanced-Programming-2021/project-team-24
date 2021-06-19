@@ -66,8 +66,7 @@ public class Duel {
     }
 
 
-    public Duel(User user, User opponent, String rounds) {
-        this.rounds = Integer.parseInt(rounds);
+    public Duel(User user, User opponent) {        
         zones = new ArrayList<>();
         this.user = new Player(user);
         changeTurnPairity = true;
@@ -127,7 +126,7 @@ public class Duel {
         for (Zone zone : zones) {
             List<CardHolder> list = getZone(zone);
             for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).equals(list)) {
+                if (list.get(i).getId() == cardHolder.getId()) {
                     return zone;
                 }
             }

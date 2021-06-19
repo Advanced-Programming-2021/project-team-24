@@ -5,11 +5,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 
-import com.thoughtworks.qdox.model.expression.Add;
-
 import controller.DuelController;
 import controller.Message;
-import controller.TypeMessage;
 import model.card.CardHolder;
 import model.duel.Duel;
 import model.duel.Duel.Phase;
@@ -25,8 +22,8 @@ public class DuelMenu {
 
     DuelController duelController;
 
-    public DuelMenu(User user, User opponent, String rounds) {
-        this.duelController = new DuelController(new Duel(user, opponent, rounds));
+    public DuelMenu(User user, User opponent) {
+        this.duelController = new DuelController(new Duel(user, opponent));
     }
 
     private static final String REGEX_ENTER_MENU = "menu enter (\\w+)";
@@ -84,9 +81,9 @@ public class DuelMenu {
                 Matcher matcher = Global.getMatcher(command, "select (?<zone>(?:--\\w+\\s*\\d*){1,2})");
                 if (matcher.find()) {
                     String zone = matcher.group("zone");
-                    matcher = Global.getMatcher(zone, "(?=.*(?<name>--(?:monster|spell|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}");
+                    matcher = Global.getMatcher(zone, "(?=.*(?<name>--(?:monster|magic|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}");
                     Address selectionAddress = getAddress(matcher);
-                    if (Global.regexFind(zone, "(?=.*(?<name>--(?:monster|spell|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}")) {
+                    if (Global.regexFind(zone, "(?=.*(?<name>--(?:monster|magic|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}")) {
                         Message message = duelController.select(selectionAddress);
                         System.out.println(message.getContent());
                     } else System.out.println("invalid selection");
@@ -151,19 +148,25 @@ public class DuelMenu {
     {
         if(matcher.find())
         {
-            int place = Integer.parseInt(matcher.group("place"));
+            matcher = Global.getMatcher(matcher.group("zone"), "(?=.*(?<name>--(?:monster|magic|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}");
+            if(matcher.find())
+            {
+                int place = Integer.parseInt(matcher.group("place"));
 
-            String zoneName = matcher.group("name").replaceAll("-", "");
-            Boolean opponent = false;
-            if (matcher.group("opponent") != null) {
-                opponent = true;
+                String zoneName = matcher.group("name").replaceAll("-", "");
+                Boolean opponent = false;
+                if (matcher.group("opponent") != null) {
+                    opponent = true;
+                }
+                Address address;
+                if(!opponent)
+                    address = Address.get(Zone.get(zoneName, duelController.getDuel().getCurrentPlayer()), place);
+                else
+                    address = Address.get(Zone.get(zoneName, duelController.getDuel().getOpponent()), place);
+                return address;       
             }
-            Address address;
-            if(!opponent)
-                address = Address.get(Zone.get(zoneName, duelController.getDuel().getCurrentPlayer()), place);
             else
-                address = Address.get(Zone.get(zoneName, duelController.getDuel().getOpponent()), place);
-            return address;       
+                return null;
         }
         else
             return null;
