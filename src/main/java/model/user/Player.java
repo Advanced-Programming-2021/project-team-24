@@ -12,17 +12,25 @@ import java.util.List;
 public class Player {
     private User user;
     private int lifePoint;
+    private int isDeadRounds;
+    private int maxLifePoint = 0;
     private CardHolder card;
     private Address selectedAddress;
     private List<CardHolder> cardHolders;
     
     public Player(User user) {
         this.lifePoint = 8000;
+        this.isDeadRounds = 0;
         this.user = user;
         this.card = new MonsterCardHolder(this, new MonsterCard(), CardState.NONE);//TODO That's general Dictionary maybe fixed later
     }
 
-
+    public User getUser(){
+        return user;
+    }
+    public void setLifePoint(int lifePoint){
+        this.lifePoint = lifePoint;
+    }
     
     public CardHolder getMap()
     {
@@ -52,10 +60,21 @@ public class Player {
     }
 
     public boolean isDead() {
-        if (lifePoint <= 0)
+        if (lifePoint <= 0) {
+            isDeadRounds++;
             return true;
-        else
-            return false;
+        }
+        return false;
+    }
+
+    public void setMaxLifePoint(){
+        if (maxLifePoint < lifePoint) maxLifePoint = lifePoint;
+    }
+    public int getMaxLifePoint(){
+        return maxLifePoint;
+    }
+    public int getIsDeadRounds(){
+        return isDeadRounds;
     }
 
     public CardHolder getCardHolderById(int id) {

@@ -222,4 +222,7 @@ public class User {
     public void setCoin(int coin){
         this.coin = coin;
     }
+    public void increaseCoin(int increment){
+        this.coin += increment;
+    }
 }

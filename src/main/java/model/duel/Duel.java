@@ -58,6 +58,9 @@ public class Duel {
         }
 
     }
+    public void changeLifePoint(Player player, int decrement){
+        player.changeLifePoint(-decrement);
+    }
 
     public Phase getCurrentPhase() {
         return currentPhase;
@@ -385,5 +388,19 @@ public class Duel {
             zoneCount.put(zone, getZone(zone).size());
         }
         return zoneCount;
+    }
+    private void finishRound(){
+        if (user.isDead()){
+            //TODO reset game
+            opponent.setMaxLifePoint();
+            user.setLifePoint(8000);
+            opponent.setLifePoint(8000);
+        }
+        else if (opponent.isDead()){
+            //TODO reset game
+            user.setMaxLifePoint();
+            user.setLifePoint(8000);
+            opponent.setLifePoint(8000);
+        }
     }
 } 
