@@ -34,12 +34,11 @@ public class Duel {
     Player currentPlayer;
     private static List<EffectManager> effectManagerList;
     private HashMap<Address, CardHolder> map = new HashMap<>();
-    private List<Zone> zones;
-    private int rounds;
+    private List<Zone> zones;    
     private Phase currentPhase;
     private HashMap<Phase, Phase> nextPhase = new HashMap<Phase, Phase>();
     private boolean changeTurnPairity;
-    private HashMap<Zone, Integer> zoneCardCount = new HashMap<Zone, Integer>();
+    private List<CardHolder> cardHoldersList = new ArrayList<CardHolder>();
 
     public enum Phase {
         DRAW,
@@ -390,15 +389,17 @@ public class Duel {
     }
 
     private void finishRound() {
+        user.resetPlayerForNextRound();
+        opponent.resetPlayerForNextRound();
         if (user.isDead()){
             //TODO reset game
-            opponent.setMaxLifePoint();
+            opponent.setMaxLifePoint();                    
             user.setLifePoint(8000);            
             opponent.setLifePoint(8000);
         }
         else if (opponent.isDead()){
             //TODO reset game
-            user.setMaxLifePoint();
+            user.setMaxLifePoint();            
             user.setLifePoint(8000);
             opponent.setLifePoint(8000);
         }

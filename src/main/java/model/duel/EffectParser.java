@@ -162,19 +162,21 @@ public class EffectParser {
     public String changeLP(String command)
     {
         //changeLp
-        Matcher matcher = Global.getMatcher(command, "changeLP\\((.+),(.+)\\)");
-        matcher.find();
-        String player = matcher.group(1);
-        if(player.equals("own"))
+        Matcher matcher = Global.getMatcher(command, "changeLP\\(([^()]+),(.+)\\)");
+        if(matcher.find())
         {
-            owner.changeLifePoint(Integer.parseInt(getCommandResult(matcher.group(2))));
+            String player = matcher.group(1);
+            if(player.equals("own"))
+            {
+                owner.changeLifePoint(Integer.parseInt(getCommandResult(matcher.group(2))));
+            }
+            else
+            {
+                duelController.getDuel().opponent.changeLifePoint(Integer.parseInt(getCommandResult(matcher.group(2))));
+            }        
+            String result = matcher.group(0);
+            command = command.replace(result, "");
         }
-        else
-        {
-            duelController.getDuel().opponent.changeLifePoint(Integer.parseInt(getCommandResult(matcher.group(2))));
-        }        
-        String result = matcher.group(0);
-        command = command.replace(result, "");
         return command;        
     }
     public String q_yn(String command)
@@ -276,11 +278,11 @@ public class EffectParser {
                 command = handleChangeLPCommand(command);
                 command = handleNormCommand(command);
                 
-                if(command.length() >= 3 && command.substring(0, 3).equals("del"))
+                if(Global.regexFind(command, "del"))
                 {
-                    deleteListFromList(command);
+                    command = deleteListFromList(command);
                 }
-                if(command.length() >= 3 && command.substring(0, 3).equals("sum"))
+                if(Global.regexFind(command, "sum"))
                 {
                     command = getSumOverField(command);
                 }
@@ -321,11 +323,11 @@ public class EffectParser {
     private String handleNormCommand(String command) {
         while(true)
         {
-            if(Global.regexFind(command, "Norm\\(([^()]+)\\)"))
+            if(Global.regexFind(command, "Norm\\((.+)\\)"))
             {
-                Matcher matcher = Global.getMatcher(command, "Norm\\(([^()]+)\\)");
+                Matcher matcher = Global.getMatcher(command, "Norm\\((.+)\\)");
                 matcher.find();
-                command = command.replace(matcher.group(0), normSet((matcher.group(0))));
+                command = command.replace("Norm(" + splitByParentheses(matcher.group(0)).get(0) + ")", normSet((matcher.group(0))));
             }
             else
                 break;
@@ -354,8 +356,9 @@ public class EffectParser {
         //Norm(List<E>): return size of List in String integer
         //List<E> set
         Matcher matcher = Global.getMatcher(command, "Norm\\((.+)\\)");
-        matcher.find();      
-        String list = getCommandResult(matcher.group(1));        
+        matcher.find();     
+
+        String list = getCommandResult(splitByParentheses(matcher.group(0)).get(0));        
         return String.valueOf((new Gson().fromJson(list, new ArrayList<String>().getClass())).size());        
     }
     public String parseKeyWords(String command)
@@ -393,9 +396,15 @@ public class EffectParser {
             }
             command = command.replace(zone, new Gson().toJson(ans, new ArrayList<String>().getClass()));
         }
+        ArrayList<String> own = new ArrayList<String>();
+        own.add(String.valueOf(effectManager.getOwner().getMap().getId()));
+        command = command.replace("*own*", new Gson().toJson(own));
 
 
-
+        ArrayList<String> opp = new ArrayList<String>();
+        opp.add(String.valueOf(effectManager.getOwner().getMap().getId()));
+        command = command.replace("*opp*", new Gson().toJson(opp));
+        
         return command;
     }
     public static List<Integer> convertToInteger(List<String> stringNumbers)
@@ -539,23 +548,25 @@ public class EffectParser {
         }
         return ans;
     }
-    public List<Integer> deleteListFromList(String command)
+    public String deleteListFromList(String command)
     {
         //del(List<>, List<E>)
         Matcher matcher = Global.getMatcher(command, "del\\((.+)\\)");
-        List<Integer> ans = new ArrayList<Integer>();
+        List<String> ans = new ArrayList<String>();
         if(matcher.find())
         {
             List<String> sets = splitCorrect(matcher.group(1), ',');
-            List<Integer> first = getArray(sets.get(1));
-            List<Integer> second = getArray(sets.get(2));
+            List<Integer> first = getArray(sets.get(0));
+            List<Integer> second = getArray(sets.get(1));
             List<Integer> ans1 = Global.delListFromList(first, second);
             for(int i = 0; i < ans1.size(); i++)
             {
-                ans.add(ans1.get(i));
+                ans.add(String.valueOf(ans1.get(i)));
             }
+            command = command.replace(matcher.group(0), new Gson().toJson(ans));
+            return command;
         }
-        return ans;
+        return command;
     }   
     public String getListByFilter(String filterString)    
     {

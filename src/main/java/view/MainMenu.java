@@ -95,7 +95,7 @@ public class MainMenu extends Menu {
         magic.setEffect(effect);
         magic.setMagicIcon(MagicIcon.CONTINUOUS);
         
-
+        System.out.println(EffectParser.splitByParentheses("alirez(alir)").get(0));
         dControleer.getDuel().getMap().put(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0), new MagicCardHolder(dControleer.getDuel().getCurrentPlayer(), magic, CardState.SET_MAGIC));
         dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0));
         if(!dControleer.getDuel().getMap().get(dControleer.getSelectedAddress()).getCard().isMagic())
@@ -108,13 +108,20 @@ public class MainMenu extends Menu {
         u.setMonsterType(MonsterType.AQUA);
         System.out.println(new Gson().toJson(u));
         
-        String command = "changeLP(own,Norm(filter(\"idCardHolder\":$my_hand$,\"zones\":[\"my_hand\",\"my_monster\",\"my_magic\"],\"monsterType\"=\"S" +  new String("PELLCASTER").toLowerCase() + "\")))";
+        String command = "set(*own*,temp,$my_magic$); changeZone(this,my_hand,HAND);" +
+        " changeLP(own,"+
+        " Norm(" + 
+        "del(get(*own*,temp),$my_magic$)" +
+        ")" + 
+        "); changeLP(own, $my_magic$); changeLP(own,Norm([]))";
+
         
         System.out.println(new EffectParser(duelMenu, dControleer, ((MagicCardHolder)dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0))).getEffectManager()).getCommandResult(command));
         System.out.println(dControleer.getDuel().getCurrentPlayer().getLifePoint());
         System.out.println(dControleer.getDuel().getOpponent().getLifePoint());
 
         //duelMenu.run();
+        //Summon/Set owner: "q_yn(tribitute three cards and remove opponent monster?)(changeZone(select($my_monster$,3,select_for_tribute), $my_graveyard$);set(this,temp,$my_monster$);changeZone(this,my_monster,SET); set(del($my_monster$,get(this,temp),attack,2900);   )   )else()"
         //duelMenu.duelController.select(Address.get(Zone.get("hand", dControleer.getDuel().getCurrentPlayer()), 1));
         //System.out.println(dControleer.set().getContent());
         
