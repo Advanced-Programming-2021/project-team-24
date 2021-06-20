@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import com.google.j2objc.annotations.ReflectionSupport.Level;
 
 public class Duel {
     Player user;
@@ -389,11 +388,12 @@ public class Duel {
         }
         return zoneCount;
     }
-    private void finishRound(){
+
+    private void finishRound() {
         if (user.isDead()){
             //TODO reset game
             opponent.setMaxLifePoint();
-            user.setLifePoint(8000);
+            user.setLifePoint(8000);            
             opponent.setLifePoint(8000);
         }
         else if (opponent.isDead()){
@@ -403,4 +403,6 @@ public class Duel {
             opponent.setLifePoint(8000);
         }
     }
-} 
+
+
+}
