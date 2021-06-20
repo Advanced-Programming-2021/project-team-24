@@ -18,10 +18,9 @@ public class ZoneHandler extends FilterHandler {
         {
             for(int j = 0; j < possibleZones.size(); j++)
             {
-                if(zone.getName().equals(duel.parseZone(possibleZones.get(j)).getName()) && zone.getPlayer().equals(duel.parseZone(possibleZones.get(j)).getPlayer()))
-                {
+                Zone currentPossibleZone = duel.parseZone(possibleZones.get(j), filter.getOwnerName());
+                if(zone.equals(currentPossibleZone))
                     flag = 1;
-                }
             }
         }
         if(flag == 0)

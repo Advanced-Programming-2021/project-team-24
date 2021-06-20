@@ -13,6 +13,7 @@ import model.duel.filterhandle.CardTypeHandler;
 import model.duel.filterhandle.DefenceHandler;
 import model.duel.filterhandle.IdHandler;
 import model.duel.filterhandle.LevelHandler;
+import model.duel.filterhandle.MonsterTypeHandler;
 import model.duel.filterhandle.ZoneHandler;
 import model.effect.EffectManager;
 import model.user.Player;
@@ -26,7 +27,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import com.google.j2objc.annotations.ReflectionSupport.Level;
 
 public class Duel {
     Player user;
@@ -34,12 +34,11 @@ public class Duel {
     Player currentPlayer;
     private static List<EffectManager> effectManagerList;
     private HashMap<Address, CardHolder> map = new HashMap<>();
-    private List<Zone> zones;
-    private int rounds;
+    private List<Zone> zones;    
     private Phase currentPhase;
     private HashMap<Phase, Phase> nextPhase = new HashMap<Phase, Phase>();
     private boolean changeTurnPairity;
-    private HashMap<Zone, Integer> zoneCardCount = new HashMap<Zone, Integer>();
+    private List<CardHolder> cardHoldersList = new ArrayList<CardHolder>();
 
     public enum Phase {
         DRAW,
@@ -53,6 +52,7 @@ public class Duel {
     public void nextPhase() {
         currentPhase = nextPhase.get(currentPhase);
         if (currentPhase == Phase.END) {
+
         }
 
     }
@@ -78,12 +78,13 @@ public class Duel {
     }
 
 
-    public Duel(Player user, Player opponent) {
+    public Duel(User user, User opponent) {        
         zones = new ArrayList<>();
-        this.user = user;
+        this.user = new Player(user);
         changeTurnPairity = true;
-        this.opponent = opponent;
+        this.opponent = new Player(opponent);
         this.currentPlayer = this.user;
+        Zone.clear();
         Zone.init(currentPlayer);
         Zone.init(this.opponent);
         zones.add(Zone.get("graveyard", this.user));
@@ -100,8 +101,8 @@ public class Duel {
         setNextPhaseHashMap();
         Address.init(this.opponent);
         Address.init(currentPlayer);
-        setTheInitialStateOfHandCards(user.getUser(), currentPlayer);
-        setTheInitialStateOfHandCards(opponent.getUser(), this.opponent);
+        setTheInitialStateOfHandCards(user, currentPlayer);
+        setTheInitialStateOfHandCards(opponent, this.opponent);
         Address address = Address.get(Zone.get("monster", currentPlayer), 2);
         map.put(address, new MonsterCardHolder(currentPlayer, new MonsterCard(), CardState.ATTACK_MONSTER));
         System.out.println(address);
@@ -315,12 +316,24 @@ public class Duel {
         return ans;
     }
 
-    public Zone parseZone(String josn) {
+    public Zone parseZone(String josn, String ownerName) {
         String[] zoneArgument = josn.split("_");
         Player player = null;
-        if (zoneArgument[1].compareToIgnoreCase("my") == 0) player = currentPlayer;
-        else player = opponent;
-        return Zone.get(zoneArgument[0], player);
+        Player owner, opp;
+        if(getCurrentPlayer().getNickname().equals(ownerName))
+        {   
+            owner = getCurrentPlayer();
+            opp = getOpponent();
+        }
+        else
+        {
+            owner = getOpponent();
+            opp = getCurrentPlayer();
+        }
+        if (zoneArgument[0].compareToIgnoreCase("my") == 0)
+         player = owner;
+        else player = opp;
+        return Zone.get(zoneArgument[1], player);
     }
 
     public boolean filterMatch(Filter filter, CardHolder cardHolder) {
@@ -332,6 +345,8 @@ public class Duel {
         IdHandler id = new IdHandler();
         LevelHandler level = new LevelHandler();
         ZoneHandler zone = new ZoneHandler();
+        MonsterTypeHandler monsterType = new MonsterTypeHandler();
+
         attack.setNextFilterHandler(cardName);
         cardName.setNextFilterHandler(cardState);
         cardState.setNextFilterHandler(cardType);        
@@ -339,6 +354,7 @@ public class Duel {
         defence.setNextFilterHandler(id);
         id.setNextFilterHandler(level);
         level.setNextFilterHandler(zone);        
+        zone.setNextFilterHandler(monsterType);        
         return attack.Handle(filter, cardHolder, this);
     }
 
@@ -371,4 +387,23 @@ public class Duel {
         }
         return zoneCount;
     }
-} 
+
+    private void finishRound() {
+        user.resetPlayerForNextRound();
+        opponent.resetPlayerForNextRound();
+        if (user.isDead()){
+            //TODO reset game
+            opponent.setMaxLifePoint();                    
+            user.setLifePoint(8000);            
+            opponent.setLifePoint(8000);
+        }
+        else if (opponent.isDead()){
+            //TODO reset game
+            user.setMaxLifePoint();            
+            user.setLifePoint(8000);
+            opponent.setLifePoint(8000);
+        }
+    }
+
+
+}

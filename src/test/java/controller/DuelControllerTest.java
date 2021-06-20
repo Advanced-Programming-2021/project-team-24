@@ -27,7 +27,7 @@ public class DuelControllerTest {
         decks.setActiveDeck(deck);
         user1.setDecks(decks);
         user2.setDecks(decks);
-        Duel duel = new Duel(user1, user2, "1");
+        Duel duel = new Duel(user1, user2);
         DuelController duelController = new DuelController(duel);
         for (int i = 0; i < 2; i++) duel.nextPhase();
         assertEquals("BATTLE", duelController.nextPhase().getContent());
@@ -49,7 +49,7 @@ public class DuelControllerTest {
         user1.getCards().addAll(Card.getAllCards());
         user2.getCards().addAll(Card.getAllCards());        
         System.out.println(user1.getCards().size());
-        DuelMenu duelMenu = new DuelMenu(user1, user2, "1");
+        DuelMenu duelMenu = new DuelMenu(user1, user2);
 
         DuelController duelController = duelMenu.getDuelController();
         Duel duel = duelController.getDuel();

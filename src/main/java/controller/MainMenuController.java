@@ -14,7 +14,8 @@ public class MainMenuController {
                     if(userDeck.isValid()){
                         if(opponentDeck.isValid()){
                             if(rounds.equals("1") || rounds.equals("3")){
-                                new DuelMenu(user,opponent,rounds).run();
+                                new DuelMenu(user,opponent).run();
+                                //TODO                                
                                 return null;
                             }
                             else{

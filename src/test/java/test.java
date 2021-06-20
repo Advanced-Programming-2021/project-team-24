@@ -37,7 +37,7 @@ public class test {
         User.register("alireza", "haqi", "hesam");
         User a = User.readUser("alireza");
         User b= User.readUser("behzad");
-        DuelMenu duelMenu = new DuelMenu(a, b, "1");
+        DuelMenu duelMenu = new DuelMenu(a, b);
         
         MonsterCardHolder temp = new MonsterCardHolder(duelMenu.getPlayer(true), u, CardState.ATTACK_MONSTER);
         //User a = new User("alireza", "haqi", "alirezaaaaa");
@@ -68,7 +68,7 @@ public class test {
         User.register("alireza", "haqi", "hesam");
         User a = User.readUser("alireza");
         User b= User.readUser("behzad");
-        DuelMenu duelMenu = new DuelMenu(a, b, "1");
+        DuelMenu duelMenu = new DuelMenu(a, b);
         
         MonsterCardHolder temp = new MonsterCardHolder(duelMenu.getPlayer(true), u, CardState.ATTACK_MONSTER);
         
@@ -93,7 +93,7 @@ public class test {
         User.register("alireza", "haqi", "hesam");
         User a = User.readUser("alireza");
         User b= User.readUser("behzad");
-        DuelMenu duelMenu = new DuelMenu(a, b, "1");
+        DuelMenu duelMenu = new DuelMenu(a, b);
         
         MonsterCardHolder temp = new MonsterCardHolder(duelMenu.getPlayer(true), u, CardState.ATTACK_MONSTER);
         

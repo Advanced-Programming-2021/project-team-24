@@ -16,13 +16,17 @@ public class Player {
     private int maxLifePoint = 0;
     private CardHolder card;
     private Address selectedAddress;
-    private List<CardHolder> cardHolders;
     
     public Player(User user) {
         this.lifePoint = 8000;
         this.isDeadRounds = 0;
         this.user = user;
         this.card = new MonsterCardHolder(this, new MonsterCard(), CardState.NONE);//TODO That's general Dictionary maybe fixed later
+    }
+    public void resetPlayerForNextRound()
+    {
+        card = new MonsterCardHolder(this, new MonsterCard(), CardState.NONE);
+        selectedAddress = null;        
     }
 
     public User getUser(){
@@ -77,11 +81,5 @@ public class Player {
         return isDeadRounds;
     }
 
-    public CardHolder getCardHolderById(int id) {
-        for (CardHolder cardHolder : cardHolders)
-            if (cardHolder.getId() == id) 
-                return cardHolder;
-        return null;
-    }
 
 }
