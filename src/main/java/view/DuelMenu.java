@@ -31,78 +31,85 @@ public class DuelMenu {
 
     public void run() {
         while (true) {
-            if(duelController.getDuel().getCurrentPhase() == Phase.DRAW)
-            {
-                System.out.println(duelController.draw().getContent());                
-                duelController.nextPhase();
-            }
-            else
-            if(duelController.getDuel().getCurrentPhase() == Phase.STANDBY)
-            {
-                //TODO handle standby phase
-            }            
-            String command = Global.nextLine();
-            if (command.equals("menu exit")) {
-                return;
-            } else if (command.equals("menu show-current")) {
-                System.out.println("Duel Menu");
-                continue;
-            }
-            else if (command.equals("select -d")) {
-                Message message = duelController.deselect();
-                System.out.println(message.getContent());
-            } else if (command.equals("summon")) {
-                System.out.println(duelController.summon().getContent());
-            } else if (command.equals("flip-summon")) {
-                System.out.println(duelController.flipSummon().getContent());
-            } else if (command.equals("set")) {
-                System.out.println(duelController.set().getContent());
-            } else if (command.equals("attack direct")) {
-                System.out.println(duelController.directAttack().getContent());
-            } else if (command.equals("activate effect")) {
-                //TODO activate effect
-            }
-            else if (command.equals("next phase")){
-                System.out.println(duelController.nextPhase().getContent());
-            }
-            else if (command.equals("show graveyard")) {
-                List<CardHolder> graveyard = getZoneCards("graveyard",false);
-                if (graveyard.isEmpty()) System.out.println("graveyard empty");
-                else showCardList(graveyard);
-            } else if (command.equals("card show --selected")) {
-
-                Message message = duelController.showSelectedCard();
-                System.out.println(message.getContent());
-
-            } else if (command.equals("surrender")) {
-                //TODO surrender
-            } else {
-                //<select>
-                Matcher matcher = Global.getMatcher(command, "select (?<zone>(?:--\\w+\\s*\\d*){1,2})");
-                if (matcher.find()) {
-                    String zone = matcher.group("zone");
-                    matcher = Global.getMatcher(zone, "(?=.*(?<name>--(?:monster|magic|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}");
-                    Address selectionAddress = getAddress(matcher);
-                    if (Global.regexFind(zone, "(?=.*(?<name>--(?:monster|magic|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}")) {
-                        Message message = duelController.select(selectionAddress);
-                        System.out.println(message.getContent());
-                    } else System.out.println("invalid selection");
+            if (duelController.isRoundFinished()) return;
+            else{
+                if(duelController.getDuel().getCurrentPhase() == Phase.DRAW)
+                {
+                    System.out.println(duelController.draw().getContent());
+                    duelController.nextPhase();
+                }
+                else
+                if(duelController.getDuel().getCurrentPhase() == Phase.STANDBY)
+                {
+                    //TODO handle standby phase
+                }
+                String command = Global.nextLine();
+                if (command.equals("menu exit")) {
+                    return;
+                } else if (command.equals("menu show-current")) {
+                    System.out.println("Duel Menu");
                     continue;
                 }
-
-                matcher = Global.getMatcher(command, "set --position (?<position>attack|defense)");
-                if (matcher.find()) {
-                    duelController.changePosition();
-                    continue;
+                else if (command.equals("surrender")){
+                    duelController.surrender(true);//change argument later
+                    return;
                 }
-
-                matcher = Global.getMatcher(command, "attack (?<place>[0-4])");
-                if (matcher.find()) {
-                    duelController.directAttack();
-                    continue;
+                else if (command.equals("select -d")) {
+                    Message message = duelController.deselect();
+                    System.out.println(message.getContent());
+                } else if (command.equals("summon")) {
+                    System.out.println(duelController.summon().getContent());
+                } else if (command.equals("flip-summon")) {
+                    System.out.println(duelController.flipSummon().getContent());
+                } else if (command.equals("set")) {
+                    System.out.println(duelController.set().getContent());
+                } else if (command.equals("attack direct")) {
+                    System.out.println(duelController.directAttack().getContent());
+                } else if (command.equals("activate effect")) {
+                    //TODO activate effect
                 }
+                else if (command.equals("next phase")){
+                    System.out.println(duelController.nextPhase().getContent());
+                }
+                else if (command.equals("show graveyard")) {
+                    List<CardHolder> graveyard = getZoneCards("graveyard",false);
+                    if (graveyard.isEmpty()) System.out.println("graveyard empty");
+                    else showCardList(graveyard);
+                } else if (command.equals("card show --selected")) {
+
+                    Message message = duelController.showSelectedCard();
+                    System.out.println(message.getContent());
+
+                } else if (command.equals("surrender")) {
+                    //TODO surrender
+                } else {
+                    //<select>
+                    Matcher matcher = Global.getMatcher(command, "select (?<zone>(?:--\\w+\\s*\\d*){1,2})");
+                    if (matcher.find()) {
+                        String zone = matcher.group("zone");
+                        matcher = Global.getMatcher(zone, "(?=.*(?<name>--(?:monster|magic|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}");
+                        Address selectionAddress = getAddress(matcher);
+                        if (Global.regexFind(zone, "(?=.*(?<name>--(?:monster|magic|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}")) {
+                            Message message = duelController.select(selectionAddress);
+                            System.out.println(message.getContent());
+                        } else System.out.println("invalid selection");
+                        continue;
+                    }
+
+                    matcher = Global.getMatcher(command, "set --position (?<position>attack|defense)");
+                    if (matcher.find()) {
+                        duelController.changePosition();
+                        continue;
+                    }
+
+                    matcher = Global.getMatcher(command, "attack (?<place>[0-4])");
+                    if (matcher.find()) {
+                        duelController.directAttack();
+                        continue;
+                    }
+                }
+                System.out.println("invalid command");
             }
-            System.out.println("invalid command");
         }
     }
     public DuelController getDuelController()

@@ -1,8 +1,11 @@
 package model.duel;
 
+import model.deck.Deck;
+import model.deck.Decks;
 import model.user.Player;
 import model.user.User;
 import view.DuelMenu;
+import view.MainMenu;
 
 public class DuelRoundManager {
     private User user;
@@ -24,14 +27,25 @@ public class DuelRoundManager {
         for(int i = 0; i < rounds; i++)
         {
             //check who is starter with some coin or ??
-            DuelMenu c = new DuelMenu(userPlayer, opponentPlayer);
-            c.run();
             //c.getPlayer(isOpponent) check who is loser
             //  calculate scores
             // save scores
-            //side deck
-            DuelMenu duelMenu = new DuelMenu(userPlayer, opponentPlayer);
 
+            DuelMenu duelMenu = new DuelMenu(userPlayer, opponentPlayer);
+            duelMenu.run();
+            userPlayer.resetPlayerForNextRound();
+            opponentPlayer.resetPlayerForNextRound();
+            if (isLoser(userPlayer) || isLoser(opponentPlayer)){
+                calculateCoin(userPlayer);
+                calculateCoin(opponentPlayer);
+                calculateScore(userPlayer);
+                calculateScore(opponentPlayer);
+                //go to main menu
+                new MainMenu(user).run();
+            }
+            else {
+                //TODO Side Deck
+            }
         }
     }
 
@@ -47,21 +61,6 @@ public class DuelRoundManager {
     }
     private void calculateScore(Player player){
         if (!isLoser(player)) player.getUser().changeScore(rounds * 1000);
-    }
-    private boolean isRoundFinished(){
-        if (userPlayer.isDead()){
-            opponentPlayer.setMaxLifePoint();
-            userPlayer.setLifePoint(8000);
-            opponentPlayer.setLifePoint(8000);
-            return true;
-        }
-        else if (opponentPlayer.isDead()){
-            userPlayer.setMaxLifePoint();
-            userPlayer.setLifePoint(8000);
-            opponentPlayer.setLifePoint(8000);
-            return true;
-        }
-        return false;
     }
 }
 

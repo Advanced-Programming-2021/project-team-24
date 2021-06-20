@@ -1,5 +1,6 @@
 package controller;
 
+import java.lang.management.PlatformLoggingMXBean;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ import model.card.magic.MagicCard;
 import model.card.magic.MagicCardHolder;
 import model.card.monster.MonsterCard;
 import model.card.monster.MonsterCardHolder;
+import model.user.Player;
 import model.zone.Address;
 import model.zone.Zone;
 import model.zone.Zones;
@@ -43,6 +45,14 @@ public class DuelController {
         }
         
     }
+    public void surrender(boolean isOpponent){
+        duel.surrender(isOpponent);
+    }
+
+    public boolean isRoundFinished() {
+        return duel.isRoundFinished();
+    }
+
     public void resetDuelEventTurn()
     {
         duelEvents = new HashMap<>();

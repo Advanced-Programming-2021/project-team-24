@@ -58,6 +58,20 @@ public class Deck {
         this.sideCards.remove(card);
     }
 
+    public boolean doesContainCard(Card card, boolean isMain){
+        if (isMain){
+            for (int i = 0; i < mainCards.size(); i++) {
+                if (mainCards.get(i).getName().equals(card.getName())) return true;
+            }
+        }
+        else {
+            for (int i = 0; i < mainCards.size(); i++) {
+                if (mainCards.get(i).getName().equals(card.getName())) return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isValid() {
         if (this.mainCards.size() >= 40) return true;
         return false;
