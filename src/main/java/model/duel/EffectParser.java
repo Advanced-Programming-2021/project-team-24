@@ -567,13 +567,14 @@ public class EffectParser {
             String filterJson = "{"+ matcher.group(1) + "}";
             Gson gson = new Gson();;
             Filter filter =  gson.fromJson(filterJson, Filter.class);
+            filter.setOwnerName(effectManager.getOwner().getNickname());
             List<CardHolder> ans = duelController.getDuel().getCardHolderFilter(filter);        
             List<Integer> ansId = new ArrayList<Integer>();
             for(int i = 0; i < ans.size(); i++)
             {
                 ansId.add(ans.get(i).getId());
             }
-            filterString = filterString.replace(matcher.group(0), new Gson().toJson(ansId));
+            filterString = filterString.replace(matcher.group(0), new Gson().toJson(convertToString(ansId)));
             return filterString;
         }
         else

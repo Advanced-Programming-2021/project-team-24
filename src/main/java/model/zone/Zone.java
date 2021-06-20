@@ -13,6 +13,10 @@ public class Zone {
     public static final String[] zoneStrings = {"graveyard", "monster", "magic", "hand", "field", "deck"};
     private static List<Zone> zones = new ArrayList<>();
 
+    public static void clear()
+    {
+        zones = new ArrayList<Zone>();
+    }
     public static void init(Player player) {
         for (String zoneName : zoneStrings) {
             zones.add(new Zone(zoneName, player));

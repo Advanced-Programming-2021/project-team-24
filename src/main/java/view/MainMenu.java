@@ -9,6 +9,7 @@ import model.card.CardState;
 import model.card.magic.MagicCard;
 import model.card.magic.MagicCardHolder;
 import model.card.magic.MagicIcon;
+import model.card.monster.MonsterType;
 import model.deck.Deck;
 import model.duel.EffectParser;
 import model.duel.Filter;
@@ -101,13 +102,14 @@ public class MainMenu extends Menu {
         {
             dControleer.summon();
             dControleer.nextPhase();
-            dControleer.nextPhase();
             System.out.println(dControleer.directAttack().getContent());
         }
-        String command = "changeLP(own,Norm(filter(id:this)))";
-        System.out.println(new Gson().toJson(CardState.ACTIVE_MAGIC));
-        Filter filter = new Filter();
-        System.out.println(new Gson().toJson(filter));
+        Filter u = new Filter();
+        u.setMonsterType(MonsterType.AQUA);
+        System.out.println(new Gson().toJson(u));
+        
+        String command = "changeLP(own,Norm(filter(\"idCardHolder\":$my_hand$,\"zones\":[\"my_hand\",\"my_monster\",\"my_magic\"],\"monsterType\"=\"S" +  new String("PELLCASTER").toLowerCase() + "\")))";
+        
         System.out.println(new EffectParser(duelMenu, dControleer, ((MagicCardHolder)dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0))).getEffectManager()).getCommandResult(command));
         System.out.println(dControleer.getDuel().getCurrentPlayer().getLifePoint());
         System.out.println(dControleer.getDuel().getOpponent().getLifePoint());

@@ -13,6 +13,7 @@ import model.duel.filterhandle.CardTypeHandler;
 import model.duel.filterhandle.DefenceHandler;
 import model.duel.filterhandle.IdHandler;
 import model.duel.filterhandle.LevelHandler;
+import model.duel.filterhandle.MonsterTypeHandler;
 import model.duel.filterhandle.ZoneHandler;
 import model.effect.EffectManager;
 import model.user.Player;
@@ -82,6 +83,7 @@ public class Duel {
         changeTurnPairity = true;
         this.opponent = new Player(opponent);
         this.currentPlayer = this.user;
+        Zone.clear();
         Zone.init(currentPlayer);
         Zone.init(this.opponent);
         zones.add(Zone.get("graveyard", this.user));
@@ -313,12 +315,24 @@ public class Duel {
         return ans;
     }
 
-    public Zone parseZone(String josn) {
+    public Zone parseZone(String josn, String ownerName) {
         String[] zoneArgument = josn.split("_");
         Player player = null;
-        if (zoneArgument[1].compareToIgnoreCase("my") == 0) player = currentPlayer;
-        else player = opponent;
-        return Zone.get(zoneArgument[0], player);
+        Player owner, opp;
+        if(getCurrentPlayer().getNickname().equals(ownerName))
+        {   
+            owner = getCurrentPlayer();
+            opp = getOpponent();
+        }
+        else
+        {
+            owner = getOpponent();
+            opp = getCurrentPlayer();
+        }
+        if (zoneArgument[0].compareToIgnoreCase("my") == 0)
+         player = owner;
+        else player = opp;
+        return Zone.get(zoneArgument[1], player);
     }
 
     public boolean filterMatch(Filter filter, CardHolder cardHolder) {
@@ -330,6 +344,8 @@ public class Duel {
         IdHandler id = new IdHandler();
         LevelHandler level = new LevelHandler();
         ZoneHandler zone = new ZoneHandler();
+        MonsterTypeHandler monsterType = new MonsterTypeHandler();
+
         attack.setNextFilterHandler(cardName);
         cardName.setNextFilterHandler(cardState);
         cardState.setNextFilterHandler(cardType);        
@@ -337,6 +353,7 @@ public class Duel {
         defence.setNextFilterHandler(id);
         id.setNextFilterHandler(level);
         level.setNextFilterHandler(zone);        
+        zone.setNextFilterHandler(monsterType);        
         return attack.Handle(filter, cardHolder, this);
     }
 

@@ -22,7 +22,7 @@ public class CardNameHandler extends FilterHandler {
         {
             return nextFilterHandler.Handle(filter, cardHolder, duel);
         }
-        return false;
+        return true;
     }
     
 }
