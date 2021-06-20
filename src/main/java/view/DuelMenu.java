@@ -22,7 +22,7 @@ public class DuelMenu {
 
     DuelController duelController;
 
-    public DuelMenu(User user, User opponent) {
+    public DuelMenu(Player user, Player opponent) {
         this.duelController = new DuelController(new Duel(user, opponent));
     }
 

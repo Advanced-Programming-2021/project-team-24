@@ -9,29 +9,29 @@ public class DuelRoundManager {
     private User opponent;
     private Player userPlayer;
     private Player opponentPlayer;
-    private int numberOfMatches = 0;
     private int rounds = 0;
-    public DuelRoundManager(User user, User opponent, int numberOfMatches, int rounds)
+    public DuelRoundManager(User user, User opponent, int rounds)
     {
         this.user = user;
         this.opponent = opponent;
         this.userPlayer = new Player(user);
         this.opponentPlayer = new Player(opponent);
-        this.numberOfMatches = numberOfMatches;
         this.rounds = rounds;
         run();
     }
 
     private void run() {
-        for(int i = 0; i < numberOfMatches; i++)
+        for(int i = 0; i < rounds; i++)
         {
             //check who is starter with some coin or ??
-            DuelMenu c = new DuelMenu(user, opponent);
+            DuelMenu c = new DuelMenu(userPlayer, opponentPlayer);
             c.run();
             //c.getPlayer(isOpponent) check who is loser
             //  calculate scores
             // save scores
             //side deck
+            DuelMenu duelMenu = new DuelMenu(userPlayer, opponentPlayer);
+
         }
     }
 
@@ -48,4 +48,20 @@ public class DuelRoundManager {
     private void calculateScore(Player player){
         if (!isLoser(player)) player.getUser().changeScore(rounds * 1000);
     }
+    private boolean isRoundFinished(){
+        if (userPlayer.isDead()){
+            opponentPlayer.setMaxLifePoint();
+            userPlayer.setLifePoint(8000);
+            opponentPlayer.setLifePoint(8000);
+            return true;
+        }
+        else if (opponentPlayer.isDead()){
+            userPlayer.setMaxLifePoint();
+            userPlayer.setLifePoint(8000);
+            opponentPlayer.setLifePoint(8000);
+            return true;
+        }
+        return false;
+    }
 }
+

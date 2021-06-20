@@ -53,7 +53,6 @@ public class Duel {
     public void nextPhase() {
         currentPhase = nextPhase.get(currentPhase);
         if (currentPhase == Phase.END) {
-
         }
 
     }
@@ -79,11 +78,11 @@ public class Duel {
     }
 
 
-    public Duel(User user, User opponent) {        
+    public Duel(Player user, Player opponent) {
         zones = new ArrayList<>();
-        this.user = new Player(user);
+        this.user = user;
         changeTurnPairity = true;
-        this.opponent = new Player(opponent);
+        this.opponent = opponent;
         this.currentPlayer = this.user;
         Zone.init(currentPlayer);
         Zone.init(this.opponent);
@@ -101,8 +100,8 @@ public class Duel {
         setNextPhaseHashMap();
         Address.init(this.opponent);
         Address.init(currentPlayer);
-        setTheInitialStateOfHandCards(user, currentPlayer);
-        setTheInitialStateOfHandCards(opponent, this.opponent);
+        setTheInitialStateOfHandCards(user.getUser(), currentPlayer);
+        setTheInitialStateOfHandCards(opponent.getUser(), this.opponent);
         Address address = Address.get(Zone.get("monster", currentPlayer), 2);
         map.put(address, new MonsterCardHolder(currentPlayer, new MonsterCard(), CardState.ATTACK_MONSTER));
         System.out.println(address);
@@ -371,19 +370,5 @@ public class Duel {
             zoneCount.put(zone, getZone(zone).size());
         }
         return zoneCount;
-    }
-    private void finishRound(){
-        if (user.isDead()){
-            //TODO reset game
-            opponent.setMaxLifePoint();
-            user.setLifePoint(8000);
-            opponent.setLifePoint(8000);
-        }
-        else if (opponent.isDead()){
-            //TODO reset game
-            user.setMaxLifePoint();
-            user.setLifePoint(8000);
-            opponent.setLifePoint(8000);
-        }
     }
 } 
