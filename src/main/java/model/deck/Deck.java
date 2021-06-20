@@ -58,6 +58,18 @@ public class Deck {
         this.sideCards.remove(card);
     }
 
+    public boolean canChangeCards(Card main, Card side){
+        if (this.doesContainCard(main, true) && this.doesContainCard(side, false)) return true;
+        return false;
+    }
+
+    public void changeCards(Card main, Card side){
+        addMainCard(side);
+        removeSideCard(side);
+        addSideCard(main);
+        removeMainCard(main);
+    }
+
     public boolean doesContainCard(Card card, boolean isMain){
         if (isMain){
             for (int i = 0; i < mainCards.size(); i++) {

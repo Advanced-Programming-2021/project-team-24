@@ -27,6 +27,16 @@ public class DeckController {
         return null;
     }
 
+    public Message change(String mainCardString, String sideCardString){
+        Card mainCard = Card.getCardByName(mainCardString);
+        Card sideCard = Card.getCardByName(sideCardString);
+        if (decks.getActiveDeck().canChangeCards(mainCard, sideCard)){
+            decks.getActiveDeck().changeCards(mainCard, sideCard);
+            return new Message(TypeMessage.SUCCESSFUL, "cards changed successfully");
+        }
+        return new Message(TypeMessage.ERROR, "can't change cards");
+    }
+
     public Message create(String name) {
         if (getDeckByName(name) == null) {
             decks.add(new Deck(name));

@@ -4,6 +4,7 @@ import model.deck.Deck;
 import model.deck.Decks;
 import model.user.Player;
 import model.user.User;
+import view.DeckMenu;
 import view.DuelMenu;
 import view.MainMenu;
 
@@ -44,7 +45,7 @@ public class DuelRoundManager {
                 new MainMenu(user).run();
             }
             else {
-                //TODO Side Deck
+                new DeckMenu(user);
             }
         }
     }
