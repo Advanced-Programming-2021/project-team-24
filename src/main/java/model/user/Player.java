@@ -1,9 +1,11 @@
 package model.user;
 
+import model.card.Card;
 import model.card.CardHolder;
 import model.card.CardState;
 import model.card.monster.MonsterCard;
 import model.card.monster.MonsterCardHolder;
+import model.deck.Deck;
 import model.zone.Address;
 
 import java.util.List;
@@ -16,21 +18,29 @@ public class Player {
     private int maxLifePoint = 0;
     private CardHolder card;
     private Address selectedAddress;
+    private Deck deck;
     
     public Player(User user) {
         this.lifePoint = 8000;
         this.isDeadRounds = 0;
         this.user = user;
         this.card = new MonsterCardHolder(this, new MonsterCard(), CardState.NONE);//TODO That's general Dictionary maybe fixed later
+        this.deck = user.getDecks().getActiveDeck();
     }
     public void resetPlayerForNextRound()
     {
         card = new MonsterCardHolder(this, new MonsterCard(), CardState.NONE);
-        selectedAddress = null;        
+        selectedAddress = null;
+        this.setMaxLifePoint();
+        this.setLifePoint(8000);
     }
 
     public User getUser(){
         return user;
+    }
+    public boolean canChangeCards(Card main, Card side){
+        if (deck.doesContainCard(main, true) && deck.doesContainCard(side, false)) return true;
+        return false;
     }
     public void setLifePoint(int lifePoint){
         this.lifePoint = lifePoint;
@@ -79,6 +89,9 @@ public class Player {
     }
     public int getIsDeadRounds(){
         return isDeadRounds;
+    }
+    public void setIsDeadRounds(int isDeadRounds){
+        this.isDeadRounds = isDeadRounds;
     }
 
 

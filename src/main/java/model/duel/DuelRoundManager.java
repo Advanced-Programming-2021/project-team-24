@@ -1,37 +1,52 @@
 package model.duel;
 
+import model.deck.Deck;
+import model.deck.Decks;
 import model.user.Player;
 import model.user.User;
+import view.DeckMenu;
 import view.DuelMenu;
+import view.MainMenu;
 
 public class DuelRoundManager {
     private User user;
     private User opponent;
     private Player userPlayer;
     private Player opponentPlayer;
-    private int numberOfMatches = 0;
     private int rounds = 0;
-    public DuelRoundManager(User user, User opponent, int numberOfMatches, int rounds)
+    public DuelRoundManager(User user, User opponent, int rounds)
     {
         this.user = user;
         this.opponent = opponent;
         this.userPlayer = new Player(user);
         this.opponentPlayer = new Player(opponent);
-        this.numberOfMatches = numberOfMatches;
         this.rounds = rounds;
         run();
     }
 
     private void run() {
-        for(int i = 0; i < numberOfMatches; i++)
+        for(int i = 0; i < rounds; i++)
         {
             //check who is starter with some coin or ??
-            DuelMenu c = new DuelMenu(user, opponent);
-            c.run();
             //c.getPlayer(isOpponent) check who is loser
             //  calculate scores
             // save scores
-            //side deck
+
+            DuelMenu duelMenu = new DuelMenu(userPlayer, opponentPlayer);
+            duelMenu.run();
+            userPlayer.resetPlayerForNextRound();
+            opponentPlayer.resetPlayerForNextRound();
+            if (isLoser(userPlayer) || isLoser(opponentPlayer)){
+                calculateCoin(userPlayer);
+                calculateCoin(opponentPlayer);
+                calculateScore(userPlayer);
+                calculateScore(opponentPlayer);
+                //go to main menu
+                new MainMenu(user).run();
+            }
+            else {
+                new DeckMenu(user);
+            }
         }
     }
 
@@ -49,3 +64,4 @@ public class DuelRoundManager {
         if (!isLoser(player)) player.getUser().changeScore(rounds * 1000);
     }
 }
+
