@@ -29,6 +29,9 @@ public class MonsterCardHolder extends CardHolder {
         cardMap.put("attack", ((Integer)monsterCard.getAttack()).toString());
         cardMap.put("defence",  ((Integer)monsterCard.getDefence()).toString());
         cardMap.put("level", ((Integer)monsterCard.getLevel()).toString());
+        ageEffects.put("attack", 10000);
+        ageEffects.put("level", 10000);
+        ageEffects.put("defence", 10000);
 
     }
     private MonsterCard card;    

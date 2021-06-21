@@ -33,7 +33,7 @@ public class Global {
                 int flag = 0;
                 for(int j = 0; j < second.size(); j++)
                 {
-                    if(first.get(i) == second.get(j))
+                    if((int)first.get(i) == (int)second.get(j))
                     {
                         flag = 1;
                     }

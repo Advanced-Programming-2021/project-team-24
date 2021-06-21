@@ -57,11 +57,14 @@ public class EffectManager {
 
     public Boolean isConditionSatisfied(EffectParser effectParser)
     {
-        if(!(this.effect.getRequireEvents() == null || this.effect.getRequireEvents().size() == 0))
+        boolean flag = false;
+        
+        if(effectParser.getDuelController().getDuel().getCardHolderById(this.idCardHolder).getBoolMapValue("can_active"))
         {
-            if(effectParser.getDuelController().getDuel().getCardHolderById(this.idCardHolder).getBoolMapValue("can_active"))
+            if(!(this.effect.getRequireEvents() == null || this.effect.getRequireEvents().size() == 0))
             {
-                boolean flag = false;
+            
+                
                 for(int i = 0; i < this.effect.getRequireEvents().size(); i++)
                 {
                     if(effect.getRequireEvents().get(i) == Event.ANY)
@@ -88,17 +91,19 @@ public class EffectManager {
                         }                   
                     }
                 }
-                if(flag)
-                {
-                    return Boolean.parseBoolean(effectParser.getCommandResult(effect.getRequirementCommandString()));
-                }
-                else
-                {
-                    return false;
-                }            
             }
+            else
+            flag = true;
+            if(flag)
+            {
+                return Boolean.parseBoolean(effectParser.getCommandResult(effect.getRequirementCommandString()));
+            }
+            else
+            {
+                return false;
+            }                        
         }   
-        return true;
+        return false;
         
     }
 }

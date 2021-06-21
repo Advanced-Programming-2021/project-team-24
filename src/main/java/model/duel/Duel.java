@@ -220,7 +220,8 @@ public class Duel {
         if (!zone.isDiscrete) {
             for (int i = 0; i < zone.capacity; i++) {
                 map.put(oldAddress ,map.get(newAddress));
-                newAddress = newAddress.getNextPlace();
+                if(newAddress != null)
+                    newAddress = newAddress.getNextPlace();
                 if(newAddress == null)
                 {
                     map.put(oldAddress.getNextPlace(), null);

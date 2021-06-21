@@ -109,12 +109,9 @@ public class MainMenu extends Menu {
         System.out.println(EffectParser.splitByParentheses("alirez(alir)").get(0));
         dControleer.getDuel().getMap().put(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0), new MagicCardHolder(dControleer.getDuel().getCurrentPlayer(), magic, CardState.SET_MAGIC));
         dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0));
-        if(!dControleer.getDuel().getMap().get(dControleer.getSelectedAddress()).getCard().isMagic())
-        {
-            dControleer.summon();
-            dControleer.nextPhase();
-            System.out.println(dControleer.directAttack().getContent());
-        }
+        dControleer.nextPhase();
+        dControleer.nextPhase();
+        
         MonsterCard current = (MonsterCard) Card.getCardByName("Beast King Barbaros");
 
         String setSummon = "";
@@ -134,8 +131,13 @@ public class MainMenu extends Menu {
         String command = "message(ridi!!)";
 
         Duel duel = dControleer.getDuel();
+        dControleer.setDuelMenu(duelMenu);
         System.out.println(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5));
+
         dControleer.getDuel().getMap().put(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.HAND));
+        dControleer.getDuel().getMap().put(Address.get(Zone.get("monster", duel.getCurrentPlayer()), 3), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.HAND));
+        dControleer.getDuel().getMap().put(Address.get(Zone.get("monster", duel.getCurrentPlayer()), 4), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.HAND));
+        dControleer.getDuel().getMap().put(Address.get(Zone.get("monster", duel.getCurrentPlayer()), 2), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.HAND));
         dControleer.select(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5));
 
         dControleer.summon();

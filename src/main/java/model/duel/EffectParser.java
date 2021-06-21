@@ -104,26 +104,27 @@ public class EffectParser {
 
     public String handleConditional(String command)
     {
-        Matcher matcher = Global.getMatcher(command, "if\\(#([^#]*)#[<>]#([^#]*)#\\)(&.+&)");
+        Matcher matcher = Global.getMatcher(command, "if\\(#([^#]*)#[<>]#([^#]*)#\\)(\\(&.+&\\))");
         matcher.find();
         String s1 = getCommandResult(matcher.group(1));
         String s2 = getCommandResult(matcher.group(2));
         if(s1.compareTo(s2) > 0)
         {
-            return getCommandResult(splitCorrect(matcher.group(3), '&').get(1));
+            return getCommandResult(splitCorrect(matcher.group(3).substring(1, matcher.group(3).length() - 1), '&').get(1));
         }
         else
         {
-            return getCommandResult(splitCorrect(matcher.group(3), '&').get(3));
+            return getCommandResult(splitCorrect(matcher.group(3).substring(1, matcher.group(3).length() - 1), '&').get(3));
         }      
     }
-    public void changeZone(String command)
+    public String changeZone(String command)
     {
-        Matcher matcher = Global.getMatcher(command, "changeZone\\(([^()]+)\\)");
+        Matcher matcher = Global.getMatcher(command, "changeZone\\((.+)\\)");
         if(matcher.find())
         {
             List<String> fields = splitCorrect(matcher.group(1), ',');
             Gson gson = new Gson();
+            command = command.replace(matcher.group(0), "");
             String changeList = getCommandResult(fields.get(0));
             List<Integer> cardHolders = getArray(changeList);
             Zone targetZone = null;//parseZone(fields.get(1));        
@@ -142,6 +143,7 @@ public class EffectParser {
                 }
             }
         }
+        return command;
         //changeZone(List<>, target_zone, card_state);
         //parse target zone with zoneParser
         //advanced mode : changeZone(List<>, target_zone, Card_State);
@@ -181,11 +183,11 @@ public class EffectParser {
     }
     public String q_yn(String command)
     {
-        Matcher matcher = Global.getMatcher(command, "q_yn\\(([^{}]+)\\)(.+)");
+        Matcher matcher = Global.getMatcher(command, "q_yn\\(([^{}()]+)\\)(.+)");
         matcher.find();
         String queString = matcher.group(1);
         Boolean ans = duelMenu.BooleanQYN(queString);        
-        List<String> ifElsePart = splitByBracket(matcher.group(2));
+        List<String> ifElsePart = splitByParentheses(matcher.group(2));
         if(ans)
         {
             return getCommandResult(ifElsePart.get(0));
@@ -234,17 +236,36 @@ public class EffectParser {
 
     }
 
-
+    private int correctStateOfChar(String command, char ch)
+    {
+        int counter = 0;
+        for(int i = 0; i < command.length(); i++)
+        {
+            if(command.charAt(i) == '(' || command.charAt(i) == '{')
+            {
+                counter++;
+            }
+            if(command.charAt(i) == ')' || command.charAt(i) == '}')
+            {
+                counter--;
+            }
+            if(counter == 0 && command.charAt(i) == ch)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
     public static final String GET_STRING = "get\\(([^()]*)\\)";
     public String getCommandResult(String command)
     {
-        if(command.lastIndexOf(';') == -1)
+        if(correctStateOfChar(command, ';') == -1)
         {
             command = command.replace(" ", "");
             //check get
             for(int i = 0; i < 4; i++)
             {
-                command = parseKeyWords(command);
+                
                 command =  handleMessage(command);
                 if(command.length() >= 8 && command.substring(0, 8).equals("return_t") && ans == null)
                 {
@@ -254,15 +275,17 @@ public class EffectParser {
                 if(command.length() >= new String("select").length() && command.substring(0, 6).equals("select"))
                 {
                     command = selective(command);
+                    continue;
                 }
                 //TODO random_selection
                 if(command.length() >= new String("random_selection").length() && command.substring(0, 16).equals("random_selection"))
                 {
                     command = randomSelection(command);
+                    continue;
                 }
                 if(command.length() >= new String("changeZone").length() && command.substring(0, new String("changeZone").length()).equals("changeZone"))
                 {
-                    changeZone(command);
+                    command = changeZone(command);                
                 }
 
                 if(command.length() >= 8 && command.substring(0, 8).equals("return_f") && ans == null)
@@ -273,12 +296,14 @@ public class EffectParser {
                 if(Global.regexFind(command, "filter"))
                 {
                     command = getListByFilter(command);
+                    continue;
                 }
                 if(Global.regexFind(command ,"coin"))
                 {
                     coin(command);
+                    continue;
                 }
-                command = handleGetCommand(command);
+                
                 if(command.length() >= 2 && command.substring(0, 2).equals("if"))
                 {
                     return handleConditional(command);
@@ -292,7 +317,7 @@ public class EffectParser {
                     setCommand(command);
                 }
                 command = handleChangeLPCommand(command);
-                command = handleNormCommand(command);
+                
                 
                 if(Global.regexFind(command, "del"))
                 {
@@ -302,6 +327,9 @@ public class EffectParser {
                 {
                     command = getSumOverField(command);
                 }
+                command = handleNormCommand(command);
+                command = parseKeyWords(command);
+                command = handleGetCommand(command);
                 //calculater            
             }
             return command;        
@@ -513,12 +541,12 @@ public class EffectParser {
         for(int i = pre; i < command.length(); i++)
         {
             int flag = 0;
-            if(command.charAt(i) == '}')
+            if(command.charAt(i) == '}' || command.charAt(i) == ')')
             {
                 flag = 1;
                 counter--;
             }
-            if(command.charAt(i) == '{')
+            if(command.charAt(i) == '{' || command.charAt(i) == '(')
             {
                 if(counter == 0)
                     pre = i + 1;
@@ -554,6 +582,7 @@ public class EffectParser {
             if(command.charAt(i) == '(')
             {
                 flag = 1;   
+                
                 counter++;
             }
             if(counter == 0 && flag == 1)
@@ -567,7 +596,7 @@ public class EffectParser {
     public String deleteListFromList(String command)
     {
         //del(List<>, List<E>)
-        Matcher matcher = Global.getMatcher(command, "del\\((.+)\\)");
+        Matcher matcher = Global.getMatcher(command, "del\\(([^()]+)\\)");
         List<String> ans = new ArrayList<String>();
         if(matcher.find())
         {
