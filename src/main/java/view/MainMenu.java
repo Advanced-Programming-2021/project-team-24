@@ -112,14 +112,15 @@ public class MainMenu extends Menu {
         dControleer.nextPhase();
         dControleer.nextPhase();
         
-        MonsterCard current = (MonsterCard) Card.getCardByName("Beast King Barbaros");
+        MonsterCard current = (MonsterCard) Card.getCardByName("Spiral Serpent");
 
         String setSummon = "";
         String summon = "";
+        String onFlipOwner = "";
         try {
-            summon = new String(Files.readAllBytes(Paths.get(new File("summon.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
-
-            setSummon = new String(Files.readAllBytes(Paths.get(new File("set.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            summon = new String(Files.readAllBytes(Paths.get(new File("summon6.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            //onFlipOwner = new String(Files.readAllBytes(Paths.get(new File("flip.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            setSummon = new String(Files.readAllBytes(Paths.get(new File("set6.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
         } catch (Exception e) {
             //TODO: handle exception
         }
@@ -127,6 +128,10 @@ public class MainMenu extends Menu {
             current.getEffects().put(Event.SET_OWNER, setSummon);
         if(summon.length() > 0)
             current.getEffects().put(Event.SUMMON_OWNER, summon);
+        if(onFlipOwner.length() > 0)
+        {
+            //current.getEffects().put(Event.FLIP_OWNER, onFlipOwner);
+        }
         current.updateCard();
         String command = "message(ridi!!)";
 
@@ -135,13 +140,14 @@ public class MainMenu extends Menu {
         System.out.println(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5));
 
         dControleer.getDuel().getMap().put(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.HAND));
-        dControleer.getDuel().getMap().put(Address.get(Zone.get("monster", duel.getCurrentPlayer()), 3), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.HAND));
-        dControleer.getDuel().getMap().put(Address.get(Zone.get("monster", duel.getCurrentPlayer()), 4), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.HAND));
-        dControleer.getDuel().getMap().put(Address.get(Zone.get("monster", duel.getCurrentPlayer()), 2), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.HAND));
+        dControleer.getDuel().getMap().put(Address.get(Zone.get("monster", duel.getCurrentPlayer()), 3), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.SET_DEFENCE));
+        dControleer.getDuel().getMap().put(Address.get(Zone.get("monster", duel.getCurrentPlayer()), 4), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.SET_DEFENCE));
+        dControleer.getDuel().getMap().put(Address.get(Zone.get("monster", duel.getCurrentPlayer()), 2), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.SET_DEFENCE));
         dControleer.select(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5));
 
-        dControleer.summon();
-        
+        dControleer.set();
+        dControleer.select(Address.get(Zone.get("monster", duel.getCurrentPlayer()), 4));
+        dControleer.flipSummon();
         System.out.println(new EffectParser(duelMenu, dControleer, ((MagicCardHolder)dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0))).getEffectManager()).getCommandResult(command));
         System.out.println(dControleer.getDuel().getCurrentPlayer().getLifePoint());
         System.out.println(dControleer.getDuel().getOpponent().getLifePoint());

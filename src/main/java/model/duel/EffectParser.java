@@ -44,6 +44,7 @@ public class EffectParser {
         this.effectManager = effectManager;
         this.owner = this.effectManager.getOwner();  
         this.duelMenu = duelMenu;      
+        this.extraKeyWords = new HashMap<String, String>();
         this.duelController = duelController;
         if(effectManager.getEffect().getEffectType() == EffectType.QUICK_PLAY)
         {
@@ -408,6 +409,10 @@ public class EffectParser {
     public String parseKeyWords(String command)
     {
         //this
+        for(Map.Entry<String, String> entry : extraKeyWords.entrySet())
+        {
+            command = command.replace(entry.getKey(), entry.getValue());
+        }
         List<String> v = new ArrayList<String>();
         v.add(Integer.toString(this.idCardHolderOwner));
         command = command.replace("this", new Gson().toJson(v, new ArrayList<Integer>().getClass()));
@@ -439,6 +444,23 @@ public class EffectParser {
                 ans.add(Integer.toString(cardList.get(i).getId()));
             }
             command = command.replace(zone, new Gson().toJson(ans, new ArrayList<String>().getClass()));
+        }
+        
+        for(String string : Zone.zoneStrings)
+        {
+            String zone = "$" + string + "$";
+            List<CardHolder> cardHoldersFirst = duelController.getZone(Zone.get(string, opponent));
+            List<CardHolder> cardHoldersSecond = duelController.getZone(Zone.get(string, current));
+            List<Integer> uIntegers = new ArrayList<>();
+            for(int i = 0; i < cardHoldersFirst.size(); i++)
+            {
+                uIntegers.add(cardHoldersFirst.get(i).getId());                
+            }
+            for(int i = 0; i < cardHoldersSecond.size(); i++)
+            {
+                uIntegers.add(cardHoldersSecond.get(i).getId());                
+            }
+            command = command.replace(zone, new Gson().toJson(convertToString(uIntegers), new ArrayList<Integer>().getClass()));
         }
         ArrayList<String> own = new ArrayList<String>();
         own.add(String.valueOf(effectManager.getOwner().getMap().getId()));
