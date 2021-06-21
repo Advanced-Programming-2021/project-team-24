@@ -15,10 +15,9 @@ public enum Event {
     FLIP_OWNER("FLIP_OWNER"),
     @SerializedName("FLIP_SUMMON_OWNER")
     FLIP_SUMMON_OWNER("FLIP_SUMMON_OWNER"),
-    @SerializedName("SUMMON")
-    SUMMON__OWNER("SUMMON"),
-    @SerializedName("SET")
-    SET_OWNER("SET"),
+
+    @SerializedName("SET_OWNER")
+    SET_OWNER("SET_OWNER"),
     @SerializedName("ATTACK")
     ATTACK("ATTACK"),
     @SerializedName("UNDER_ATTACK")
@@ -38,7 +37,9 @@ public enum Event {
     @SerializedName("REVERSE")
     REVERSE("REVERSE"),
     @SerializedName("END_TURN")
-    END_TURN("END_TURN")
+    END_TURN("END_TURN"),
+    @SerializedName("SUMMON_OWNER")
+    SUMMON_OWNER("SUMMON_OWNER");
     ;
     private String label;
     private Event(String label)

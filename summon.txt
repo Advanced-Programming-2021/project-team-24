@@ -1,0 +1,19 @@
+q_yn(do_you_want_to_normal_summon_this_card_with_no_tribute?)
+(
+    set(*own*,a,$my_monster$);
+    changeZone(this,my_monster,ATTACK_MONSTER);
+    set(del($my_monster$, get(*own*,a)),attack,1900);
+)
+else
+(
+    if(#Norm($my_monster$)#>#2#)
+    &
+        changeZone(select($my_monster$,3,select_for_tribute),my_graveyard);
+        changeZone(this,my_monster,ATTACK_MONSTER);
+        changeZone($opp_monster$,opp_graveyard);
+    &
+    else 
+    &
+    message(you don't have enoguh monster);
+    &
+)

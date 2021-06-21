@@ -14,7 +14,8 @@ import model.card.magic.MagicCard;
 import model.card.monster.MonsterCard;
 import model.effect.Effect;
 import model.user.User;
-//import org.checkerframework.checker.units.qual.C;
+import view.Global;
+
 
 
 public abstract class Card {
@@ -22,8 +23,7 @@ public abstract class Card {
     protected String description;
     protected Integer price;
     protected LimitType limitType;
-    protected CardType cardType;
-    protected Effect onDeath;
+    protected CardType cardType;    
 
 
     static List <Card> allCards = new ArrayList<>();
@@ -44,6 +44,7 @@ public abstract class Card {
             assert filesListMonsterCard != null;
             assert filesListMagicCard != null;
             for(File file : filesListMonsterCard) {
+                
                 String json = new String(Files.readAllBytes(Paths.get(file.getPath())));
                 MonsterCard card = new Gson().fromJson(json,MonsterCard.class);
                 allCards.add(card);
@@ -69,6 +70,32 @@ public abstract class Card {
     public CardType getCardType()
     {
         return this.cardType;
+    }
+    public void updateCard()
+    {
+        if(this.isMagic())
+        {
+            try {
+                FileWriter v = new FileWriter("Cards/MagicCards/" + getName() + ".json");
+                v.write(new Gson().toJson((MagicCard)this));
+                v.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+        }
+        else
+        {
+            try {
+                FileWriter v = new FileWriter("Cards/MonsterCards/" + getName() + ".json");
+                v.write(new Gson().toJson((MonsterCard)this));
+                v.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
     public String getName()
     {

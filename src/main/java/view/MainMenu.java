@@ -6,11 +6,15 @@ import controller.MainMenuController;
 import controller.Message;
 import model.card.Card;
 import model.card.CardState;
+import model.card.Event;
 import model.card.magic.MagicCard;
 import model.card.magic.MagicCardHolder;
 import model.card.magic.MagicIcon;
+import model.card.monster.MonsterCard;
+import model.card.monster.MonsterCardHolder;
 import model.card.monster.MonsterType;
 import model.deck.Deck;
+import model.duel.Duel;
 import model.duel.EffectParser;
 import model.duel.Filter;
 import model.effect.Effect;
@@ -19,10 +23,17 @@ import model.user.User;
 import model.zone.Address;
 import model.zone.Zone;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.regex.Matcher;
 
+import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.thoughtworks.qdox.model.expression.Add;
+
+import org.apache.maven.shared.utils.cli.shell.CommandShell;
 
 public class MainMenu extends Menu {
     controller.MainMenuController mainMenuController;
@@ -87,7 +98,7 @@ public class MainMenu extends Menu {
         dControleer.nextPhase();
         dControleer.nextPhase();
         MagicCard magic = new MagicCard();
-        Effect effect = new Effect();
+        Effect effect = new Effect("");
         effect.setEffectType(EffectType.CONTINUES);
         effect.setReverse("");
         effect.setSpeed(1);
@@ -104,17 +115,30 @@ public class MainMenu extends Menu {
             dControleer.nextPhase();
             System.out.println(dControleer.directAttack().getContent());
         }
-        Filter u = new Filter();
-        u.setMonsterType(MonsterType.AQUA);
-        System.out.println(new Gson().toJson(u));
-        
-        String command = "set(*own*,temp,$my_magic$); changeZone(this,my_hand,HAND);" +
-        " changeLP(own,"+
-        " Norm(" + 
-        "del(get(*own*,temp),$my_magic$)" +
-        ")" + 
-        "); changeLP(own, $my_magic$); changeLP(own,Norm([]))";
+        MonsterCard current = (MonsterCard) Card.getCardByName("Beast King Barbaros");
 
+        String setSummon = "";
+        String summon = "";
+        try {
+            summon = new String(Files.readAllBytes(Paths.get(new File("summon.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+
+            setSummon = new String(Files.readAllBytes(Paths.get(new File("set.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+        if(setSummon.length() > 0)
+            current.getEffects().put(Event.SET_OWNER, setSummon);
+        if(summon.length() > 0)
+            current.getEffects().put(Event.SUMMON_OWNER, summon);
+        current.updateCard();
+        String command = "message(ridi!!)";
+
+        Duel duel = dControleer.getDuel();
+        System.out.println(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5));
+        dControleer.getDuel().getMap().put(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.HAND));
+        dControleer.select(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5));
+
+        dControleer.summon();
         
         System.out.println(new EffectParser(duelMenu, dControleer, ((MagicCardHolder)dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0))).getEffectManager()).getCommandResult(command));
         System.out.println(dControleer.getDuel().getCurrentPlayer().getLifePoint());

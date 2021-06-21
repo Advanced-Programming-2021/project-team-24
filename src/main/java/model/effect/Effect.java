@@ -3,6 +3,7 @@ package model.effect;
 import controller.Message;
 import model.card.Event;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -77,6 +78,17 @@ public class Effect {
     private List<Event> requiredEvents;
     private Integer speed;
 
+    public Effect(String effect)    
+    {
+        this.effect = effect;
+        askForActivation = false;
+        name = "";
+        reverse = "";
+        requiredEvents = new ArrayList<Event>();
+        speed = 1;
+        askAbleMessage = "";
+        requirement = "return_t";        
+    }    
     public Integer getSpeed() {
         return this.speed;
     }
@@ -145,7 +157,7 @@ public class Effect {
     }
     public Effect clone()
     {
-        Effect temp = new Effect();
+        Effect temp = new Effect("");
         Gson gson = new Gson();
         temp = gson.fromJson(gson.toJson(this), this.getClass());
         return temp;

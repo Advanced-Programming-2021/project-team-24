@@ -153,16 +153,16 @@ public class DuelController {
                 if (getSelectedAddress().getZone().getName().equals("hand") && !duel.getMap().get(getSelectedAddress()).getCard().isMagic()) {
                     if (duel.getCurrentPhase().equals(Duel.Phase.MAIN1) || duel.getCurrentPhase().equals(Duel.Phase.MAIN2)) {
                         if (duel.zoneCardCount().get(Zone.get("monster", duel.getCurrentPlayer())) < 5) {
-                            if(duel.getCurrentPlayer().getMap().getBoolMapValue("add_monster_turn"))
+                            if(!duel.getCurrentPlayer().getMap().getBoolMapValue("add_monster_turn"))
                             {
-                                if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON__OWNER) == null)
+                                if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER) == null)
                                 {
                                     duel.getMap().put(getSelectedAddress(), ((CardHolder)(new MonsterCardHolder(duel.getCurrentPlayer() ,(MonsterCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.ATTACK_MONSTER))));
                                     duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);                            
                                 }
                                 else
                                 {
-                                    if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON__OWNER).get(0).isConditionSatisfied(new EffectParser(null, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON__OWNER).get(0))))//TODO;
+                                    if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER).get(0).isConditionSatisfied(new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER).get(0))))//TODO;
                                     {
                                         new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON).get(0)).runEffect();
                                         duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
@@ -234,9 +234,9 @@ public class DuelController {
                 }
                 else
                 {
-                    if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0).isConditionSatisfied(new EffectParser(null, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0))))//TODO;
+                    if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0).isConditionSatisfied(new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0))))//TODO;
                     {
-                        new EffectParser(null, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0)).runEffect();
+                        new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0)).runEffect();
                         duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
                     }
                     else
@@ -308,9 +308,9 @@ public class DuelController {
                             select.flipSummon();
                             if(select.getEventEffect(Event.FLIP_OWNER) != null)
                             {
-                                if(select.getEventEffect(Event.FLIP_OWNER).get(0).isConditionSatisfied(new EffectParser(null, this, select.getEventEffect(Event.FLIP_OWNER).get(0))))
+                                if(select.getEventEffect(Event.FLIP_OWNER).get(0).isConditionSatisfied(new EffectParser(duelMenu, this, select.getEventEffect(Event.FLIP_OWNER).get(0))))
                                 {
-                                    new EffectParser(null, this, select.getEventEffect(Event.FLIP_OWNER).get(0)).runEffect();
+                                    new EffectParser(duelMenu, this, select.getEventEffect(Event.FLIP_OWNER).get(0)).runEffect();
                                 }                                
                             }
                         } else {

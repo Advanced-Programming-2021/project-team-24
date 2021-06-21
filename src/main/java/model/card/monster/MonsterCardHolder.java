@@ -1,12 +1,15 @@
 package model.card.monster;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.card.Card;
 import model.card.CardHolder;
 import model.card.CardState;
 import model.card.Event;
+import model.effect.Effect;
 import model.effect.EffectManager;
 import model.user.Player;
 import model.user.User;
@@ -16,6 +19,13 @@ public class MonsterCardHolder extends CardHolder {
     public MonsterCardHolder(Player owner, MonsterCard monsterCard, CardState cardState) {
         super(owner ,cardState);             
         this.card = monsterCard;
+        for(Map.Entry b : monsterCard.getEffects().entrySet())
+        {
+            List<EffectManager> c = new ArrayList<EffectManager>();
+            c.add(new EffectManager(new Effect((String)b.getValue()), owner, getId()));
+            effects.put((Event)b.getKey(), c);
+        }
+        
         cardMap.put("attack", ((Integer)monsterCard.getAttack()).toString());
         cardMap.put("defence",  ((Integer)monsterCard.getDefence()).toString());
         cardMap.put("level", ((Integer)monsterCard.getLevel()).toString());

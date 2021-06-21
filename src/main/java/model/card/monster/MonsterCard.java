@@ -24,8 +24,26 @@ public class MonsterCard extends Card {
     private MonsterType monsterType;
     @SerializedName("effects")
     private HashMap<Event, String> effects;
+
+    
+
     @SerializedName("monsterAttribute:")
     private MonsterAttribute monsterAttribute;
+
+
+    public HashMap<Event,String> getEffects()
+    {
+        if(effects == null)
+        {
+            effects = new HashMap<Event,String>();
+        }
+		return this.effects;
+	}
+
+    public void setEffects(HashMap<Event,String> effects)    
+    {
+		this.effects = effects;
+	}
     public int getLevel()
     {
         return level;

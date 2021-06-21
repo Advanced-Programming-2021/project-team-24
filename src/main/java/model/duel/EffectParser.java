@@ -196,6 +196,21 @@ public class EffectParser {
         }
     }
     
+    private String handleMessage(String command)
+    {
+        if(Global.regexFind(command, "message\\(([^()]+)\\)") && command.substring(0,7).equals("message"))
+        {
+            Matcher matcher = Global.getMatcher(command, "message\\(([^()]+)\\)");
+            if(matcher.find())
+            {
+                //TODO
+                command = command.replace(matcher.group(0), "");
+                System.out.println(matcher.group(1));
+                return command;
+            }
+        }
+        return command;
+    }
     public void flip(String command)
     {
         //filp(List<E>): 
@@ -230,6 +245,7 @@ public class EffectParser {
             for(int i = 0; i < 4; i++)
             {
                 command = parseKeyWords(command);
+                command =  handleMessage(command);
                 if(command.length() >= 8 && command.substring(0, 8).equals("return_t") && ans == null)
                 {
                     ans = "true";

@@ -47,7 +47,7 @@ public class MagicCard extends Card {
         }
         else
         {
-            return new Effect();
+            return new Effect("");
         }
     }
 

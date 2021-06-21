@@ -57,7 +57,7 @@ public class EffectManager {
 
     public Boolean isConditionSatisfied(EffectParser effectParser)
     {
-        if(this.effect.getRequireEvents() == null || this.effect.getRequireEvents().size() == 0)
+        if(!(this.effect.getRequireEvents() == null || this.effect.getRequireEvents().size() == 0))
         {
             if(effectParser.getDuelController().getDuel().getCardHolderById(this.idCardHolder).getBoolMapValue("can_active"))
             {
@@ -98,7 +98,7 @@ public class EffectManager {
                 }            
             }
         }   
-        return false;
+        return true;
         
     }
 }
