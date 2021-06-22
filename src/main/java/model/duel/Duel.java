@@ -52,6 +52,7 @@ public class Duel {
 
     public void nextPhase() {
         currentPhase = nextPhase.get(currentPhase);
+        
     }
     public void changeLifePoint(Player player, int decrement){
         player.changeLifePoint(-decrement);
@@ -261,8 +262,26 @@ public class Duel {
                 {
                     //run reverse and finish it
                     MagicCardHolder holder = (MagicCardHolder)(getCardHolderById(cardHolderId));
-                    //new EffectParser(null, null, holder.getEffectManager()).getCommandResult(holder.getCard().get
+                    if(holder.getEffectManager().getEffect().getReverse() != null)
+                    {
+                        new EffectParser(duelMenu, duelMenu.getDuelController(), holder.getEffectManager()).getCommandResult(holder.getEffectManager().getEffect().getReverse());
+                    }
                 }
+                else
+                {
+                    MonsterCardHolder monster = (MonsterCardHolder)getCardHolderById(cardHolderId);
+                    for(Event event : monster.getEffects().keySet())
+                    {
+                        if(monster.getEffects().get(event) != null)
+                            for(int i = 0; i < monster.getEffects().get(event).size(); i++)
+                            {
+                                if(monster.getEffects().get(event).get(i).getEffect().getReverse() != null)
+                                {
+                                    new EffectParser(duelMenu, duelMenu.getDuelController(), monster.getEffects().get(event).get(i)).getCommandResult(monster.getEffects().get(event).get(i).getEffect().getReverse());
+                                }
+                            }
+                    }
+                }                
                 addCard(getCardHolderById(cardHolderId).getCard(), targetZone, cardState);
                 removeCardHolderById(cardHolderId);
             }
@@ -382,7 +401,7 @@ public class Duel {
     }
 
     public void changePlayerTurn() {
-        changeTurnPairity = !changeTurnPairity;
+        changeTurnPairity = !changeTurnPairity;        
     }
 
     public HashMap<Zone, Integer> zoneCardCount() {

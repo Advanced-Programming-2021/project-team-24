@@ -1,40 +1,27 @@
 package view;
 
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.regex.Matcher;
+
 import controller.DuelController;
 import controller.MainMenuController;
 import controller.Message;
 import model.card.Card;
 import model.card.CardState;
-import model.card.Event;
 import model.card.magic.MagicCard;
 import model.card.magic.MagicCardHolder;
-import model.card.magic.MagicIcon;
 import model.card.monster.MonsterCard;
-import model.card.monster.MonsterCardHolder;
-import model.card.monster.MonsterType;
 import model.deck.Deck;
 import model.duel.Duel;
 import model.duel.EffectParser;
-import model.duel.Filter;
 import model.effect.Effect;
-import model.effect.EffectType;
 import model.user.Player;
 import model.user.User;
 import model.zone.Address;
 import model.zone.Zone;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.regex.Matcher;
-
-import com.google.common.collect.Sets;
-import com.google.gson.Gson;
-import com.thoughtworks.qdox.model.expression.Add;
-
-import org.apache.maven.shared.utils.cli.shell.CommandShell;
 
 public class MainMenu extends Menu {
     controller.MainMenuController mainMenuController;

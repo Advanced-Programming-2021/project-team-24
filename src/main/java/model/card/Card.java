@@ -1,7 +1,12 @@
 
 package model.card;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,9 +17,6 @@ import com.google.gson.Gson;
 import model.card.magic.LimitType;
 import model.card.magic.MagicCard;
 import model.card.monster.MonsterCard;
-import model.effect.Effect;
-import model.user.User;
-import view.Global;
 
 
 
@@ -80,7 +82,6 @@ public abstract class Card {
                 v.write(new Gson().toJson((MagicCard)this));
                 v.close();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             
@@ -92,7 +93,6 @@ public abstract class Card {
                 v.write(new Gson().toJson((MonsterCard)this));
                 v.close();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

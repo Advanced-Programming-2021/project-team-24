@@ -58,6 +58,7 @@ public abstract class CardHolder {
         this.effectManagerList = new ArrayList<EffectManager>();
     }    
     public abstract String toString();
+
     public void endTurn()
     {    
         for(Map.Entry<String, Integer> mapEntry : ageEffects.entrySet())
@@ -67,6 +68,7 @@ public abstract class CardHolder {
                 ageEffects.put(mapEntry.getKey(), null);
                 cardMap.put(mapEntry.getKey(), null);
             }
+            ageEffects.put(mapEntry.getKey(), mapEntry.getValue() - 1);
         }
     }
     

@@ -19,7 +19,7 @@ public class MonsterCardHolder extends CardHolder {
     public MonsterCardHolder(Player owner, MonsterCard monsterCard, CardState cardState) {
         super(owner ,cardState);             
         this.card = monsterCard;
-        for(Map.Entry b : monsterCard.getEffects().entrySet())
+        for(Map.Entry<Event, String> b : monsterCard.getEffects().entrySet())
         {
             List<EffectManager> c = new ArrayList<EffectManager>();
             c.add(new EffectManager(new Effect((String)b.getValue()), owner, getId()));
@@ -66,7 +66,7 @@ public class MonsterCardHolder extends CardHolder {
     {
         if(this.cardState == CardState.SET_DEFENCE)
         {
-            this.cardState = CardState.SET_DEFENCE;
+            this.cardState = CardState.DEFENCE_MONSTER;
         }
     }
     public Card getCard() {        

@@ -13,6 +13,7 @@ import model.duel.AutomaticEffectHandler;
 import model.duel.Duel;
 import model.duel.EffectChainer;
 import model.duel.EffectParser;
+import model.duel.Duel.Phase;
 import model.effect.EffectType;
 import model.card.CardHolder;
 import model.card.CardState;
@@ -39,7 +40,7 @@ public class DuelController {
     }
     public void resetDuelEvents()
     {
-        for(Map.Entry event : duelEvents.entrySet())
+        for(Map.Entry<Event, Integer> event : duelEvents.entrySet())
         {
             if((Integer)event.getValue() == -1)
             {
@@ -75,14 +76,31 @@ public class DuelController {
     public DuelController(Duel duel) {
         
         this.duel = duel;
-        //TODO wirte 5 card drawing in start of game
-
     }
 
     public Message nextPhase() {
-        duel.nextPhase();
-
+        if(duel.getCurrentPhase() == Phase.END)
+        {
+            
+            for(String zone : Zone.zoneStrings)
+            {
+                List<CardHolder> cardHolders = getZone(Zone.get(zone, duel.getCurrentPlayer()));
+                for(int i = 0; i < cardHolders.size(); i++)
+                {
+                    cardHolders.get(i).endTurn();
+                }
+            }
+            duel.getCurrentPlayer().getMap().endTurn();
+            duel.changePlayerTurn();
+            duel.nextPhase();
+            return new Message(TypeMessage.INFO, duel.getCurrentPhase().toString() + "\n" + duel.getCurrentPlayer().getNickname() + "'s turn");
+        }
+        else
+        {
+            duel.nextPhase();
+        }
         return new Message(TypeMessage.INFO, duel.getCurrentPhase().toString());
+
     }
 
     public Message draw() {
@@ -94,6 +112,7 @@ public class DuelController {
 
     private void changeZoneOfLastCard(Zone origin, Zone destination, DuelMenu duelMenu) {
         //TODO check reverse effect
+        
         duel.setMap(Address.get(destination, duel.zoneCardCount().get(destination)), duel.getMap().get(Address.get(origin, duel.zoneCardCount().get(origin) - 1)));
     }
 
@@ -204,7 +223,7 @@ public class DuelController {
                                         return new Message(TypeMessage.ERROR, "summon conditions are not provided");
                                     }
                                 }
-                                return new Message(TypeMessage.SUCCESSFUL, "");
+                                return new Message(TypeMessage.SUCCESSFUL, "card summoned successfully");
                             }
                             else
                                 return new Message(TypeMessage.ERROR, "you have added monster before");
@@ -270,7 +289,9 @@ public class DuelController {
                 {
                     if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0).isConditionSatisfied(new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0))))
                     {
+                        List<CardHolder> initial  = getZone(Zone.get("monster", duel.getCurrentPlayer()));
                         new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0)).runEffect();
+                        //TODO
                         duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
                     }
                     else
@@ -296,11 +317,12 @@ public class DuelController {
         if(((MagicCard) duel.getMap().get(getSelectedAddress()).getCard()).getEffect().getEffectType() == EffectType.FIELD)
         {
             if(getZone(Zone.get("field", duel.getCurrentPlayer())).size() > 0)
-            {                                            
+            {   
+                
                 MagicCardHolder temp = (MagicCardHolder)getZone(Zone.get("field", duel.getCurrentPlayer())).get(0);                
-                changeZoneOfLastCard(Zone.get("field", duel.getCurrentPlayer()), Zone.get("graveyard", duel.getCurrentPlayer()), duelMenu);//TODO      
+                duel.changeZone(temp.getId(), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);               
                 MagicCardHolder tempAdding = new MagicCardHolder(duel.getCurrentPlayer(), (MagicCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.ACTIVE_MAGIC);
-                duel.getMap().put(Address.get(Zone.get("field", duel.getCurrentPlayer()), 1), tempAdding);
+                duel.getMap().put(Address.get(Zone.get("field", duel.getCurrentPlayer()), 0), tempAdding);
                 new EffectChainer(Event.ACTIVE_SPELL, tempAdding, duel.getOpponent()).askForChain(duel.getOpponent());
                 updateAutomaticEffect();
             }
@@ -308,7 +330,7 @@ public class DuelController {
         }
         else
         if (duel.zoneCardCount().get(Zone.get("magic", duel.getCurrentPlayer())) < 5) {
-            if(duel.getCurrentPlayer().getMap().getBoolMapValue("add_magic_turn"))
+            if(!duel.getCurrentPlayer().getMap().getBoolMapValue("add_magic_turn"))
             {
                 MagicCardHolder temp = new MagicCardHolder(duel.getCurrentPlayer() ,(MagicCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.SET_MAGIC);
                 temp.setMapValue("can_active", "false", 1);

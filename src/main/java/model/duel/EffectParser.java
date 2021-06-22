@@ -50,17 +50,19 @@ public class EffectParser {
         this.duelController = duelController;
         if(effectManager.getEffect().getEffectType() == EffectType.QUICK_PLAY)
         {
+            
             //add reverse to the player
             //clone
             //ADD  effect hashMap to the hashMap of player
-            Effect reverseEffect = effect;
+            Effect reverseEffect = effect.clone();
+            effectManager.getEffect().setReverse(null);
             reverseEffect.setEffect(effect.getReverse());
             reverseEffect.setReverse(null);
             if(owner.getMap().getEffects().get(Event.END_TURN) == null)
             {
                 owner.getMap().getEffects().put(Event.END_TURN, new ArrayList<EffectManager>());
             }
-            for(HashMap.Entry entry : effectManager.getExtraKeyWords().entrySet())
+            for(HashMap.Entry<String,String> entry : effectManager.getExtraKeyWords().entrySet())
             {
                 //add value to original hashMap
                 owner.getMap().getCardMap().put((String)entry.getKey(), (String)entry.getValue());

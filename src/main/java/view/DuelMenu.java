@@ -7,7 +7,9 @@ import java.util.regex.Matcher;
 
 import controller.DuelController;
 import controller.Message;
+import model.card.Card;
 import model.card.CardHolder;
+import model.deck.Deck;
 import model.duel.Duel;
 import model.duel.Duel.Phase;
 import model.user.Player;
@@ -36,12 +38,15 @@ public class DuelMenu {
                 if(duelController.getDuel().getCurrentPhase() == Phase.DRAW)
                 {
                     System.out.println(duelController.draw().getContent());
-                    duelController.nextPhase();
+                    System.out.println(duelController.nextPhase().getContent());
+                    continue;
                 }
                 else
                 if(duelController.getDuel().getCurrentPhase() == Phase.STANDBY)
                 {
-                    //TODO handle standby phase
+                    duelController.updateAutomaticEffect();
+                    System.out.println(duelController.nextPhase().getContent());
+                    continue;
                 }
                 String command = Global.nextLine();
                 if (command.equals("menu exit")) {
@@ -55,37 +60,41 @@ public class DuelMenu {
                     return;
                 }
                 else if (command.equals("select -d")) {
-                    Message message = duelController.deselect();
-                    System.out.println(message.getContent());
+                    Message message = duelController.deselect(); 
+                    System.out.println(message.getContent()); continue;
                 } else if (command.equals("summon")) {
-                    System.out.println(duelController.summon().getContent());
+                    System.out.println(duelController.summon().getContent());continue;
                 } else if (command.equals("flip-summon")) {
-                    System.out.println(duelController.flipSummon().getContent());
+                    System.out.println(duelController.flipSummon().getContent());continue;
                 } else if (command.equals("set")) {
-                    System.out.println(duelController.set().getContent());
+                    System.out.println(duelController.set().getContent());continue;
                 } else if (command.equals("attack direct")) {
-                    System.out.println(duelController.directAttack().getContent());
+                    System.out.println(duelController.directAttack().getContent());continue;
                 } else if (command.equals("activate effect")) {
-                    System.out.println(duelController.activeMagic().getContent());
+                    System.out.println(duelController.activeMagic().getContent());continue;
                 }
                 else if (command.equals("next phase")){
                     System.out.println(duelController.nextPhase().getContent());
+                    if(duelController.getDuel().getCurrentPhase() == Phase.END)
+                    {
+                        System.out.println(duelController.nextPhase().getContent());
+                        continue;
+                    }
                 }
                 else if (command.equals("show graveyard")) {
                     List<CardHolder> graveyard = getZoneCards("graveyard",false);
                     if (graveyard.isEmpty()) System.out.println("graveyard empty");
                     else showCardList(graveyard);
+                    continue;
                 } else if (command.equals("card show --selected")) {
                     Message message = duelController.showSelectedCard();
-                    System.out.println(message.getContent());
+                    System.out.println(message.getContent());continue;                    
                 } else {
                     //<select>
                     Matcher matcher = Global.getMatcher(command, "select (?<zone>(?:--\\w+\\s*\\d*){1,2})");
-                    if (matcher.find()) {                        
-                        String zone = matcher.group("zone");
-                        matcher = Global.getMatcher(zone, "(?=.*(?<name>--(?:monster|magic|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}");
-                        Address selectionAddress = getAddress(matcher);
-                        if (Global.regexFind(zone, "(?=.*(?<name>--(?:monster|magic|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}")) {
+                    if (matcher.find()) {                   
+                        Address selectionAddress = getAddress(command);
+                        if (selectionAddress != null) {
                             Message message = duelController.select(selectionAddress);
                             System.out.println(message.getContent());
                         } else System.out.println("invalid selection");
@@ -160,8 +169,9 @@ public class DuelMenu {
         //Random then show selected by address
         return null;
     }
-    private Address getAddress(Matcher matcher)
+    private Address getAddress(String addressString)
     {
+        Matcher matcher = Global.getMatcher(addressString, "select (?<zone>(?:--\\w+\\s*\\d*){1,2})");
         if(matcher.find())
         {
             matcher = Global.getMatcher(matcher.group("zone"), "(?=.*(?<name>--(?:monster|magic|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}");
@@ -206,9 +216,8 @@ public class DuelMenu {
         {
             for(int i = 0; i < count; i++)
             {
-                String command = Global.scanner.nextLine();
-                Matcher matcher = Global.getMatcher(command, "select (?<zone>(?:--\\w+\\s*\\d*){1,2})");
-                Address address = getAddress(matcher);
+                String command = Global.scanner.nextLine();                
+                Address address = getAddress(command);
                 if(address != null &&
                  getDuelController().getDuel().getMap().get(address) != null &&
                  checkCardHolderInList(cardHolderId, getDuelController().getDuel().getMap().get(address)))
@@ -325,6 +334,22 @@ public class DuelMenu {
 
     public String getCard(String zoneName,Boolean isOpponent,int place){
         return duelController.getDuel().getMap().get(Address.get(Zone.get(zoneName,getPlayer(isOpponent)),place)).getCardState().toString();
+    }
+    public static void main(String[] args) {
+        User a = new User("alireza", "alireza", "alireza");
+        User b = new User("alir", "alir", "alir");
+        Deck alireza = new Deck("alireza");
+        for(int i = 0; i < Card.getAllCards().size(); i++)
+        {
+            alireza.addMainCard(Card.getAllCards().get(i));
+        }
+        a.getDecks().add(alireza);
+        a.getDecks().setActiveDeck(a.getDecks().getDeckByName("alireza"));
+        b.getDecks().add(alireza);
+        b.getDecks().setActiveDeck(b.getDecks().getDeckByName("alireza"));
+        DuelMenu duelMenu = new DuelMenu(new Player(a), new Player(b));
+        DuelController dControleer = duelMenu.duelController;
+        duelMenu.run();
     }
 
 }

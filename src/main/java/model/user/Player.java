@@ -34,7 +34,7 @@ public class Player {
         this.setMaxLifePoint();
         this.setLifePoint(8000);
     }
-
+    
     public User getUser(){
         return user;
     }

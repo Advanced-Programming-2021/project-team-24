@@ -1,12 +1,14 @@
 package model.card;
 
-import model.card.Card;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import model.card.magic.LimitType;
-import model.effect.Effect;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import model.card.magic.LimitType;
 
 public class CardTest {
     @Test
