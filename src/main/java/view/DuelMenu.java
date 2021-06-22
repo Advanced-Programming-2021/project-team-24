@@ -66,7 +66,7 @@ public class DuelMenu {
                 } else if (command.equals("attack direct")) {
                     System.out.println(duelController.directAttack().getContent());
                 } else if (command.equals("activate effect")) {
-                    //TODO activate effect
+                    System.out.println(duelController.activeMagic().getContent());
                 }
                 else if (command.equals("next phase")){
                     System.out.println(duelController.nextPhase().getContent());

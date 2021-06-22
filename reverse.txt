@@ -1,0 +1,2 @@
+set(equipped,attack,get(equipped,attack)-500);
+changeLP(opp,-500);

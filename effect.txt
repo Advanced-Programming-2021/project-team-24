@@ -1,0 +1,4 @@
+set(this,equipped,
+select($my_monster$,1,select_one_card_to_equip);
+);
+set(equipped,attack,get(equipped,attack)+500);

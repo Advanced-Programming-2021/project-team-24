@@ -129,6 +129,10 @@ public class Effect {
     {
         return this.requirement;
     }
+    public void setRequirementString(String required)
+    {
+        this.requirement = required;
+    }
 
     public String getName()
     {

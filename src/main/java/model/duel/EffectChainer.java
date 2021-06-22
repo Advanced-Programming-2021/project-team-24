@@ -40,7 +40,7 @@ public class EffectChainer {
         Filter filter = new Filter(currentChainer.getNickname());
         List<String> zones = new ArrayList<String>();
         zones.add("my_hand");
-        zones.add("my_spell");
+        zones.add("my_magic");
         filter.setZones(zones);
         filter.setCardType(CardType.TRAP);
         if(!currentChainer.equals(opponent))

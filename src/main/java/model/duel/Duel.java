@@ -249,11 +249,19 @@ public class Duel {
     }
 
 
-    public void changeZone(int cardHolderId, model.zone.Zone targetZone, CardState cardState) {
+    public void changeZone(int cardHolderId, Zone targetZone, CardState cardState) {
         if (getCardHolderById(cardHolderId) != null) {
-            if (targetZone.getName().equals("own")) {
-                //TODO
+            if (targetZone.getName() != null && targetZone.getName().equals("owner")) {
+                Zone destination = Zone.get(targetZone.getName().split("_")[1], getCardHolderById(cardHolderId).getOwner());
+                addCard(getCardHolderById(cardHolderId).getCard(), destination, cardState);            
             } else {
+                //TODO check reverse effect and so on
+                if(getCardHolderById(cardHolderId).getCard().isMagic())
+                {
+                    //run reverse and finish it
+                    MagicCardHolder holder = (MagicCardHolder)(getCardHolderById(cardHolderId));
+                    //new EffectParser(null, null, holder.getEffectManager()).getCommandResult(holder.getCard().get
+                }
                 addCard(getCardHolderById(cardHolderId).getCard(), targetZone, cardState);
                 removeCardHolderById(cardHolderId);
             }

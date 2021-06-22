@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.graph.ElementOrder.Type;
+
 import model.duel.AutomaticEffectHandler;
 import model.duel.Duel;
 import model.duel.EffectChainer;
@@ -125,7 +127,27 @@ public class DuelController {
         }
         return new Message(TypeMessage.INFO, duel.getMap().get(duel.getCurrentPlayer().getSelectedAddress()).toString());
     }
-
+    public Message activeMagic()
+    {
+        if(getSelectedAddress() != null)
+        {
+            if(duel.getMap().get(getSelectedAddress()).getOwner().getNickname().equals(duel.getCurrentPlayer().getNickname()))
+            {
+                if(duel.getMap().get(getSelectedAddress()).getCard().isMagic())
+                {
+                    return activeMagicCard(getSelectedAddress());
+                }
+                else
+                    return new Message(TypeMessage.ERROR, "this is not magic card");
+            }
+            else
+                return new Message(TypeMessage.ERROR, "you can't active this card");
+        }
+        else
+            return new Message(TypeMessage.ERROR, "no card selected yet");
+            
+            
+    }
     public Message activeMagicCard(Address selectedAddress) {
         CardHolder cardHolder = duel.getMap().get(selectedAddress);
         if (cardHolder.getOwnerName().equals(duel.getCurrentPlayer().getNickname())) {
@@ -273,11 +295,19 @@ public class DuelController {
         {
             //TODO check if it is full
             if(getZone(Zone.get("field", duel.getCurrentPlayer())).size() > 0)
-            {
+            {                                            
                 MagicCardHolder temp = (MagicCardHolder)getZone(Zone.get("field", duel.getCurrentPlayer())).get(0);
                 new EffectParser(duelMenu, this, temp.getEffectManager()).getCommandResult(((MagicCard)(temp.getCard())).getEffect().getReverse());
-                changeZoneOfLastCard(Zone.get("field", duel.getCurrentPlayer()), null);//TODO      
-                duel.getMap().put(Address.get(Zone.get("field", duel.getCurrentPlayer()), 1), new MagicCardHolder(duel.getCurrentPlayer(), (MagicCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.ACTIVE_MAGIC));
+                changeZoneOfLastCard(Zone.get("field", duel.getCurrentPlayer()), Zone.get("graveyard", duel.getCurrentPlayer()));//TODO      
+                MagicCardHolder tempAdding = new MagicCardHolder(duel.getCurrentPlayer(), (MagicCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.ACTIVE_MAGIC);
+                duel.getMap().put(Address.get(Zone.get("field", duel.getCurrentPlayer()), 1), tempAdding);
+                //ask for chaining
+                new EffectChainer(Event.ACTIVE_SPELL, tempAdding, duel.getOpponent()).askForChain(duel.getOpponent());
+                
+                
+                
+                //TODO set active false
+
                 //TODO check for chainer and run magic
                 //TODO do reverse
                 //replace new card
@@ -285,10 +315,12 @@ public class DuelController {
             duel.getMap().put(Address.get(Zone.get("field", duel.getCurrentPlayer()), 0), new MagicCardHolder(duel.getCurrentPlayer(), (MagicCard)(duel.getMap().get(Address.get(Zone.get("field", duel.getCurrentPlayer()), 0)).getCard()), CardState.ACTIVE_MAGIC));            
         }
         else
-        if (duel.zoneCardCount().get(Zone.get("spell", duel.getCurrentPlayer())) < 5) {
+        if (duel.zoneCardCount().get(Zone.get("magic", duel.getCurrentPlayer())) < 5) {
             if(duel.getCurrentPlayer().getMap().getBoolMapValue("add_magic_turn"))
             {
-                duel.getMap().put(getSelectedAddress(), ((CardHolder)(new MagicCardHolder(duel.getCurrentPlayer() ,(MagicCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.SET_MAGIC))));
+                MagicCardHolder temp = new MagicCardHolder(duel.getCurrentPlayer() ,(MagicCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.SET_MAGIC);
+                temp.setMapValue("can_active", "false", 1);
+                duel.getMap().put(getSelectedAddress(), temp);
                 duel.getCurrentPlayer().getMap().setMapValue("add_magic_turn", "true", 1);
             }
             else
@@ -296,7 +328,7 @@ public class DuelController {
                 return new Message(TypeMessage.ERROR, "You have already set magic card during the turn");
             }
         } else {
-            return new Message(TypeMessage.ERROR, "spell card zone is full");
+            return new Message(TypeMessage.ERROR, "magic card zone is full");
         }
         return new Message(TypeMessage.SUCCESSFUL, "");
     }

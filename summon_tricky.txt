@@ -1,0 +1,11 @@
+if(#Norm($my_hand$)#>#0#)
+    (&
+        changeZone(select($my_hand$,1,select_one_card_for_tribute),my_graveyard);
+        changeZone(this,my_monster,SPECIAL_SUMMON);
+        changeZone($opp_monster$,opp_graveyard);
+        message(summoned_successfully);
+    &)
+    else 
+    (&
+    message(you_don't_have_enoguh_monster);
+    &)

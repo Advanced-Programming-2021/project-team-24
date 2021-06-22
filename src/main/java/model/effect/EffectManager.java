@@ -96,7 +96,9 @@ public class EffectManager {
             flag = true;
             if(flag)
             {
-                return Boolean.parseBoolean(effectParser.getCommandResult(effect.getRequirementCommandString()));
+                effectParser.getCommandResult(effect.getRequirementCommandString());
+                //
+                return Boolean.parseBoolean(effectParser.getAns());
             }
             else
             {

@@ -31,6 +31,7 @@ public class EffectParser {
     Effect effect;
     int idCardHolderOwner;
     private HashMap<String, String> extraKeyWords;    
+    String ans;
     public DuelController getDuelController()
     {
         return this.duelController;
@@ -44,6 +45,7 @@ public class EffectParser {
         this.effectManager = effectManager;
         this.owner = this.effectManager.getOwner();  
         this.duelMenu = duelMenu;      
+        //TODO
         this.extraKeyWords = new HashMap<String, String>();
         this.duelController = duelController;
         if(effectManager.getEffect().getEffectType() == EffectType.QUICK_PLAY)
@@ -70,7 +72,7 @@ public class EffectParser {
         {
             //add death event as reverse
             //TODO
-            Effect reverseEffect = effect.clone();//TODO it is wrong
+            Effect reverseEffect = effect.clone();
             reverseEffect.setEffect(effect.getReverse());
             reverseEffect.setReverse(null);
             if(owner.getMap().getEffects().get(Event.END_TURN) == null)
@@ -85,7 +87,17 @@ public class EffectParser {
             duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().get(Event.DEATH_OWNER).add(deathEffectManager);
         }
     }    
-    String ans;
+    
+    
+
+    public String getAns() {
+        return this.ans;
+    }
+
+    public void setAns(String ans) {
+        this.ans = ans;
+    }
+
     public String runEffect()
     {
         ans = null;
@@ -685,9 +697,7 @@ public class EffectParser {
         return command;
     }
     public static void main(String[] args) {
-        System.out.println(splitCorrect("aa,aa(,aa,a),b,b,()()(,)(,),", ','));
-        String filter = " \"minLevel\":\"3\", \"cardType\":\"SPELL\"";
-        new EffectParser(null, null , null).getListByFilter(filter);
+        System.out.println(calculater("10-(10+10)"));
     }
     public Integer sumCommand(String command)
     {
@@ -772,32 +782,64 @@ public class EffectParser {
         //handle the view part use : dice
         return duelMenu.Dice();
     }
-    public int calculater(String command)
+    public static String calculater(String command)
     {
-        String[] operators = {"\\*", "\\+", "-", "/"};
-        String operator = null;
-        int returnNumber = 0;
-        for (int i = 0; i < 4; i++) {
-            Matcher matcher = Pattern.compile(operators[i]).matcher(command);
-            if (matcher.find()) operator = operators[i];
-        }
-        if (operator == null) returnNumber = Integer.parseInt(command);
-        else {
-            String[] stringOfNumbers = command.split(" " + operator + " ");
-            int firstNumber = Integer.parseInt(stringOfNumbers[0]);
-            int secondNumber = Integer.parseInt(stringOfNumbers[1]);
-            switch (operator){
-                case "*":
-                    returnNumber = firstNumber*secondNumber;
-                case "+":
-                    returnNumber = firstNumber+secondNumber;
-                case "-":
-                    returnNumber = firstNumber-secondNumber;
-                case "/":
-                    returnNumber = firstNumber/secondNumber;
+        int flag = 0;
+        while(true)
+        {
+            flag = 0;
+            while(true)
+            {
+                if(Global.regexFind(command, "(\\d+)\\*(\\d+)")){                
+                    Matcher matcher = Global.getMatcher(command,"(\\d+)\\*(\\d+)");
+                    matcher.find();
+                    flag = 1;
+                    command = command.replace(matcher.group(0), String.valueOf(Integer.parseInt(matcher.group(1)) * Integer.parseInt(matcher.group(2))));
+                }
+                else
+                    break;
+            
             }
+            while(true)
+            {
+                if(Global.regexFind(command, "(\\d+)\\+(\\d+)")){                
+                    Matcher matcher = Global.getMatcher(command,"(\\d+)\\+(\\d+)");
+                    matcher.find();
+                    flag = 1;
+                    command = command.replace(matcher.group(0), String.valueOf(Integer.parseInt(matcher.group(1)) + Integer.parseInt(matcher.group(2))));
+                }
+                else
+                    break;
+            }
+            while(true)
+            {
+                if(Global.regexFind(command, "(\\d+)-(\\d+)")){                
+                    Matcher matcher = Global.getMatcher(command,"(\\d+)-(\\d+)");
+                    matcher.find();
+                    flag = 1;
+                    command = command.replace(matcher.group(0), String.valueOf(Integer.parseInt(matcher.group(1)) - Integer.parseInt(matcher.group(2))));
+                }
+                else
+                    break;
+            }
+            while(true)
+            {
+                if(Global.regexFind(command, "\\((\\d+)\\)"))
+                {
+                    Matcher matcher = Global.getMatcher(command, "\\((\\d+)\\)");
+                    matcher.find();                
+                    command = command.replace(matcher.group(0), matcher.group(1));
+                    flag = 1;
+                }
+                else
+                    break;
+
+            }
+            if(flag == 0)
+                break;
         }
-        return returnNumber;
+
+        return command;
     }
     
 }
