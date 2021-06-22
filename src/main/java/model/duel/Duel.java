@@ -21,6 +21,7 @@ import model.user.User;
 import model.zone.Address;
 import model.zone.Zone;
 import model.zone.Zones;
+import view.DuelMenu;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -249,7 +250,7 @@ public class Duel {
     }
 
 
-    public void changeZone(int cardHolderId, Zone targetZone, CardState cardState) {
+    public void changeZone(int cardHolderId, Zone targetZone, CardState cardState, DuelMenu duelMenu) {
         if (getCardHolderById(cardHolderId) != null) {
             if (targetZone.getName() != null && targetZone.getName().equals("owner")) {
                 Zone destination = Zone.get(targetZone.getName().split("_")[1], getCardHolderById(cardHolderId).getOwner());

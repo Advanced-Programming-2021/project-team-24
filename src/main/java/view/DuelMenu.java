@@ -76,16 +76,12 @@ public class DuelMenu {
                     if (graveyard.isEmpty()) System.out.println("graveyard empty");
                     else showCardList(graveyard);
                 } else if (command.equals("card show --selected")) {
-
                     Message message = duelController.showSelectedCard();
                     System.out.println(message.getContent());
-
-                } else if (command.equals("surrender")) {
-                    //TODO surrender
                 } else {
                     //<select>
                     Matcher matcher = Global.getMatcher(command, "select (?<zone>(?:--\\w+\\s*\\d*){1,2})");
-                    if (matcher.find()) {
+                    if (matcher.find()) {                        
                         String zone = matcher.group("zone");
                         matcher = Global.getMatcher(zone, "(?=.*(?<name>--(?:monster|magic|field|hand)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}");
                         Address selectionAddress = getAddress(matcher);
@@ -104,9 +100,22 @@ public class DuelMenu {
 
                     matcher = Global.getMatcher(command, "attack (?<place>[0-4])");
                     if (matcher.find()) {
-                        duelController.directAttack();
+                        duelController.attack(Address.get(Zone.get("monster", duelController.getDuel().getOpponent()),Integer.parseInt(matcher.group("place"))));
                         continue;
                     }
+                    matcher = Global.getMatcher(command, "attack direct");
+                    if(matcher.find())
+                    {
+                        if(duelController.getZone(Zone.get("monster", duelController.getDuel().getOpponent())).size() > 0)
+                        {
+                            System.out.println("you can't perform direct attack");
+                        }
+                        else
+                        {
+                            System.out.println(duelController.directAttack().getContent());
+                        }
+                        continue;
+                    }                    
                 }
                 System.out.println("invalid command");
             }
