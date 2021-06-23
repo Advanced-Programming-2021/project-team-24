@@ -32,7 +32,7 @@ public class DuelController {
     Duel duel;
     DuelMenu duelMenu;
     public HashMap<Event, Integer> duelEvents;
-
+    private int numberOfEndTurn = 0;
     public void updateAutomaticEffect()
     {
         //TODO
@@ -81,7 +81,7 @@ public class DuelController {
     public Message nextPhase() {
         if(duel.getCurrentPhase() == Phase.END)
         {
-            
+            numberOfEndTurn++;
             for(String zone : Zone.zoneStrings)
             {
                 List<CardHolder> cardHolders = getZone(Zone.get(zone, duel.getCurrentPlayer()));
@@ -207,7 +207,7 @@ public class DuelController {
                                 if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER) == null)
                                 {
                                     duel.getMap().put(getSelectedAddress(), ((CardHolder)(new MonsterCardHolder(duel.getCurrentPlayer() ,(MonsterCard)duel.getMap().get(getSelectedAddress()).getCard(), CardState.ATTACK_MONSTER))));
-                                    duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);                            
+                                    duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);                                                                
                                     updateAutomaticEffect();
                                 }
                                 else
@@ -290,8 +290,7 @@ public class DuelController {
                     if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0).isConditionSatisfied(new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0))))
                     {
                         List<CardHolder> initial  = getZone(Zone.get("monster", duel.getCurrentPlayer()));
-                        new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0)).runEffect();
-                        //TODO
+                        new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0)).runEffect();                        
                         duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
                     }
                     else
@@ -308,7 +307,7 @@ public class DuelController {
         } else {
             return new Message(TypeMessage.ERROR, "monster card zone is full");
         }
-        return new Message(TypeMessage.SUCCESSFUL, "");
+        return new Message(TypeMessage.SUCCESSFUL, "monster set successfully");
 
 
     }
@@ -390,53 +389,58 @@ public class DuelController {
     public Message attack(Address opponentCard) {
         MonsterCardHolder attacker = (MonsterCardHolder) duel.getMap().get(this.duel.getCurrentPlayer().getSelectedAddress());
         if (attacker != null) {
-            if (attacker.getOwnerName().compareTo(duel.getCurrentPlayer().getNickname()) == 0) {
-                if (!attacker.getCard().isMagic()) {
-                    if(opponentCard != null)
-                    {
-                        if(duel.getMap().get(opponentCard) != null)
+            if(numberOfEndTurn > 0)
+            {
+                if (attacker.getOwnerName().compareTo(duel.getCurrentPlayer().getNickname()) == 0) {
+                    if (!attacker.getCard().isMagic()) {
+                        if(opponentCard != null)
                         {
-                            MonsterCardHolder opponent = (MonsterCardHolder) duel.getMap().get(opponentCard);                            
-                            if (duel.getCardHolderZone(duel.getMap().get(opponentCard)).getName().equals(Zones.MONSTER.getValue())) {
-                                if (duel.getCurrentPhase().equals(Duel.Phase.BATTLE)) {
-                                    if (attacker.getBoolMapValue("can_attack")) {
-                                        if (opponent.getBoolMapValue("can_be_under_attack")) {
-                                            if (attacker.getCardState() == CardState.ATTACK_MONSTER) 
-                                            {
-                                                attackCalculator(attacker, opponent);
-                                                updateAutomaticEffect();
-                                            } else {
-                                                if(attacker.getBoolMapValue("can_attack_in_defence"))
+                            if(duel.getMap().get(opponentCard) != null)
+                            {
+                                MonsterCardHolder opponent = (MonsterCardHolder) duel.getMap().get(opponentCard);                            
+                                if (duel.getCardHolderZone(duel.getMap().get(opponentCard)).getName().equals(Zones.MONSTER.getValue())) {
+                                    if (duel.getCurrentPhase().equals(Duel.Phase.BATTLE)) {
+                                        if (attacker.getBoolMapValue("can_attack")) {
+                                            if (opponent.getBoolMapValue("can_be_under_attack")) {
+                                                if (attacker.getCardState() == CardState.ATTACK_MONSTER) 
                                                 {
                                                     attackCalculator(attacker, opponent);
                                                     updateAutomaticEffect();
+                                                } else {
+                                                    if(attacker.getBoolMapValue("can_attack_in_defence"))
+                                                    {
+                                                        attackCalculator(attacker, opponent);
+                                                        updateAutomaticEffect();
+                                                    }
                                                 }
+                                                return new Message(TypeMessage.SUCCESSFUL, "attacked successfully.");
+                                            } else {
+                                                return new Message(TypeMessage.ERROR, "This card can't be under attack");
                                             }
-                                            return new Message(TypeMessage.SUCCESSFUL, "attacked successfully.");
                                         } else {
-                                            return new Message(TypeMessage.ERROR, "This card can't be under attack");
+                                            return new Message(TypeMessage.ERROR, "This card can't perform attack");
                                         }
                                     } else {
-                                        return new Message(TypeMessage.ERROR, "This card can't perform attack");
+                                        return new Message(TypeMessage.ERROR, "you can’t do this action in this phase");
                                     }
                                 } else {
-                                    return new Message(TypeMessage.ERROR, "you can’t do this action in this phase");
+                                    return new Message(TypeMessage.ERROR, "Please select card in monster zone");
                                 }
-                            } else {
-                                return new Message(TypeMessage.ERROR, "Please select card in monster zone");
                             }
+                            else
+                                return new Message(TypeMessage.ERROR, "Invalid opponent selection");
                         }
                         else
-                            return new Message(TypeMessage.ERROR, "Invalid opponent selection");
+                            return new Message(TypeMessage.ERROR, "invalid card have been selected");
+                    } else {
+                        return new Message(TypeMessage.ERROR, "Please select monster card in monster zone as attacker");
                     }
-                    else
-                        return new Message(TypeMessage.ERROR, "invalid card have been selected");
                 } else {
-                    return new Message(TypeMessage.ERROR, "Please select monster card in monster zone as attacker");
+                    return new Message(TypeMessage.ERROR, "Pleas select your own card as attacker");
                 }
-            } else {
-                return new Message(TypeMessage.ERROR, "Pleas select your own card as attacker");
             }
+            else
+                return new Message(TypeMessage.ERROR, "you can't perform attack in first turn");
         } else {
             return new Message(TypeMessage.ERROR, "no card is selected yet");
         }        
@@ -500,26 +504,31 @@ public class DuelController {
 
     public Message directAttack() {
         if (getSelectedAddress() != null) {
-            if (getSelectedAddress().getZone().getName().equals("monster")) {
-                if (duel.getCurrentPhase().equals(Duel.Phase.BATTLE)) {
-                    CardHolder card = duel.getMap().get(getSelectedAddress());
-                    if(!card.getBoolMapValue("attack_turn"))
-                    {
-                        card.setMapValue("attack_turn", "true", 1);
-                        duel.getOpponent().changeLifePoint(Integer.parseInt(card.getCardMap().get("attack")));
-                        updateAutomaticEffect();
-                        return new Message(TypeMessage.SUCCESSFUL, "");
-                    }
-                    else
-                    {
-                        return new Message(TypeMessage.ERROR, "this card performed attack in this round before");
+            if(numberOfEndTurn > 0)
+            {
+                if (getSelectedAddress().getZone().getName().equals("monster")) {
+                    if (duel.getCurrentPhase().equals(Duel.Phase.BATTLE)) {
+                        CardHolder card = duel.getMap().get(getSelectedAddress());
+                        if(!card.getBoolMapValue("attack_turn"))
+                        {
+                            card.setMapValue("attack_turn", "true", 1);
+                            duel.getOpponent().changeLifePoint(Integer.parseInt(card.getCardMap().get("attack")));
+                            updateAutomaticEffect();
+                            return new Message(TypeMessage.SUCCESSFUL, "");
+                        }
+                        else
+                        {
+                            return new Message(TypeMessage.ERROR, "this card performed attack in this round before");
+                        }
+                    } else {
+                        return new Message(TypeMessage.ERROR, "action not allowed in this phase");
                     }
                 } else {
-                    return new Message(TypeMessage.ERROR, "action not allowed in this phase");
+                    return new Message(TypeMessage.ERROR, "you can’t attack with this card");
                 }
-            } else {
-                return new Message(TypeMessage.ERROR, "you can’t attack with this card");
             }
+            else
+                return new Message(TypeMessage.ERROR, "you can't perform attack in first turn");
         } else {
             return new Message(TypeMessage.ERROR, "no card is selected yet");
         }        

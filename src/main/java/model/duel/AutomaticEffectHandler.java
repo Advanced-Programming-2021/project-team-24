@@ -24,7 +24,7 @@ public class AutomaticEffectHandler {
         for(int i = 0; i < duelController.getDuel().getAllCardHolder().size(); i++)
         {            
             CardHolder temp = duelController.getDuel().getAllCardHolder().get(i);
-            
+            if(!duelController.getDuel().getCardHolderZone(temp).getName().equals("deck") && !duelController.getDuel().getCardHolderZone(temp).getName().equals("hand"))
             for(Map.Entry<Event, List<EffectManager>> mapEntry : temp.getEffects().entrySet())
             {
                 List<EffectManager> currenList = ((List<EffectManager>) mapEntry.getValue());

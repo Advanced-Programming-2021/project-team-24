@@ -70,8 +70,10 @@ public class DuelMenu {
                     System.out.println(duelController.set().getContent());continue;
                 } else if (command.equals("attack direct")) {
                     System.out.println(duelController.directAttack().getContent());continue;
-                } else if (command.equals("activate effect")) {
+                } else if (command.equals("activate effect")) {                    
                     System.out.println(duelController.activeMagic().getContent());continue;
+                }else if(command.equals("show board")){
+                    showBoard();
                 }
                 else if (command.equals("next phase")){
                     System.out.println(duelController.nextPhase().getContent());
@@ -80,6 +82,7 @@ public class DuelMenu {
                         System.out.println(duelController.nextPhase().getContent());
                         continue;
                     }
+                    continue;
                 }
                 else if (command.equals("show graveyard")) {
                     List<CardHolder> graveyard = getZoneCards("graveyard",false);
@@ -103,13 +106,13 @@ public class DuelMenu {
 
                     matcher = Global.getMatcher(command, "set --position (?<position>attack|defense)");
                     if (matcher.find()) {
-                        duelController.changePosition();
+                        System.out.println(duelController.changePosition());
                         continue;
                     }
 
                     matcher = Global.getMatcher(command, "attack (?<place>[0-4])");
                     if (matcher.find()) {
-                        duelController.attack(Address.get(Zone.get("monster", duelController.getDuel().getOpponent()),Integer.parseInt(matcher.group("place"))));
+                        System.out.println(duelController.attack(Address.get(Zone.get("monster", duelController.getDuel().getOpponent()),Integer.parseInt(matcher.group("place")))).getContent());
                         continue;
                     }
                     matcher = Global.getMatcher(command, "attack direct");
@@ -286,20 +289,20 @@ public class DuelMenu {
         for(int i=0;i<getZoneCards("hand",true).size();i++) System.out.print("\tc");
         System.out.println();
 
-        System.out.println(getZoneCards("mainDeck",true).size());
+        System.out.println(getZoneCards("deck",true).size());
 
-        System.out.format("|%-4s|",getCard("magic",true,4));
-        System.out.format("|%-4s|",getCard("magic",true,2));
-        System.out.format("|%-4s|",getCard("magic",true,1));
         System.out.format("|%-4s|",getCard("magic",true,3));
-        System.out.format("|%-4s|",getCard("magic",true,5));
+        System.out.format("|%-4s|",getCard("magic",true,1));
+        System.out.format("|%-4s|",getCard("magic",true,0));
+        System.out.format("|%-4s|",getCard("magic",true,2));
+        System.out.format("|%-4s|",getCard("magic",true,4));
         System.out.println();
 
-        System.out.format("|%-4s|",getCard("monster",true,4));
-        System.out.format("|%-4s|",getCard("monster",true,2));
-        System.out.format("|%-4s|",getCard("monster",true,1));
         System.out.format("|%-4s|",getCard("monster",true,3));
-        System.out.format("|%-4s|",getCard("monster",true,5));
+        System.out.format("|%-4s|",getCard("monster",true,1));
+        System.out.format("|%-4s|",getCard("monster",true,0));
+        System.out.format("|%-4s|",getCard("monster",true,2));
+        System.out.format("|%-4s|",getCard("monster",true,4));
         System.out.println();
 
         System.out.format("|%-31d|",getZoneCards("graveyard",true).size());
@@ -310,21 +313,21 @@ public class DuelMenu {
         System.out.format("|%-31d|",getZoneCards("field",false).size());
         System.out.println(getZoneCards("graveyard",false).size());
 
-        System.out.format("|%-4s|",getCard("monster",false,5));
-        System.out.format("|%-4s|",getCard("monster",false,3));
-        System.out.format("|%-4s|",getCard("monster",false,1));
-        System.out.format("|%-4s|",getCard("monster",false,2));
         System.out.format("|%-4s|",getCard("monster",false,4));
+        System.out.format("|%-4s|",getCard("monster",false,2));
+        System.out.format("|%-4s|",getCard("monster",false,0));
+        System.out.format("|%-4s|",getCard("monster",false,1));
+        System.out.format("|%-4s|",getCard("monster",false,3));
         System.out.println();
 
-        System.out.format("|%-4s|",getCard("magic",false,5));
-        System.out.format("|%-4s|",getCard("magic",false,3));
-        System.out.format("|%-4s|",getCard("magic",false,1));
-        System.out.format("|%-4s|",getCard("magic",false,2));
         System.out.format("|%-4s|",getCard("magic",false,4));
+        System.out.format("|%-4s|",getCard("magic",false,2));
+        System.out.format("|%-4s|",getCard("magic",false,0));
+        System.out.format("|%-4s|",getCard("magic",false,1));
+        System.out.format("|%-4s|",getCard("magic",false,3));
         System.out.println();
 
-        System.out.format("|%32d|",getZoneCards("mainDeck",false).size());
+        System.out.format("|%32d|",getZoneCards("deck",false).size());
 
         for(int i=0;i<getZoneCards("hand",false).size();i++) System.out.print("c\t");
         System.out.println();

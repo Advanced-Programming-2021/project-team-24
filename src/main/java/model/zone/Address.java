@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Address {
-    private String name;
     private Zone zone;
     private int place;
     private static List<Address> addresses = new ArrayList<>();
@@ -25,8 +24,9 @@ public class Address {
     }
 
     public static Address get(Zone zone, int place) {
+        int a = 0;
         for (Address address : addresses) {
-            if (zone.equals(address.getZone()) && place==address.getPlace()) {
+            if (zone.getName().equals(address.getZone().getName()) && zone.getPlayer().getNickname().equals(address.getZone().getPlayer().getNickname())  &&  place == address.getPlace()){
                 return address;
             }
         }
@@ -40,7 +40,6 @@ public class Address {
 
     //copy constructor
     public Address(Address address) {
-        this.name = address.name;
         this.zone = address.zone;
         this.place = address.place;
     }
