@@ -21,13 +21,16 @@ public class EffectChainer {
     Event event;
     List<Integer> idMagicCardHolderChain;
     
-    public EffectChainer(Event event, Player opponent)
+    public EffectChainer(Event event, Player opponent, DuelController duelController)
     {    
+        this.duelController = duelController;
         this.event = event;
-        askForChain(opponent);
+        askForChain(opponent);        
     }
-    public EffectChainer(Event event, MagicCardHolder magicCardHolder, Player opponent)
+    public EffectChainer(Event event, MagicCardHolder magicCardHolder, Player opponent, DuelController duelController)
     {
+        this.duelController = duelController;
+        idMagicCardHolderChain = new ArrayList<Integer>();
         this.opponent = opponent;
         this.event = event;
         idMagicCardHolderChain.add(magicCardHolder.getId());
@@ -88,28 +91,32 @@ public class EffectChainer {
     
     private void runChain()
     {
-        //three part for speed
-        HashMap<Integer, List<Integer>> speedMagic = new HashMap<Integer, List<Integer>>();
-        for(int j = 1; j <= 3; j++)
-        {
-            speedMagic.put(j, new ArrayList<Integer>());
-        }
-        for(int i  = 0; i < idMagicCardHolderChain.size(); i++)
-        {
-            int number = idMagicCardHolderChain.get(i);  
-            MagicCardHolder temp = (MagicCardHolder)duelController.getDuel().getCardHolderById(number);
-            speedMagic.get(((MagicCard)temp.getCard()).getSpeed()).add(idMagicCardHolderChain.get(i));
-        }   
-        for(int j = 3; j >= 1; j--)
-        {
-            for(int i = 0; i < speedMagic.get(j).size(); i ++)
+        try{
+            //three part for speed
+            HashMap<Integer, List<Integer>> speedMagic = new HashMap<Integer, List<Integer>>();
+            for(int j = 1; j <= 3; j++)
             {
-                int number = speedMagic.get(j).get(i);
-                MagicCardHolder temp = (MagicCardHolder)duelController.getDuel().getCardHolderById(number);
-                EffectParser effectParser = new EffectParser(duelMenu, duelController, temp.getEffectManager());
-                effectParser.runEffect();
-
+                speedMagic.put(j, new ArrayList<Integer>());
             }
+            for(int i  = 0; i < idMagicCardHolderChain.size(); i++)
+            {
+                int number = idMagicCardHolderChain.get(i);  
+                MagicCardHolder temp = (MagicCardHolder)duelController.getDuel().getCardHolderById(number);
+                speedMagic.get(((MagicCard)temp.getCard()).getSpeed()).add(idMagicCardHolderChain.get(i));
+            }   
+            for(int j = 3; j >= 1; j--)
+            {
+                for(int i = 0; i < speedMagic.get(j).size(); i ++)
+                {
+                    int number = speedMagic.get(j).get(i);
+                    MagicCardHolder temp = (MagicCardHolder)duelController.getDuel().getCardHolderById(number);
+                    EffectParser effectParser = new EffectParser(duelMenu, duelController, temp.getEffectManager());
+                    effectParser.runEffect();
+
+                }
+            }
+        }catch(Exception e){
+
         }
     }
 }

@@ -4,7 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class EffectTest {
-    Effect effect = new Effect();
+    Effect effect = new Effect("");
     @Test
     public void getSpeedTest(){
         effect.setSpeed(3);

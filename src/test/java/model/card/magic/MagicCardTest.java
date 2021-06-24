@@ -38,7 +38,7 @@ public class MagicCardTest {
     }
     @Test
     public void getEffectTest(){
-        Effect effect = new Effect();
+        Effect effect = new Effect("");
         effect.setSpeed(1);
         MagicCard magicCard = new MagicCard();
         magicCard.setEffect(effect);

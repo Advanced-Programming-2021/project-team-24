@@ -72,7 +72,7 @@ public class test {
         
         MonsterCardHolder temp = new MonsterCardHolder(duelMenu.getPlayer(true), u, CardState.ATTACK_MONSTER);
         
-        Effect effect = new Effect();
+        Effect effect = new Effect("");
         effect.setEffect("q_yn(halet chetoreh){return_t}{return_f}");
         effect.setReverse("q_yn(halet chetoreh){return_t}{return_f}");
         effect.setEffectType(EffectType.CONTINUES);

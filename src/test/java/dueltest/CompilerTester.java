@@ -23,7 +23,7 @@ public class CompilerTester {
         user2.getCards().addAll(Card.getAllCards());        
         System.out.println(user1.getCards().size());
 
-        DuelMenu duelMenu = new DuelMenu(user1, user2, "1");
+        DuelMenu duelMenu = new DuelMenu(user1, user2);
         DuelController duelController = duelMenu.getDuelController();
         Duel duel = duelController.getDuel();
         duelController.setDuelMenu(duelMenu);

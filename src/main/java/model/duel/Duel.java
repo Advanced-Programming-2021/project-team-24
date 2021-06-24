@@ -101,9 +101,6 @@ public class Duel {
         Address.init(currentPlayer);
         setTheInitialStateOfHandCards(user.getUser(), currentPlayer);
         setTheInitialStateOfHandCards(opponent.getUser(), this.opponent);
-        Address address = Address.get(Zone.get("monster", currentPlayer), 2);
-        map.put(address, new MonsterCardHolder(currentPlayer, new MonsterCard(), CardState.ATTACK_MONSTER));
-        System.out.println(address);
     }
 
     private void setTheInitialStateOfHandCards(User user, Player player) {
@@ -237,34 +234,45 @@ public class Duel {
         removeCardHolderByAddress(address);
     }
 
-    public void addCard(Card card, Zone zone1, CardState cardState) {
+    public CardHolder addCard(Card card, Zone zone1, CardState cardState) {
         Zones zone = Zones.valueOfLabel(zone1.getName());
         for (int i = 0; i < zone.capacity; i++) {
             if (map.get(Address.get(zone1, i)) == null) {
                 if (card.getCardType().equals(CardType.MONSTER))
-                    map.put(Address.get(zone1, i), new MonsterCardHolder(zone1.getPlayer(), (MonsterCard) card, cardState));
+                {
+                    MonsterCardHolder monsterCardHolder =  new MonsterCardHolder(zone1.getPlayer(), (MonsterCard) card, cardState);
+                    map.put(Address.get(zone1, i), monsterCardHolder);
+                    return monsterCardHolder;
+                }
                 else
-                    map.put(Address.get(zone1, i), new MagicCardHolder(zone1.getPlayer(), (MagicCard) card, cardState));
-                return;
+                {
+                    MagicCardHolder magicCardHolder = new MagicCardHolder(zone1.getPlayer(), (MagicCard) card, cardState);
+                    map.put(Address.get(zone1, i), magicCardHolder);
+                    return magicCardHolder;
+                }
             }
         }
+        return null;//TODO assume it's not happening
     }
 
 
-    public void changeZone(int cardHolderId, Zone targetZone, CardState cardState, DuelMenu duelMenu) {
+    public CardHolder changeZone(int cardHolderId, Zone targetZone, CardState cardState, DuelMenu duelMenu) {
         if (getCardHolderById(cardHolderId) != null) {
             if (targetZone.getName() != null && targetZone.getName().equals("owner")) {
                 Zone destination = Zone.get(targetZone.getName().split("_")[1], getCardHolderById(cardHolderId).getOwner());
-                addCard(getCardHolderById(cardHolderId).getCard(), destination, cardState);            
+                return addCard(getCardHolderById(cardHolderId).getCard(), destination, cardState);            
             } else {
                 //TODO check reverse effect and so on
                 if(getCardHolderById(cardHolderId).getCard().isMagic())
                 {
                     //run reverse and finish it
-                    MagicCardHolder holder = (MagicCardHolder)(getCardHolderById(cardHolderId));
-                    if(holder.getEffectManager().getEffect().getReverse() != null)
+                    if(getCardHolderZone(getCardHolderById(cardHolderId)).getName().equals("hand") || getCardHolderZone(getCardHolderById(cardHolderId)).getName().equals("magic"))
                     {
-                        new EffectParser(duelMenu, duelMenu.getDuelController(), holder.getEffectManager()).getCommandResult(holder.getEffectManager().getEffect().getReverse());
+                        MagicCardHolder holder = (MagicCardHolder)(getCardHolderById(cardHolderId));
+                        if(holder.getEffectManager().getEffect().getReverse() != null)
+                        {
+                            new EffectParser(duelMenu, duelMenu.getDuelController(), holder.getEffectManager()).getCommandResult(holder.getEffectManager().getEffect().getReverse());
+                        }
                     }
                 }
                 else
@@ -282,9 +290,14 @@ public class Duel {
                             }
                     }
                 }                
-                addCard(getCardHolderById(cardHolderId).getCard(), targetZone, cardState);
+                CardHolder ans = addCard(getCardHolderById(cardHolderId).getCard(), targetZone, cardState);
                 removeCardHolderById(cardHolderId);
+                return ans;
             }
+        }
+        else
+        {
+            return null;
         }
     }
 

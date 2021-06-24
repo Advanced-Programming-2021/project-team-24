@@ -28,6 +28,7 @@ public class DuelMenu {
 
     public DuelMenu(Player user, Player opponent) {
         this.duelController = new DuelController(new Duel(user, opponent));
+        duelController.setDuelMenu(this);
     }
     private static HashMap<CardState, String> stringOfCardState = new HashMap<CardState, String>();    
     static
@@ -35,8 +36,8 @@ public class DuelMenu {
         stringOfCardState.put(CardState.ATTACK_MONSTER, "OO");
         stringOfCardState.put(CardState.SET_DEFENCE, "DH");
         stringOfCardState.put(CardState.DEFENCE_MONSTER, "DO");
-        stringOfCardState.put(CardState.SET_DEFENCE, "H");
         stringOfCardState.put(CardState.ACTIVE_MAGIC, "O");
+        stringOfCardState.put(CardState.SET_MAGIC, "H");
         stringOfCardState.put(CardState.HAND, "c");        
     }
 
@@ -296,7 +297,6 @@ public class DuelMenu {
     }
 
     public void showBoard() {
-        System.out.println(duelController.getDuel().getOpponent().toString());
 
         for(int i=0;i<getZoneCards("hand",true).size();i++) System.out.print("c   ");
         System.out.println();
@@ -344,7 +344,6 @@ public class DuelMenu {
         for(int i=0;i<getZoneCards("hand",false).size();i++) System.out.print("c    ");
         System.out.println();
 
-        System.out.println(duelController.getDuel().getCurrentPlayer().toString());
     }
 
     public String getCard(String zoneName,Boolean isOpponent,int place){
@@ -367,7 +366,6 @@ public class DuelMenu {
         b.getDecks().add(alireza);
         b.getDecks().setActiveDeck(b.getDecks().getDeckByName("alireza"));
         DuelMenu duelMenu = new DuelMenu(new Player(a), new Player(b));
-        DuelController dControleer = duelMenu.duelController;
         duelMenu.run();
     }
 

@@ -70,7 +70,7 @@ public class CardHolderTest {
     }
     @Test
     public void haveEffectWithIdTest(){
-        Effect effect = new Effect();
+        Effect effect = new Effect("");
         cardHolder.haveEffectWithId(12);
         EffectManager effectManager = new EffectManager(effect, player, 2);
         cardHolder.addEffect(effectManager.getId());

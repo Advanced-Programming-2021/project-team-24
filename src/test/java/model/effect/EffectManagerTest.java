@@ -9,7 +9,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class EffectManagerTest {
-    Effect effect = new Effect();
+    Effect effect = new Effect("");
     User user = new User("salam", "aaaaaa", "sdfsdf");
     Player player = new Player(user);
     CardHolder cardHolder = new CardHolder(player) {

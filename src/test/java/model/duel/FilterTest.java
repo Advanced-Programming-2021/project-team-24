@@ -46,7 +46,7 @@ public class FilterTest {
     }
     @Test
     public void getIdCardHolderTest(){
-        List<Integer> cardHolder = new ArrayList<>();
+        List<String> cardHolder = new ArrayList<>();
         filter.setIdCardHolder(cardHolder);
         assertEquals(cardHolder, filter.getIdCardHolder());
     }

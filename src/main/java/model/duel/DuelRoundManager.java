@@ -1,7 +1,5 @@
 package model.duel;
 
-import model.deck.Deck;
-import model.deck.Decks;
 import model.user.Player;
 import model.user.User;
 import view.DeckMenu;
