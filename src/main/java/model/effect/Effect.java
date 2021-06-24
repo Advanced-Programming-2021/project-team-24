@@ -77,7 +77,10 @@ public class Effect {
     private String askAbleMessage;        
     private List<Event> requiredEvents;
     private Integer speed;
-
+    public void setRequiredEvent(List<Event> event)    
+    {
+        this.requiredEvents = event;
+    }
     public Effect(String effect)    
     {
         this.effect = effect;
@@ -93,6 +96,10 @@ public class Effect {
         return this.speed;
     }
 
+    public void setAskForActivation(boolean askForActivation)
+    {
+        this.askForActivation = askForActivation;
+    }
     public void setSpeed(Integer speed) {
         this.speed = speed;
     }

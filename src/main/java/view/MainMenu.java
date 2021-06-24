@@ -4,19 +4,26 @@ package view;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
+
+import com.google.gson.Gson;
 
 import controller.DuelController;
 import controller.MainMenuController;
 import controller.Message;
 import model.card.Card;
 import model.card.CardState;
+import model.card.Event;
 import model.card.magic.MagicCard;
 import model.card.magic.MagicCardHolder;
 import model.card.monster.MonsterCard;
+import model.card.monster.MonsterType;
 import model.deck.Deck;
 import model.duel.Duel;
 import model.duel.EffectParser;
+import model.duel.Filter;
 import model.effect.Effect;
 import model.user.Player;
 import model.user.User;
@@ -85,7 +92,10 @@ public class MainMenu extends Menu {
         dControleer.select(Address.get(Zone.get("hand", dControleer.getDuel().getCurrentPlayer()), 0));
         dControleer.nextPhase();
         dControleer.nextPhase();
-        MagicCard current = (MagicCard) Card.getCardByName("Black Pendant");
+        Filter filter = new Filter();
+        filter.setMonsterType(MonsterType.BEAST);        
+        System.out.println(new Gson().toJson(filter));
+        MagicCard current = (MagicCard) Card.getCardByName("Twin Twisters");
         MonsterCard sampleMonster = (MonsterCard) Card.getCardByName("cardName");
         System.out.println(EffectParser.splitByParentheses("alirez(alir)").get(0));
         dControleer.getDuel().getMap().put(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0), new MagicCardHolder(dControleer.getDuel().getCurrentPlayer(), (MagicCard)current ,CardState.SET_MAGIC));
@@ -95,12 +105,18 @@ public class MainMenu extends Menu {
         
         
         Effect effect = new Effect("");
+        
         String mainEffect = "";
         String reverse = "";
         String required = "";
         String setSummon = "";
         String summon = "";        
         String onFlipOwner = "";
+        Effect checkForDeath = new Effect("");
+        List<Event> u = new ArrayList<Event>();
+        //u.add(Event.SUMMON);
+        //effect.setRequiredEvent(u);
+        //effect.setAskForActivation(false);
         try {
 
             //summon = new String(Files.readAllBytes(Paths.get(new File("summon6.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
@@ -115,8 +131,7 @@ public class MainMenu extends Menu {
         }
         effect.setEffect(mainEffect);
         effect.setReverse(reverse);
-        effect.setRequirementString(required);
-
+        effect.setRequirementString(required);        
         /*if(setSummon.length() > 0)
             current.getEffects().put(Event.SET_OWNER, setSummon);
         if(summon.length() > 0)
@@ -127,6 +142,8 @@ public class MainMenu extends Menu {
             //current.getEffects().put(Event.FLIP_OWNER, onFlipOwner);
         }
         current.setEffect(effect);
+        //String eff = "if(#get(this,activated)#>##)(if(#Norm(Filter(Id:get(this,equipped)))#<#1#)(changeZone(this,my_graveryard))())()";
+        //current.getEffects().put(Event.ANY, eff);
         current.updateCard();
         String command = "message(ridi!!)";
 

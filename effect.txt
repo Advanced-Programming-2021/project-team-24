@@ -1,4 +1,2 @@
-set(this,equipped,
-select($my_monster$,1,select_one_card_to_equip);
-);
-set(equipped,attack,get(equipped,attack)+500);
+changeZone(select($my_hand$,1,select_one_card_for_discard),my_graveyard)
+changeZone(select($magic$,2,select_two_card_for_delete),owner_graveyard);

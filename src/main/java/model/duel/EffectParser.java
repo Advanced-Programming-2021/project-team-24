@@ -649,6 +649,15 @@ public class EffectParser {
         }
         return command;
     }   
+    public String changeVal(String command)
+    {
+        //changeValue(List<E>,key,change);
+        if(Global.regexFind(command, "changeValue\\((.+)\\)"))
+        {
+            Matcher matcher = Global.getMatcher(command, "changeValue\\((.+)\\)");
+        }
+        return command;
+    }
     public String getListByFilter(String filterString)    
     {
         //#Filter#(["key":"value"]);        

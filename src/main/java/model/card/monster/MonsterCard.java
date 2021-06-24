@@ -22,8 +22,7 @@ public class MonsterCard extends Card {
     private MonsterEffectType monsterEffectType;
     @SerializedName("monsterType")
     private MonsterType monsterType;
-    @SerializedName("effects")
-    private HashMap<Event, String> effects;
+    
 
     
 
@@ -31,14 +30,7 @@ public class MonsterCard extends Card {
     private MonsterAttribute monsterAttribute;
 
 
-    public HashMap<Event,String> getEffects()
-    {
-        if(effects == null)
-        {
-            effects = new HashMap<Event,String>();
-        }
-		return this.effects;
-	}
+    
 
     public void setEffects(HashMap<Event,String> effects)    
     {

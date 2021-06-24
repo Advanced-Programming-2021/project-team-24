@@ -10,9 +10,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 import model.card.magic.LimitType;
 import model.card.magic.MagicCard;
@@ -26,7 +28,8 @@ public abstract class Card {
     protected Integer price;
     protected LimitType limitType;
     protected CardType cardType;    
-
+    @SerializedName("effects")
+    protected HashMap<Event, String> effects;
 
     static List <Card> allCards = new ArrayList<>();
     public abstract String toString();
@@ -129,4 +132,12 @@ public abstract class Card {
         fileWriter.write(new Gson().toJson(this));
         fileWriter.close();
     }
+    public HashMap<Event,String> getEffects()
+    {
+        if(effects == null)
+        {
+            effects = new HashMap<Event,String>();
+        }
+		return this.effects;
+	}
 }

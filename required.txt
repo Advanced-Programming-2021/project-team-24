@@ -1,5 +1,1 @@
-if(#Norm($my_monster$)#>#0#)
-(
-    return_t;
-)
-return_f;
+if(#$my_hand$#>#0#)(return_t;)(return_f;)
