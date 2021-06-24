@@ -1,6 +1,7 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -9,6 +10,7 @@ import controller.DuelController;
 import controller.Message;
 import model.card.Card;
 import model.card.CardHolder;
+import model.card.CardState;
 import model.deck.Deck;
 import model.duel.Duel;
 import model.duel.Duel.Phase;
@@ -26,6 +28,16 @@ public class DuelMenu {
 
     public DuelMenu(Player user, Player opponent) {
         this.duelController = new DuelController(new Duel(user, opponent));
+    }
+    private static HashMap<CardState, String> stringOfCardState = new HashMap<CardState, String>();    
+    static
+    {
+        stringOfCardState.put(CardState.ATTACK_MONSTER, "OO");
+        stringOfCardState.put(CardState.SET_DEFENCE, "DH");
+        stringOfCardState.put(CardState.DEFENCE_MONSTER, "DO");
+        stringOfCardState.put(CardState.SET_DEFENCE, "H");
+        stringOfCardState.put(CardState.ACTIVE_MAGIC, "O");
+        stringOfCardState.put(CardState.HAND, "c");        
     }
 
     private static final String REGEX_ENTER_MENU = "menu enter (\\w+)";
@@ -73,7 +85,7 @@ public class DuelMenu {
                 } else if (command.equals("activate effect")) {                    
                     System.out.println(duelController.activeMagic().getContent());continue;
                 }else if(command.equals("show board")){
-                    showBoard();
+                    showBoard();continue;
                 }
                 else if (command.equals("next phase")){
                     System.out.println(duelController.nextPhase().getContent());
@@ -286,7 +298,7 @@ public class DuelMenu {
     public void showBoard() {
         System.out.println(duelController.getDuel().getOpponent().toString());
 
-        for(int i=0;i<getZoneCards("hand",true).size();i++) System.out.print("\tc");
+        for(int i=0;i<getZoneCards("hand",true).size();i++) System.out.print("c   ");
         System.out.println();
 
         System.out.println(getZoneCards("deck",true).size());
@@ -327,16 +339,20 @@ public class DuelMenu {
         System.out.format("|%-4s|",getCard("magic",false,3));
         System.out.println();
 
-        System.out.format("|%32d|",getZoneCards("deck",false).size());
+        System.out.format("|%d|",getZoneCards("deck",false).size());
 
-        for(int i=0;i<getZoneCards("hand",false).size();i++) System.out.print("c\t");
+        for(int i=0;i<getZoneCards("hand",false).size();i++) System.out.print("c    ");
         System.out.println();
 
         System.out.println(duelController.getDuel().getCurrentPlayer().toString());
     }
 
     public String getCard(String zoneName,Boolean isOpponent,int place){
-        return duelController.getDuel().getMap().get(Address.get(Zone.get(zoneName,getPlayer(isOpponent)),place)).getCardState().toString();
+        if(duelController.getDuel().getMap().get(Address.get(Zone.get(zoneName,getPlayer(isOpponent)),place))== null)
+        {
+            return "E";
+        }
+        return stringOfCardState.get(duelController.getDuel().getMap().get(Address.get(Zone.get(zoneName,getPlayer(isOpponent)),place)).getCardState());
     }
     public static void main(String[] args) {
         User a = new User("alireza", "alireza", "alireza");

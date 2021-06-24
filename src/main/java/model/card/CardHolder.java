@@ -68,7 +68,8 @@ public abstract class CardHolder {
                 ageEffects.put(mapEntry.getKey(), null);
                 cardMap.put(mapEntry.getKey(), null);
             }
-            ageEffects.put(mapEntry.getKey(), mapEntry.getValue() - 1);
+            if(mapEntry.getValue() != null)
+                ageEffects.put(mapEntry.getKey(), mapEntry.getValue() - 1);
         }
     }
     
