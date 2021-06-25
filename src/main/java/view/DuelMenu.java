@@ -46,6 +46,7 @@ public class DuelMenu {
 
     public void run() {
         while (true) {
+            showBoard();
             if (duelController.isRoundFinished()) return;
             else{
                 if(duelController.getDuel().getCurrentPhase() == Phase.DRAW)

@@ -42,10 +42,9 @@ public class EffectParser {
         if(Global.regexFind(command, "draw()"))
         {
             duelController.draw();
-            command.replace("draw()", "");
+            command = command.replace("draw()", "");
         }
         return command;
-
     }
     public EffectParser(DuelMenu duelMenu, DuelController duelController, EffectManager effectManager)
     {
@@ -130,17 +129,16 @@ public class EffectParser {
     public String handleConditional(String command)
     {
         Matcher matcher = Global.getMatcher(command, "if\\(#([^#]*)#[<>]#([^#]*)#\\)(\\(&.+&\\))");
-        matcher.find();
-        String s1 = getCommandResult(matcher.group(1));
-        String s2 = getCommandResult(matcher.group(2));
-        if(s1.compareTo(s2) > 0)
-        {
-            return getCommandResult(splitCorrect(matcher.group(3).substring(1, matcher.group(3).length() - 1), '&').get(1));
+        if (matcher.find()) {
+            String s1 = getCommandResult(matcher.group(1));
+            String s2 = getCommandResult(matcher.group(2));
+            if (s1.compareTo(s2) > 0) {
+                return getCommandResult(splitCorrect(matcher.group(3).substring(1, matcher.group(3).length() - 1), '&').get(1));
+            } else {
+                return getCommandResult(splitCorrect(matcher.group(3).substring(1, matcher.group(3).length() - 1), '&').get(3));
+            }
         }
-        else
-        {
-            return getCommandResult(splitCorrect(matcher.group(3).substring(1, matcher.group(3).length() - 1), '&').get(3));
-        }      
+        return command;
     }
     public String changeZone(String command)
     {
@@ -203,27 +201,27 @@ public class EffectParser {
             }        
             String result = matcher.group(0);
             command = command.replace(result, "");
+            System.out.println(command);
         }
         return command;        
     }
     public String q_yn(String command)
     {
         Matcher matcher = Global.getMatcher(command, "q_yn\\(([^{}()]+)\\)(.+)");
-        matcher.find();
-        String queString = matcher.group(1);
-        Boolean ans = duelMenu.BooleanQYN(queString);        
-        List<String> ifElsePart = splitByParentheses(matcher.group(2));
-        if(ans)
-        {
-            return getCommandResult(ifElsePart.get(0));
+        if (matcher.find()) {
+            String queString = matcher.group(1);
+            Boolean ans = duelMenu.BooleanQYN(queString);
+            List<String> ifElsePart = splitByParentheses(matcher.group(2));
+            if (ans) {
+                return getCommandResult(ifElsePart.get(0));
+            } else {
+                return getCommandResult(ifElsePart.get(1));
+            }
         }
-        else
-        {
-            return getCommandResult(ifElsePart.get(1));
-        }
+        return command;
     }
     
-    private String handleMessage(String command)
+    public String handleMessage(String command)
     {
         if(Global.regexFind(command, "message\\(([^()]+)\\)") && command.substring(0,7).equals("message"))
         {
@@ -261,7 +259,7 @@ public class EffectParser {
 
     }
 
-    private int correctStateOfChar(String command, char ch)
+    public int correctStateOfChar(String command, char ch)
     {
         int counter = 0;
         for(int i = 0; i < command.length(); i++)
@@ -313,7 +311,6 @@ public class EffectParser {
                 {
                     command = changeZone(command);                
                 }
-
                 if(command.length() >= 8 && command.substring(0, 8).equals("return_f") && ans == null)
                 {
                     ans = "false";
@@ -375,7 +372,7 @@ public class EffectParser {
         //return string as result of command, maybe some get or ...
         return command;
     }
-    private String handleChangeLPCommand(String command) {
+    public String handleChangeLPCommand(String command) {
         try
         {
             if(command.substring(0, 8).equals("changeLP"))
@@ -389,14 +386,15 @@ public class EffectParser {
         }
         return command;
     }
-    private String handleNormCommand(String command) {
+    public String handleNormCommand(String command) {
         while(true)
         {
             if(Global.regexFind(command, "Norm\\((.+)\\)"))
             {
                 Matcher matcher = Global.getMatcher(command, "Norm\\((.+)\\)");
-                matcher.find();
-                command = command.replace("Norm(" + splitByParentheses(matcher.group(0)).get(0) + ")", normSet((matcher.group(0))));
+                if (matcher.find()) {
+                    command = command.replace("Norm(" + splitByParentheses(matcher.group(0)).get(0) + ")", normSet((matcher.group(0))));
+                }
             }
             else
                 break;
