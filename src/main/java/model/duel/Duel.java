@@ -39,8 +39,7 @@ public class Duel {
     private Phase currentPhase;
     private HashMap<Phase, Phase> nextPhase = new HashMap<Phase, Phase>();
     private boolean changeTurnPairity;
-    private List<CardHolder> cardHoldersList = new ArrayList<CardHolder>();
-
+    
     public enum Phase {
         DRAW,
         STANDBY,

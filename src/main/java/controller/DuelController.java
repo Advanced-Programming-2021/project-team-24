@@ -91,7 +91,8 @@ public class DuelController {
                     cardHolders.get(i).endTurn();
                 }
             }
-            duel.getCurrentPlayer().getMap().endTurn();
+            CardHolder temp = duel.getCurrentPlayer().getMap();
+            temp.endTurn();
             duel.changePlayerTurn();
             duel.nextPhase();
             return new Message(TypeMessage.INFO, duel.getCurrentPhase().toString() + "\n" + duel.getCurrentPlayer().getNickname() + "'s turn");
@@ -107,14 +108,13 @@ public class DuelController {
     public Message draw() {
         Zone deck = Zone.get("deck", duel.getCurrentPlayer());
         Zone hand = Zone.get("hand", duel.getCurrentPlayer());
-        changeZoneOfLastCard(deck, hand, duelMenu);        
-        return new Message(TypeMessage.SUCCESSFUL, "card drawed successfully.");
+        String cardName = changeZoneOfLastCard(deck, hand, duelMenu).getCard().getName();        
+        return new Message(TypeMessage.SUCCESSFUL, "card " + cardName + " drawed successfully.");
     }
 
-    private void changeZoneOfLastCard(Zone origin, Zone destination, DuelMenu duelMenu) {
+    private CardHolder changeZoneOfLastCard(Zone origin, Zone destination, DuelMenu duelMenu) {
         //TODO check reverse effect
-        
-        duel.setMap(Address.get(destination, duel.zoneCardCount().get(destination)), duel.getMap().get(Address.get(origin, duel.zoneCardCount().get(origin) - 1)));
+        return duel.changeZone(getZone(origin).get(getZone(origin).size() - 1).getId(), destination, CardState.NONE, duelMenu);        
     }
 
     public Duel getDuel() {
