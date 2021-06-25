@@ -66,6 +66,7 @@ public class DuelControllerTest {
         {
             alireza.addMainCard(Card.getAllCards().get(i));
         }
+
         a.getDecks().add(alireza);
         a.getDecks().setActiveDeck(a.getDecks().getDeckByName("alireza"));
         b.getDecks().add(alireza);
