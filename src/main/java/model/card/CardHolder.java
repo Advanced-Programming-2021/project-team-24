@@ -63,13 +63,17 @@ public abstract class CardHolder {
     {    
         for(Map.Entry<String, Integer> mapEntry : ageEffects.entrySet())
         {
-            if(ageEffects.get(mapEntry.getKey()) == 1 || ageEffects.get(mapEntry.getKey()) == 0)
-            {
-                ageEffects.put(mapEntry.getKey(), null);
-                cardMap.put(mapEntry.getKey(), null);
-            }
-            if(mapEntry.getValue() != null)
-                ageEffects.put(mapEntry.getKey(), mapEntry.getValue() - 1);
+            try{
+                if(ageEffects.get(mapEntry.getKey()) == 1 || ageEffects.get(mapEntry.getKey()) == 0)
+                {
+                    ageEffects.put(mapEntry.getKey(), null);
+                    cardMap.put(mapEntry.getKey(), null);
+                }
+                if(mapEntry.getValue() != null)
+                    ageEffects.put(mapEntry.getKey(), mapEntry.getValue() - 1);
+            }catch(Exception e){
+                
+            }                
         }
     }
     

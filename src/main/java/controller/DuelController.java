@@ -207,16 +207,21 @@ public class DuelController {
                             {
                                 if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER) == null)
                                 {
-                                    duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(),Zone.get("monster", duel.getCurrentPlayer()),CardState.ATTACK_MONSTER , duelMenu);                                    
+                                    CardHolder temp = duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(),Zone.get("monster", duel.getCurrentPlayer()),CardState.ATTACK_MONSTER , duelMenu);                                    
                                     duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);                                                                
+                                    temp.setMapValue("change_position_turn", "true", 1);
                                     updateAutomaticEffect();
                                 }
                                 else
                                 {
+                                    List<CardHolder> init = getZone(Zone.get("monster", duel.getCurrentPlayer()));
                                     if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER).get(0).isConditionSatisfied(new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER).get(0))))//TODO;
                                     {
+                                        
                                         new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER).get(0)).runEffect();
+                                        List<CardHolder> second =getZone(Zone.get("monster", duel.getCurrentPlayer()));
                                         duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
+                                        delListFromAnother(init, second).get(0).setMapValue("change_position_turn", "true", 1);
                                         updateAutomaticEffect();
                                     }
                                     else
@@ -276,22 +281,45 @@ public class DuelController {
             return new Message(TypeMessage.ERROR, "no card is selected yet");
         }
     }
+    private List<CardHolder> delListFromAnother(List<CardHolder> first, List<CardHolder> second)
+    {
+        List<CardHolder> ans = new ArrayList<>();
+        for(int i = 0; i < first.size(); i++)
+        {
+            int flag = 0;
+            for(int j = 0; j < second.size(); j++)
+            {
+                if(second.get(j).getId() == first.get(i).getId())
+                {
+                    flag = 1;
+                }
+            }
+            if(flag == 0)
+                ans.add(first.get(i));
+        }
+        return ans;
+
+    }
     private Message setMonsterCard()
     {
         if (duel.zoneCardCount().get(Zone.get("monster", duel.getCurrentPlayer())) < 5) {
             if(!duel.getCurrentPlayer().getMap().getBoolMapValue("add_monster_turn"))
-            {
+            {                
                 if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER) == null)
                 {
-                    duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(),Zone.get("monster", duel.getCurrentPlayer()), CardState.SET_DEFENCE, duelMenu);                    
+                    CardHolder temp = duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(),Zone.get("monster", duel.getCurrentPlayer()), CardState.SET_DEFENCE, duelMenu);                    
                     duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);                            
+                    temp.setMapValue("change_position_turn", "true", 1);
                 }
                 else
                 {
+                    List<CardHolder> init = getZone(Zone.get("monster", duel.getCurrentPlayer()));
                     if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0).isConditionSatisfied(new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0))))
-                    {                    
+                    {                                            
                         new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0)).runEffect();
+                        List<CardHolder> second = getZone(Zone.get("monster", duel.getCurrentPlayer()));
                         duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
+                        delListFromAnother(init, second).get(0).setMapValue("change_position_turn", "true", 1);
                     }
                     else
                     {
@@ -366,21 +394,26 @@ public class DuelController {
             if (selected.getOwnerName().equals(duel.getCurrentPlayer().getNickname())) {
                 if (selected.getCardState() != CardState.ACTIVE_MAGIC && selected.getCardState() != CardState.SET_MAGIC) {
                     if (duel.getCurrentPhase().equals(Duel.Phase.MAIN1) || duel.getCurrentPhase().equals(Duel.Phase.MAIN2)) {
-                        if (selected.getCardState() == CardState.SET_DEFENCE || selected.getCardState() == CardState.DEFENCE_MONSTER) {
-                            MonsterCardHolder select = (MonsterCardHolder) selected;
-                            if (selected.getCardState() == CardState.SET_DEFENCE)
-                                select.flip();
-                            activeEffectByEvent(select, Event.FLIP);
-                            select.flipSummon();
-                            activeEffectByEvent(select, Event.FLIP_SUMMON);
-                            eventChainer(select, Event.FLIP_SUMMON);
-                            eventChainer(select, Event.FLIP);
-                            updateAutomaticEffect();
-                            return new Message(TypeMessage.SUCCESSFUL, "flip summoned succssfully");
-                            
-                        } else {
-                            return new Message(TypeMessage.ERROR, "You can't flip summon this card");
+                        if(selected.getCardMap().get("change_position_turn") == null)
+                        {
+                            if (selected.getCardState() == CardState.SET_DEFENCE || selected.getCardState() == CardState.DEFENCE_MONSTER) {
+                                MonsterCardHolder select = (MonsterCardHolder) selected;
+                                if (selected.getCardState() == CardState.SET_DEFENCE)
+                                    select.flip();
+                                activeEffectByEvent(select, Event.FLIP);
+                                select.flipSummon();
+                                activeEffectByEvent(select, Event.FLIP_SUMMON);
+                                eventChainer(select, Event.FLIP_SUMMON);
+                                eventChainer(select, Event.FLIP);
+                                updateAutomaticEffect();
+                                return new Message(TypeMessage.SUCCESSFUL, "flip summoned succssfully");
+                                
+                            } else {
+                                return new Message(TypeMessage.ERROR, "You can't flip summon this card");
+                            }
                         }
+                        else
+                            return new Message(TypeMessage.ERROR, "you changed the direction before");
                     } else {
                         return new Message(TypeMessage.ERROR, "action not allowed in this phase");
                     }
