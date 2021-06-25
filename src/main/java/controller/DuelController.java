@@ -425,60 +425,59 @@ public class DuelController {
         if (attacker != null) {
             if(numberOfEndTurn > 0)
             {
-                if (attacker.getOwnerName().compareTo(duel.getCurrentPlayer().getNickname()) == 0) {
-                    if (!attacker.getCard().isMagic()) {                        
-                        if(opponentCard != null)
-                        {
-                            if(attacker.getCardState().equals(CardState.DEFENCE_MONSTER) || attacker.getCardState().equals(CardState.SET_DEFENCE))
+                if(duel.getCardHolderZone(attacker).getName().equals("monster"))
+                {
+                    if (attacker.getOwnerName().compareTo(duel.getCurrentPlayer().getNickname()) == 0) {
+                        if (!attacker.getCard().isMagic()) {                        
+                            if(opponentCard != null)
                             {
-                                return new Message(TypeMessage.ERROR, "you can't perform attack with defence mosnter");
-                            }
-                            else
-                            {
-                                if(duel.getMap().get(opponentCard) != null)
+                                if(attacker.getCardState().equals(CardState.DEFENCE_MONSTER) || attacker.getCardState().equals(CardState.SET_DEFENCE))
                                 {
-                                    MonsterCardHolder opponent = (MonsterCardHolder) duel.getMap().get(opponentCard);                            
-                                    if (duel.getCardHolderZone(duel.getMap().get(opponentCard)).getName().equals(Zones.MONSTER.getValue())) {
-                                        if (duel.getCurrentPhase().equals(Duel.Phase.BATTLE)) {
-                                            if (attacker.getBoolMapValue("can_attack")) {
-                                                if (opponent.getBoolMapValue("can_be_under_attack")) {
-                                                    if (attacker.getCardState() == CardState.ATTACK_MONSTER) 
-                                                    {
-                                                        attackCalculator(attacker, opponent);
-                                                        updateAutomaticEffect();
-                                                    } else {
-                                                        if(attacker.getBoolMapValue("can_attack_in_defence"))
-                                                        {
-                                                            attackCalculator(attacker, opponent);
-                                                            updateAutomaticEffect();
-                                                        }
-                                                    }
-                                                    return new Message(TypeMessage.SUCCESSFUL, "attacked successfully.");
-                                                } else {
-                                                    return new Message(TypeMessage.ERROR, "This card can't be under attack");
-                                                }
-                                            } else {
-                                                return new Message(TypeMessage.ERROR, "This card can't perform attack");
-                                            }
-                                        } else {
-                                            return new Message(TypeMessage.ERROR, "you can’t do this action in this phase");
-                                        }
-                                    } else {
-                                        return new Message(TypeMessage.ERROR, "Please select card in monster zone");
-                                    }
+                                    return new Message(TypeMessage.ERROR, "you can't perform attack with defence mosnter");
                                 }
                                 else
-                                    return new Message(TypeMessage.ERROR, "Invalid opponent selection");
+                                {
+                                    if(duel.getMap().get(opponentCard) != null)
+                                    {
+                                        MonsterCardHolder opponent = (MonsterCardHolder) duel.getMap().get(opponentCard);                            
+                                        if (duel.getCardHolderZone(duel.getMap().get(opponentCard)).getName().equals(Zones.MONSTER.getValue())) {
+                                            if (duel.getCurrentPhase().equals(Duel.Phase.BATTLE)) {
+                                                if (attacker.getBoolMapValue("can_attack")) {
+                                                    if (opponent.getBoolMapValue("can_be_under_attack")) {
+                                                        if (attacker.getCardState() == CardState.ATTACK_MONSTER) 
+                                                        {
+                                                            return attackCalculator(attacker, opponent);                                                        
+                                                        } else {
+                                                            return attackCalculator(attacker, opponent);                                                            
+                                                        }                                                    
+                                                    } else {
+                                                        return new Message(TypeMessage.ERROR, "This card can't be under attack");
+                                                    }
+                                                } else {
+                                                    return new Message(TypeMessage.ERROR, "This card can't perform attack");
+                                                }
+                                            } else {
+                                                return new Message(TypeMessage.ERROR, "you can’t do this action in this phase");
+                                            }
+                                        } else {
+                                            return new Message(TypeMessage.ERROR, "Please select card in monster zone");
+                                        }
+                                    }
+                                    else
+                                        return new Message(TypeMessage.ERROR, "Invalid opponent selection");
+                                }
                             }
+                            else
+                                return new Message(TypeMessage.ERROR, "invalid card have been selected");
+                        } else {
+                            return new Message(TypeMessage.ERROR, "Please select monster card in monster zone as attacker");
                         }
-                        else
-                            return new Message(TypeMessage.ERROR, "invalid card have been selected");
                     } else {
-                        return new Message(TypeMessage.ERROR, "Please select monster card in monster zone as attacker");
+                        return new Message(TypeMessage.ERROR, "Pleas select your own card as attacker");
                     }
-                } else {
-                    return new Message(TypeMessage.ERROR, "Pleas select your own card as attacker");
                 }
+                else
+                    return new Message(TypeMessage.ERROR, "you can't attack with card in selected zone");
             }
             else
                 return new Message(TypeMessage.ERROR, "you can't perform attack in first turn");
@@ -487,7 +486,7 @@ public class DuelController {
         }        
     }
 
-    private void attackCalculator(MonsterCardHolder attacker, MonsterCardHolder opponent) {
+    private Message attackCalculator(MonsterCardHolder attacker, MonsterCardHolder opponent) {
         //2 poss
         if (opponent.getCardState() == CardState.SET_DEFENCE) {
             opponent.flip();
@@ -500,8 +499,9 @@ public class DuelController {
             temp.add(String.valueOf(attacker.getId()));
             EffectParser underAttackParser = new EffectParser(duelMenu, this, opponent.getEffects().get(Event.UNDER_ATTACK_OWNER).get(0));
             underAttackParser.setExtraKeyWord("attacker", new Gson().toJson(temp));
-            underAttackParser.runEffect();
+            underAttackParser.runEffect();            
             updateAutomaticEffect();
+            return new Message(TypeMessage.SUCCESSFUL, "");
         }
         else
         if(attacker.getEffects().get(Event.ATTACK_OWNER) != null && attacker.getEffects().get(Event.ATTACK_OWNER).size() > 0)
@@ -512,34 +512,41 @@ public class DuelController {
             attackerParse.setExtraKeyWord("under_attack", new Gson().toJson(temp));
             attackerParse.runEffect();
             updateAutomaticEffect();
+            return new Message(TypeMessage.SUCCESSFUL, "");
         }
         else
         {        
             if (opponent.getCardState() == CardState.ATTACK_MONSTER) {
                 int attackAmount = attacker.getAttack();
-                int oppDef = attacker.getAttack();
+                int oppDef = opponent.getAttack();
                 if (oppDef == attackAmount) {
                     duel.changeZone(attacker.getId(), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
                     duel.changeZone(opponent.getId(), Zone.get("graveyard", duel.getOpponent()), CardState.NONE, duelMenu);
+                    return new Message(TypeMessage.SUCCESSFUL, "both you and your opponent monster cards are destroyed and no one recieves damage");
                 } else if (attackAmount > oppDef) {
                     duel.changeZone(opponent.getId(), Zone.get("graveyard", duel.getOpponent()), CardState.NONE, duelMenu);
                     duel.getOpponent().changeLifePoint(-attackAmount + oppDef);
+                    return new Message(TypeMessage.SUCCESSFUL, "your opponent monster is destroyed and recieves" + String.valueOf(attackAmount - oppDef) + " damage");
                 } else {
                     duel.changeZone(attacker.getId(), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
                     duel.getCurrentPlayer().changeLifePoint(attackAmount - oppDef);
+                    return new Message(TypeMessage.SUCCESSFUL, "your card have been destroyed and you recieved" + String.valueOf(oppDef - attackAmount+ " damage"));
                 }
-            } else if (opponent.getCardState() == CardState.DEFENCE_MONSTER) {
+            } else {
                 int attackAmount = attacker.getAttack();
                 int oppDef = attacker.getDefence();
                 if (oppDef == attackAmount) {
+                    return new Message(TypeMessage.SUCCESSFUL, "nothing have happend");
                 } else if (attackAmount > oppDef) {
                     duel.changeZone(opponent.getId(), Zone.get("graveyard", duel.getOpponent()), CardState.NONE, duelMenu);
                     duel.getOpponent().changeLifePoint(-attackAmount + oppDef);
-                } else {
-                    duel.getCurrentPlayer().changeLifePoint(attackAmount - oppDef);
+                    return new Message(TypeMessage.SUCCESSFUL, "opponent card is destroyed and no one recieved damage");
+                } else {                    
+                    duel.getCurrentPlayer().changeLifePoint(attackAmount - oppDef);                    
+                    return new Message(TypeMessage.SUCCESSFUL, "opponent card is not destroyed and you recieved" + String.valueOf(oppDef - attackAmount)+ " damage");
                 }
             }
-            updateAutomaticEffect();
+            
         }
     }
 
@@ -563,11 +570,11 @@ public class DuelController {
                                     card.setMapValue("attack_turn", "true", 1);
                                     duel.getOpponent().changeLifePoint(Integer.parseInt(card.getCardMap().get("attack")));
                                     updateAutomaticEffect();
-                                    return new Message(TypeMessage.SUCCESSFUL, "direct attack performed successfully");
+                                    return new Message(TypeMessage.SUCCESSFUL, "direct attack performed successfully with "+ Integer.parseInt(card.getCardMap().get("attack")) + " inflict damage to opponent");
                                 }
                                 else
                                 {
-                                    return new Message(TypeMessage.ERROR, "this card performed attack in this round before");
+                                    return new Message(TypeMessage.ERROR, "this card performed attack in this round before by card");
                                 }
                             }
                             else
