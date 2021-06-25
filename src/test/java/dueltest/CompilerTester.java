@@ -2,6 +2,7 @@ package dueltest;
 
 import static org.junit.Assert.assertEquals;
 
+import model.user.Player;
 import org.junit.Test;
 
 import controller.DuelController;
@@ -22,8 +23,9 @@ public class CompilerTester {
         user1.getCards().addAll(Card.getAllCards());
         user2.getCards().addAll(Card.getAllCards());        
         System.out.println(user1.getCards().size());
-
-        DuelMenu duelMenu = new DuelMenu(user1, user2);
+        Player player1 = new Player(user1);
+        Player player2 = new Player(user2);
+        DuelMenu duelMenu = new DuelMenu(player1, player2);
         DuelController duelController = duelMenu.getDuelController();
         Duel duel = duelController.getDuel();
         duelController.setDuelMenu(duelMenu);

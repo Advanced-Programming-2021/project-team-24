@@ -55,6 +55,12 @@ public class UserTest {
         user.changeScore(10);
         assertEquals(score + 10, user.getScore());
     }
+    @Test
+    public void increaseCoinTest(){
+        int coin = user.getCoin();
+        user.increaseCoin(100);
+        assertEquals(user.getCoin(), 100 + coin);
+    }
     @AfterClass
     public static void cleanUp(){
         User.deleteUser("salam");

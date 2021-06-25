@@ -16,7 +16,6 @@ public class DuelControllerTest {
     public void nextPhaseTest(){
         User user1 = new User("user1", "aaaaaa", "nickname1");
         User user2 = new User("user2", "aaaaaa", "nickname2");
-        Player player1 = new Player(user1);
         Card axeRaider = Card.getCardByName("Axe Raider");
         Card blackPendant = Card.getCardByName("Black Pendant");
         Deck deck = new Deck("deck");
@@ -27,7 +26,9 @@ public class DuelControllerTest {
         decks.setActiveDeck(deck);
         user1.setDecks(decks);
         user2.setDecks(decks);
-        Duel duel = new Duel(user1, user2);
+        Player player1 = new Player(user1);
+        Player player2 = new Player(user2);
+        Duel duel = new Duel(player1, player2);
         DuelController duelController = new DuelController(duel);
         for (int i = 0; i < 2; i++) duel.nextPhase();
         assertEquals("BATTLE", duelController.nextPhase().getContent());
@@ -49,7 +50,9 @@ public class DuelControllerTest {
         user1.getCards().addAll(Card.getAllCards());
         user2.getCards().addAll(Card.getAllCards());        
         System.out.println(user1.getCards().size());
-        DuelMenu duelMenu = new DuelMenu(user1, user2);
+        Player player1 = new Player(user1);
+        Player player2 = new Player(user2);
+        DuelMenu duelMenu = new DuelMenu(player1, player2);
 
         DuelController duelController = duelMenu.getDuelController();
         Duel duel = duelController.getDuel();

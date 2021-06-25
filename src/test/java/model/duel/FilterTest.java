@@ -1,6 +1,7 @@
 package model.duel;
 
 import model.card.CardType;
+import model.card.monster.MonsterType;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -59,5 +60,10 @@ public class FilterTest {
     public void getOwnerName(){
         filter.setOwnerName("ali");
         assertEquals(filter.getOwnerName(), "ali");
+    }
+    @Test
+    public void getMonsterTypeTest(){
+        filter.setMonsterType(MonsterType.AQUA);
+        assertEquals(MonsterType.AQUA, filter.getMonsterType());
     }
 }

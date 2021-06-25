@@ -32,7 +32,7 @@ public class MagicCardHolderTest {
                 "Description:Destroy all monsters on the field.\n", magicCardHolder.toString());
     }
     @AfterClass
-    public void cleanUp(){
+    public static void cleanUp(){
         User.deleteUser("salam");
     }
 }

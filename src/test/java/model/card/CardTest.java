@@ -58,4 +58,13 @@ public class CardTest {
         String string = "aaa-bbb-ccc ddd eee";
         assertEquals(Card.toEnumsFormatString(string), "AAA_BBB_CCC_DDD_EEE");
     }
+    @Test
+    public void updateCardTest(){
+        Card card = Card.getCardByName("Axe Raider");
+        card.updateCard();
+        assertEquals(card.getCardType(), CardType.MONSTER);
+        card = Card.getCardByName("Dark Hole");
+        card.updateCard();
+        assertEquals(card.getCardType(), CardType.MAGIC);
+    }
 }

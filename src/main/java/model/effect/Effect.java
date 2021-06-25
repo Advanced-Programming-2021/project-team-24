@@ -128,10 +128,6 @@ public class Effect {
     {
         return this.requiredEvents;
     }
-    public String getReverseEffect()
-    {
-        return this.reverse;
-    }
     public String getRequirementCommandString()
     {
         return this.requirement;
