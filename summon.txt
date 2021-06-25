@@ -1,22 +1,13 @@
-if(#Norm(filter("cardNames":["Suijin"]))#>#0#)
-(
-    if(#Norm(filter("cardNames":["Sanga of the Thunder"]))#>#0#)
+changeZone(this,my_monster);
+if(#Norm(filter("cardHolderId":$my_hand$,"cardType":"MONSTER"))#>#0#)
+(    
+    q_yn(do_you_want_to_special_summon_another_monter?)
     (
-        if(#Norm(filter("cardNames":["Kazejin"]))#>#0#)
-        (
-            changeZone(selective(filter("cardNames":["Kazejin"]),1,select_kazejin_for_tribute),my_graveyard);
-            changeZone(selective(filter("cardNames":["Sanga of the Thunder"]),1,select_kazejin_for_tribute),my_graveyard);
-            changeZone(selective(filter("cardNames":["Suijin"]),1,select_kazejin_for_tribute),my_graveyard);
-            changeZone(this,my_monster,SPECIAL_SUMMON);
-        )
-        (
-            message(summon_condition_is_not_satisfied);        
-        )
+        changeZone(selective(filter("cardHolderId":$my_hand$,"cardType":"MONSTER")),my_monster,SPECIAL_SUMMON);
     )
     (
-        message(summon_condition_is_not_satisfied);    
     )
 )
 (
-    message(summon_condition_is_not_satisfied);
+    
 )

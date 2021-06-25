@@ -1,10 +1,1 @@
-changeValue(get(this,warrior),attack,-400);
-set(this,warrior,filter("cardHolderId":$my_monster$,"mosterType":"warrior"));
-changeValue(get(this,warrior),attack,400);
-if(#Norm($my_monster$)#>#1#)
-(
-    set(this,can_be_under_attack,false);
-)
-(
-    set(this,can_be_under_attack,true);
-)
+set(this,attack,sum(filter("cardHolderId":$my_monster$,"cardStates":["ATTACK_MONSTER"]),level) * 300);
