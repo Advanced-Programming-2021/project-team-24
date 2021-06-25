@@ -96,7 +96,7 @@ public class MainMenu extends Menu {
         Filter filter = new Filter();
         filter.setMonsterType(MonsterType.BEAST);        
         System.out.println(new Gson().toJson(filter));
-        MonsterCard current = (MonsterCard) Card.getCardByName("Crab Turtle");
+        MonsterCard current = (MonsterCard) Card.getCardByName("Gate Guardian");
         MonsterCard sampleMonster = (MonsterCard) Card.getCardByName("cardName");
         System.out.println(EffectParser.splitByParentheses("alirez(alir)").get(0));
        

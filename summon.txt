@@ -1,10 +1,17 @@
-if(#Norm(filter("cardNames":["Turtle Oath"])#>#0#)
+if(#Norm(filter("cardNames":["Suijin"]))#>#0#)
 (
-    if(#sum(del(filter("id":$my_hand$,"maxAttack"),this),level)+sum($my_monster$#>#7#)
+    if(#Norm(filter("cardNames":["Sanga of the Thunder"]))#>#0#)
     (
-        selective($my_monster$,0,select_for_tribute_with_sum_of_level_at_least_8,
-        if(#sum(selected,level)#>#7#)(return_t)(return_f));
-        changeZone(this,my_monster,RITUAL_SUMMON);
+        if(#Norm(filter("cardNames":["Kazejin"]))#>#0#)
+        (
+            changeZone(selective(filter("cardNames":["Kazejin"]),1,select_kazejin_for_tribute),my_graveyard);
+            changeZone(selective(filter("cardNames":["Sanga of the Thunder"]),1,select_kazejin_for_tribute),my_graveyard);
+            changeZone(selective(filter("cardNames":["Suijin"]),1,select_kazejin_for_tribute),my_graveyard);
+            changeZone(this,my_monster,SPECIAL_SUMMON);
+        )
+        (
+            message(summon_condition_is_not_satisfied);        
+        )
     )
     (
         message(summon_condition_is_not_satisfied);    
