@@ -57,7 +57,7 @@ public class MainMenu extends Menu {
                 enterMenu("Main", command );
             }
             else {
-                Matcher matcher = Global.getMatcher(command, "duel (?=.*(?:--new))(?=.*(?:--second-player (?<opponentUsername>\\w)))(?=.*(?:--rounds (?<rounds>\\d)))");
+                Matcher matcher = Global.getMatcher(command, "duel (?=.*(?:--new))(?=.*(?:--second-player (?<opponentUsername>\\w+)))(?=.*(?:--rounds (?<rounds>\\d)))");
                 if (matcher.find()) {
                     String opponentUsername = matcher.group("opponentUsername");
                     String rounds = matcher.group("rounds");
@@ -88,7 +88,7 @@ public class MainMenu extends Menu {
         a.getDecks().setActiveDeck(a.getDecks().getDeckByName("alireza"));
         b.getDecks().add(alireza);
         b.getDecks().setActiveDeck(b.getDecks().getDeckByName("alireza"));
-        DuelMenu duelMenu = new DuelMenu(new Player(a), new Player(b));
+        /*DuelMenu duelMenu = new DuelMenu(new Player(a), new Player(b));
         DuelController dControleer = duelMenu.duelController;
         dControleer.select(Address.get(Zone.get("hand", dControleer.getDuel().getCurrentPlayer()), 0));
         dControleer.nextPhase();
@@ -138,11 +138,10 @@ public class MainMenu extends Menu {
         effect.setRequirementString(required);        
         Filter u; 
         
-        /*if(setSummon.length() > 0)
+        if(setSummon.length() > 0)
             current.getEffects().put(Event.SET_OWNER, setSummon);
         if(summon.length() > 0)
             current.getEffects().put(Event.SUMMON_OWNER, summon);
-        */
         if(onFlipOwner.length() > 0)
         {
             //current.getEffects().put(Event.FLIP_OWNER, onFlipOwner);
@@ -155,7 +154,7 @@ public class MainMenu extends Menu {
         String comman = "filter(\"idCardHolder\":$hand$)";
         Duel duel = dControleer.getDuel();
         dControleer.setDuelMenu(duelMenu);
-        /*System.out.println(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5));
+        System.out.println(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5));
 
         dControleer.getDuel().getMap().put(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.HAND));
         dControleer.getDuel().getMap().put(Address.get(Zone.get("monster", duel.getCurrentPlayer()), 3), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.SET_DEFENCE));
@@ -167,14 +166,14 @@ public class MainMenu extends Menu {
         dControleer.select(Address.get(Zone.get("monster", duel.getCurrentPlayer()), 4));
         dControleer.flipSummon();
         */
-        System.out.println(new EffectParser(duelMenu, dControleer, ((MagicCardHolder)dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0))).getEffectManager()).getCommandResult(comman));
-        System.out.println(dControleer.getDuel().getCurrentPlayer().getLifePoint());
-        Filter uu = new Filter();
-        List<String> x = new ArrayList<>();
-        x.add("1");
-        uu.setIdCardHolder(x);
-        System.out.println(new Gson().toJson(uu));
-        System.out.println(dControleer.getDuel().getOpponent().getLifePoint());        
+//        System.out.println(new EffectParser(duelMenu, dControleer, ((MagicCardHolder)dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0))).getEffectManager()).getCommandResult(comman));
+//        System.out.println(dControleer.getDuel().getCurrentPlayer().getLifePoint());
+//        Filter uu = new Filter();
+//        List<String> x = new ArrayList<>();
+//        x.add("1");
+//        uu.setIdCardHolder(x);
+//        System.out.println(new Gson().toJson(uu));
+//        System.out.println(dControleer.getDuel().getOpponent().getLifePoint());
         //duelMenu.run();
         
         //Summon/Set owner: "q_yn(tribitute three cards and remove opponent monster?)(changeZone(select($my_monster$,3,select_for_tribute), $my_graveyard$);set(this,temp,$my_monster$);changeZone(this,my_monster,SET); set(del($my_monster$,get(this,temp),attack,2900);   )   )else()"
