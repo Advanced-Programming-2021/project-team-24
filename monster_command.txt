@@ -1,0 +1,1 @@
+if(#Norm(["1"])#>#1#)()()if(#Norm(["1"])#>#0#)()()message(a);return_t;return_f;filter(id:this);selective(this,0,a);selective(this,0,a,return_t);flip(this);changeValue(this,attack,100);set(this,attack,1000);get(this,attack);draw();coint();dice();del(["1"],["2"]);sum(this,level);1*2;2-20;5+10+15;(10);random_selection(this,0,0);$my_monster$;$opp_monster$;

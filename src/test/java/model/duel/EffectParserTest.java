@@ -16,6 +16,12 @@ import org.junit.Test;
 import view.DuelMenu;
 
 import static org.junit.Assert.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class EffectParserTest {
     User user1 = new User("behzad", "behzad", "behzad");
     User user2 = new User("ali", "ali", "ali");
@@ -118,12 +124,15 @@ public class EffectParserTest {
         set();
         assertEquals("behzad", effectParser.handleChangeLPCommand("behzad"));
         assertEquals(effectParser.changeLP("changeLP"), effectParser.handleChangeLPCommand("changeLP"));
+
     }
     @Test
-    public void handleNormCommandTest(){
+    public void handleNormCommandTest() throws IOException{
         set();
         assertEquals("behzad", effectParser.handleNormCommand("behzad"));
-        System.out.println(effectParser.handleNormCommand("Norm(2)"));
+        assertEquals(effectParser.getCommandResult("Norm([\"2\"])"),"1");
+        String command = new String(Files.readAllBytes(Paths.get(new File("monster_command.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+        effectParser.getCommandResult(command);
 
     }
 }

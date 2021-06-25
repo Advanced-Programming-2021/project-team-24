@@ -289,7 +289,6 @@ public class EffectParser {
                     command = selective(command);
                     continue;
                 }
-                //TODO random_selection
                 if(command.length() >= new String("random_selection").length() && command.substring(0, 16).equals("random_selection"))
                 {
                     command = randomSelection(command);
@@ -340,7 +339,7 @@ public class EffectParser {
                 }
                 command = handleNormCommand(command);                
                 command = handleGetCommand(command);
-                //calculater            
+                command = calculater(command);
             }
             return command;        
         }
