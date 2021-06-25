@@ -1,15 +1,1 @@
-if(#Norm(filter("cardNames":["Turtle Oath"])#>#0#)
-(
-    if(#sum(del(filter("id":$my_hand$,"maxAttack"),this),level)+sum($my_monster$#>#7#))
-    (
-        selective($my_monster$,0,select_for_tribute_with_sum_of_level_at_least_8,
-        if(#sum(selected,level)#>#7#)(return_t)(return_f));
-        changeZone(this,my_monster,RITUAL_SET);
-    )
-    (
-        message(ritual_set_condition_is_not_satisfied);    
-    )
-)
-(
-    message(ritual_set_condition_is_not_satisfied);
-)
+message(you_should_first_special_summon_the_card);

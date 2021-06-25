@@ -474,16 +474,30 @@ public class EffectParser {
             }
             command = command.replace(zone, new Gson().toJson(convertToString(uIntegers), new ArrayList<Integer>().getClass()));
         }
-        ArrayList<String> own = new ArrayList<String>();
+        
+
+        List<String> own_rit_trib = convertToString(getCardHoldersIdList(duelController.getZone(Zone.get("hand", duelController.getDuel().getCurrentPlayer()))));
+        //own_rit_trib = convertToInteger(own_rit_trib
+        List<String> own = new ArrayList<String>();
         own.add(String.valueOf(effectManager.getOwner().getMap().getId()));
         command = command.replace("*own*", new Gson().toJson(own));
 
 
-        ArrayList<String> opp = new ArrayList<String>();
+        List<String> opp = new ArrayList<String>();
         opp.add(String.valueOf(effectManager.getOwner().getMap().getId()));
         command = command.replace("*opp*", new Gson().toJson(opp));
         
         return command;
+    }
+    public List<String> union(List<String> a, List<String> b)
+    {
+        List<String> ans = new ArrayList<>();
+        for(int i = 0; i < a.size(); i++)
+            ans.add(a.get(i));
+        for(int i = 0; i < b.size(); i++)
+            ans.add(b.get(i));
+    
+        return ans;
     }
     public static List<Integer> convertToInteger(List<String> stringNumbers)
     {
@@ -710,6 +724,13 @@ public class EffectParser {
         }
         else
             return filterString;
+    }    
+    public List<Integer> getCardHoldersIdList(List<CardHolder> cardHolders)
+    {
+        List<Integer> ans = new ArrayList<>();
+        for(int i = 0; i < cardHolders.size(); i++)
+            ans.add(cardHolders.get(i).getId());
+        return ans;
     }
     public String getSumOverField(String command)
     {
