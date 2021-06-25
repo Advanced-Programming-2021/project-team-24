@@ -410,7 +410,6 @@ public class EffectParser {
     
     public String normSet(String command)
     {
-
         //Norm(List<E>): return size of List in String integer
         //List<E> set
         Matcher matcher = Global.getMatcher(command, "Norm\\((.+)\\)");

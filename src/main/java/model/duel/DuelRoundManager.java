@@ -19,10 +19,9 @@ public class DuelRoundManager {
         this.userPlayer = new Player(user);
         this.opponentPlayer = new Player(opponent);
         this.rounds = rounds;
-        run();
     }
 
-    private void run() {
+    public void run() {
         for(int i = 0; i < rounds; i++)
         {
             //check who is starter with some coin or ??
@@ -48,17 +47,17 @@ public class DuelRoundManager {
         }
     }
 
-    private boolean isLoser(Player player){
-        if (player.getIsDeadRounds() > rounds/2) return true;
+    public boolean isLoser(Player player){
+        if (player.getIsDeadRounds() > (rounds/2)) return true;
         return false;
     }
-    private void calculateCoin(Player player){
+    public void calculateCoin(Player player){
         if (isLoser(player)){
             player.getUser().increaseCoin(rounds * 100);
         }
-        else player.getUser().changeScore(rounds * (1000 + player.getMaxLifePoint()));
+        else player.getUser().increaseCoin(rounds * (1000 + player.getMaxLifePoint()));
     }
-    private void calculateScore(Player player){
+    public void calculateScore(Player player){
         if (!isLoser(player)) player.getUser().changeScore(rounds * 1000);
     }
 }
