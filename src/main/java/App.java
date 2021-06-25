@@ -23,7 +23,6 @@ public class App {
         decks.setActiveDeck(alireza);
         a.setDecks(decks);
         b.setDecks(decks);
-        System.out.println(a.getUsername());
         new LoginMenu().run();
     }
     
