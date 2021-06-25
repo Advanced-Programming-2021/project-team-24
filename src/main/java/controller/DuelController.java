@@ -106,14 +106,14 @@ public class DuelController {
     }
 
     public Message draw() {
-        if(getZone(Zone.get("hand", duel.getCurrentPlayer())).size() == 7)
+        if(getZone(Zone.get("hand", duel.getCurrentPlayer())).size() == 6)
         {
             List<Integer> ans = new ArrayList<>();
             for(int i = 0; i < getZone(Zone.get("hand", duel.getCurrentPlayer())).size(); i++)
             {
                 ans.add(getZone(Zone.get("hand", duel.getCurrentPlayer())).get(i).getId());
             }
-            duel.changeZone(duelMenu.selective(ans, 1, "please select one card from your hand to reomve", "return_t").get(0), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, null);
+            duel.changeZone(duelMenu.selective(ans, 1, "please select one card from your hand to reomve").get(0), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
 
         }
         Zone deck = Zone.get("deck", duel.getCurrentPlayer());
@@ -230,8 +230,11 @@ public class DuelController {
                                         
                                         new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER).get(0)).runEffect();
                                         List<CardHolder> second =getZone(Zone.get("monster", duel.getCurrentPlayer()));
-                                        duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
-                                        delListFromAnother(init, second).get(0).setMapValue("change_position_turn", "true", 1);
+                                        if(delListFromAnother(init, second).size() > 0)
+                                        {
+                                            duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
+                                            delListFromAnother(init, second).get(0).setMapValue("change_position_turn", "true", 1);
+                                        }
                                         updateAutomaticEffect();
                                     }
                                     else
@@ -328,8 +331,11 @@ public class DuelController {
                     {                                            
                         new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0)).runEffect();
                         List<CardHolder> second = getZone(Zone.get("monster", duel.getCurrentPlayer()));
-                        duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
-                        delListFromAnother(init, second).get(0).setMapValue("change_position_turn", "true", 1);
+                        if(delListFromAnother(init, second).size() > 0)
+                        {
+                            duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
+                            delListFromAnother(init, second).get(0).setMapValue("change_position_turn", "true", 1);
+                        }                        
                     }
                     else
                     {
@@ -526,6 +532,7 @@ public class DuelController {
         }
         else
         {        
+            attacker.setMapValue("change_position_turn", "0", 1);
             if (opponent.getCardState() == CardState.ATTACK_MONSTER) {
                 int attackAmount = attacker.getAttack();
                 int oppDef = opponent.getAttack();

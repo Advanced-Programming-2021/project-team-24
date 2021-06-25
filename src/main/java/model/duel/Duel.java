@@ -28,6 +28,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.common.util.concurrent.ExecutionError;
+
 
 public class Duel {
     Player user;
@@ -276,18 +278,23 @@ public class Duel {
                 }
                 else
                 {
+                    
                     MonsterCardHolder monster = (MonsterCardHolder)getCardHolderById(cardHolderId);
-                    for(Event event : monster.getEffects().keySet())
-                    {
-                        if(monster.getEffects().get(event) != null)
-                            for(int i = 0; i < monster.getEffects().get(event).size(); i++)
-                            {
-                                if(monster.getEffects().get(event).get(i).getEffect().getReverse() != null)
+                    try{
+                        for(Event event : monster.getEffects().keySet())
+                        {
+                            if(monster.getEffects().get(event) != null)
+                                for(int i = 0; i < monster.getEffects().get(event).size(); i++)
                                 {
-                                    new EffectParser(duelMenu, duelMenu.getDuelController(), monster.getEffects().get(event).get(i)).getCommandResult(monster.getEffects().get(event).get(i).getEffect().getReverse());
+                                    if(monster.getEffects().get(event).get(i).getEffect().getReverse() != null)
+                                    {
+                                        new EffectParser(duelMenu, duelMenu.getDuelController(), monster.getEffects().get(event).get(i)).getCommandResult(monster.getEffects().get(event).get(i).getEffect().getReverse());
+                                    }
                                 }
-                            }
-                    }
+                        }
+                    }catch(Exception e){
+                        
+                    }                    
                 }                
                 CardHolder ans = addCard(getCardHolderById(cardHolderId).getCard(), targetZone, cardState);
                 removeCardHolderById(cardHolderId);
