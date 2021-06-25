@@ -124,5 +124,6 @@ public class EffectParserTest {
         set();
         assertEquals("behzad", effectParser.handleNormCommand("behzad"));
         System.out.println(effectParser.handleNormCommand("Norm(2)"));
+
     }
 }
