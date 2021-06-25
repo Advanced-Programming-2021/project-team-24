@@ -6,10 +6,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
+import com.google.gson.internal.Excluder;
+
 import model.deck.*;
 import controller.Message;
 import model.card.*;
@@ -21,8 +26,8 @@ public class User {
     private String password;
     private int score;
     private int coin;
-    private List<String> cardNames;
-    private List<Card> cards;//fill it after reading json
+    private List<String> cardNames;    
+    private transient List<Card> cards;// fill it after reading json
     private Decks decks = new Decks();
     private static List<String> usernames = new ArrayList<>();
     static{
@@ -71,7 +76,13 @@ public class User {
             File file = new File("users/"+this.username+".json");
             file.createNewFile();
             FileWriter fileWriter = new FileWriter(file);
+            List<Card> u = new ArrayList<>();
+            Collections.copy(u, this.cards);                        
+            this.cards = null;
+            
             fileWriter.write(new Gson().toJson(this));
+            
+            this.cards = u;
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,11 +102,12 @@ public class User {
             for(File file : filesList) {
                 String json = new String(Files.readAllBytes(Paths.get(file.getPath())));
                 User user = new Gson().fromJson(json, User.class);
-                usernames.add(user.getUsername());
+                if(user != null)
+                    usernames.add(user.getUsername());
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }     
     }
     public static User getUserByNameAndPassword(String username, String password) {
         User loging = readUser(username);
@@ -132,7 +144,23 @@ public class User {
             File file = new File("users/"+username+".json");
             if (file.exists()) {
                 String json = new String(Files.readAllBytes(Paths.get("users/" + username + ".json")));
-                return new Gson().fromJson(json, User.class);
+                User temp = new Gson().fromJson(json, User.class);
+                for(int i = 0; i < temp.cardNames.size(); i++)
+                {
+                    temp.cards.add(Card.getCardByName(temp.cardNames.get(i)));
+                }
+                for(int j = 0; j < temp.decks.getDecks().size(); j++)
+                {
+                    for(int i = 0; i < temp.getDecks().getDecks().get(j).getMainCardName().size(); i++)
+                    {
+                        temp.getDecks().getDecks().get(j).getMainCards().add(Card.getCardByName(temp.getDecks().getDecks().get(j).getMainCardName().get(i)));                        
+                    }
+                    for(int i = 0; i < temp.getDecks().getDecks().get(j).getSideCardName().size(); i++)
+                    {
+                        temp.getDecks().getDecks().get(j).getSideCards().add(Card.getCardByName(temp.getDecks().getDecks().get(j).getSideCardName().get(i)));
+                    }
+                }
+                return temp;
             }
             else return null;
         } catch (IOException e) {

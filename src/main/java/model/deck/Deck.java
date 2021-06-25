@@ -6,14 +6,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Deck {
-    private String name;
-    private List<Card> mainCards;
-    private List<Card> sideCards;
+    private String name;    
+    private List<String> mainCardName;
+    private List<String> sideCardName;
+
+    public List<String> getMainCardName() {
+        return this.mainCardName;
+    }
+
+    public void setMainCardName(List<String> mainCardName) {
+        this.mainCardName = mainCardName;
+    }
+
+    public List<String> getSideCardName() {
+        return this.sideCardName;
+    }
+
+    public void setSideCardName(List<String> sideCardName) {
+        this.sideCardName = sideCardName;
+    }
+ 
+    private transient List<Card> mainCards;
+    private transient List<Card> sideCards;
 
     public Deck(String name) {
         this.name = name;
         this.mainCards = new ArrayList<Card>();
         this.sideCards = new ArrayList<Card>();
+        this.mainCardName = new ArrayList<>();
+        this.sideCardName = new ArrayList<>();
     }
 
     public String getName() {
@@ -44,18 +65,22 @@ public class Deck {
 
     public void addMainCard(Card card) {
         this.mainCards.add(card);
+        this.mainCardName.add(card.getName());
     }
 
     public void addSideCard(Card card) {
         this.sideCards.add(card);
+        this.sideCardName.add(card.getName());
     }
 
     public void removeMainCard(Card card) {
         this.mainCards.remove(card);
+        this.mainCardName.remove(card.getName());
     }
 
     public void removeSideCard(Card card) {
         this.sideCards.remove(card);
+        this.sideCardName.remove(card.getName());
     }
 
     public boolean canChangeCards(Card main, Card side){
