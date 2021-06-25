@@ -284,6 +284,10 @@ public class EffectParser {
                     ans = "true";
                     return "true";
                 }
+                if(Global.regexFind(command, "changeValue\\(.+\\)"))
+                {
+                    command = changeValue(command);
+                }
                 if(command.length() >= new String("select").length() && command.substring(0, 6).equals("select"))
                 {
                     command = selective(command);
@@ -591,34 +595,6 @@ public class EffectParser {
         list.add(command.substring(pre, command.length()));
         return list;
     }
-    public static List<String> splitByBracket(String command)
-    {
-        List<String> ans = new ArrayList<String>();
-        int pre = command.indexOf('{', 0);
-        int counter = 0;
-        for(int i = pre; i < command.length(); i++)
-        {
-            int flag = 0;
-            if(command.charAt(i) == '}' || command.charAt(i) == ')')
-            {
-                flag = 1;
-                counter--;
-            }
-            if(command.charAt(i) == '{' || command.charAt(i) == '(')
-            {
-                if(counter == 0)
-                    pre = i + 1;
-                flag = 1;   
-                counter++;
-            }
-            if(counter == 0 && flag == 1)
-            {
-                ans.add(command.substring(pre, i));
-                pre = i + 1;
-            }
-        }
-        return ans;
-    }
     public static List<String> splitByParentheses(String command)
     {
         List<String> ans = new ArrayList<String>();
@@ -758,11 +734,7 @@ public class EffectParser {
     public static void main(String[] args) {
         System.out.println(calculater("10-(10+10)"));
     }
-    public Integer sumCommand(String command)
-    {
-        //sum(List<>, "key") e.g : sum(List<>, "level");
-        return null;
-    }
+
     public Zone parseZone(String josn, Integer cardHolderId){
         String[] zoneArgument = josn.split("_");
         Player player = null;
