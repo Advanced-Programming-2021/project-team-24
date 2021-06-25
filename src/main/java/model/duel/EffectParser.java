@@ -49,7 +49,6 @@ public class EffectParser {
     }
     public EffectParser(DuelMenu duelMenu, DuelController duelController, EffectManager effectManager)
     {
-        
         this.extraKeyWords = effectManager.getExtraKeyWords();
         this.idCardHolderOwner = effectManager.getOwnerCardHolderId();
         this.effect = effectManager.getEffect();

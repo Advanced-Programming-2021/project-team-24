@@ -197,6 +197,7 @@ public class User {
     public void changeScore(int changeScore)
     {
         this.score += changeScore;
+        addUser();
     }
 
     public void changeNickname(String nickname){
@@ -209,6 +210,7 @@ public class User {
     }
     public void setDecks(Decks decks){
         this.decks = decks;
+        addUser();
     }
     //for test
     public static void deleteUser(String username){
@@ -221,8 +223,10 @@ public class User {
     }
     public void setCoin(int coin){
         this.coin = coin;
+        addUser();
     }
     public void increaseCoin(int increment){
         this.coin += increment;
+        addUser();
     }
 }

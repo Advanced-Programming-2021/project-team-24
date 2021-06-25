@@ -37,13 +37,15 @@ public class test {
         User.register("alireza", "haqi", "hesam");
         User a = User.readUser("alireza");
         User b= User.readUser("behzad");
-        DuelMenu duelMenu = new DuelMenu(a, b);
+        Player playerA = new Player(a);
+        Player playerB = new Player(b);
+        DuelMenu duelMenu = new DuelMenu(playerA, playerB);
         
         MonsterCardHolder temp = new MonsterCardHolder(duelMenu.getPlayer(true), u, CardState.ATTACK_MONSTER);
         //User a = new User("alireza", "haqi", "alirezaaaaa");
         //User b = new User("b   ", "b " , "alirezaa aaa aa a ");        
         
-        Effect effect = new Effect();
+        Effect effect = new Effect("");
         effect.setEffect("if(#1#>#2#)&return_t&else&return_f&");
         effect.setReverse("if(#1#>#2#)&return_t&else&return_f&");
         effect.setEffectType(EffectType.CONTINUES);
@@ -68,7 +70,9 @@ public class test {
         User.register("alireza", "haqi", "hesam");
         User a = User.readUser("alireza");
         User b= User.readUser("behzad");
-        DuelMenu duelMenu = new DuelMenu(a, b);
+        Player playerA = new Player(a);
+        Player playerB = new Player(b);
+        DuelMenu duelMenu = new DuelMenu(playerA, playerB);
         
         MonsterCardHolder temp = new MonsterCardHolder(duelMenu.getPlayer(true), u, CardState.ATTACK_MONSTER);
         
@@ -93,11 +97,13 @@ public class test {
         User.register("alireza", "haqi", "hesam");
         User a = User.readUser("alireza");
         User b= User.readUser("behzad");
-        DuelMenu duelMenu = new DuelMenu(a, b);
+        Player playerA = new Player(a);
+        Player playerB = new Player(b);
+        DuelMenu duelMenu = new DuelMenu(playerA, playerB);
         
         MonsterCardHolder temp = new MonsterCardHolder(duelMenu.getPlayer(true), u, CardState.ATTACK_MONSTER);
         
-        Effect effect = new Effect();
+        Effect effect = new Effect("");
         effect.setEffect("set(boz,1300);set(hesam,bemazeh);");
         effect.setReverse("set(boz,1300);set(hesam,bemazeh);");
         effect.setEffectType(EffectType.CONTINUES);
