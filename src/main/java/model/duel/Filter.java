@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import model.card.CardHolder;
@@ -82,7 +83,11 @@ public class Filter {
     public void setMinAttack(Integer minAttack) {
         this.minAttack = minAttack;
     }
-
+    public static void main(String[] args) {
+        Filter x = new Filter();
+        x.setMaxAttack(1000);   
+        System.out.println(new Gson().toJson(x));
+    }
     public Integer getMaxAttack() {
         return this.maxAttack;
     }

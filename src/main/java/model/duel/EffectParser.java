@@ -174,18 +174,6 @@ public class EffectParser {
         //advanced mode : changeZone(List<>, target_zone, Card_State);
         //for putting card in monster zone this part is needed
     }
-    public void addEffectCommand(String command)
-    {   
-        //add(List<E> ,Event, Effect);
-        Matcher matcher = Global.getMatcher("add", "add\\((.+)\\)");
-        if(matcher.find())
-        {
-            List<String> arguemnts = splitCorrect(matcher.group(1), ',');
-            List<Integer> card = getArray(arguemnts.get(0));
-            Event event = new Gson().fromJson(arguemnts.get(1), Event.class);
-            Effect effect = new Gson().fromJson(arguemnts.get(2), Effect.class);            
-        }
-    }
     public String changeLP(String command)
     {
         //changeLp

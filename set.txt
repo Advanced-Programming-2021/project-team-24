@@ -1,18 +1,15 @@
-q_yn(do_you_want_to_normal_summon_this_card_with_no_tribute?)
+if(#Norm(filter("cardNames":["Turtle Oath"])#>#0#)
 (
-    set(*own*,a,$my_monster$);
-    changeZone(this,my_monster,SET_MONSTER);
-    set(del($my_monster$, get(*own*,a)),attack,1900);
+    if(#sum(del(filter("id":$my_hand$,"maxAttack"),this),level)+sum($my_monster$#>#7#))
+    (
+        selective($my_monster$,0,select_for_tribute_with_sum_of_level_at_least_8,
+        if(#sum(selected,level)#>#7#)(return_t)(return_f));
+        changeZone(this,my_monster,RITUAL_SET);
+    )
+    (
+        message(ritual_set_condition_is_not_satisfied);    
+    )
 )
 (
-    if(#Norm($my_monster$)#>#2#)
-    (&
-        changeZone(select($my_monster$,3,select_for_tribute),my_graveyard);
-        changeZone(this,my_monster,SET_MONSTER);
-        changeZone($opp_monster$,opp_graveyard);
-    &)
-    else 
-    (&
-    message(you_don't_have_enoguh_monster)
-    &)
+    message(ritual_set_condition_is_not_satisfied);
 )

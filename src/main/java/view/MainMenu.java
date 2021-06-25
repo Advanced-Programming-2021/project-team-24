@@ -96,11 +96,10 @@ public class MainMenu extends Menu {
         Filter filter = new Filter();
         filter.setMonsterType(MonsterType.BEAST);        
         System.out.println(new Gson().toJson(filter));
-        MagicCard current = (MagicCard) Card.getCardByName("Pot of Greed");
+        MonsterCard current = (MonsterCard) Card.getCardByName("Crab Turtle");
         MonsterCard sampleMonster = (MonsterCard) Card.getCardByName("cardName");
         System.out.println(EffectParser.splitByParentheses("alirez(alir)").get(0));
-        dControleer.getDuel().getMap().put(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0), new MagicCardHolder(dControleer.getDuel().getCurrentPlayer(), (MagicCard)current ,CardState.SET_MAGIC));
-        dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0));
+       
         dControleer.nextPhase();
         dControleer.nextPhase();
         
@@ -114,7 +113,7 @@ public class MainMenu extends Menu {
         String summon = "";        
         String onFlipOwner = "";
         Effect checkForDeath = new Effect("");
-        
+        String any = "";
 
         
         System.out.println();
@@ -122,17 +121,20 @@ public class MainMenu extends Menu {
         //effect.setRequiredEvent(u);
         //effect.setAskForActivation(false);
         try {
-
-            //summon = new String(Files.readAllBytes(Paths.get(new File("summon6.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
-            mainEffect = new String(Files.readAllBytes(Paths.get(new File("effect.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
-            required = new String(Files.readAllBytes(Paths.get(new File("required.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
-            reverse = new String(Files.readAllBytes(Paths.get(new File("reverse.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            //any = new String(Files.readAllBytes(Paths.get(new File("any.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            summon = new String(Files.readAllBytes(Paths.get(new File("summon.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            //mainEffect = new String(Files.readAllBytes(Paths.get(new File("effect.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            //required = new String(Files.readAllBytes(Paths.get(new File("required.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            //reverse = new String(Files.readAllBytes(Paths.get(new File("reverse.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
 
             //onFlipOwner = new String(Files.readAllBytes(Paths.get(new File("flip.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
-            //setSummon = new String(Files.readAllBytes(Paths.get(new File("set6.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            setSummon = new String(Files.readAllBytes(Paths.get(new File("set.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
         } catch (Exception e) {
             //TODO: handle exception
         }
+        //current.getEffects().put(Event.ANY, any);
+        current.getEffects().put(Event.SUMMON_OWNER, summon);
+        current.getEffects().put(Event.SET_OWNER, setSummon);
         effect.setEffect(mainEffect);
         effect.setReverse(reverse);
         effect.setRequirementString(required);        
@@ -147,7 +149,7 @@ public class MainMenu extends Menu {
         {
             //current.getEffects().put(Event.FLIP_OWNER, onFlipOwner);
         }
-        current.setEffect(effect);
+
         //String eff = "if(#get(this,activated)#>##)(if(#Norm(Filter(Id:get(this,equipped)))#<#1#)(changeZone(this,my_graveryard))())()";
         //current.getEffects().put(Event.ANY, eff);
         current.updateCard();        
@@ -167,7 +169,6 @@ public class MainMenu extends Menu {
         dControleer.select(Address.get(Zone.get("monster", duel.getCurrentPlayer()), 4));
         dControleer.flipSummon();
         */
-        System.out.println(new EffectParser(duelMenu, dControleer, ((MagicCardHolder)dControleer.getDuel().getMap().get(Address.get(Zone.get("magic", dControleer.getDuel().getCurrentPlayer()), 0))).getEffectManager()).getCommandResult(comman));
         System.out.println(dControleer.getDuel().getCurrentPlayer().getLifePoint());
         Filter uu = new Filter();
         List<String> x = new ArrayList<>();
