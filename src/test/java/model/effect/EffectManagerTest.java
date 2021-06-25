@@ -50,6 +50,10 @@ public class EffectManagerTest {
     public void isConditionSatisfied(){
 
     }
+    @Test
+    public void isConditionSatisfiedTest(){
+
+    }
     @AfterClass
     public static void cleanUp(){
         User.deleteUser("salam");
