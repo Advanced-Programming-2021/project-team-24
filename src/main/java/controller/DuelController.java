@@ -106,6 +106,16 @@ public class DuelController {
     }
 
     public Message draw() {
+        if(getZone(Zone.get("hand", duel.getCurrentPlayer())).size() == 7)
+        {
+            List<Integer> ans = new ArrayList<>();
+            for(int i = 0; i < getZone(Zone.get("hand", duel.getCurrentPlayer())).size(); i++)
+            {
+                ans.add(getZone(Zone.get("hand", duel.getCurrentPlayer())).get(i).getId());
+            }
+            duel.changeZone(duelMenu.selective(ans, 1, "please select one card from your hand to reomve", "return_t").get(0), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, null);
+
+        }
         Zone deck = Zone.get("deck", duel.getCurrentPlayer());
         Zone hand = Zone.get("hand", duel.getCurrentPlayer());
         String cardName = changeZoneOfLastCard(deck, hand, duelMenu).getCard().getName();        

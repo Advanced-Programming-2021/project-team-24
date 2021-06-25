@@ -117,7 +117,7 @@ public class DuelMenu {
                         continue;
                     }
 
-                    matcher = Global.getMatcher(command, "set --position (?<position>attack|defense)");
+                    matcher = Global.getMatcher(command, "set --position (?<position>attack|defence)");
                     if (matcher.find()) {
                         System.out.println(duelController.changePosition().getContent());
                         continue;
