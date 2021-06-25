@@ -1,6 +1,7 @@
 package controller;
 
 import model.deck.Deck;
+import model.duel.DuelRoundManager;
 import model.user.User;
 import view.DuelMenu;
 
@@ -14,7 +15,7 @@ public class MainMenuController {
                     if(userDeck.isValid()){
                         if(opponentDeck.isValid()){
                             if(rounds.equals("1") || rounds.equals("3")){
-                                //new DuelMenu(user,opponent).run();
+                                new DuelRoundManager(user, opponent, Integer.parseInt(rounds)).run();
                                 //TODO                                
                                 return null;
                             }
