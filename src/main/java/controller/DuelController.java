@@ -113,7 +113,7 @@ public class DuelController {
             {
                 ans.add(getZone(Zone.get("hand", duel.getCurrentPlayer())).get(i).getId());
             }
-            duel.changeZone(duelMenu.selective(ans, 1, "please select one card from your hand to reomve", "return_t").get(0), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, null);
+            duel.changeZone(duelMenu.selective(ans, 1, "please select one card from your hand to reomve").get(0), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
 
         }
         Zone deck = Zone.get("deck", duel.getCurrentPlayer());
