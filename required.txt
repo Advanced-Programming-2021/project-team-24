@@ -1,1 +1,1 @@
-if(#$my_hand$#>#0#)(return_t;)(return_f;)
+return_t;set(this,monster,$my_monster$);

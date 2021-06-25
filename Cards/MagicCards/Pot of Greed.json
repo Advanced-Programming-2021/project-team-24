@@ -1,1 +1,1 @@
-{"magicIcon":"Normal","magicType":"Spell","name":"Pot of Greed","description":"Draw 2 cards.","price":2500,"limitType":"Limited","cardType":"MAGIC"}
+{"effect":{"requirement":"return_t;","effect":"draw();draw();","askForActivation":false,"name":"","reverse":"","askAbleMessage":"","requiredEvents":[],"speed":1},"magicIcon":"Normal","magicType":"Spell","name":"Pot of Greed","description":"Draw 2 cards.","price":2500,"limitType":"Limited","cardType":"MAGIC"}

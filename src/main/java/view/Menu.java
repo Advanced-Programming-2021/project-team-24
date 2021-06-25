@@ -1,14 +1,27 @@
 package view;
 
 
+import model.card.CardState;
+import model.duel.Filter;
 import model.user.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
+
+import com.google.gson.Gson;
 
 public class Menu {
     protected User user;
     public Menu(User user){
         this.user = user;
+    }
+    public static void main(String[] args) {
+        Filter s = new Filter();
+        List<CardState> j = new ArrayList<CardState>();
+        j.add(CardState.ATTACK_MONSTER);
+        s.setCardStates(j);
+        System.out.println(new Gson().toJson(s));
     }
     public boolean checkMenuExit(String command){
         if(command.compareToIgnoreCase("menu exit") == 0) return true;

@@ -315,16 +315,22 @@ public class DuelController {
     {
         if(((MagicCard) duel.getMap().get(getSelectedAddress()).getCard()).getEffect().getEffectType() == EffectType.FIELD)
         {
-            MagicCardHolder added;
-            if(getZone(Zone.get("field", duel.getCurrentPlayer())).size() > 0)
-            {                                   
-                MagicCardHolder temp = (MagicCardHolder)getZone(Zone.get("field", duel.getCurrentPlayer())).get(0);                
-                duel.changeZone(temp.getId(), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
-                
+            if(duel.getCurrentPlayer().getMap().getBoolMapValue("can_active_field"))
+            {
+                MagicCardHolder added;
+                if(getZone(Zone.get("field", duel.getCurrentPlayer())).size() > 0)
+                {                                   
+                    MagicCardHolder temp = (MagicCardHolder)getZone(Zone.get("field", duel.getCurrentPlayer())).get(0);                
+                    duel.changeZone(temp.getId(), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
+                    
+                }
+                added = (MagicCardHolder) duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(), Zone.get("field", duel.getCurrentPlayer()), CardState.ACTIVE_MAGIC, duelMenu);                
+                new EffectChainer(Event.ACTIVE_SPELL, added, duel.getOpponent(), this).askForChain(duel.getOpponent());
+                updateAutomaticEffect();
             }
-            added = (MagicCardHolder) duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(), Zone.get("field", duel.getCurrentPlayer()), CardState.ACTIVE_MAGIC, duelMenu);                
-            new EffectChainer(Event.ACTIVE_SPELL, added, duel.getOpponent(), this).askForChain(duel.getOpponent());
-            updateAutomaticEffect();
+            else
+                return new Message(TypeMessage.ERROR, "you can't active field card");
+            
         }
         else
         if (duel.zoneCardCount().get(Zone.get("magic", duel.getCurrentPlayer())) < 5) {

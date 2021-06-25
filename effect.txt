@@ -1,2 +1,7 @@
-changeZone(select($my_hand$,1,select_one_card_for_discard),my_graveyard)
-changeZone(select($magic$,2,select_two_card_for_delete),owner_graveyard);
+if(#Norm($my_monster$)#<##)
+(
+
+)
+(
+
+)

@@ -2,10 +2,6 @@ package view;
 
 import java.util.regex.Matcher;
 
-import controller.Message;
-import controller.TypeMessage;
-import model.user.User;
-
 import controller.LoginController;
 
 public class LoginMenu {

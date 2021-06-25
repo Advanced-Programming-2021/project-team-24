@@ -1,5 +1,6 @@
 package model.duel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,16 @@ public class EffectParser {
     public DuelController getDuelController()
     {
         return this.duelController;
+    }
+    public String draw(String command)    
+    {
+        if(Global.regexFind(command, "draw()"))
+        {
+            duelController.draw();
+            command.replace("draw()", "");
+        }
+        return command;
+
     }
     public EffectParser(DuelMenu duelMenu, DuelController duelController, EffectManager effectManager)
     {
@@ -278,9 +289,10 @@ public class EffectParser {
         {
             command = command.replace(" ", "");
             //check get
+            command = draw(command);
             for(int i = 0; i < 4; i++)
             {
-                
+                command = parseKeyWords(command);
                 command =  handleMessage(command);
                 if(command.length() >= 8 && command.substring(0, 8).equals("return_t") && ans == null)
                 {
@@ -342,8 +354,7 @@ public class EffectParser {
                 {
                     command = getSumOverField(command);
                 }
-                command = handleNormCommand(command);
-                command = parseKeyWords(command);
+                command = handleNormCommand(command);                
                 command = handleGetCommand(command);
                 //calculater            
             }
@@ -512,7 +523,20 @@ public class EffectParser {
         List<Integer> cardHolders = getArray(fields.get(0));
         String key = fields.get(1);
         String value = getCommandResult(fields.get(2));
-        duelController.getDuel().setterMap(cardHolders, key, value, 1);//TODO
+        if(fields.size() == 3)
+        {
+            duelController.getDuel().setterMap(cardHolders, key, value, 1);//TODO
+        }
+        else
+        {
+            Integer time = 1;
+            try {
+                time = Integer.parseInt(fields.get(3));
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+            duelController.getDuel().setterMap(cardHolders, key, value, time);
+        }
         //set("List<>" , "key" , "value"):rev(List<E>, "key", value);
     }
     public String getCommand(String getCommand)
@@ -649,12 +673,31 @@ public class EffectParser {
         }
         return command;
     }   
-    public String changeVal(String command)
+    public String changeValue(String command)
     {
         //changeValue(List<E>,key,change);
-        if(Global.regexFind(command, "changeValue\\((.+)\\)"))
+        if(Global.regexFind(command, "changeValue\\(([^()]+)\\)"))
         {
-            Matcher matcher = Global.getMatcher(command, "changeValue\\((.+)\\)");
+            Matcher matcher = Global.getMatcher(command, "changeValue\\(([^()]+)\\)");
+            matcher.find();
+            List<String> fields = splitCorrect(matcher.group(1), ',');
+            List<Integer> idCardHolders = getArray(getCommandResult(fields.get(0)));
+            String key = fields.get(1);
+            String value = getCommandResult(fields.get(2));
+            if(fields.size() == 3)
+            {
+                duelController.getDuel().changerMap(idCardHolders, key, value, 1);
+            }
+            else
+            {
+                Integer time = 1;
+                try {
+                    time = Integer.parseInt(fields.get(3));
+                } catch (Exception e) {
+                    //TODO: handle exception
+                }
+                duelController.getDuel().changerMap(idCardHolders, key, value, time);
+            }
         }
         return command;
     }

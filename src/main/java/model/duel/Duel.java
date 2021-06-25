@@ -322,6 +322,28 @@ public class Duel {
             }
         }
     }
+    public void changerMap(List<Integer> cardHolders, String key, String value, Integer time)
+    {
+        for (int i = 0; i < cardHolders.size(); i++) {
+            Integer integer = cardHolders.get(i);
+            if (getCardHolderById(integer) != null) {
+                if(getCardHolderById(integer).getCardMap().get(key) == null)
+                    getCardHolderById(integer).setMapValue(key, value, time);
+                else
+                {
+                    try {
+                        Integer nValue = Integer.parseInt(getCardHolderById(integer).getCardMap().get(key));
+                        nValue += Integer.parseInt(value);
+                        getCardHolderById(integer).setMapValue(key,String.valueOf(nValue), time);    
+                    } catch (Exception e) {
+                        //TODO: handle exception
+                    }
+                    
+                }
+
+            }
+        }
+    }
 
     public String getterMap(List<Integer> cardHolders, String key) {
         if (cardHolders == null || cardHolders.size() == 0)
