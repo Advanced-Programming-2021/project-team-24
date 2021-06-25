@@ -235,6 +235,8 @@ public class DuelController {
                                             duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
                                             delListFromAnother(init, second).get(0).setMapValue("change_position_turn", "true", 1);
                                         }
+                                        else
+                                            return new Message(TypeMessage.ERROR, "you weren't able to summon");
                                         updateAutomaticEffect();
                                     }
                                     else
@@ -335,7 +337,10 @@ public class DuelController {
                         {
                             duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
                             delListFromAnother(init, second).get(0).setMapValue("change_position_turn", "true", 1);
-                        }                        
+                        }            
+                        else
+                            return new Message(TypeMessage.ERROR,"you coudln't set the card");
+                        updateAutomaticEffect();            
                     }
                     else
                     {
@@ -585,7 +590,7 @@ public class DuelController {
                                 if(!card.getBoolMapValue("attack_turn"))
                                 {
                                     card.setMapValue("attack_turn", "true", 1);
-                                    duel.getOpponent().changeLifePoint(Integer.parseInt(card.getCardMap().get("attack")));
+                                    duel.getOpponent().changeLifePoint(-Integer.parseInt(card.getCardMap().get("attack")));
                                     updateAutomaticEffect();
                                     return new Message(TypeMessage.SUCCESSFUL, "direct attack performed successfully with "+ Integer.parseInt(card.getCardMap().get("attack")) + " inflict damage to opponent");
                                 }
