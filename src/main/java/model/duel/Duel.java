@@ -455,7 +455,7 @@ public class Duel {
     }
 
     public boolean isRoundFinished() {
-        if (currentPhase == Phase.END && (user.isDead() || opponent.isDead())) return true;
+        if (currentPhase == Phase.END && (getCurrentPlayer().isDead() || getOpponent().isDead())) return true;
         return false;
     }
 

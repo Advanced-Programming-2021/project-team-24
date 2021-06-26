@@ -79,7 +79,7 @@ public class DuelControllerTest {
             duelController.select(Address.get(Zone.get("hand", duelController.getDuel().getCurrentPlayer()), 0));
             duelController.set();
             duelController.summon();
-            duelController.attack(address);
+            //if (duelController.get)duelController.attack(address);
             duelController.changePosition();
             duelController.showSelectedCard();
             duelController.directAttack();
