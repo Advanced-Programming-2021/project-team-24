@@ -91,7 +91,7 @@ public class Effect {
         speed = 1;
         askAbleMessage = "";
         requirement = "return_t";        
-    }    
+    }
     public Integer getSpeed() {
         return this.speed;
     }

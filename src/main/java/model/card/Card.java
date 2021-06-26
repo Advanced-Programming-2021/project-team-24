@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream.PutField;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -18,7 +19,9 @@ import com.google.gson.annotations.SerializedName;
 
 import model.card.magic.LimitType;
 import model.card.magic.MagicCard;
+import model.card.magic.MagicIcon;
 import model.card.monster.MonsterCard;
+import model.effect.EffectType;
 
 
 
@@ -39,6 +42,13 @@ public abstract class Card {
     }
     static
     {
+        HashMap<MagicIcon, EffectType> v = new HashMap<>();
+        v.put(MagicIcon.CONTINUOUS, EffectType.CONTINUES);
+        v.put(MagicIcon.EQUIP, EffectType.EQUIP);
+        v.put(MagicIcon.FIELD, EffectType.FIELD);
+        v.put(MagicIcon.NORMAL, EffectType.NORMAL);
+        v.put(MagicIcon.RITUAL, EffectType.RITUAL);
+        v.put(MagicIcon.QUICK_PLAY, EffectType.QUICK_PLAY);
         allCards = new ArrayList<>();
         try {
             //"" means project directory
@@ -57,6 +67,7 @@ public abstract class Card {
             for(File file : filesListMagicCard) {
                 String json = new String(Files.readAllBytes(Paths.get(file.getPath())));
                 MagicCard card = new Gson().fromJson(json,MagicCard.class);
+                card.getEffect().setEffectType(v.get(card.getMagicIcon()));
                 allCards.add(card);
             }
         } catch (IOException e) {

@@ -54,7 +54,6 @@ public class EffectParser {
         this.effectManager = effectManager;
         this.owner = this.effectManager.getOwner();  
         this.duelMenu = duelMenu;      
-        //TODO
         this.extraKeyWords = new HashMap<String, String>();
         this.duelController = duelController;
         if(effectManager.getEffect().getEffectType() == EffectType.QUICK_PLAY)
@@ -112,6 +111,7 @@ public class EffectParser {
     public String runEffect()
     {
         ans = null;
+        effectManager.setActivated(true);
         getCommandResult
         (effect.getEffectCommand()
         );
@@ -270,92 +270,97 @@ public class EffectParser {
     public static final String GET_STRING = "get\\(([^()]*)\\)";
     public String getCommandResult(String command)
     {
-        if(correctStateOfChar(command, ';') == -1)
+        if(command != null)
         {
-            command = command.replace(" ", "");
-            //check get
-            command = draw(command);
-            for(int i = 0; i < 4; i++)
+            if(correctStateOfChar(command, ';') == -1)
             {
-                command = parseKeyWords(command);
-                command =  handleMessage(command);
-                if(command.length() >= 8 && command.substring(0, 8).equals("return_t") && ans == null)
+                command = command.replace(" ", "");
+                //check get
+                command = draw(command);
+                for(int i = 0; i < 4; i++)
                 {
-                    ans = "true";
-                    return "true";
+                    command = parseKeyWords(command);
+                    command =  handleMessage(command);
+                    if(command.length() >= 8 && command.substring(0, 8).equals("return_t") && ans == null)
+                    {
+                        ans = "true";
+                        return "true";
+                    }
+                    if(Global.regexFind(command, "changeValue\\(.+\\)"))
+                    {
+                        command = changeValue(command);
+                    }
+                    if(command.length() >= new String("select").length() && command.substring(0, 6).equals("select"))
+                    {
+                        command = selective(command);
+                        continue;
+                    }
+                    if(command.length() >= new String("random_selection").length() && command.substring(0, 16).equals("random_selection"))
+                    {
+                        command = randomSelection(command);
+                        continue;
+                    }
+                    if(command.length() >= new String("changeZone").length() && command.substring(0, new String("changeZone").length()).equals("changeZone"))
+                    {
+                        command = changeZone(command);                
+                    }
+                    if(command.length() >= 8 && command.substring(0, 8).equals("return_f") && ans == null)
+                    {
+                        ans = "false";
+                        return "false";
+                    }
+                    if(Global.regexFind(command, "filter"))
+                    {
+                        command = getListByFilter(command);
+                        continue;
+                    }
+                    if(Global.regexFind(command ,"coin"))
+                    {
+                        coin(command);
+                        continue;
+                    }
+                    
+                    if(command.length() >= 2 && command.substring(0, 2).equals("if"))
+                    {
+                        return handleConditional(command);
+                    }
+                    if(command.length() >= 4 && command.substring(0, 4).equals("q_yn"))
+                    {
+                        return q_yn(command);
+                    }
+                    if(command.length() >= 3 && command.substring(0, 3).equals("set"))
+                    {
+                        setCommand(command);
+                    }
+                    command = handleChangeLPCommand(command);
+                    
+                    
+                    if(Global.regexFind(command, "del"))
+                    {
+                        command = deleteListFromList(command);
+                    }
+                    if(Global.regexFind(command, "sum"))
+                    {
+                        command = getSumOverField(command);
+                    }
+                    command = handleNormCommand(command);                
+                    command = handleGetCommand(command);
+                    command = calculater(command);
                 }
-                if(Global.regexFind(command, "changeValue\\(.+\\)"))
-                {
-                    command = changeValue(command);
-                }
-                if(command.length() >= new String("select").length() && command.substring(0, 6).equals("select"))
-                {
-                    command = selective(command);
-                    continue;
-                }
-                if(command.length() >= new String("random_selection").length() && command.substring(0, 16).equals("random_selection"))
-                {
-                    command = randomSelection(command);
-                    continue;
-                }
-                if(command.length() >= new String("changeZone").length() && command.substring(0, new String("changeZone").length()).equals("changeZone"))
-                {
-                    command = changeZone(command);                
-                }
-                if(command.length() >= 8 && command.substring(0, 8).equals("return_f") && ans == null)
-                {
-                    ans = "false";
-                    return "false";
-                }
-                if(Global.regexFind(command, "filter"))
-                {
-                    command = getListByFilter(command);
-                    continue;
-                }
-                if(Global.regexFind(command ,"coin"))
-                {
-                    coin(command);
-                    continue;
-                }
-                
-                if(command.length() >= 2 && command.substring(0, 2).equals("if"))
-                {
-                    return handleConditional(command);
-                }
-                if(command.length() >= 4 && command.substring(0, 4).equals("q_yn"))
-                {
-                    return q_yn(command);
-                }
-                if(command.length() >= 3 && command.substring(0, 3).equals("set"))
-                {
-                    setCommand(command);
-                }
-                command = handleChangeLPCommand(command);
-                
-                
-                if(Global.regexFind(command, "del"))
-                {
-                    command = deleteListFromList(command);
-                }
-                if(Global.regexFind(command, "sum"))
-                {
-                    command = getSumOverField(command);
-                }
-                command = handleNormCommand(command);                
-                command = handleGetCommand(command);
-                command = calculater(command);
+                return command;        
             }
-            return command;        
+            else
+            {
+                List<String> subCommands = splitCommands(command);
+                for(int i = 0; i < subCommands.size(); i++)
+                {
+                    getCommandResult(subCommands.get(i));
+                }
+
+            }        
         }
         else
-        {
-            List<String> subCommands = splitCommands(command);
-            for(int i = 0; i < subCommands.size(); i++)
-            {
-                getCommandResult(subCommands.get(i));
-            }
-
-        }        
+            return new String();
         // command type:
         // change zone
         //filter

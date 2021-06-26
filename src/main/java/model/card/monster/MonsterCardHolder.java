@@ -33,6 +33,7 @@ public class MonsterCardHolder extends CardHolder {
         ageEffects.put("level", 10000);
         ageEffects.put("defence", 10000);
 
+
     }
     private MonsterCard card;    
     

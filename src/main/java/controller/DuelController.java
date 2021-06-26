@@ -20,6 +20,7 @@ import model.card.CardState;
 import model.card.Event;
 import model.card.magic.MagicCard;
 import model.card.magic.MagicCardHolder;
+import model.card.magic.MagicIcon;
 import model.card.monster.MonsterCard;
 import model.card.monster.MonsterCardHolder;
 import model.user.Player;
@@ -88,7 +89,19 @@ public class DuelController {
                 List<CardHolder> cardHolders = getZone(Zone.get(zone, duel.getCurrentPlayer()));
                 for(int i = 0; i < cardHolders.size(); i++)
                 {
+                    
                     cardHolders.get(i).endTurn();
+                    if(duel.getCardHolderZone(cardHolders.get(i)).getName().equals("magic"))
+                    {                        
+                        MagicCardHolder magic = (MagicCardHolder)cardHolders.get(i);
+                        if(magic.getEffectManager().getEffect().getEffectType() == EffectType.NORMAL)
+                        {
+                            if(magic.getEffectManager().getActivated())
+                            {
+                                duel.changeZone(magic.getId(), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
+                            }
+                        }
+                    }
                 }
             }
             CardHolder temp = duel.getCurrentPlayer().getMap();
@@ -441,7 +454,7 @@ public class DuelController {
         }        
     }
 
-    public Message attack(Address opponentCard) {
+    public Message attack(Address opponentCard) {        
         MonsterCardHolder attacker = (MonsterCardHolder) duel.getMap().get(this.duel.getCurrentPlayer().getSelectedAddress());
         if (attacker != null) {
             if(numberOfEndTurn > 0)

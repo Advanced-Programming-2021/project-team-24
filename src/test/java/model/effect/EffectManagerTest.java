@@ -35,7 +35,7 @@ public class EffectManagerTest {
     }
     @Test
     public void getActivatedTest(){
-        effectManager.setActivated();
+        effectManager.setActivated(true);
         assertTrue(effectManager.getActivated());
     }
     @Test

@@ -10,10 +10,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Global {
-    public static Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
     public static String nextLine()
     {
-        String temp = scanner.nextLine().replaceAll(" +", " ");
+        String temp = scanner.nextLine();        
+        while(temp.length() == 0)
+            temp = scanner.nextLine();
         return temp.trim();
     }
     public static boolean regexFind(String content, String regex)

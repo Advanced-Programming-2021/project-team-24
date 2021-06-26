@@ -11,7 +11,7 @@ public class CardNameHandler extends FilterHandler {
         {
             for(int i = 0; i < filter.getCardNames().size(); i++)
             {
-                if(filter.getCardNames().get(i).equals(cardHolder.getCard().getName()))
+                if(filter.getCardNames().get(i).equals(cardHolder.getCard().getName().replaceAll(" ","")))
                 {
                     return true;
                 }

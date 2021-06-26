@@ -100,6 +100,7 @@ public class Duel {
         setNextPhaseHashMap();
         Address.init(this.opponent);
         Address.init(currentPlayer);
+        
         setTheInitialStateOfHandCards(user.getUser(), currentPlayer);
         setTheInitialStateOfHandCards(opponent.getUser(), this.opponent);
     }
