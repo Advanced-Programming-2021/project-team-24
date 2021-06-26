@@ -20,6 +20,7 @@ import model.card.Event;
 import model.card.magic.MagicCard;
 import model.card.magic.MagicCardHolder;
 import model.card.monster.MonsterCard;
+import model.card.monster.MonsterCardHolder;
 import model.card.monster.MonsterType;
 import model.deck.Deck;
 import model.duel.Duel;
@@ -96,7 +97,7 @@ public class MainMenu extends Menu {
         Filter filter = new Filter();
         filter.setMonsterType(MonsterType.BEAST);        
         System.out.println(new Gson().toJson(filter));
-        MonsterCard current = (MonsterCard) Card.getCardByName("Gate Guardian");
+        MonsterCard current = (MonsterCard) Card.getCardByName("Command Knight");
         MonsterCard sampleMonster = (MonsterCard) Card.getCardByName("cardName");
         System.out.println(EffectParser.splitByParentheses("alirez(alir)").get(0));
        
@@ -121,20 +122,20 @@ public class MainMenu extends Menu {
         //effect.setRequiredEvent(u);
         //effect.setAskForActivation(false);
         try {
-            //any = new String(Files.readAllBytes(Paths.get(new File("any.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
-            summon = new String(Files.readAllBytes(Paths.get(new File("summon.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            any = new String(Files.readAllBytes(Paths.get(new File("any.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            //summon = new String(Files.readAllBytes(Paths.get(new File("summon.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
             //mainEffect = new String(Files.readAllBytes(Paths.get(new File("effect.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
             //required = new String(Files.readAllBytes(Paths.get(new File("required.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
             //reverse = new String(Files.readAllBytes(Paths.get(new File("reverse.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
 
             //onFlipOwner = new String(Files.readAllBytes(Paths.get(new File("flip.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
-            setSummon = new String(Files.readAllBytes(Paths.get(new File("set.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            //setSummon = new String(Files.readAllBytes(Paths.get(new File("set.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
         } catch (Exception e) {
             //TODO: handle exception
         }
         //current.getEffects().put(Event.ANY, any);
-        current.getEffects().put(Event.SUMMON_OWNER, summon);
-        current.getEffects().put(Event.SET_OWNER, setSummon);
+        //current.getEffects().put(Event.SUMMON_OWNER, summon);
+        //current.getEffects().put(Event.SET_OWNER, setSummon);
         effect.setEffect(mainEffect);
         effect.setReverse(reverse);
         effect.setRequirementString(required);        
@@ -152,11 +153,14 @@ public class MainMenu extends Menu {
 
         //String eff = "if(#get(this,activated)#>##)(if(#Norm(Filter(Id:get(this,equipped)))#<#1#)(changeZone(this,my_graveryard))())()";
         //current.getEffects().put(Event.ANY, eff);
-        current.updateCard();        
+        //current.updateCard();        
         String command = "message(ridi!!)";
         String comman = "filter(\"idCardHolder\":$hand$)";
         Duel duel = dControleer.getDuel();
         dControleer.setDuelMenu(duelMenu);
+        dControleer.getDuel().getMap().put(Address.get(Zone.get("monster",dControleer.getDuel().getCurrentPlayer()), 1), new MonsterCardHolder(dControleer.getDuel().getCurrentPlayer(), current, CardState.ATTACK_MONSTER));
+        dControleer.getDuel().getMap().put(Address.get(Zone.get("monster",dControleer.getDuel().getCurrentPlayer()), 2), new MonsterCardHolder(dControleer.getDuel().getCurrentPlayer(), current, CardState.ATTACK_MONSTER));
+        duelMenu.run();
         /*System.out.println(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5));
 
         dControleer.getDuel().getMap().put(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.HAND));

@@ -230,10 +230,10 @@ public class DuelController {
                                         
                                         new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER).get(0)).runEffect();
                                         List<CardHolder> second =getZone(Zone.get("monster", duel.getCurrentPlayer()));
-                                        if(delListFromAnother(init, second).size() > 0)
+                                        if(delListFromAnother(second, init).size() > 0)
                                         {
                                             duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
-                                            delListFromAnother(init, second).get(0).setMapValue("change_position_turn", "true", 1);
+                                            delListFromAnother(second,init).get(0).setMapValue("change_position_turn", "true", 1);
                                         }
                                         else
                                             return new Message(TypeMessage.ERROR, "you weren't able to summon");
@@ -333,10 +333,10 @@ public class DuelController {
                     {                                            
                         new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0)).runEffect();
                         List<CardHolder> second = getZone(Zone.get("monster", duel.getCurrentPlayer()));
-                        if(delListFromAnother(init, second).size() > 0)
+                        if(delListFromAnother(second, init).size() > 0)
                         {
                             duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
-                            delListFromAnother(init, second).get(0).setMapValue("change_position_turn", "true", 1);
+                            delListFromAnother(second, init).get(0).setMapValue("change_position_turn", "true", 1);
                         }            
                         else
                             return new Message(TypeMessage.ERROR,"you coudln't set the card");

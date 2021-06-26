@@ -511,11 +511,17 @@ public class EffectParser {
     public List<Integer> getArray(String array)
     {
         Gson gson = new Gson();
-        return convertToInteger(
+        List<Integer> ans = new ArrayList<>();
+        try{
+        ans = convertToInteger(
             gson.fromJson(
                 getCommandResult(
                     getCommandResult(array)
                     ), new ArrayList<String>().getClass()));
+        }catch(Exception e){
+            ans = new ArrayList<>();
+        }        
+        return ans;
     }
     public void setCommand(String setCommand)
     {

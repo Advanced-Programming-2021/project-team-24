@@ -95,6 +95,7 @@ public class DuelMenu {
                         System.out.println(duelController.nextPhase().getContent());
                         continue;
                     }
+                    Address.get(Zone.get("monster", duelController.getDuel().getOpponent()), 1);
                     continue;
                 }
                 else if (command.equals("show graveyard")) {

@@ -9,7 +9,6 @@ public class ProfileMenu extends Menu {
         super(user);
     }
     private controller.ProfileMenu profileMenu = new controller.ProfileMenu(user);
-    private controller.MainMenu mainMenu = new controller.MainMenu(user);
     public void run(){
         while(true) {
             String command = Global.nextLine();

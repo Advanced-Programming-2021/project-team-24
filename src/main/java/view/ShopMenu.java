@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 
 public class ShopMenu extends Menu {
     private controller.ShopMenu shopMenu = new controller.ShopMenu(user);
-    private controller.MainMenu mainMenu = new controller.MainMenu(user);
     public ShopMenu(User user){
         super(user);
     }
