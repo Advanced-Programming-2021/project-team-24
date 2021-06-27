@@ -114,7 +114,7 @@ public class Deck {
     }
 
     public boolean isValid() {
-        if (this.mainCards.size() >= 40) return true;
+        if (mainCardName.size() >= 40) return true;
         return false;
     }
 

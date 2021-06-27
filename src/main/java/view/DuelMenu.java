@@ -46,6 +46,7 @@ public class DuelMenu {
 
     public void run() {
         while (true) {
+            showBoard();
             if (duelController.isRoundFinished()) return;
             else{
                 if(duelController.getDuel().getCurrentPhase() == Phase.DRAW)
@@ -296,6 +297,10 @@ public class DuelMenu {
         if (isOpponent) return duelController.getDuel().getOpponent();
         else return duelController.getDuel().getCurrentPlayer();
     }
+    public String getFieldZone(String zoneName, Boolean isOpponent){
+        if (getZoneCards(zoneName, isOpponent).size() == 0) return "E";
+        return "O";
+    }
 
     public void showBoard() {
 
@@ -319,11 +324,11 @@ public class DuelMenu {
         System.out.println();
 
         System.out.format("|%-31d|",getZoneCards("graveyard",true).size());
-        System.out.println(getZoneCards("field",true).size());
+        System.out.println(getFieldZone("field",true));
 
         System.out.println("--------------------------");
 
-        System.out.format("|%-31d|",getZoneCards("field",false).size());
+        System.out.format("|%-31s|",getFieldZone("field", false));
         System.out.println(getZoneCards("graveyard",false).size());
 
         System.out.format("|%-4s|",getCard("monster",false,4));
