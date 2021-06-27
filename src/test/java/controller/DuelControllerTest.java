@@ -78,7 +78,7 @@ public class DuelControllerTest {
         Player playerB = new Player(b);
         Duel duel = new Duel(playerA,playerB);
         DuelController duelController = new DuelController(duel);
-        Address addressMonster = new Address(new Zone("monster", playerA), 0);
+        Address addressMonster = Address.get(Zone.get("monster", playerA), 0);
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Battle warrior");
         MonsterCardHolder monsterCardHolder = new MonsterCardHolder(playerA, monsterCard, CardState.ATTACK_MONSTER);
         duel.setMap(addressMonster,monsterCardHolder);

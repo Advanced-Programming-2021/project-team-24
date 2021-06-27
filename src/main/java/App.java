@@ -16,10 +16,10 @@ public class App {
         for(int i = 0; i < Card.getAllCards().size(); i++)
         {
             a.getCardNames().add(Card.getAllCards().get(i).getName());
-            b.getCardNames().add(Card.getAllCards().get(i).getName());            
+            b.getCardNames().add(Card.getAllCards().get(i).getName());
         }
-        
-        
+
+
         Deck alireza = new Deck("alireza");
         for(int i = 0; i < Card.getAllCards().size(); i++)
         {
