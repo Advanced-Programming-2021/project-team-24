@@ -88,26 +88,29 @@ public class DuelControllerTest {
         MagicCard magicCard = (MagicCard) Card.getCardByName("Dark Hole");
         MagicCardHolder magicCardHolder = new MagicCardHolder(playerB, magicCard, CardState.ACTIVE_MAGIC);
         Random x = new Random();
-        for (int i = 0; i < 20; i++) {        
-                duel.nextPhase();
-                List<CardHolder> all = new ArrayList<>();   
-                for(int aa = 0; aa < duel.getAllCardHolder().size(); aa++)
-                    all.add(duel.getAllCardHolder().get(aa));
-                Collections.shuffle(all);                   
-                for(int jj = 0; jj < all.size(); jj++)           
+        for(int j = 0; j < 50; j++)
+        {
+
+            duel.nextPhase();
+            List<CardHolder> all = new ArrayList<>();
+            for(int aa = 0; aa < duel.getAllCardHolder().size(); aa++)
+                all.add(duel.getAllCardHolder().get(aa));
+            Collections.shuffle(all);
+            for(int jj = 0; jj < all.size(); jj++)
+            {
+                duelController.select(duel.getCardHolderAddressById(all.get(jj).getId()));
+                duelController.deselect();
+                for(int qq = 0; qq < all.size(); qq++)
                 {
-                    duelController.select(duel.getCardHolderAddressById(all.get(jj).getId()));
-                    duelController.deselect();
-                    for(int qq = 0; qq < all.size(); qq++)
-                    {
-                        try{
-                            duelController.attack(duel.getCardHolderAddressById(all.get(qq).getId()));
-                            duelController.activeMagic();
-                            if(x.nextInt(2) % 2 == 1) 
-                                duelController.changePosition();
-                            else
-                                duelController.flipSummon();
+                    try{
+                        duelController.attack(duel.getCardHolderAddressById(all.get(qq).getId()));
+                        duelController.activeMagic();
+                        if(x.nextInt(2) % 2 == 1)
+                            duelController.changePosition();
+                        else
+                            duelController.flipSummon();
                             duelController.directAttack();
+                            //duelController.attack(Address.get(Zone.get("monster", )))
 
                             if(x.nextInt(2) % 2 == 1)
                                 duelController.set();
@@ -123,7 +126,6 @@ public class DuelControllerTest {
                         }
                     }
                 }
-            }
             duel.setMap(addressMonster,monsterCardHolder);
             duelController.select(Address.get(Zone.get("monster", playerA), 0));
             duelController.set();
@@ -133,6 +135,8 @@ public class DuelControllerTest {
             duelController.directAttack();
             //duelController.draw();
             duelController.updateAutomaticEffect();
-            duelController.nextPhase();        
+            duelController.nextPhase();
+        }
     }
+
 }

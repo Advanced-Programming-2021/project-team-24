@@ -470,26 +470,20 @@ public class DuelController {
                                         MonsterCardHolder opponent = (MonsterCardHolder) duel.getMap().get(opponentCard);                            
                                         if (duel.getCardHolderZone(duel.getMap().get(opponentCard)).getName().equals(Zones.MONSTER.getValue())) {
                                             if (duel.getCurrentPhase().equals(Duel.Phase.BATTLE)) {
-                                                if(!attacker.getBoolMapValue("attack_turn"))
-                                                {
-                                                    if (attacker.getBoolMapValue("can_attack")) {
-                                                        if (opponent.getBoolMapValue("can_be_under_attack")) {
-                                                            if (attacker.getCardState() == CardState.ATTACK_MONSTER) 
-                                                            {
-                                                                return attackCalculator(attacker, opponent);                                                        
-                                                            } else {
-                                                                return attackCalculator(attacker, opponent);                                                            
-                                                            }                                                    
+                                                if (attacker.getBoolMapValue("can_attack")) {
+                                                    if (opponent.getBoolMapValue("can_be_under_attack")) {
+                                                        if (attacker.getCardState() == CardState.ATTACK_MONSTER) 
+                                                        {
+                                                            return attackCalculator(attacker, opponent);                                                        
                                                         } else {
-                                                            return new Message(TypeMessage.ERROR, "This card can't be under attack");
-                                                        }
+                                                            return attackCalculator(attacker, opponent);                                                            
+                                                        }                                                    
                                                     } else {
-                                                        return new Message(TypeMessage.ERROR, "This card can't perform attack");
+                                                        return new Message(TypeMessage.ERROR, "This card can't be under attack");
                                                     }
+                                                } else {
+                                                    return new Message(TypeMessage.ERROR, "This card can't perform attack");
                                                 }
-                                                else{
-                                                    return new Message(TypeMessage.ERROR, "you attacked before by this card");
-                                                }                                                
                                             } else {
                                                 return new Message(TypeMessage.ERROR, "you can’t do this action in this phase");
                                             }
