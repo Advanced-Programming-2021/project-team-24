@@ -86,8 +86,6 @@ public class User {
             file.createNewFile();
             FileWriter fileWriter = new FileWriter(file);
             List<Card> u = new ArrayList<>();
-            Collections.copy(u, this.cards);                        
-            this.cards = null;
             
             fileWriter.write(new Gson().toJson(this));
             
