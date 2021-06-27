@@ -32,9 +32,10 @@ public class MonsterCardHolder extends CardHolder {
         ageEffects.put("attack", 10000);
         ageEffects.put("level", 10000);
         ageEffects.put("defence", 10000);
-
+        
 
     }
+    private boolean isSpecialSummoned;
     private MonsterCard card;    
     
     public List<EffectManager> getEventEffect(Event event)
