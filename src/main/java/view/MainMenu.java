@@ -98,7 +98,7 @@ public class MainMenu extends Menu {
         Filter filter = new Filter();
         filter.setMonsterType(MonsterType.BEAST);        
         System.out.println(new Gson().toJson(filter));
-        MonsterCard current = (MonsterCard) Card.getCardByName("Command Knight");
+        MonsterCard current = (MonsterCard) Card.getCardByName("Wattaildragon");
         MonsterCard sampleMonster = (MonsterCard) Card.getCardByName("cardName");
         System.out.println(EffectParser.splitByParentheses("alirez(alir)").get(0));
        
@@ -123,14 +123,14 @@ public class MainMenu extends Menu {
         //effect.setRequiredEvent(u);
         //effect.setAskForActivation(false);
         try {
-            any = new String(Files.readAllBytes(Paths.get(new File("any.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
-            //summon = new String(Files.readAllBytes(Paths.get(new File("summon.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            //any = new String(Files.readAllBytes(Paths.get(new File("any.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            summon = new String(Files.readAllBytes(Paths.get(new File("summon6.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
             //mainEffect = new String(Files.readAllBytes(Paths.get(new File("effect.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
             //required = new String(Files.readAllBytes(Paths.get(new File("required.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
             //reverse = new String(Files.readAllBytes(Paths.get(new File("reverse.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
 
             //onFlipOwner = new String(Files.readAllBytes(Paths.get(new File("flip.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
-            //setSummon = new String(Files.readAllBytes(Paths.get(new File("set.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            setSummon = new String(Files.readAllBytes(Paths.get(new File("set6.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
         } catch (Exception e) {
             //TODO: handle exception
         }
@@ -142,11 +142,10 @@ public class MainMenu extends Menu {
         effect.setRequirementString(required);        
         Filter u; 
         
-        /*if(setSummon.length() > 0)
+        if(setSummon.length() > 0)
             current.getEffects().put(Event.SET_OWNER, setSummon);
         if(summon.length() > 0)
-            current.getEffects().put(Event.SUMMON_OWNER, summon);
-        */
+            current.getEffects().put(Event.SUMMON_OWNER, summon);        
         if(onFlipOwner.length() > 0)
         {
             //current.getEffects().put(Event.FLIP_OWNER, onFlipOwner);
@@ -154,7 +153,7 @@ public class MainMenu extends Menu {
 
         //String eff = "if(#get(this,activated)#>##)(if(#Norm(Filter(Id:get(this,equipped)))#<#1#)(changeZone(this,my_graveryard))())()";
         //current.getEffects().put(Event.ANY, eff);
-        //current.updateCard();        
+        current.updateCard();        
         String command = "message(ridi!!)";
         String comman = "filter(\"idCardHolder\":$hand$)";
         Duel duel = dControleer.getDuel();

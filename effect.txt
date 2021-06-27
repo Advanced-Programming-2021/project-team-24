@@ -1,6 +1,8 @@
-changeValue(get(this,warrior),attack,-400);
-set(this,warrior,filter("cardHolderId":$my_monster$,"mosterType":"warrior"));
-changeValue(get(this,warrior),attack,400);
-if(#Norm($my_monster$)#>#1#)
-(set(this,can_be_under_attack,false,-1);)
-(set(this,can_be_under_attack,true,-1);)
+changeValue(get(this,equip_fiend),attack,-200);
+changeValue(get(this,equip_fiend),defence,-200);
+changeValue(get(this,equip_spec),defence,-200);
+changeValue(get(this,equip_spec),attack,-200);
+changeValue(get(this,equip_fairy),attack,200);
+changeValue(get(this,equip_fairy),defence,200);
+set(this,equip_fiend,filter("monsterType"))
+
