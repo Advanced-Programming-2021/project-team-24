@@ -2,8 +2,11 @@ package model.card;
 
 import java.util.*;
 
+import controller.DuelController;
+import model.duel.EffectParser;
+import model.effect.EffectManager;
 import model.user.Player;
-import model.user.User;
+import view.DuelMenu;
 
 
 
@@ -13,14 +16,21 @@ public abstract class CardHolder {
     protected static int idCounter = 1;
     protected CardState cardState;
     protected CardType cardType;
-    protected List <Integer> effectManagerId;        
-    protected List <Integer> appliedEffects;    
-    protected abstract void recalculateEffect(); 
+    protected Boolean isEmpty;
+    protected List <EffectManager> effectManagerList;        
+    protected List <Integer> appliedEffects;       
     protected HashMap<String, String> cardMap = new HashMap<String, String>();
+    protected HashMap<String, Integer> ageEffects = new HashMap<String, Integer>();
+    protected HashMap<Event, List<EffectManager>> effects = new HashMap<Event, List<EffectManager>>();    
     protected Player owner;
 
+
+    public HashMap<Event, List<EffectManager>> getEffects()
+    {
+        return this.effects;
+    }
     
-    public String getOnwerName()
+    public String getOwnerName()
     {
         return this.owner.getNickname();
     }        
@@ -30,53 +40,66 @@ public abstract class CardHolder {
     }
     
     public CardHolder(Player owner)
-    {        
+    {                
         this.owner = owner;        
         this.cardState = null;
-        this.id = idCounter ++;        
+        this.id = idCounter;   
+        idCounter++;    
         this.appliedEffects = new ArrayList<Integer>();
-        this.effectManagerId = new ArrayList<Integer>();
+        this.effectManagerList = new ArrayList<EffectManager>();        
         //TODO effectManager should be updated by creating effectManagerId        
     }
-    public CardHolder(CardState cardState) {
+    public CardHolder(Player owner, CardState cardState) {
+        this.owner = owner;
+        if(CardState.SPECIAL_SUMMON.equals(cardState))
+            this.cardState = CardState.ATTACK_MONSTER;
         this.cardState = cardState;
-    }
-    public static void main(String[] args) {
-        
-    }
-    public void endPhase()
-    {
-        List<String> v = (new ArrayList<String>());
-        for(int i = 0; i < v.size(); i++)
-        {
+        id = idCounter;
+        idCounter++;
+        this.appliedEffects = new ArrayList<Integer>();
+        this.effectManagerList = new ArrayList<EffectManager>();
+    }    
+    public abstract String toString();
 
+    public void endTurn()
+    {    
+        for(Map.Entry<String, Integer> mapEntry : ageEffects.entrySet())
+        {
+            try{
+                if(ageEffects.get(mapEntry.getKey()) == 1 || ageEffects.get(mapEntry.getKey()) == 0)
+                {
+                    ageEffects.put(mapEntry.getKey(), null);
+                    cardMap.put(mapEntry.getKey(), null);
+                }
+                if(mapEntry.getValue() != null)
+                    ageEffects.put(mapEntry.getKey(), mapEntry.getValue() - 1);
+            }catch(Exception e){
+                
+            }                
         }
     }
     
-       
-    public abstract void makeEmpty();
-    /*{
-        this.cardState = null;
-        this.id = idCounter ++;        
-        this.effectManagerId = new ArrayList<Integer>();
-        this.appliedEffects = new ArrayList<Integer>();
-    }*/
-    public void setMapValue(String key, String value)
+    public CardType getCardType() {
+        return this.cardType;
+    }
+
+    public void setCardType(CardType cardType) {
+        this.cardType = cardType;
+    }
+           
+    public void setMapValue(String key, String value, Integer time)
     {
         cardMap.put(key, value);
-    }
-    protected Boolean convertStringToBool(String string)
-    {
-        if(string.equals("true"))
-            return true;
+        if(ageEffects.get(key) != null)
+            ageEffects.put(key ,Math.max(ageEffects.get(key) , time));
         else
-        if(string.equals("false"))
-            return false;
-        return null;
+            ageEffects.put(key, time);
     }
     public abstract void flip();
     public String getValue(String string)
     {    
+        if(cardMap.get(string) == null)
+            return "";
         return cardMap.get(string);
     }
     public Boolean getBoolMapValue(String string)
@@ -88,7 +111,19 @@ public abstract class CardHolder {
                 return false;
             }
         else
-            return convertStringToBool(cardMap.get(string));
+            return Boolean.parseBoolean(cardMap.get(string));
+    }
+
+    public void prepareForDeath(DuelMenu duelMenu, DuelController duelController)
+    {
+        for(int i = 0; i < effects.get(Event.DEATH_OWNER).size(); i++)
+        {
+            if(effects.get(Event.DEATH_OWNER).get(i).isConditionSatisfied(new EffectParser(duelMenu, duelController, effects.get(Event.DEATH_OWNER).get(i))))
+            {
+                EffectParser temp = new EffectParser(duelMenu, duelController, effects.get(Event.DEATH_OWNER).get(i));
+                temp.runEffect();
+            }
+        }
     }
     public boolean haveEffectWithId(int idEffectManager)
     {
@@ -116,8 +151,7 @@ public abstract class CardHolder {
         {
             if(appliedEffects.get(i) == idEffectManager)
             {
-                appliedEffects.remove(idEffectManager);                
-                recalculateEffect();
+                appliedEffects.remove(idEffectManager); 
             }
         }        
     }    
@@ -133,7 +167,10 @@ public abstract class CardHolder {
             return false;        
     }
     
-    
+    protected void addEffectManager(EffectManager effectManager)
+    {
+        this.effectManagerList.add(effectManager);
+    }
     public CardState getCardState()
     {
         return this.cardState;
@@ -147,6 +184,7 @@ public abstract class CardHolder {
     {
         return id;
     }
+    
     public void setCardMap(HashMap<String, String> cardMap){
         this.cardMap = cardMap;
     }

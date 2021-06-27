@@ -1,19 +1,13 @@
 package view;
 
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Matcher;
 
 import controller.DeckController;
-import controller.DuelController;
 import controller.Message;
 import model.card.Card;
 import model.deck.Deck;
-import model.duel.Duel;
-import model.card.CardHolder;
 import model.user.User;
-import model.zone.Address;
-import model.zone.Zone;
 
 public class DeckMenu extends Menu {
     //TODO toStrings
@@ -30,11 +24,17 @@ public class DeckMenu extends Menu {
     public void run() {
         while (true) {
             String command = Global.nextLine();
-            if (command.equals("menu exit")) {
+            if (checkMenuExit(command)) {
+                exitMenu("Deck");
                 return;
-            } else if (command.equals("menu show-current")) {
+            }
+            else if (command.equals("menu show-current")) {
                 System.out.println("Deck Menu");
-            } else if (command.equals("deck show -all")) {
+            }
+            else if(checkEnterMenu(command)) {
+                enterMenu("Deck", command );
+            }
+            else if (command.equals("deck show -all")) {
 
                 System.out.println("Decks:");
                 System.out.println("Active deck:");
@@ -44,12 +44,14 @@ public class DeckMenu extends Menu {
                 for (Deck deck : decks)
                     System.out.println(decks.toString());
 
-            } else if (command.equals("deck show -cards")) {
+            }
+            else if (command.equals("deck show -cards")) {
                 List<Card> cards = Card.getAllCards();
                 for (Card card : cards) {
                     System.out.println(card.toString());
                 }
-            } else {
+            }
+            else {
                 Matcher matcher = Global.getMatcher(command, "deck create (?<name>\\w)");
                 if (matcher.find()) {
                     String deckName = matcher.group("name");
@@ -100,6 +102,7 @@ public class DeckMenu extends Menu {
                     continue;
                 }
 
+
                 matcher = Global.getMatcher(command, "deck show (?=.*(?:--deck (?<deckName>\\w)))(?=.*(?<opponent>--side)){0,1}");
                 if (matcher.find()) {
                     String deckName = matcher.group("deckName");
@@ -111,8 +114,8 @@ public class DeckMenu extends Menu {
                     System.out.println(message.getContent());
                     continue;
                 }
+                System.out.println("invalid command");
             }
-            System.out.println("invalid command");
         }
     }
 

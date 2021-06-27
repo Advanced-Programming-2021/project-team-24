@@ -14,7 +14,11 @@ public enum CardState
   DEFENCE_MONSTER("DEFENCE_MONSTER"),
   @SerializedName("SPECIAL_SUMMON")
   SPECIAL_SUMMON("SPECIAL_SUMMON"),
-  @SerializedName("ACTIVE_MAGIC")
+  @SerializedName("RITUAL_SUMMON")
+  RITUAL_SUMMON("RITUAL_SUMMON"),
+  @SerializedName("RITUAL_SET")
+  RITUAL_SET("RITUAL_SET")
+  ,@SerializedName("ACTIVE_MAGIC")
   ACTIVE_MAGIC("ACTIVE_MAGIC"),
   @SerializedName("HAND")
   HAND("HAND"),
