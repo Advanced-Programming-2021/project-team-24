@@ -40,29 +40,14 @@ public class DuelController {
         //TODO
         new AutomaticEffectHandler(this, duelMenu).update();
     }
-    public void resetDuelEvents()
-    {
-        for(Map.Entry<Event, Integer> event : duelEvents.entrySet())
-        {
-            if((Integer)event.getValue() == -1)
-            {
-                duelEvents.put((Event)event.getKey(), null);
-            }
-        }
-        
-    }
-    public void surrender(boolean isOpponent){
-        duel.surrender(isOpponent);
+    public void surrender(){
+        duel.surrender();
     }
 
     public boolean isRoundFinished() {
         return duel.isRoundFinished();
     }
 
-    public void resetDuelEventTurn()
-    {
-        duelEvents = new HashMap<>();
-    }
     public void setDuelMenu(DuelMenu duelMenu)
     {
         this.duelMenu = duelMenu;
@@ -81,11 +66,12 @@ public class DuelController {
     }
 
     public Message nextPhase() {
-        if(duel.getCurrentPhase() == Phase.END)
-        {
+        if (duel.getCurrentPhase() == Phase.BATTLE){
+            if (duel.isRoundFinished()) return new Message(TypeMessage.INFO, "End");
+        }
+        if(duel.getCurrentPhase() == Phase.END){
             numberOfEndTurn++;
-            for(String zone : Zone.zoneStrings)
-            {
+            for(String zone : Zone.zoneStrings){
                 List<CardHolder> cardHolders = getZone(Zone.get(zone, duel.getCurrentPlayer()));
                 for(int i = 0; i < cardHolders.size(); i++)
                 {

@@ -48,8 +48,11 @@ public class DuelMenu {
 
     public void run() {
         while (true) {
-            //showBoard();
-            if (duelController.isRoundFinished()) return;
+            showBoard();
+            if (duelController.isRoundFinished()){
+                System.out.println("End");
+                return;
+            }
             else{
                 if(duelController.getDuel().getCurrentPhase() == Phase.DRAW)
                 {
@@ -72,7 +75,8 @@ public class DuelMenu {
                     continue;
                 }
                 else if (command.equals("surrender")){
-                    duelController.surrender(true);//change argument later
+                    duelController.surrender();//change argument later
+                    System.out.println("End");
                     return;
                 }
                 else if (command.equals("select -d")) {
@@ -305,7 +309,7 @@ public class DuelMenu {
     }
 
     public void showBoard() {
-
+        System.out.println(getPlayer(true).getUser().getNickname() + ":" + getPlayer(true).getLifePoint());
         for(int i=0;i<getZoneCards("hand",true).size();i++) System.out.print("c   ");
         System.out.println();
 
@@ -351,6 +355,7 @@ public class DuelMenu {
 
         for(int i=0;i<getZoneCards("hand",false).size();i++) System.out.print("c    ");
         System.out.println();
+        System.out.println(getPlayer(false).getUser().getNickname() + ":" + getPlayer(false).getLifePoint());
 
     }
 

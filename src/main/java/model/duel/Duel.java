@@ -456,13 +456,12 @@ public class Duel {
     }
 
     public boolean isRoundFinished() {
-        if (currentPhase == Phase.END && (getCurrentPlayer().isDead() || getOpponent().isDead())) return true;
+        if (getCurrentPlayer().isDead() || getOpponent().isDead()) return true;
         return false;
     }
 
-    public void surrender(boolean isOpponent){
-        if (isOpponent) opponent.setIsDeadRounds(3);
-        else user.setIsDeadRounds(3);
+    public void surrender(){
+        currentPlayer.setIsDeadRounds(1);
     }
 
 }

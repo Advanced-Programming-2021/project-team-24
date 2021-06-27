@@ -42,7 +42,7 @@ public class Menu {
             String menu = matcher.group();
             if (menu.equals("Duel") || menu.equals("Deck") ||
                     menu.equals("Scoreboard") || menu.equals("Profile") ||
-                    menu.equals("Shop") || menu.equals("Import/Export")||
+                    menu.equals("Shop") || menu.equals("ImportExport")||
                     menu.equals("Main") || menu.equals("Login")){
                 return true;
             }
@@ -68,7 +68,8 @@ public class Menu {
                         new ProfileMenu(user).run();
                     case "Shop":
                         new ShopMenu(user).run();
-                        //Import/Export & Duel Menu
+                    case "ImportExport":
+                        new ImportExportMenu(user).run();
                 }
             }
         }
