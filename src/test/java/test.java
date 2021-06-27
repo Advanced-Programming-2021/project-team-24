@@ -35,8 +35,8 @@ public class test {
              MonsterCard.class);
         User.register("behzad", "password", "nickname");
         User.register("alireza", "haqi", "hesam");
-        User a = User.readUser("alireza");
-        User b= User.readUser("behzad");
+        User a = User.readUser("alir");
+        User b= User.readUser("alireza");
         Player playerA = new Player(a);
         Player playerB = new Player(b);
         DuelMenu duelMenu = new DuelMenu(playerA, playerB);
@@ -46,15 +46,15 @@ public class test {
         //User b = new User("b   ", "b " , "alirezaa aaa aa a ");        
         
         Effect effect = new Effect("");
-        effect.setEffect("if(#1#>#2#)&return_t&else&return_f&");
-        effect.setReverse("if(#1#>#2#)&return_t&else&return_f&");
+        effect.setEffect("if(#1#>#2#)(&return_t&)else(&return_f&)");
+        effect.setReverse("if(#1#>#2#)(&return_t&)else(&return_f&)");
         effect.setEffectType(EffectType.CONTINUES);
         EffectManager vvvvvvv = new EffectManager(effect,
          duelMenu.getPlayer(true) 
          , temp.getId());
         duelMenu.getDuelController().setDuelMenu(duelMenu);
         EffectParser v = new EffectParser(duelMenu, duelMenu.getDuelController(), vvvvvvv);
-        String command = "if(#1#>#2#)&return_t&else&return_f&";
+        String command = "if(#1#>#2#)(&return_t&)else(&return_f&)";
         String ans = v.runEffect();
         assertEquals(ans, "false");
         

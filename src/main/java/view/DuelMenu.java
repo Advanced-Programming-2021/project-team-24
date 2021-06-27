@@ -374,7 +374,7 @@ public class DuelMenu {
         b.getDecks().add(alireza);
         b.getDecks().setActiveDeck(b.getDecks().getDeckByName("alireza"));
         DuelMenu duelMenu = new DuelMenu(new Player(a), new Player(b));
-        duelMenu.addMonsterCard("Command Knight");
+        duelMenu.addMonsterCard("Beast King Barbaros");
         duelMenu.run();
     }
     public void addMonsterCard(String cardName)
