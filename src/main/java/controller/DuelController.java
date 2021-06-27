@@ -455,6 +455,14 @@ public class DuelController {
     }
 
     public Message attack(Address opponentCard) {        
+        if((this.duel.getCurrentPlayer().getSelectedAddress()) == null)
+        {
+            return new Message(TypeMessage.ERROR, "invalid card selection");
+        }
+        if(duel.getMap().get(this.duel.getCurrentPlayer().getSelectedAddress()).getCard().isMagic())
+        {
+            return new Message(TypeMessage.ERROR, "you can't attack with magic");
+        }        
         MonsterCardHolder attacker = (MonsterCardHolder) duel.getMap().get(this.duel.getCurrentPlayer().getSelectedAddress());
         if (attacker != null) {
             if(numberOfEndTurn > 0)

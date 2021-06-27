@@ -11,6 +11,7 @@ import controller.Message;
 import model.card.Card;
 import model.card.CardHolder;
 import model.card.CardState;
+import model.card.monster.MonsterCard;
 import model.deck.Deck;
 import model.duel.Duel;
 import model.duel.Duel.Phase;
@@ -367,7 +368,13 @@ public class DuelMenu {
         b.getDecks().add(alireza);
         b.getDecks().setActiveDeck(b.getDecks().getDeckByName("alireza"));
         DuelMenu duelMenu = new DuelMenu(new Player(a), new Player(b));
+
         duelMenu.run();
+    }
+    public void addMonsterCard(String cardName, DuelMenu duelMenu)
+    {
+        MonsterCard v = (MonsterCard)Card.getCardByName(cardName);    
+     //   duelMenu.getDuelController().getDuel().getMap().put(Address.get('hand', duelMenu.getDuelController().getZone(Zone.get("hand", duelMenu.getDuelController().getDuel().get());
     }
 
 }
