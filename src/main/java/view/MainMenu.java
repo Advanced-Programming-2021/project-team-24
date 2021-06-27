@@ -58,7 +58,7 @@ public class MainMenu extends Menu {
                 enterMenu("Main", command );
             }
             else {
-                Matcher matcher = Global.getMatcher(command, "duel (?=.*(?:--new))(?=.*(?:--second-player (?<opponentUsername>\\w)))(?=.*(?:--rounds (?<rounds>\\d)))");
+                Matcher matcher = Global.getMatcher(command, "duel (?=.*(?:--new))(?=.*(?:--second-player (?<opponentUsername>\\w+)))(?=.*(?:--rounds (?<rounds>\\d)))");
                 if (matcher.find()) {
                     String opponentUsername = matcher.group("opponentUsername");
                     String rounds = matcher.group("rounds");
