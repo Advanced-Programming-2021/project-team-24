@@ -1,1 +1,1 @@
-{"attack":1700,"defence":1150,"level":4,"monsterEffectType":"Normal","monsterType":"Warrior","monsterAttribute:":"EARTH","name":"Axe Raider","description":"An axe-wielding monster of tremendous strength and agility.","price":3100,"limitType":"Limited","cardType":"MONSTER"}
+{"attack":1700,"defence":1150,"level":4,"monsterEffectType":"Normal","monsterType":"Warrior","monsterAttribute:":"EARTH","name":"Axe Raider","description":"An axe-wielding monster of tremendous strength and agility.","price":3100,"limitType":"Unlimited","cardType":"MONSTER","effects":{}}
