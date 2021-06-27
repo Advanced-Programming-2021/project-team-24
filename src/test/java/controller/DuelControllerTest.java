@@ -88,9 +88,7 @@ public class DuelControllerTest {
         MagicCard magicCard = (MagicCard) Card.getCardByName("Dark Hole");
         MagicCardHolder magicCardHolder = new MagicCardHolder(playerB, magicCard, CardState.ACTIVE_MAGIC);
         Random x = new Random();
-        for (int i = 0; i < 20; i++) {
-            for(int j = 0; j < 20; j++)
-            {
+        for (int i = 0; i < 20; i++) {        
                 duel.nextPhase();
                 List<CardHolder> all = new ArrayList<>();   
                 for(int aa = 0; aa < duel.getAllCardHolder().size(); aa++)
@@ -135,8 +133,6 @@ public class DuelControllerTest {
             duelController.directAttack();
             //duelController.draw();
             duelController.updateAutomaticEffect();
-            duelController.nextPhase();
-        }
+            duelController.nextPhase();        
     }
-
 }

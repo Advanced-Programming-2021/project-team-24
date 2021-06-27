@@ -16,8 +16,12 @@ import model.user.User;
 
 
 public class MonsterCardHolder extends CardHolder {
-    public MonsterCardHolder(Player owner, MonsterCard monsterCard, CardState cardState) {
+    public MonsterCardHolder(Player owner, MonsterCard monsterCard, CardState cardState) {        
         super(owner ,cardState);             
+        if(cardState.equals(CardState.SPECIAL_SUMMON))
+        {
+            this.isSpecialSummoned = true;            
+        }
         this.card = monsterCard;
         for(Map.Entry<Event, String> b : monsterCard.getEffects().entrySet())
         {
@@ -35,12 +39,23 @@ public class MonsterCardHolder extends CardHolder {
         
 
     }
+    
     private boolean isSpecialSummoned;
+
+    
+
     private MonsterCard card;    
     
     public List<EffectManager> getEventEffect(Event event)
     {
         return effects.get(event);
+    }
+    public boolean isIsSpecialSummoned() {
+        return this.isSpecialSummoned;
+    }
+
+    public void setIsSpecialSummoned(boolean isSpecialSummoned) {
+        this.isSpecialSummoned = isSpecialSummoned;
     }
     public int getAttack()
     {

@@ -51,6 +51,8 @@ public abstract class CardHolder {
     }
     public CardHolder(Player owner, CardState cardState) {
         this.owner = owner;
+        if(CardState.SPECIAL_SUMMON.equals(cardState))
+            this.cardState = CardState.ATTACK_MONSTER;
         this.cardState = cardState;
         id = idCounter;
         idCounter++;
