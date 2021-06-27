@@ -2,6 +2,7 @@ package controller;
 
 import com.google.gson.Gson;
 import model.card.Card;
+import model.card.CardHolder;
 import model.card.CardState;
 import model.card.Event;
 import model.card.magic.MagicCard;
@@ -27,7 +28,9 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 
@@ -84,12 +87,49 @@ public class DuelControllerTest {
         duel.setMap(addressMonster,monsterCardHolder);
         MagicCard magicCard = (MagicCard) Card.getCardByName("Dark Hole");
         MagicCardHolder magicCardHolder = new MagicCardHolder(playerB, magicCard, CardState.ACTIVE_MAGIC);
+        Random x = new Random();
         for (int i = 0; i < 20; i++) {
+            for(int j = 0; j < 20; j++)
+            {
+                duel.nextPhase();
+                List<CardHolder> all = new ArrayList<>();   
+                for(int aa = 0; aa < duel.getAllCardHolder().size(); aa++)
+                    all.add(duel.getAllCardHolder().get(aa));
+                Collections.shuffle(all);                   
+                for(int jj = 0; jj < all.size(); jj++)           
+                {
+                    duelController.select(duel.getCardHolderAddressById(all.get(jj).getId()));
+                    duelController.deselect();
+                    for(int qq = 0; qq < all.size(); qq++)
+                    {
+                        try{
+                            duelController.attack(duel.getCardHolderAddressById(all.get(qq).getId()));
+                            duelController.activeMagic();
+                            if(x.nextInt(2) % 2 == 1) 
+                                duelController.changePosition();
+                            else
+                                duelController.flipSummon();
+                            duelController.directAttack();
+
+                            if(x.nextInt(2) % 2 == 1)
+                                duelController.set();
+                            else
+                                duelController.summon();    
+                            duelController.directAttack();                   
+                            duelController.changePosition();
+                            duelController.directAttack();
+                            duelController.activeMagic();
+                            duelController.activeMagic();
+                        }catch(Exception e){
+
+                        }
+                    }
+                }
+            }
             duel.setMap(addressMonster,monsterCardHolder);
             duelController.select(Address.get(Zone.get("monster", playerA), 0));
             duelController.set();
             duelController.summon();
-            //if (!duel.getMap().get(duelController.getDuel().getCurrentPlayer().getSelectedAddress()).getCard().isMagic()) duelController.attack(address);
             duelController.changePosition();
             duelController.showSelectedCard();
             duelController.directAttack();
