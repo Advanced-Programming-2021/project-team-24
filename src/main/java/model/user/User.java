@@ -26,15 +26,24 @@ public class User {
     private String password;
     private int score;
     private int coin;
-    private List<String> cardNames;    
-    private transient List<Card> cards;// fill it after reading json
+    private List<String> cardNames;
+
+   
+
+    private transient List<Card> cards = new ArrayList<>();// fill it after reading json
     private Decks decks = new Decks();
     private static List<String> usernames = new ArrayList<>();
     static{
         //read users from json files in "/users" folder
         //initialize();
     }
+    public List<String> getCardNames() {
+        return this.cardNames;
+    }
 
+    public void setCardNames(List<String> cardNames) {
+        this.cardNames = cardNames;
+    }
     public String getNickname()
     {
         return this.nickname;
@@ -64,7 +73,7 @@ public class User {
         this.nickname = nickname;
         this.cards = new ArrayList<>();
         this.score = 8000;
-        this.coin = 100000;
+        this.coin = 100000;        
         usernames.add(username);
         this.cardNames = new ArrayList<>();
         this.cards = new ArrayList<>();
@@ -145,6 +154,7 @@ public class User {
             if (file.exists()) {
                 String json = new String(Files.readAllBytes(Paths.get("users/" + username + ".json")));
                 User temp = new Gson().fromJson(json, User.class);
+                temp.cards = new ArrayList<>();
                 for(int i = 0; i < temp.cardNames.size(); i++)
                 {
                     temp.cards.add(Card.getCardByName(temp.cardNames.get(i)));
@@ -180,6 +190,7 @@ public class User {
     }
     public void addCard(Card newCard){
         cards.add(newCard);
+        this.cardNames.add(newCard.getName());
         addUser();
     }
 
