@@ -7,8 +7,8 @@ import java.util.List;
 
 public class Deck {
     private String name;    
-    private List<String> mainCardName;
-    private List<String> sideCardName;
+    private List<String> mainCardName = new ArrayList<>();
+    private List<String> sideCardName = new ArrayList<>();
 
     public List<String> getMainCardName() {
         return this.mainCardName;
@@ -26,8 +26,8 @@ public class Deck {
         this.sideCardName = sideCardName;
     }
  
-    private transient List<Card> mainCards;
-    private transient List<Card> sideCards;
+    private transient List<Card> mainCards = new ArrayList<>();
+    private transient List<Card> sideCards = new ArrayList<>();
 
     public Deck(String name) {
         this.name = name;
@@ -42,10 +42,14 @@ public class Deck {
     }
 
     public List<Card> getMainCards() {
+        if(mainCards == null)
+            this.mainCards = new ArrayList<>();
         return this.mainCards;
     }
 
     public List<Card> getSideCards() {
+        if(this.sideCards == null)
+            this.sideCards = new ArrayList<>();
         return this.sideCards;
     }
 

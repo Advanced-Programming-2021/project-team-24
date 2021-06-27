@@ -233,7 +233,7 @@ public class DuelMenu {
         {
             for(int i = 0; i < count; i++)
             {
-                String command = Global.scanner.nextLine();                
+                String command = Global.nextLine();                
                 Address address = getAddress(command);
                 if(address != null &&
                  getDuelController().getDuel().getMap().get(address) != null &&

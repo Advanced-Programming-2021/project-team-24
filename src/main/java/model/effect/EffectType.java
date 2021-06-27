@@ -5,12 +5,14 @@ import com.google.gson.annotations.SerializedName;
 public enum EffectType {
        @SerializedName("CONTINUES")
        CONTINUES("CONTINUES"),
+       @SerializedName("NORMAL")
+       NORMAL("NORMAL"),
        @SerializedName("RITUAL")
        RITUAL("RITUAL"),
        @SerializedName("COUNTER")
        COUNTER("COUNTER"),
-       @SerializedName("EQUAL")
-       EQUAL("EQUAL"),
+       @SerializedName("EQUIP")
+       EQUIP("EQUIP"),
        @SerializedName("QUICK_PLAY")
        QUICK_PLAY("QUICK_PLAY"),
        @SerializedName("FIELD")

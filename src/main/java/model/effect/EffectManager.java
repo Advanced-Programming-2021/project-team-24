@@ -13,7 +13,7 @@ public class EffectManager {
     private static int idCounter = 0;
     private int idCardHolder;
     private Boolean isActivated;    
-    private HashMap<String, String> extraKeyWords;
+    private HashMap<String, String> extraKeyWords = new HashMap<>();
     private Effect effect;
     public EffectManager(Effect effect, Player owner, Integer idCardHolder){
         idCounter++;
@@ -32,9 +32,9 @@ public class EffectManager {
     {
         return this.extraKeyWords;
     }
-    public void setActivated()
+    public void setActivated(boolean isActivated)
     {
-        this.isActivated = true;        
+        this.isActivated = isActivated;   
     }
     
     public Boolean getActivated()
