@@ -461,7 +461,7 @@ public class Duel {
     }
 
     public void surrender(){
-        currentPlayer.setIsDeadRounds(3);
+        currentPlayer.setIsDeadRounds(1);
     }
 
 }

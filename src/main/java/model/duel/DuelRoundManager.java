@@ -5,6 +5,7 @@ import model.user.User;
 import view.DeckMenu;
 import view.DuelMenu;
 import view.MainMenu;
+import view.SideDeckMenu;
 
 public class DuelRoundManager {
     private User user;
@@ -41,7 +42,7 @@ public class DuelRoundManager {
                 new MainMenu(user).run();
             }
             else {
-                new DeckMenu(user);
+                new SideDeckMenu(user).run();
             }
         }
     }

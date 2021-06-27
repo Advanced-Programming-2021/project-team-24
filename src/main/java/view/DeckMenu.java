@@ -102,14 +102,6 @@ public class DeckMenu extends Menu {
                     continue;
                 }
 
-                matcher = Global.getMatcher(command, "deck change-cards (?=.*(?:--main card (?<mainCardName>\\w)))(?=.*(?:--side card (?<sideCardName>\\w)))");
-                if (matcher.find()) {
-                    String mainCardName = matcher.group("mainCardName");
-                    String sideCardName = matcher.group("sideCardName");
-                    Message message = deckController.change(mainCardName, sideCardName);
-                    System.out.println(message.getContent());
-                    continue;
-                }
 
                 matcher = Global.getMatcher(command, "deck show (?=.*(?:--deck (?<deckName>\\w)))(?=.*(?<opponent>--side)){0,1}");
                 if (matcher.find()) {
