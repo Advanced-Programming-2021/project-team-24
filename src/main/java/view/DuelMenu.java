@@ -12,6 +12,7 @@ import model.card.Card;
 import model.card.CardHolder;
 import model.card.CardState;
 import model.card.monster.MonsterCard;
+import model.card.monster.MonsterCardHolder;
 import model.deck.Deck;
 import model.duel.Duel;
 import model.duel.Duel.Phase;
@@ -47,11 +48,8 @@ public class DuelMenu {
 
     public void run() {
         while (true) {
-            showBoard();
-            if (duelController.isRoundFinished()){
-                System.out.println("End");
-                return;
-            }
+            //showBoard();
+            if (duelController.isRoundFinished()) return;
             else{
                 if(duelController.getDuel().getCurrentPhase() == Phase.DRAW)
                 {
@@ -74,8 +72,7 @@ public class DuelMenu {
                     continue;
                 }
                 else if (command.equals("surrender")){
-                    duelController.surrender();//change argument later
-                    System.out.println("End");
+                    duelController.surrender(true);//change argument later
                     return;
                 }
                 else if (command.equals("select -d")) {
@@ -308,7 +305,7 @@ public class DuelMenu {
     }
 
     public void showBoard() {
-        System.out.println(getPlayer(true).getUser().getNickname() + ":" + getPlayer(true).getLifePoint());
+
         for(int i=0;i<getZoneCards("hand",true).size();i++) System.out.print("c   ");
         System.out.println();
 
@@ -354,7 +351,6 @@ public class DuelMenu {
 
         for(int i=0;i<getZoneCards("hand",false).size();i++) System.out.print("c    ");
         System.out.println();
-        System.out.println(getPlayer(false).getUser().getNickname() + ":" + getPlayer(false).getLifePoint());
 
     }
 
@@ -378,13 +374,22 @@ public class DuelMenu {
         b.getDecks().add(alireza);
         b.getDecks().setActiveDeck(b.getDecks().getDeckByName("alireza"));
         DuelMenu duelMenu = new DuelMenu(new Player(a), new Player(b));
-
+        duelMenu.addMonsterCard("Command Knight");
         duelMenu.run();
     }
-    public void addMonsterCard(String cardName, DuelMenu duelMenu)
+    public void addMonsterCard(String cardName)
     {
         MonsterCard v = (MonsterCard)Card.getCardByName(cardName);    
-     //   duelMenu.getDuelController().getDuel().getMap().put(Address.get('hand', duelMenu.getDuelController().getZone(Zone.get("hand", duelMenu.getDuelController().getDuel().get());
+        Address hand = Address.get(
+            Zone.get(
+                "hand", duelController.getDuel().getCurrentPlayer())
+                , 
+                this.getDuelController().getZone(
+                    Zone.get("hand", this.getDuelController().getDuel().getCurrentPlayer())).size());
+        this.getDuelController().getDuel().getMap().put(hand,
+                    new MonsterCardHolder(this.getDuelController().getDuel().getCurrentPlayer(), v, CardState.NONE));                    
+        duelController.select(hand);
+        duelController.summon();
     }
 
 }

@@ -84,14 +84,8 @@ public class User {
         try {
             File file = new File("users/"+this.username+".json");
             file.createNewFile();
-            FileWriter fileWriter = new FileWriter(file);
-            List<Card> u = new ArrayList<>();
-            Collections.copy(u, this.cards);                        
-            this.cards = null;
-            
-            fileWriter.write(new Gson().toJson(this));
-            
-            this.cards = u;
+            FileWriter fileWriter = new FileWriter(file);        
+            fileWriter.write(new Gson().toJson(this));            
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
