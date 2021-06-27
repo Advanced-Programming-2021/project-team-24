@@ -51,8 +51,8 @@ public class DuelController {
         }
         
     }
-    public void surrender(boolean isOpponent){
-        duel.surrender(isOpponent);
+    public void surrender(){
+        duel.surrender();
     }
 
     public boolean isRoundFinished() {
@@ -81,6 +81,9 @@ public class DuelController {
     }
 
     public Message nextPhase() {
+        if (duel.getCurrentPhase() == Phase.BATTLE){
+            if (duel.isRoundFinished()) return new Message(TypeMessage.INFO, "End");
+        }
         if(duel.getCurrentPhase() == Phase.END)
         {
             numberOfEndTurn++;
