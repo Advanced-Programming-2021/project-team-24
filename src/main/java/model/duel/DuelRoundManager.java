@@ -38,7 +38,6 @@ public class DuelRoundManager {
                 calculateCoin(opponentPlayer);
                 calculateScore(userPlayer);
                 calculateScore(opponentPlayer);
-                //go to main menu
                 new MainMenu(user).run();
             }
             else {
