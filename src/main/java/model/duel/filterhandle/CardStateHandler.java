@@ -8,13 +8,22 @@ public class CardStateHandler extends FilterHandler{
 
     @Override
     public boolean Handle(Filter filter, CardHolder cardHolder, Duel duel) {
-        
-        for(int i = 0; i < filter.getCardStates().size(); i++)
+        int flag = 0;
+        if(filter.getCardStates() != null)
         {
-            if(filter.getCardStates().get(i) == cardHolder.getCardState())
-                return true;
+            for(int i = 0; i < filter.getCardStates().size(); i++)
+            {
+                if(filter.getCardStates().get(i) == cardHolder.getCardState())
+                    flag = 1;
+            }
+            if(flag == 0)
+                return false;
         }
-        return false;
+        if(nextFilterHandler != null)
+            return nextFilterHandler.Handle(filter, cardHolder, duel);
+        else
+            return true;
+
     }
     
 }

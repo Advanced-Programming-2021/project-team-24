@@ -1,1 +1,1 @@
-{"attack":1600,"defence":600,"level":4,"monsterEffectType":"Effect","monsterType":"Dragon","monsterAttribute:":"LIGHT","name":"Mirage Dragon","description":"Your opponent cannot activate Trap Cards during the Battle Phase.","price":2500,"limitType":"Limited","cardType":"MONSTER"}
+{"attack":1600,"defence":600,"level":4,"monsterEffectType":"Effect","monsterType":"Dragon","monsterAttribute:":"LIGHT","name":"Mirage Dragon","description":"Your opponent cannot activate Trap Cards during the Battle Phase.","price":2500,"limitType":"Unlimited","cardType":"MONSTER"}

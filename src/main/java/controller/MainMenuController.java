@@ -1,21 +1,22 @@
 package controller;
 
 import model.deck.Deck;
+import model.duel.DuelRoundManager;
 import model.user.User;
 import view.DuelMenu;
 
 public class MainMenuController {
-    public Message createDuel(User user, String opponentUsername, String rounds) {
-        User opponent = User.readUser(opponentUsername);
+    public Message createDuel(User user, User opponent, String rounds){
         if (opponent != null) {
             Deck userDeck = user.getDecks().getActiveDeck();
             if (userDeck != null) {
                 Deck opponentDeck = opponent.getDecks().getActiveDeck();
                 if (opponentDeck != null) {
                     if(userDeck.isValid()){
-                        if(userDeck.isValid()){
+                        if(opponentDeck.isValid()){
                             if(rounds.equals("1") || rounds.equals("3")){
-                                new DuelMenu(user,opponent,rounds).run();
+                                new DuelRoundManager(user, opponent, Integer.parseInt(rounds)).run();
+                                //TODO                                
                                 return null;
                             }
                             else{
@@ -23,14 +24,14 @@ public class MainMenuController {
                             }
                         }
                         else{
-                            return new Message(TypeMessage.ERROR, opponentUsername + "’s deck is invalid");
+                            return new Message(TypeMessage.ERROR, opponent.getUsername() + "'s deck is invalid");
                         }
                     }
                     else{
                         return new Message(TypeMessage.ERROR, user.getUsername() + "'s deck is invalid");
                     }
                 } else {
-                    return new Message(TypeMessage.ERROR, opponentUsername + " has no active deck");
+                    return new Message(TypeMessage.ERROR, opponent.getUsername() + " has no active deck");
                 }
             } else {
                 return new Message(TypeMessage.ERROR, user.getUsername() + " has no active deck");

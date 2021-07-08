@@ -1,0 +1,77 @@
+.linkLabel:hover{
+ -fx-text-fill:#00ffd0;
+ -fx-cursor: hand;
+}
+.btn{
+ -fx-background-color: black;
+}
+.btn:hover{
+ -fx-text-fill:black;
+ -fx-background-color: #00ffd0;
+ -fx-cursor: hand;
+}
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
+.hoverable:hover{
+ -fx-cursor: hand;
+ -fx-opacity: 0.6;
+}
+
+.duelBG{
+	-fx-background-image: url("../images/duel.png");
+	-fx-background-size: cover;
+	-fx-background-position:center center;
+}
+
+.decksBG{
+    -fx-background-image: url("../images/decksBG.png");
+    -fx-background-size: cover;
+    -fx-background-position:center center;
+}
+
+.shopBG{
+    -fx-background-image: url("../images/shopBG.png");
+    -fx-background-size: cover;
+    -fx-background-position:center center;
+}
+
+.scoreboardBG{
+    -fx-background-image: url("../images/scoreboardBG.png");
+    -fx-background-size: cover;
+    -fx-background-position:center center;
+}
+
+.handCursor{
+    -fx-cursor: hand;
+}
+
+.shopLeft{
+    -fx-background-image: url("../images/backgrounds/shopLeft.gif");
+    -fx-background-size: cover;
+}
+
+.shopRight{
+    -fx-background-image: url("../images/backgrounds/shopRight.gif");
+}
+.button:hover{
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+.duelBackground{
+	-fx-background-image: url("../images/backgrounds/duel.gif");
+}
+.fieldBG{
+	-fx-background-image: url("../images/duel/board.png");
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-size:cover;
+}
+.scoreBoardBackground{
+	-fx-background-image: url("../images/backgrounds/scoreboard.jpg");
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+	-fx-background-size:cover;
+}
+

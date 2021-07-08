@@ -8,6 +8,6 @@ public class MainMenu {
         this.user = user;
     }
     public void menuExit(){
-        new LoginMenu();
+        new LoginController();
     }
 }

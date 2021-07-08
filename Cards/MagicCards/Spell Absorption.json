@@ -1,0 +1,1 @@
+{"magicIcon":"Continuous","magicType":"Spell","name":"Spell Absorption","description":"\"Each time a Spell Card is activated, gain 500 Life Points immediately after it resolves.\"","price":4000,"limitType":"Unlimited","cardType":"MAGIC","effects":{"ACTIVE_SPELL":"changeLP(own,500);"}}

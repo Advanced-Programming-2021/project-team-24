@@ -7,6 +7,8 @@ public enum CardType {
     TRAP("TRAP"),
     @SerializedName("MONSTER")
     MONSTER("MONSTER"),
+    @SerializedName("MAGIC")
+    MAGIC("MAGIC"),
     @SerializedName("SPELL")
     SPELL("SPELL");
     public final String label;

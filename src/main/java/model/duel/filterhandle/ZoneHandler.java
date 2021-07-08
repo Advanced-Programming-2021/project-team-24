@@ -13,15 +13,15 @@ public class ZoneHandler extends FilterHandler {
     public boolean Handle(Filter filter, CardHolder cardHolder, Duel duel) {
         Zone zone = duel.getCardHolderZone(duel.getCardHolderById(cardHolder.getId()));
         List<String> possibleZones = filter.getZones();
-        int flag = 0;
+        int flag = -1;
         if(filter.getZones() != null)
         {
+            flag = 0;
             for(int j = 0; j < possibleZones.size(); j++)
             {
-                if(zone.getName().equals(duel.parseZone(possibleZones.get(j)).getName()) && zone.getPlayer().equals(duel.parseZone(possibleZones.get(j)).getPlayer()))
-                {
+                Zone currentPossibleZone = duel.parseZone(possibleZones.get(j), filter.getOwnerName());
+                if(zone.equals(currentPossibleZone))
                     flag = 1;
-                }
             }
         }
         if(flag == 0)

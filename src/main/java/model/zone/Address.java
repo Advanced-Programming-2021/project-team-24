@@ -1,25 +1,51 @@
 package model.zone;
 
 
+import model.user.Player;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Address {
-    private String name;
     private Zone zone;
     private int place;
-    public Address(Zone zone, int place)
-    {
+    private static List<Address> addresses = new ArrayList<>();
+
+    public static void init(Player player) {
+        for(Zones zone : Zones.values()){
+            initZone(zone,player);
+        }
+    }
+
+    private static void initZone(Zones zone,Player player) {
+        for(int i=0;i<zone.capacity;i++){
+            addresses.add(new Address(Zone.get(zone.label, player),i));
+        }
+    }
+
+    public static Address get(Zone zone, int place) {
+        int a = 0;
+        for (Address address : addresses) {
+            if (zone.getName().equals(address.getZone().getName()) && zone.getPlayer().getNickname().equals(address.getZone().getPlayer().getNickname())  &&  place == address.getPlace()){
+                return address;
+            }
+        }
+        return null;
+    }
+
+    public Address(Zone zone, int place) {
         this.place = place;
         this.zone = zone;
     }
 
     //copy constructor
-    public Address(Address address){
-        this.name = address.name;
+    public Address(Address address) {
         this.zone = address.zone;
         this.place = address.place;
     }
 
-    public void plusplus(){
-        this.place++;
+    public Address getNextPlace() {
+        return get(zone,place+1);
     }
 
     public int getPlace() {
@@ -31,6 +57,6 @@ public class Address {
     }
 
     public static void main(String[] args) {
-        
+
     }
 }

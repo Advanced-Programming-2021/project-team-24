@@ -1,0 +1,2 @@
+set(this,equip,select($my_monster$,1,select_one_card_to_equip));
+set(this,activated,10);
