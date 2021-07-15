@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import controller.DuelController;
+import model.card.CardState;
 import model.card.CardType;
 import model.card.Event;
 import model.card.magic.MagicCard;
@@ -24,17 +25,21 @@ public class EffectChainer {
     public EffectChainer(Event event, Player opponent, DuelController duelController)
     {    
         this.duelController = duelController;
+        duelMenu = duelController.getDuelMenu();
+        idMagicCardHolderChain = new ArrayList<Integer>();
         this.event = event;
-        askForChain(opponent);        
+        //askForChain(opponent);        
     }
     public EffectChainer(Event event, MagicCardHolder magicCardHolder, Player opponent, DuelController duelController)
     {
         this.duelController = duelController;
+        this.duelMenu = duelController.getDuelMenu();
         idMagicCardHolderChain = new ArrayList<Integer>();
         this.opponent = opponent;
-        this.event = event;
-        idMagicCardHolderChain.add(magicCardHolder.getId());
-        askForChain(opponent);
+        this.event = event;        
+        if(event == Event.ACTIVE_SPELL)
+            idMagicCardHolderChain.add(magicCardHolder.getId());
+        //askForChain(opponent);
     }
 
     
@@ -52,7 +57,7 @@ public class EffectChainer {
         }
         List<Integer> vv = duelController.getDuel().getIdCardHolderFilter(filter);
         List<Integer> v = new ArrayList<Integer>();
-        for(int i = 0; i < v.size(); i++)
+        for(int i = 0; i < vv.size(); i++)
         {
             MagicCardHolder magic = (MagicCardHolder)duelController.getDuel().getCardHolderById(vv.get(i));
             if(magic.getEffectManager().isConditionSatisfied(new EffectParser(duelMenu, duelController, magic.getEffectManager())))
@@ -60,7 +65,7 @@ public class EffectChainer {
                 v.add(vv.get(i));
             }
         }
-        if(Global.delListFromList(vv, idMagicCardHolderChain).size() > 0)
+        if(Global.delListFromList(v, idMagicCardHolderChain).size() > 0)
         {
             boolean ans = duelMenu.BooleanQYN("Do you want to chain another card?");
             if(ans == true)
@@ -69,6 +74,7 @@ public class EffectChainer {
                 {
                     int number = duelMenu.selective(v, 1, "select magic card to chain:").get(0);
                     MagicCardHolder temp = (MagicCardHolder)duelController.getDuel().getCardHolderById(number);
+                    temp.setCardState(CardState.CHAIN_MAGIC);
                     EffectParser effectParser = new EffectParser(duelMenu, duelController, temp.getEffectManager());
                     Boolean vvv = Boolean.parseBoolean(effectParser.getCommandResult(temp.toString()));//check requirement
                     if(vvv)
@@ -78,7 +84,9 @@ public class EffectChainer {
                 }
             }
             else
+            {
                 runChain();
+            }
         }
         else
         {
@@ -111,12 +119,14 @@ public class EffectChainer {
                     int number = speedMagic.get(j).get(i);
                     MagicCardHolder temp = (MagicCardHolder)duelController.getDuel().getCardHolderById(number);
                     EffectParser effectParser = new EffectParser(duelMenu, duelController, temp.getEffectManager());
+                    duelController.getDuel().getCardHolderById(number);
+                    temp.activate();
                     effectParser.runEffect();
 
                 }
             }
         }catch(Exception e){
-
+            e.printStackTrace();
         }
     }
 }

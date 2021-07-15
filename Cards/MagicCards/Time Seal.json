@@ -1,1 +1,1 @@
-{"magicIcon":"Normal","magicType":"Trap","name":"Time Seal","description":"Skip the Draw Phase of your opponent\u0027s next turn.","price":2000,"limitType":"Limited","cardType":"MAGIC"}
+{"effect":{"requirement":"","effect":"set(*opp*,can_draw,false,2);","askForActivation":false,"name":"","reverse":"","askAbleMessage":"","requiredEvents":[],"speed":1},"magicIcon":"Normal","magicType":"Trap","name":"Time Seal","description":"Skip the Draw Phase of your opponent\u0027s next turn.","price":2000,"limitType":"Limited","cardType":"MAGIC"}

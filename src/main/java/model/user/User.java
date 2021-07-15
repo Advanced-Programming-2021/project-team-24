@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 
 import com.google.gson.Gson;
@@ -15,6 +16,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.internal.Excluder;
 
+import javafx.scene.image.Image;
 import model.deck.*;
 import controller.Message;
 import model.card.*;
@@ -26,6 +28,7 @@ public class User {
     private String password;
     private int score;
     private int coin;
+    private String imageAddress;
     private List<String> cardNames;
 
    
@@ -65,6 +68,20 @@ public class User {
     public List<Card> getCards() {
         return cards;
     }
+    public static List <Card> getMonsterCards(){
+        List<Card> cards = new ArrayList<>();
+        for(Card card : cards){
+            if(!card.isMagic()) cards.add(card);
+        }
+        return cards;
+    }
+    public static List <Card> getMagicCards(){
+        List<Card> cards = new ArrayList<>();
+        for(Card card : cards){
+            if(card.isMagic()) cards.add(card);
+        }
+        return cards;
+    }
 
     public User(String username, String password, String nickname)
     {
@@ -77,7 +94,22 @@ public class User {
         usernames.add(username);
         this.cardNames = new ArrayList<>();
         this.cards = new ArrayList<>();
+        this.imageAddress = "images/duel/characters/Chara001.dds"+ getRandomNumberInRange(1, 38) +".png";
         addUser();
+    }
+
+    public String getImageAddress() {
+        return imageAddress;
+    }
+
+    private static int getRandomNumberInRange(int min, int max) {
+
+        if (min >= max) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
+
+        Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
     }
 
     private void addUser(){

@@ -27,7 +27,7 @@ public class ScoreboardMenu extends MainMenu {
         String content = "";
         for (int i = 1; i < usernames.size()+1; i++) {
             User user = User.readUser(usernames.get(i-1));
-            content += i + "- " + user.getNickname() + ": " + user.getScore() + "\n";
+            content += i + ": " + user.getNickname() + " " + user.getScore() + "\n";
         }
         return new Message(TypeMessage.INFO, content);
     }

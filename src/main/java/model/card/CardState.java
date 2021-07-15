@@ -10,6 +10,8 @@ public enum CardState
   SET_MAGIC("SET_MAGIC"),
   @SerializedName("ATTACK_MONSTER")
   ATTACK_MONSTER("ATTACK_MONSTER"),
+  @SerializedName("CHAIN_MAGIC")
+  CHAIN_MAGIC("CHAIN_MAGIC"),
   @SerializedName("DEFENCE_MONSTER")
   DEFENCE_MONSTER("DEFENCE_MONSTER"),
   @SerializedName("SPECIAL_SUMMON")

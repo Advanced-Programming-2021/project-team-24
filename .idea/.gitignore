@@ -2,7 +2,7 @@
 /shelf/
 /workspace.xml
 # Datasource local storage ignored files
-/../../../../../../../:\Users\Asus\Documents\GitHub\project-team-24\.idea/dataSources/
+/../../../../../../:\Users\Asus\IdeaProjects\javaFXHelloWorld\.idea/dataSources/
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/

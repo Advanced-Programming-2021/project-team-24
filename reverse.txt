@@ -1,0 +1,7 @@
+set(this,chen,Norm(get(this,equip_set))*800);
+changeValue(get(this,equip),attack,-get(this,chen));
+changeValue(get(this,equip),defence,-get(this,chen));
+
+set(this,che,Norm(get(this,equip_vis))*800);
+changeValue(get(this,equip),attack,-get(this,che));
+changeValue(get(this,equip),defence,-get(this,che));

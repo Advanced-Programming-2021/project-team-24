@@ -19,7 +19,9 @@ import model.effect.Effect;
 import model.effect.EffectManager;
 import model.effect.EffectType;
 import model.user.Player;
+import model.zone.Address;
 import model.zone.Zone;
+import model.zone.ZonesName;
 import view.DuelMenu;
 import view.Global;
 
@@ -27,6 +29,7 @@ import view.Global;
 public class EffectParser {    
     DuelController duelController;
     DuelMenu duelMenu;
+    Duel duel;
     Player owner;
     EffectManager effectManager;
     Effect effect;
@@ -56,46 +59,7 @@ public class EffectParser {
         this.duelMenu = duelMenu;      
         this.extraKeyWords = new HashMap<String, String>();
         this.duelController = duelController;
-        if(effectManager.getEffect().getEffectType() == EffectType.QUICK_PLAY)
-        {
-            
-            //add reverse to the player
-            //clone
-            //ADD  effect hashMap to the hashMap of player
-            Effect reverseEffect = effect.clone();
-            effectManager.getEffect().setReverse(null);
-            reverseEffect.setEffect(effect.getReverse());
-            reverseEffect.setReverse(null);
-            if(owner.getMap().getEffects().get(Event.END_TURN) == null)
-            {
-                owner.getMap().getEffects().put(Event.END_TURN, new ArrayList<EffectManager>());
-            }
-            for(HashMap.Entry<String,String> entry : effectManager.getExtraKeyWords().entrySet())
-            {
-                //add value to original hashMap
-                owner.getMap().getCardMap().put((String)entry.getKey(), (String)entry.getValue());
-            }
-            EffectManager deathEffectManager = new EffectManager(reverseEffect, owner, owner.getMap().getId());
-            owner.getMap().getEffects().get(Event.END_TURN).add(deathEffectManager);
-        }
-        else
-        {
-            //add death event as reverse
-            //TODO
-            Effect reverseEffect = effect.clone();
-            reverseEffect.setEffect(effect.getReverse());
-            reverseEffect.setReverse(null);
-            if(owner.getMap().getEffects().get(Event.END_TURN) == null)
-            {
-                owner.getMap().getEffects().put(Event.END_TURN, new ArrayList<EffectManager>());
-            }
-            EffectManager deathEffectManager = new EffectManager(reverseEffect, owner, effectManager.getOwnerCardHolderId());
-            if(duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().get(Event.DEATH_OWNER) == null)
-            {
-                duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().put(Event.DEATH_OWNER , new ArrayList<EffectManager>());
-            }
-            duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().get(Event.DEATH_OWNER).add(deathEffectManager);
-        }
+        this.duel = duelController.getDuel();
     }    
     
     
@@ -110,8 +74,41 @@ public class EffectParser {
 
     public String runEffect()
     {
+        if(effectManager.getEffect().getEffectType() == EffectType.QUICK_PLAY)
+        {            
+            Effect reverseEffect = effect.clone();
+            effectManager.getEffect().setReverse(null);
+            reverseEffect.setEffect(effect.getReverse());
+            reverseEffect.setReverse(null);
+            if(owner.getMap().getEffects().get(Event.END_TURN) == null)
+            {
+                owner.getMap().getEffects().put(Event.END_TURN, new ArrayList<EffectManager>());
+            }
+            for(HashMap.Entry<String,String> entry : effectManager.getExtraKeyWords().entrySet())
+            {
+                owner.getMap().getCardMap().put((String)entry.getKey(), (String)entry.getValue());
+            }
+            EffectManager deathEffectManager = new EffectManager(reverseEffect, owner, owner.getMap().getId());
+            owner.getMap().getEffects().get(Event.END_TURN).add(deathEffectManager);
+        }
+        else
+        {
+            Effect reverseEffect = effect.clone();
+            reverseEffect.setEffect(effect.getReverse());
+            reverseEffect.setReverse(null);
+            if(owner.getMap().getEffects().get(Event.END_TURN) == null)
+            {
+                owner.getMap().getEffects().put(Event.END_TURN, new ArrayList<EffectManager>());
+            }
+            EffectManager deathEffectManager = new EffectManager(reverseEffect, owner, effectManager.getOwnerCardHolderId());
+            if(duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().get(Event.DEATH_OWNER) == null)
+            {
+                duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().put(Event.DEATH_OWNER , new ArrayList<EffectManager>());
+            }
+            duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().get(Event.DEATH_OWNER).add(deathEffectManager);            
+        }
         ans = null;
-        effectManager.setActivated(true);
+        effectManager.setActivated(true);        
         getCommandResult
         (effect.getEffectCommand()
         );
@@ -158,11 +155,11 @@ public class EffectParser {
                 {            
                     
                     CardState cardState = gson.fromJson(fields.get(2), CardState.class);
-                    duelController.getDuel().changerZone(cardHolders, targetZone, cardState);
+                    duelController.getDuel().changerZone(cardHolders, targetZone, cardState, duelMenu);
                 }
                 else
                 {
-                    duelController.getDuel().changerZone(cardHolders, targetZone, CardState.NONE);                
+                    duelController.getDuel().changerZone(cardHolders, targetZone, CardState.NONE, duelMenu);                
                 }
             }
         }
@@ -277,9 +274,9 @@ public class EffectParser {
                 command = command.replace(" ", "");
                 //check get
                 command = draw(command);
-                for(int i = 0; i < 4; i++)
+                for(int i = 0; i < 1; i++)
                 {
-                    command = parseKeyWords(command);
+                    
                     command =  handleMessage(command);
                     if(command.length() >= 8 && command.substring(0, 8).equals("return_t") && ans == null)
                     {
@@ -289,6 +286,34 @@ public class EffectParser {
                     if(Global.regexFind(command, "changeValue\\(.+\\)"))
                     {
                         command = changeValue(command);
+                    }
+                    if(command.length() >= 3 && command.substring(0, 3).equals("set"))
+                    {
+                        setCommand(command);
+                    }
+                    
+                    if(command.length() >= new String("changeZone").length() && command.substring(0, new String("changeZone").length()).equals("changeZone"))
+                    {
+                        command = changeZone(command);                
+                    }
+                    if(command.length() >= 2 && command.substring(0, 2).equals("if"))
+                    {
+                        return handleConditional(command);
+                    }
+                    if(command.length() >= 4 && command.substring(0, 4).equals("q_yn"))
+                    {
+                        return q_yn(command);
+                    }
+
+
+                    command = parseKeyWords(command);
+                    command = handleGetCommand(command);
+                    command = handleGetCommand(command);
+                    command = handleGetCommand(command);
+                    if(command.equals("nextPhase()"))
+                    {
+                        duelController.getDuel().nextPhase();
+                        return "";
                     }
                     if(command.length() >= new String("select").length() && command.substring(0, 6).equals("select"))
                     {
@@ -300,10 +325,7 @@ public class EffectParser {
                         command = randomSelection(command);
                         continue;
                     }
-                    if(command.length() >= new String("changeZone").length() && command.substring(0, new String("changeZone").length()).equals("changeZone"))
-                    {
-                        command = changeZone(command);                
-                    }
+                   
                     if(command.length() >= 8 && command.substring(0, 8).equals("return_f") && ans == null)
                     {
                         ans = "false";
@@ -320,18 +342,10 @@ public class EffectParser {
                         continue;
                     }
                     
-                    if(command.length() >= 2 && command.substring(0, 2).equals("if"))
-                    {
-                        return handleConditional(command);
-                    }
-                    if(command.length() >= 4 && command.substring(0, 4).equals("q_yn"))
-                    {
-                        return q_yn(command);
-                    }
-                    if(command.length() >= 3 && command.substring(0, 3).equals("set"))
-                    {
-                        setCommand(command);
-                    }
+                    
+                    
+                    
+                    
                     command = handleChangeLPCommand(command);
                     
                     
@@ -344,8 +358,9 @@ public class EffectParser {
                         command = getSumOverField(command);
                     }
                     command = handleNormCommand(command);                
-                    command = handleGetCommand(command);
+                    
                     command = calculater(command);
+                    
                 }
                 return command;        
             }
@@ -441,9 +456,9 @@ public class EffectParser {
         if(opponent.getNickname().equals(owner.getNickname()))
             opponent = duelController.getDuel().getCurrentPlayer();
 
-        for (String string : model.zone.Zone.zoneStrings) {
+        for (String string : model.zone.ZonesName.zoneStrings) {
             String zone = "$my_" + string + "$";
-            List<CardHolder> cardList = duelController.getZone(Zone.get(string, current));
+            List<CardHolder> cardList = duelController.getZone(duel.duelZones.get(string, current));
             List<String> ans = new ArrayList<String>();
             for(int i = 0; i < cardList.size(); i++)
             {
@@ -452,9 +467,9 @@ public class EffectParser {
             command = command.replace(zone, new Gson().toJson(ans, new ArrayList<String>().getClass()));
         }
         
-        for (String string : model.zone.Zone.zoneStrings) {
+        for (String string : model.zone.ZonesName.zoneStrings) {
             String zone = "$opp_" + string + "$";
-            List<CardHolder> cardList = duelController.getZone(Zone.get(string, opponent));
+            List<CardHolder> cardList = duelController.getZone(duel.duelZones.get(string, opponent));
             List<String> ans = new ArrayList<String>();
             for(int i = 0; i < cardList.size(); i++)
             {
@@ -463,11 +478,11 @@ public class EffectParser {
             command = command.replace(zone, new Gson().toJson(ans, new ArrayList<String>().getClass()));
         }
         
-        for(String string : Zone.zoneStrings)
+        for(String string : ZonesName.zoneStrings)
         {
             String zone = "$" + string + "$";
-            List<CardHolder> cardHoldersFirst = duelController.getZone(Zone.get(string, opponent));
-            List<CardHolder> cardHoldersSecond = duelController.getZone(Zone.get(string, current));
+            List<CardHolder> cardHoldersFirst = duelController.getZone(duel.duelZones.get(string, opponent));
+            List<CardHolder> cardHoldersSecond = duelController.getZone(duel.duelZones.get(string, current));
             List<Integer> uIntegers = new ArrayList<>();
             for(int i = 0; i < cardHoldersFirst.size(); i++)
             {
@@ -481,7 +496,7 @@ public class EffectParser {
         }
         
 
-        List<String> own_rit_trib = convertToString(getCardHoldersIdList(duelController.getZone(Zone.get("hand", duelController.getDuel().getCurrentPlayer()))));
+        List<String> own_rit_trib = convertToString(getCardHoldersIdList(duelController.getZone(duel.duelZones.get("hand", duelController.getDuel().getCurrentPlayer()))));
         //own_rit_trib = convertToInteger(own_rit_trib
         List<String> own = new ArrayList<String>();
         own.add(String.valueOf(effectManager.getOwner().getMap().getId()));
@@ -678,7 +693,6 @@ public class EffectParser {
                 try {
                     time = Integer.parseInt(fields.get(3));
                 } catch (Exception e) {
-                    //TODO: handle exception
                 }
                 duelController.getDuel().changerMap(idCardHolders, key, value, time);
             }
@@ -771,11 +785,11 @@ public class EffectParser {
             {
                 return null;
             }
-        return Zone.get(zoneArgument[1], player);
+        return duel.duelZones.get(zoneArgument[1], player);
     }
     public String selective(String command)
     {
-        Matcher ans = Global.getMatcher(command,"select\\(([^()]*)\\)");
+        Matcher ans = Global.getMatcher(command,"select\\((.+)\\)");
         if(ans.find())
         {            
             List<String> fields = splitCorrect(ans.group(1), ',');            

@@ -46,8 +46,7 @@ public abstract class CardHolder {
         this.id = idCounter;   
         idCounter++;    
         this.appliedEffects = new ArrayList<Integer>();
-        this.effectManagerList = new ArrayList<EffectManager>();        
-        //TODO effectManager should be updated by creating effectManagerId        
+        this.effectManagerList = new ArrayList<EffectManager>();              
     }
     public CardHolder(Player owner, CardState cardState) {
         this.owner = owner;

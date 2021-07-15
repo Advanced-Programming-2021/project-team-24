@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../../Program Files/Java/javafx-sdk-11.0.2/lib" />
+      <root url="jar://$PROJECT_DIR$/../../../../Program Files/Java/jfoenix-9.0.10/jfoenix-9.0.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../Program Files/Java/fontawesomefx-8.1/fontawesomefx-8.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../Program Files/Java/MaterialFX-11.5.5-staging/src/materialfx-11.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../Program Files/Java/MaterialFX-11.5.5-staging/src/materialfx-11.5.5-staging.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../Program Files/Java/controlsfx-8.40.11.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../../../Program Files/Java/javafx-sdk-11.0.2/lib" />
+      <root url="jar://$PROJECT_DIR$/../../../../Program Files/Java/MaterialFX-11.5.5-staging/src/materialfx-11.4.4-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../Program Files/Java/MaterialFX-11.5.5-staging/src/materialfx-11.5.5-staging-sources.jar!/" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../../../../Program Files/Java/javafx-sdk-11.0.2/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../../Program Files/Java/javafx-sdk-11.0.2/lib" recursive="false" type="SOURCES" />
+  </library>
+</component>

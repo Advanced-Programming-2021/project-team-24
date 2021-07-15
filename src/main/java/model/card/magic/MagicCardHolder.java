@@ -9,7 +9,7 @@ import model.effect.EffectManager;
 import model.user.Player;
 
 public class MagicCardHolder extends CardHolder {
-    private MagicCard card;
+    private MagicCard card;    
     private EffectManager effectManager;
     public MagicCardHolder(Player owner, MagicCard card, CardState cardState) {
         super(owner ,cardState);
@@ -21,12 +21,20 @@ public class MagicCardHolder extends CardHolder {
         return this.effectManager;
     }
     
+    public void setCardState(CardState cardState)
+    {
+        this.cardState = cardState;
+    }
     public Card getCard() {
         return this.card;
     }
 
     public void flip() {
         this.cardState = CardState.VISIBLE_MAGIC;        
+    }
+    public void activate()
+    {
+        this.cardState = CardState.ACTIVE_MAGIC;
     }
     @Override
     public String toString() {

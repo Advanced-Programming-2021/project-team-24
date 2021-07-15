@@ -16,8 +16,9 @@ public class ShopMenu extends MainMenu {
         if (card == null) return new Message(TypeMessage.ERROR, "there is no card with this name");
         else if (card.getPrice()>user.getCoin()) return new Message(TypeMessage.ERROR, "not enough money");
         else {
+            user.setCoin(user.getCoin()-card.getPrice());
             user.addCard(card);
-            return new Message(TypeMessage.SUCCESSFUL, null);
+            return new Message(TypeMessage.SUCCESSFUL, "successful buy");
         }
     }
     public Message getInfo(){

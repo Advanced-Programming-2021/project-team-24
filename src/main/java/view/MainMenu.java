@@ -92,14 +92,11 @@ public class MainMenu extends Menu {
         b.getDecks().setActiveDeck(b.getDecks().getDeckByName("alireza"));
         DuelMenu duelMenu = new DuelMenu(new Player(a), new Player(b));
         DuelController dControleer = duelMenu.duelController;
-        dControleer.select(Address.get(Zone.get("hand", dControleer.getDuel().getCurrentPlayer()), 0));
+        dControleer.select(duelMenu.duelController.getDuel().duelAddresses.get(duelMenu.duelController.getDuel().duelZones.get("hand", dControleer.getDuel().getCurrentPlayer()), 0));
         dControleer.nextPhase();
         dControleer.nextPhase();
-        Filter filter = new Filter();
-        filter.setMonsterType(MonsterType.BEAST);        
-        System.out.println(new Gson().toJson(filter));
-        MonsterCard current = (MonsterCard) Card.getCardByName("Wattaildragon");
-        MonsterCard sampleMonster = (MonsterCard) Card.getCardByName("cardName");
+        MagicCard current = (MagicCard) Card.getCardByName("Time Seal");
+        
         System.out.println(EffectParser.splitByParentheses("alirez(alir)").get(0));
        
         dControleer.nextPhase();
@@ -123,14 +120,14 @@ public class MainMenu extends Menu {
         //effect.setRequiredEvent(u);
         //effect.setAskForActivation(false);
         try {
-            //any = new String(Files.readAllBytes(Paths.get(new File("any.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
-            summon = new String(Files.readAllBytes(Paths.get(new File("summon6.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
-            //mainEffect = new String(Files.readAllBytes(Paths.get(new File("effect.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            //any = new String(Files.readAllBytes(Paths.get(new File("effect.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            //summon = new String(Files.readAllBytes(Paths.get(new File("summon6.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            mainEffect = new String(Files.readAllBytes(Paths.get(new File("effect.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
             //required = new String(Files.readAllBytes(Paths.get(new File("required.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
             //reverse = new String(Files.readAllBytes(Paths.get(new File("reverse.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
 
             //onFlipOwner = new String(Files.readAllBytes(Paths.get(new File("flip.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
-            setSummon = new String(Files.readAllBytes(Paths.get(new File("set6.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
+            //setSummon = new String(Files.readAllBytes(Paths.get(new File("set6.txt").getPath()))).replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll(" ", "");
         } catch (Exception e) {
             //TODO: handle exception
         }
@@ -139,9 +136,14 @@ public class MainMenu extends Menu {
         //current.getEffects().put(Event.SET_OWNER, setSummon);
         effect.setEffect(mainEffect);
         effect.setReverse(reverse);
-        effect.setRequirementString(required);        
-        Filter u; 
-        
+        effect.setRequirementString(required);
+        List<Event> req = new ArrayList<>();
+        //req.add(Event.ANY);
+        effect.setRequiredEvent(req);
+        current.setEffect(effect);
+        //current.getEffects().put(Event.ANY, any);
+        //current.getEffects().put(Event.ACTIVE_SPELL, any);
+        //current.getEffects().put(Event.ANY, any);
         if(setSummon.length() > 0)
             current.getEffects().put(Event.SET_OWNER, setSummon);
         if(summon.length() > 0)
@@ -158,8 +160,8 @@ public class MainMenu extends Menu {
         String comman = "filter(\"idCardHolder\":$hand$)";
         Duel duel = dControleer.getDuel();
         dControleer.setDuelMenu(duelMenu);
-        dControleer.getDuel().getMap().put(Address.get(Zone.get("monster",dControleer.getDuel().getCurrentPlayer()), 1), new MonsterCardHolder(dControleer.getDuel().getCurrentPlayer(), current, CardState.ATTACK_MONSTER));
-        dControleer.getDuel().getMap().put(Address.get(Zone.get("monster",dControleer.getDuel().getCurrentPlayer()), 2), new MonsterCardHolder(dControleer.getDuel().getCurrentPlayer(), current, CardState.ATTACK_MONSTER));
+        //dControleer.getDuel().getMap().put(Address.get(Zone.get("monster",dControleer.getDuel().getCurrentPlayer()), 1), new MonsterCardHolder(dControleer.getDuel().getCurrentPlayer(), current, CardState.ATTACK_MONSTER));
+        //dControleer.getDuel().getMap().put(Address.get(Zone.get("monster",dControleer.getDuel().getCurrentPlayer()), 2), new MonsterCardHolder(dControleer.getDuel().getCurrentPlayer(), current, CardState.ATTACK_MONSTER));
         duelMenu.run();
         /*System.out.println(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5));
 

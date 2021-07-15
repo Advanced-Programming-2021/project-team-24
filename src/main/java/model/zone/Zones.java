@@ -4,7 +4,7 @@ package model.zone;
 
 public enum Zones {
     GRAVEYARD("graveyard",60,false),
-    HAND("hand",6,false),
+    HAND("hand",5,false),
     MONSTER("monster",5,true),
     MAGIC("magic",5,true),
     FIELD("field",1,true),

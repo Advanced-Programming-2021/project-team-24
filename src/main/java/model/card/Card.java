@@ -40,6 +40,13 @@ public abstract class Card {
     {
         return allCards;
     }
+    public static List <Card> getMonsterCards(){
+        List<Card> cards = new ArrayList<>();
+        for(Card card : allCards){
+            if(!card.isMagic()) cards.add(card);
+        }
+        return cards;
+    }
     static
     {
         HashMap<MagicIcon, EffectType> v = new HashMap<>();

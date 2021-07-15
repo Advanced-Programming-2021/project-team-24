@@ -14,6 +14,7 @@ import model.duel.Duel;
 import model.duel.EffectChainer;
 import model.duel.EffectParser;
 import model.duel.Duel.Phase;
+import model.effect.EffectManager;
 import model.effect.EffectType;
 import model.card.CardHolder;
 import model.card.CardState;
@@ -26,7 +27,7 @@ import model.card.monster.MonsterCardHolder;
 import model.user.Player;
 import model.zone.Address;
 import model.zone.Zone;
-import model.zone.Zones;
+import model.zone.ZonesName;
 import view.DuelMenu;
 import view.Global;
 
@@ -37,13 +38,22 @@ public class DuelController {
     private int numberOfEndTurn = 0;
     public void updateAutomaticEffect()
     {
-        //TODO
+        for(int i = 0; i < getDuel().getAllCardHolder().size(); i++){
+            if(getDuel().getAllCardHolder().get(i).getCard().isMagic() && ((MagicCard)getDuel().getAllCardHolder().get(i).getCard()).getEffect().getEffectType() == EffectType.QUICK_PLAY)
+            {
+               MagicCardHolder temp = (MagicCardHolder)getDuel().getAllCardHolder().get(i);
+               if(temp.getEffectManager().getActivated())
+               {
+                   duel.changeZone(temp.getId(), duel.duelZones.get("graveyard", temp.getOwner()), CardState.NONE, duelMenu);
+               }
+            }
+        }
         new AutomaticEffectHandler(this, duelMenu).update();
     }
     public void surrender(){
         duel.surrender();
     }
-
+    
     public boolean isRoundFinished() {
         return duel.isRoundFinished();
     }
@@ -60,6 +70,10 @@ public class DuelController {
     {
         this.duelEvents.put(event, idCardHolder);
     }
+    public DuelMenu getDuelMenu()
+    {
+        return this.duelMenu;
+    }
     public DuelController(Duel duel) {        
         this.duel = duel;
         this.duelEvents = new HashMap<Event, Integer>();
@@ -71,26 +85,49 @@ public class DuelController {
         }
         if(duel.getCurrentPhase() == Phase.END){
             numberOfEndTurn++;
-            for(String zone : Zone.zoneStrings){
-                List<CardHolder> cardHolders = getZone(Zone.get(zone, duel.getCurrentPlayer()));
-                for(int i = 0; i < cardHolders.size(); i++)
+            for(String zone : ZonesName.zoneStrings){
+                List<CardHolder> cardHolders = getZone(duel.duelZones.get(zone, duel.getCurrentPlayer()));
+                if(zone.equals("magic") || zone.equals("monster"))
                 {
-                    
-                    cardHolders.get(i).endTurn();
-                    if(duel.getCardHolderZone(cardHolders.get(i)).getName().equals("magic"))
-                    {                        
-                        MagicCardHolder magic = (MagicCardHolder)cardHolders.get(i);
-                        if(magic.getEffectManager().getEffect().getEffectType() == EffectType.NORMAL)
-                        {
-                            if(magic.getEffectManager().getActivated())
+                    for(int i = 0; i < cardHolders.size(); i++)
+                    {
+                        
+                        cardHolders.get(i).endTurn();
+                        if(duel.getCardHolderZone(cardHolders.get(i)).getName().equals("magic"))
+                        {                        
+                            MagicCardHolder magic = (MagicCardHolder)cardHolders.get(i);
+                            if(magic.getEffectManager().getEffect().getEffectType() == EffectType.NORMAL || magic.getEffectManager().getEffect().getEffectType() == EffectType.QUICK_PLAY)
                             {
-                                duel.changeZone(magic.getId(), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
+                                if(magic.getEffectManager().getActivated())
+                                {
+                                    duel.changeZone(magic.getId(), duel.duelZones.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
+                                }
                             }
-                        }
+                        }                        
                     }
                 }
             }
             CardHolder temp = duel.getCurrentPlayer().getMap();
+            List<EffectManager> currentEffectEnding = temp.getEffects().get(Event.END_TURN);
+            if(currentEffectEnding != null)
+            for(int i = 0; i < currentEffectEnding.size(); i++)
+            {
+                if(!currentEffectEnding.get(i).getActivated())
+                {
+                    new EffectParser(duelMenu, this, currentEffectEnding.get(i)).runEffect();
+                }
+            }
+            CardHolder opponentTemp = duel.getOpponent().getMap();
+            List<EffectManager> oppEffect = opponentTemp.getEffects().get(Event.END_TURN);
+            if(oppEffect != null)
+            for(int i = 0; i < oppEffect.size(); i++)
+            {
+                if(!oppEffect.get(i).getActivated())
+                {
+                    new EffectParser(duelMenu, this, oppEffect.get(i)).runEffect();
+                }
+            }
+            
             temp.endTurn();
             duel.changePlayerTurn();
             duel.nextPhase();
@@ -105,24 +142,29 @@ public class DuelController {
     }
 
     public Message draw() {
-        if(getZone(Zone.get("hand", duel.getCurrentPlayer())).size() == 6)
+        if(getDuel().getCurrentPlayer().getMap().getBoolMapValue("can_draw"))
         {
-            List<Integer> ans = new ArrayList<>();
-            for(int i = 0; i < getZone(Zone.get("hand", duel.getCurrentPlayer())).size(); i++)
+            if(getZone(duel.duelZones.get("hand", duel.getCurrentPlayer())).size() == 5)
             {
-                ans.add(getZone(Zone.get("hand", duel.getCurrentPlayer())).get(i).getId());
-            }
-            duel.changeZone(duelMenu.selective(ans, 1, "please select one card from your hand to remove").get(0), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
+                List<Integer> ans = new ArrayList<>();
+                for(int i = 0; i < getZone(duel.duelZones.get("hand", duel.getCurrentPlayer())).size(); i++)
+                {
+                    ans.add(getZone(duel.duelZones.get("hand", duel.getCurrentPlayer())).get(i).getId());
+                }
+                duel.changeZone(duelMenu.selective(ans, 1, "please select one card from your hand to remove").get(0), duel.duelZones.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
 
+            }
+            Zone deck = duel.duelZones.get("deck", duel.getCurrentPlayer());
+            Zone hand = duel.duelZones.get("hand", duel.getCurrentPlayer());
+            String cardName = changeZoneOfLastCard(deck, hand, duelMenu).getCard().getName();        
+            return new Message(TypeMessage.SUCCESSFUL, "card " + cardName + " drawed successfully.");
         }
-        Zone deck = Zone.get("deck", duel.getCurrentPlayer());
-        Zone hand = Zone.get("hand", duel.getCurrentPlayer());
-        String cardName = changeZoneOfLastCard(deck, hand, duelMenu).getCard().getName();        
-        return new Message(TypeMessage.SUCCESSFUL, "card " + cardName + " drawed successfully.");
+        else{
+            return new Message(TypeMessage.ERROR, "You can't draw in this turn");
+        }        
     }
 
-    private CardHolder changeZoneOfLastCard(Zone origin, Zone destination, DuelMenu duelMenu) {
-        //TODO check reverse effect
+    private CardHolder changeZoneOfLastCard(Zone origin, Zone destination, DuelMenu duelMenu) {    
         return duel.changeZone(getZone(origin).get(getZone(origin).size() - 1).getId(), destination, CardState.NONE, duelMenu);        
     }
 
@@ -146,7 +188,9 @@ public class DuelController {
 
     public Message showSelectedCard() {
         if (duel.getCurrentPlayer().getSelectedAddress() == null)
-            return new Message(TypeMessage.ERROR, "no card is selected yet");        
+            return new Message(TypeMessage.ERROR, "no card is selected yet");   
+        if(duel.getMap().get(duel.getCurrentPlayer().getSelectedAddress()) == null)     
+            return new Message(TypeMessage.ERROR, "no card is selected in given address");
         if (duel.getMap().get(duel.getCurrentPlayer().getSelectedAddress()).getOwner().equals(duel.getOpponent())) {
             CardState cardHolderState = duel.getMap().get(duel.getCurrentPlayer().getSelectedAddress()).getCardState();
             if (cardHolderState == CardState.ACTIVE_MAGIC || cardHolderState == CardState.ATTACK_MONSTER || cardHolderState == CardState.VISIBLE_MAGIC || CardState.DEFENCE_MONSTER == cardHolderState) {
@@ -183,20 +227,26 @@ public class DuelController {
         CardHolder cardHolder = duel.getMap().get(selectedAddress);
         if (cardHolder.getOwnerName().equals(duel.getCurrentPlayer().getNickname())) {
             if (cardHolder.getBoolMapValue("can_active")) {
-                if (cardHolder.getCardState() == CardState.SET_MAGIC) {
-                    MagicCardHolder magicCard = (MagicCardHolder) cardHolder;
-                    if(magicCard.getEffectManager().isConditionSatisfied(new EffectParser(duelMenu, this, magicCard.getEffectManager())))//TODO
-                    {
-                        duelEvents.put(Event.ACTIVE_SPELL, -1);
-                        new EffectChainer(Event.ACTIVE_SPELL, magicCard, duel.getOpponent(), this).askForChain(duel.getOpponent());
-                        updateAutomaticEffect();
-                        return new Message(TypeMessage.SUCCESSFUL, "");
+                if(!(cardHolder.getCardState() == CardState.ACTIVE_MAGIC))
+                {
+                    if (cardHolder.getCardState() == CardState.SET_MAGIC) {
+                        MagicCardHolder magicCard = (MagicCardHolder) cardHolder;
+                        if(magicCard.getEffectManager().isConditionSatisfied(new EffectParser(duelMenu, this, magicCard.getEffectManager())))
+                        {
+                            duelEvents.put(Event.ACTIVE_SPELL, -1);
+                            cardHolder.flip();
+                            new EffectChainer(Event.ACTIVE_SPELL, magicCard, duel.getOpponent(), this).askForChain(duel.getOpponent());;
+                            updateAutomaticEffect();
+                            return new Message(TypeMessage.SUCCESSFUL, "");
+                        }
+                        else
+                            return new Message(TypeMessage.ERROR, "Activation conditions are not provided");                                    
                     }
                     else
-                        return new Message(TypeMessage.ERROR, "Activation conditions are not provided");                                    
+                        return new Message(TypeMessage.ERROR, "please select card in magic zone");
                 }
-                else
-                    return new Message(TypeMessage.ERROR, "please select card in magic zone");
+                else    
+                    return new Message(TypeMessage.ERROR, "this card have been activated before");                
             } else {
                 return new Message(TypeMessage.ERROR, "You can't active this card");
             }
@@ -211,42 +261,46 @@ public class DuelController {
             if(duel.getCurrentPlayer().getMap().getBoolMapValue("can_summon")){
                 if (getSelectedAddress().getZone().getName().equals("hand") && !duel.getMap().get(getSelectedAddress()).getCard().isMagic()) {
                     if (duel.getCurrentPhase().equals(Duel.Phase.MAIN1) || duel.getCurrentPhase().equals(Duel.Phase.MAIN2)) {
-                        if (duel.zoneCardCount().get(Zone.get("monster", duel.getCurrentPlayer())) < 5) {
-                            if(!duel.getCurrentPlayer().getMap().getBoolMapValue("add_monster_turn"))
+                        if (duel.zoneCardCount().get(duel.duelZones.get("monster", duel.getCurrentPlayer())) < 5) {
+                            if(duel.getCurrentPlayer().equals(duel.getMap().get(getSelectedAddress()).getOwner()))
                             {
-                                if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER) == null)
+                                if(!duel.getCurrentPlayer().getMap().getBoolMapValue("add_monster_turn"))
                                 {
-                                    CardHolder temp = duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(),Zone.get("monster", duel.getCurrentPlayer()),CardState.ATTACK_MONSTER , duelMenu);                                    
-                                    duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);                                                                
-                                    temp.setMapValue("change_position_turn", "true", 1);
-                                    updateAutomaticEffect();
-                                }
-                                else
-                                {
-                                    List<CardHolder> init = getZone(Zone.get("monster", duel.getCurrentPlayer()));
-                                    if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER).get(0).isConditionSatisfied(new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER).get(0))))//TODO;
+                                    if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER) == null)
                                     {
-                                        
-                                        new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER).get(0)).runEffect();
-                                        List<CardHolder> second =getZone(Zone.get("monster", duel.getCurrentPlayer()));
-                                        if(delListFromAnother(second, init).size() > 0)
-                                        {
-                                            duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
-                                            delListFromAnother(second,init).get(0).setMapValue("change_position_turn", "true", 1);
-                                        }
-                                        else
-                                            return new Message(TypeMessage.ERROR, "you weren't able to summon");
+                                        CardHolder temp = duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(),duel.duelZones.get("monster", duel.getCurrentPlayer()),CardState.ATTACK_MONSTER , duelMenu);                                    
+                                        duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);                                                                
+                                        temp.setMapValue("change_position_turn", "true", 1);
                                         updateAutomaticEffect();
                                     }
                                     else
                                     {
-                                        return new Message(TypeMessage.ERROR, "summon conditions are not provided");
+                                        List<CardHolder> init = getZone(duel.duelZones.get("monster", duel.getCurrentPlayer()));
+                                        if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER).get(0).isConditionSatisfied(new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER).get(0))))
+                                        {
+                                            
+                                            new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SUMMON_OWNER).get(0)).runEffect();
+                                            List<CardHolder> second =getZone(duel.duelZones.get("monster", duel.getCurrentPlayer()));
+                                            if(delListFromAnother(second, init).size() > 0)
+                                            {
+                                                duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
+                                                delListFromAnother(second,init).get(0).setMapValue("change_position_turn", "true", 1);
+                                            }
+                                            else
+                                                return new Message(TypeMessage.ERROR, "you weren't able to summon");
+                                            updateAutomaticEffect();
+                                        }
+                                        else
+                                        {
+                                            return new Message(TypeMessage.ERROR, "summon conditions are not provided");
+                                        }
                                     }
+                                    return new Message(TypeMessage.SUCCESSFUL, "card summoned successfully");
                                 }
-                                return new Message(TypeMessage.SUCCESSFUL, "card summoned successfully");
-                            }
-                            else
-                                return new Message(TypeMessage.ERROR, "you have added monster before");
+                                else
+                                    return new Message(TypeMessage.ERROR, "you have added monster before");
+                            } else
+                                return new Message(TypeMessage.ERROR, "you can't summon opponent monster");
                         } else {
                             return new Message(TypeMessage.ERROR, "monster card zone is full");
                         }
@@ -271,11 +325,16 @@ public class DuelController {
             if(duel.getCurrentPlayer().getMap().getBoolMapValue("can_set_monster")){
                 if (getSelectedAddress().getZone().getName().equals("hand")) {
                     if (duel.getCurrentPhase().equals(Duel.Phase.MAIN1) || duel.getCurrentPhase().equals(Duel.Phase.MAIN2)) {
-                        if (duel.getMap().get(getSelectedAddress()).getCard().isMagic()) {
-                            return setMagicCard();                            
-                        } else {
-                            return setMonsterCard();
+                        if(duel.getMap().get(getSelectedAddress()).getOwner().equals(duel.getCurrentPlayer()))
+                        {
+                            if (duel.getMap().get(getSelectedAddress()).getCard().isMagic()) {                            
+                                return setMagicCard();                            
+                            } else {
+                                return setMonsterCard();
+                            }
                         }
+                        else
+                            return new Message(TypeMessage.ERROR, "you can't set opponent card");
                     }
                     else
                     { 
@@ -316,22 +375,22 @@ public class DuelController {
     }
     private Message setMonsterCard()
     {
-        if (duel.zoneCardCount().get(Zone.get("monster", duel.getCurrentPlayer())) < 5) {
+        if (duel.zoneCardCount().get(duel.duelZones.get("monster", duel.getCurrentPlayer())) < 5) {
             if(!duel.getCurrentPlayer().getMap().getBoolMapValue("add_monster_turn"))
             {                
                 if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER) == null)
                 {
-                    CardHolder temp = duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(),Zone.get("monster", duel.getCurrentPlayer()), CardState.SET_DEFENCE, duelMenu);                    
+                    CardHolder temp = duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(),duel.duelZones.get("monster", duel.getCurrentPlayer()), CardState.SET_DEFENCE, duelMenu);                    
                     duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);                            
                     temp.setMapValue("change_position_turn", "true", 1);
                 }
                 else
                 {
-                    List<CardHolder> init = getZone(Zone.get("monster", duel.getCurrentPlayer()));
+                    List<CardHolder> init = getZone(duel.duelZones.get("monster", duel.getCurrentPlayer()));
                     if(((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0).isConditionSatisfied(new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0))))
                     {                                            
                         new EffectParser(duelMenu, this, ((MonsterCardHolder)duel.getMap().get(getSelectedAddress())).getEventEffect(Event.SET_OWNER).get(0)).runEffect();
-                        List<CardHolder> second = getZone(Zone.get("monster", duel.getCurrentPlayer()));
+                        List<CardHolder> second = getZone(duel.duelZones.get("monster", duel.getCurrentPlayer()));
                         if(delListFromAnother(second, init).size() > 0)
                         {
                             duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);
@@ -366,14 +425,14 @@ public class DuelController {
             if(duel.getCurrentPlayer().getMap().getBoolMapValue("can_active_field"))
             {
                 MagicCardHolder added;
-                if(getZone(Zone.get("field", duel.getCurrentPlayer())).size() > 0)
+                if(getZone(duel.duelZones.get("field", duel.getCurrentPlayer())).size() > 0)
                 {                                   
-                    MagicCardHolder temp = (MagicCardHolder)getZone(Zone.get("field", duel.getCurrentPlayer())).get(0);                
-                    duel.changeZone(temp.getId(), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
+                    MagicCardHolder temp = (MagicCardHolder)getZone(duel.duelZones.get("field", duel.getCurrentPlayer())).get(0);                
+                    duel.changeZone(temp.getId(), duel.duelZones.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
                     
                 }
-                added = (MagicCardHolder) duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(), Zone.get("field", duel.getCurrentPlayer()), CardState.ACTIVE_MAGIC, duelMenu);                
-                new EffectChainer(Event.ACTIVE_SPELL, added, duel.getOpponent(), this).askForChain(duel.getOpponent());
+                added = (MagicCardHolder) duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(), duel.duelZones.get("field", duel.getCurrentPlayer()), CardState.ACTIVE_MAGIC, duelMenu);                
+                new EffectChainer(Event.ACTIVE_SPELL, added, duel.getOpponent(), this).askForChain(duel.getOpponent());;
                 updateAutomaticEffect();
             }
             else
@@ -381,8 +440,8 @@ public class DuelController {
             
         }
         else
-        if (duel.zoneCardCount().get(Zone.get("magic", duel.getCurrentPlayer())) < 5) {                            
-            MagicCardHolder temp = (MagicCardHolder)duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(), Zone.get("magic", duel.getCurrentPlayer()), CardState.SET_MAGIC, duelMenu);                                
+        if (duel.zoneCardCount().get(duel.duelZones.get("magic", duel.getCurrentPlayer())) < 5) {                            
+            MagicCardHolder temp = (MagicCardHolder)duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(), duel.duelZones.get("magic", duel.getCurrentPlayer()), CardState.SET_MAGIC, duelMenu);                                
             int idNewAdded = temp.getId();
             if(((MagicCard) duel.getCardHolderById(idNewAdded).getCard()).isSpell() == true)
             {
@@ -444,12 +503,16 @@ public class DuelController {
         if((this.duel.getCurrentPlayer().getSelectedAddress()) == null)
         {
             return new Message(TypeMessage.ERROR, "invalid card selection");
+        }        
+        if(duel.getMap().get(this.duel.getCurrentPlayer().getSelectedAddress()) == null)
+        {
+            return new Message(TypeMessage.ERROR, "selected position has no card");
         }
         if(duel.getMap().get(this.duel.getCurrentPlayer().getSelectedAddress()).getCard().isMagic())
         {
             return new Message(TypeMessage.ERROR, "you can't attack with magic");
         }        
-        MonsterCardHolder attacker = (MonsterCardHolder) duel.getMap().get(this.duel.getCurrentPlayer().getSelectedAddress());
+        MonsterCardHolder attacker = (MonsterCardHolder) duel.getMap().get(getSelectedAddress());
         if (attacker != null) {
             if(numberOfEndTurn > 0)
             {
@@ -468,7 +531,7 @@ public class DuelController {
                                     if(duel.getMap().get(opponentCard) != null)
                                     {
                                         MonsterCardHolder opponent = (MonsterCardHolder) duel.getMap().get(opponentCard);                            
-                                        if (duel.getCardHolderZone(duel.getMap().get(opponentCard)).getName().equals(Zones.MONSTER.getValue())) {
+                                        if (duel.getCardHolderZone(duel.getMap().get(opponentCard)).getName().equals(ZonesName.MONSTER.getValue())) {
                                             if (duel.getCurrentPhase().equals(Duel.Phase.BATTLE)) {
                                                 if (attacker.getBoolMapValue("can_attack")) {
                                                     if (opponent.getBoolMapValue("can_be_under_attack")) {
@@ -549,15 +612,15 @@ public class DuelController {
                 int attackAmount = attacker.getAttack();
                 int oppDef = opponent.getAttack();
                 if (oppDef == attackAmount) {
-                    duel.changeZone(attacker.getId(), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
-                    duel.changeZone(opponent.getId(), Zone.get("graveyard", duel.getOpponent()), CardState.NONE, duelMenu);
+                    duel.changeZone(attacker.getId(), duel.duelZones.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
+                    duel.changeZone(opponent.getId(), duel.duelZones.get("graveyard", duel.getOpponent()), CardState.NONE, duelMenu);
                     return new Message(TypeMessage.SUCCESSFUL, "both you and your opponent monster cards are destroyed and no one recieves damage");
                 } else if (attackAmount > oppDef) {
-                    duel.changeZone(opponent.getId(), Zone.get("graveyard", duel.getOpponent()), CardState.NONE, duelMenu);
+                    duel.changeZone(opponent.getId(), duel.duelZones.get("graveyard", duel.getOpponent()), CardState.NONE, duelMenu);
                     duel.getOpponent().changeLifePoint(-attackAmount + oppDef);
                     return new Message(TypeMessage.SUCCESSFUL, "your opponent monster is destroyed and recieves" + String.valueOf(attackAmount - oppDef) + " damage");
                 } else {
-                    duel.changeZone(attacker.getId(), Zone.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
+                    duel.changeZone(attacker.getId(), duel.duelZones.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
                     duel.getCurrentPlayer().changeLifePoint(attackAmount - oppDef);
                     return new Message(TypeMessage.SUCCESSFUL, "your card have been destroyed and you recieved" + String.valueOf(oppDef - attackAmount+ " damage"));
                 }
@@ -567,7 +630,7 @@ public class DuelController {
                 if (oppDef == attackAmount) {
                     return new Message(TypeMessage.SUCCESSFUL, "nothing have happend");
                 } else if (attackAmount > oppDef) {
-                    duel.changeZone(opponent.getId(), Zone.get("graveyard", duel.getOpponent()), CardState.NONE, duelMenu);
+                    duel.changeZone(opponent.getId(), duel.duelZones.get("graveyard", duel.getOpponent()), CardState.NONE, duelMenu);
                     duel.getOpponent().changeLifePoint(-attackAmount + oppDef);
                     return new Message(TypeMessage.SUCCESSFUL, "opponent card is destroyed and no one recieved damage");
                 } else {                    
@@ -592,14 +655,17 @@ public class DuelController {
                         }
                         else
                         {
-                            if(getZone(Zone.get("monster", duel.getOpponent())).size() == 0)
+                            if(getZone(duel.duelZones.get("monster", duel.getOpponent())).size() == 0)
                             {
                                 if(!card.getBoolMapValue("attack_turn"))
                                 {
-                                    card.setMapValue("attack_turn", "true", 1);
-                                    duel.getOpponent().changeLifePoint(-Integer.parseInt(card.getCardMap().get("attack")));
-                                    updateAutomaticEffect();
-                                    return new Message(TypeMessage.SUCCESSFUL, "direct attack performed successfully with "+ Integer.parseInt(card.getCardMap().get("attack")) + " inflict damage to opponent");
+                                    eventChainer(card, Event.ATTACK); 
+                                    if(card.getBoolMapValue("can_attack") && duel.getCardHolderById(card.getId()) != null)
+                                    {
+                                        return directAttackSpecificCard(card);
+                                    }
+                                    else
+                                        return new Message(TypeMessage.INFO, "attack have been negated");
                                 }
                                 else
                                 {
@@ -622,34 +688,44 @@ public class DuelController {
             return new Message(TypeMessage.ERROR, "no card is selected yet");
         }        
     }
+    private Message directAttackSpecificCard(CardHolder card) {
+        card.setMapValue("attack_turn", "true", 1);
+        duel.getOpponent().changeLifePoint(-Integer.parseInt(card.getCardMap().get("attack")));
+        updateAutomaticEffect();
+        return new Message(TypeMessage.SUCCESSFUL, "direct attack performed successfully with "+ Integer.parseInt(card.getCardMap().get("attack")) + " inflict damage to opponent");
+    }
 
     public Message changePosition() {
         if (getSelectedAddress() != null) {
             if (getSelectedAddress().getZone().getName().equals("monster")) {
                 if (duel.getCurrentPhase().equals(Duel.Phase.MAIN1) || duel.getCurrentPhase().equals(Duel.Phase.MAIN2)) {
-                    CardHolder card = duel.getMap().get(getSelectedAddress());
-                    if(!card.getBoolMapValue("change_position_turn"))
+                    if(duel.getMap().get(getSelectedAddress()).getOwner().equals(duel.getCurrentPlayer()))
                     {
-                        card.setMapValue("change_position_turn", "true", 1);  
-                        if(card.getCardState() == CardState.SET_DEFENCE)
+                        CardHolder card = duel.getMap().get(getSelectedAddress());
+                        if(!card.getBoolMapValue("change_position_turn"))
                         {
-                            card.flip();
-                            ((MonsterCardHolder)card).flipSummon();       
+                            card.setMapValue("change_position_turn", "true", 1);  
+                            if(card.getCardState() == CardState.SET_DEFENCE)
+                            {
+                                card.flip();
+                                ((MonsterCardHolder)card).flipSummon();       
+                            }
+                            else
+                            if(card.getCardState() == CardState.ATTACK_MONSTER)
+                            {
+                                ((MonsterCardHolder)card).changeCardState(CardState.DEFENCE_MONSTER);
+                            }
+                            else
+                            {
+                                ((MonsterCardHolder)card).changeCardState(CardState.ATTACK_MONSTER);
+                            }
+                            return new Message(TypeMessage.SUCCESSFUL, "changed position successfully");
                         }
-                        else
-                        if(card.getCardState() == CardState.ATTACK_MONSTER)
-                        {
-                            ((MonsterCardHolder)card).changeCardState(CardState.DEFENCE_MONSTER);
-                        }
-                        else
-                        {
-                            ((MonsterCardHolder)card).changeCardState(CardState.ATTACK_MONSTER);
-                        }
-                        return new Message(TypeMessage.SUCCESSFUL, "changed position successfully");
-                    }
-                    else{
-                        return new Message(TypeMessage.ERROR, "you changed position of this card before");
-                    }                    
+                        else{
+                            return new Message(TypeMessage.ERROR, "you changed position of this card before");
+                        }                        
+                    }   else
+                        return new Message(TypeMessage.ERROR, "you can't change state of opponent card");
                 } else {
                     return new Message(TypeMessage.ERROR, "action not allowed in this phase");
                 }
@@ -674,7 +750,7 @@ public class DuelController {
         }
     }
     public List<CardHolder> getZone(Zone zone) {
-        Address address = Address.get(zone, 0);
+        Address address = duel.duelAddresses.get(zone, 0);
         List<CardHolder> cardHolders = new ArrayList<>();
         for (int i = 1; i <= 60; i++) {
             CardHolder cardHolder = duel.getMap().get(address);

@@ -55,8 +55,7 @@ public class DeckMenu extends Menu {
                 Matcher matcher = Global.getMatcher(command, "deck create (?<name>\\w)");
                 if (matcher.find()) {
                     String deckName = matcher.group("name");
-                    Message message = deckController.create(deckName);
-                    System.out.println(message.getContent());
+                    System.out.println(deckController.create(deckName).getContent());
                     continue;
                 }
 
@@ -71,8 +70,7 @@ public class DeckMenu extends Menu {
                 matcher = Global.getMatcher(command, "deck set-activate (?<name>\\w)");
                 if (matcher.find()) {
                     String deckName = matcher.group("name");
-                    Message message = deckController.active(deckName);
-                    System.out.println(message.getContent());
+                    System.out.println(deckController.active(deckName).getContent());
                     continue;
                 }
 

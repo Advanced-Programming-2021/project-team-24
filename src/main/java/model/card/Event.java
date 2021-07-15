@@ -15,7 +15,6 @@ public enum Event {
     FLIP_OWNER("FLIP_OWNER"),
     @SerializedName("FLIP_SUMMON_OWNER")
     FLIP_SUMMON_OWNER("FLIP_SUMMON_OWNER"),
-
     @SerializedName("SET_OWNER")
     SET_OWNER("SET_OWNER"),
     @SerializedName("ATTACK")
@@ -39,8 +38,10 @@ public enum Event {
     @SerializedName("END_TURN")
     END_TURN("END_TURN"),
     @SerializedName("SUMMON_OWNER")
-    SUMMON_OWNER("SUMMON_OWNER");
-    ;
+    SUMMON_OWNER("SUMMON_OWNER"),
+    @SerializedName("STANDBY")
+    STANDBY("STANDBY");
+    
     private String label;
     private Event(String label)
     {

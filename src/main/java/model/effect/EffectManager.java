@@ -21,8 +21,7 @@ public class EffectManager {
         this.owner = owner;
         this.id = idCounter;
         this.effect = effect;
-        this.idCardHolder = idCardHolder;
-        //TODO set age remain by Effect                
+        this.idCardHolder = idCardHolder;         
     }
     public Player getOwner()
     {

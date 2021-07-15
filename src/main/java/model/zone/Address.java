@@ -1,41 +1,22 @@
 package model.zone;
 
 
+import model.duel.Duel;
 import model.user.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Address {
+    private Duel duel;    
     private Zone zone;
     private int place;
-    private static List<Address> addresses = new ArrayList<>();
 
-    public static void init(Player player) {
-        for(Zones zone : Zones.values()){
-            initZone(zone,player);
-        }
-    }
 
-    private static void initZone(Zones zone,Player player) {
-        for(int i=0;i<zone.capacity;i++){
-            addresses.add(new Address(Zone.get(zone.label, player),i));
-        }
-    }
-
-    public static Address get(Zone zone, int place) {
-        int a = 0;
-        for (Address address : addresses) {
-            if (zone.getName().equals(address.getZone().getName()) && zone.getPlayer().getNickname().equals(address.getZone().getPlayer().getNickname())  &&  place == address.getPlace()){
-                return address;
-            }
-        }
-        return null;
-    }
-
-    public Address(Zone zone, int place) {
+    public Address(Zone zone, int place, Duel duel) {
         this.place = place;
         this.zone = zone;
+        this.duel = duel;
     }
 
     //copy constructor
@@ -45,7 +26,7 @@ public class Address {
     }
 
     public Address getNextPlace() {
-        return get(zone,place+1);
+        return duel.duelAddresses.get(zone,place+1);
     }
 
     public int getPlace() {

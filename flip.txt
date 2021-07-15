@@ -1,0 +1,3 @@
+changeZone(
+    select($monster$,1,select_one_monster_to_destroy)
+    ,owner_graveyard);

@@ -3,18 +3,21 @@ package controller;
 import model.user.User;
 import view.MainMenu;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class LoginController {
-    public void register(String username, String password,String nickname) {
+    public Message register(String username, String password,String nickname) {
         Message message = User.register(username,password,nickname);
-        System.out.println(message.getContent());
+        return message;
     }
 
-    public void login(String username, String password) {
+    public ArrayList<Object> login(String username, String password) {
         Message message = User.login(username, password);
-        System.out.println(message.getContent());
         //enter main menu
-        if (message.getTypeMessage() == TypeMessage.SUCCESSFUL) {
-            new MainMenu(User.readUser(username)).run();
+       if (message.getTypeMessage() == TypeMessage.SUCCESSFUL) {
+           return new ArrayList<>(Arrays.asList(message,User.readUser(username)));
         }
+        return new ArrayList<>(Arrays.asList(message,null));
     }
 }

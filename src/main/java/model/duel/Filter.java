@@ -172,7 +172,6 @@ public class Filter {
     public Filter(HashMap<String, String> data, String ownerName)
     {
         this.ownerName = ownerName;
-        //TODO others;
     }    
     public Filter(String ownerName)
     {
