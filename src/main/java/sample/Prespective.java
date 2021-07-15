@@ -47,7 +47,7 @@ public class Prespective extends Transition {
     double speed  = 0.5 ;
     @Override
     protected void interpolate(double v) {
-        ShopController.setPrespective(node,0,0,x);
+        twoPaneCards.setPrespective(node,0,0,x);
         x+=number*speed;
         counter++;
         if(Math.abs(x-endAngle)<0.1) {

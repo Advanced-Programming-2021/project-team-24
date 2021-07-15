@@ -15,7 +15,7 @@
 
 <!--<?import sample.DeckControlls?>-->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" styleClass="duelBackground" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" styleClass="duelBackground" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="BOTTOM_LEFT" prefHeight="146.0" prefWidth="236.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
@@ -178,7 +178,7 @@
                         <Insets bottom="30.0" />
                      </VBox.margin>
                   </ImageView>
-                  <ImageView fx:id="graveYard" onMouseClicked="#showGraveyard" fitHeight="87.0" fitWidth="60.0">
+                  <ImageView fx:id="graveYard" fitHeight="87.0" fitWidth="60.0" onMouseClicked="#showGraveyard">
                      <image>
                         <Image url="@../images/duel/graveyard.png" />
                      </image>
@@ -207,7 +207,7 @@
                         <Insets bottom="30.0" />
                      </VBox.margin>
                   </ImageView>
-                  <ImageView fx:id="f1a"  fitHeight="86.0" fitWidth="59.0">
+                  <ImageView fx:id="f1a" fitHeight="86.0" fitWidth="59.0">
                      <image>
                         <Image url="@../images/duel/field.png" />
                      </image>
@@ -304,7 +304,7 @@
             </ImageView>
          </children>
       </HBox>
-      <Group fx:id="menu" layoutY="-71.0">
+      <Group fx:id="menu" layoutY="-50.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="1024.0" style="-fx-background-color: black;">
                <children>
@@ -314,14 +314,19 @@
                      </HBox.margin>
                   </Circle>
                   <Label text="username" textFill="WHITE" />
-                  <FontAwesomeIcon onMouseClicked="#end" fill="WHITE" iconName="POWER_OFF" size="1.5em">
+                  <FontAwesomeIcon fill="WHITE" iconName="FLAG" onMouseClicked="#surrender" size="1.5em">
                      <HBox.margin>
-                        <Insets left="40.0" />
+                        <Insets left="20.0" />
                      </HBox.margin>
                   </FontAwesomeIcon>
-                  <FontAwesomeIcon onMouseClicked="#hideStting" fill="WHITE" iconName="CARET_UP" size="1.5em">
+                  <FontAwesomeIcon fill="WHITE" iconName="POWER_OFF" onMouseClicked="#end" size="1.5em">
                      <HBox.margin>
-                        <Insets left="40.0" />
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </FontAwesomeIcon>
+                  <FontAwesomeIcon fill="WHITE" iconName="CARET_UP" onMouseClicked="#hideStting" size="1.5em">
+                     <HBox.margin>
+                        <Insets left="20.0" />
                      </HBox.margin>
                   </FontAwesomeIcon>
                </children>

@@ -129,6 +129,13 @@ public class DeckControls extends Group {
                         popOver.hide();
                     }
                 });
+                message.getRightButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        System.out.println(new DeckController(user.getDecks()).delete(deckName).getContent());
+                        deckController.update();
+                    }
+                });
             }
         });
         FontAwesomeIcon edit = new FontAwesomeIcon();
@@ -140,8 +147,8 @@ public class DeckControls extends Group {
             @Override
             public void handle(MouseEvent event) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/shop.fxml"));
-                ShopController shopController = new ShopController(user, deckName, user.getCards().size());
-                loader.setController(shopController);
+                twoPaneCards twoPaneCards = new twoPaneCards(user, deckName, user.getCards().size());
+                loader.setController(twoPaneCards);
                 Parent root = null;
                 try {
                     root = loader.load();

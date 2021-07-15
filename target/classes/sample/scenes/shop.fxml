@@ -111,6 +111,11 @@
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin></Label>
+            <FontAwesomeIcon fx:id="menuIcon1" fill="WHITE" iconName="ARROW_LEFT" onMouseClicked="#back" size="1.5em">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </FontAwesomeIcon>
         </children>
     </HBox>
     <HBox alignment="CENTER" layoutX="91.0" layoutY="10.0" prefHeight="84.0" prefWidth="843.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0">
