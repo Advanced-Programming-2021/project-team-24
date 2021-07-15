@@ -271,6 +271,7 @@ public class DuelController {
                                         CardHolder temp = duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(),duel.duelZones.get("monster", duel.getCurrentPlayer()),CardState.ATTACK_MONSTER , duelMenu);                                    
                                         duel.getCurrentPlayer().getMap().setMapValue("add_monster_turn", "true", 1);                                                                
                                         temp.setMapValue("change_position_turn", "true", 1);
+                                        eventChainer(temp, Event.SUMMON);
                                         updateAutomaticEffect();
                                     }
                                     else
@@ -289,6 +290,8 @@ public class DuelController {
                                             else
                                                 return new Message(TypeMessage.ERROR, "you weren't able to summon");
                                             updateAutomaticEffect();
+                                            eventChainer(delListFromAnother(second, init).get(0), Event.SUMMON);
+                                            
                                         }
                                         else
                                         {
@@ -626,7 +629,7 @@ public class DuelController {
                 }
             } else {
                 int attackAmount = attacker.getAttack();
-                int oppDef = attacker.getDefence();
+                int oppDef = opponent.getDefence();
                 if (oppDef == attackAmount) {
                     return new Message(TypeMessage.SUCCESSFUL, "nothing have happend");
                 } else if (attackAmount > oppDef) {
