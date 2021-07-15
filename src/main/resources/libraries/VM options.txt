@@ -1,2 +1,2 @@
---module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" 
+--module-path "C:\Users\Asus\Documents\GitHub\project-team-24\src\main\resources\libraries\javafx-sdk-11.0.2\lib" 
 --add-modules=javafx.controls,javafx.fxml,javafx.media

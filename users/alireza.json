@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"nickname":"alireza","username":"alireza","password":"alireza","score":8000,"coin":100000,"imageAddress":"images/duel/characters/Chara001.dds28.png","cardNames":[],"decks":{"decks":[],"indexActiveDeck":-1}}
+=======
+{"nickname":"alireza","username":"alireza","password":"alireza","score":8000,"coin":100000,"imageAddress":"images/duel/characters/Chara001.dds27.png","cardNames":[],"decks":{"decks":[],"indexActiveDeck":-1}}
+>>>>>>> 8057ab2041f57f52f766879d858627848388157e
