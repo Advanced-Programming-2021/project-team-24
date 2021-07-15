@@ -266,7 +266,9 @@ public class Duel {
                             for(Event event : holder.getEffects().keySet())
                             {
                                 if(holder.getEffects().get(event) != null)
-                                    for(int i = 0; i < holder.getEffects().get(event).size(); i++)
+                                {
+                                    int j = holder.getEffects().size();
+                                    for(int i = 0; i < j; i++)
                                     {
                                         if(holder.getEffectManager().getActivated())
                                             if(event == Event.DEATH_OWNER && holder.getEffects().get(event)!=null)
@@ -274,6 +276,7 @@ public class Duel {
                                                 new EffectParser(duelMenu, duelMenu.getDuelController(), holder.getEffects().get(event).get(i)).runEffect();
                                             }
                                     }
+                                }
                             }
                         }catch(Exception e){
                             

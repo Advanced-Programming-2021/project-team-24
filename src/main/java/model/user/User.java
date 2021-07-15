@@ -16,7 +16,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.internal.Excluder;
 
-import javafx.scene.image.Image;
+//import javafx.scene.image.Image;
 import model.deck.*;
 import controller.Message;
 import model.card.*;
