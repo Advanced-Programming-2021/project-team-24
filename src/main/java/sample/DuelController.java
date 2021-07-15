@@ -404,15 +404,14 @@ public class DuelController {
 
     public void showSetting() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000), menu);
-        tt.setByY(71);
+        tt.setByY(50);
         tt.setCycleCount(1);
         tt.play();
     }
 
     public void hideStting(MouseEvent mouseEvent) {
-        System.out.println("okab");
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000), menu);
-        tt.setByY(-71);
+        tt.setByY(-50);
         tt.setCycleCount(1);
         tt.play();
     }
@@ -426,5 +425,9 @@ public class DuelController {
         CardsPresenter cardsPresenter = new CardsPresenter(cards);
         popOver = new PopOver(cardsPresenter);
         popOver.show(graveYard);
+    }
+
+    public void surrender(){
+        duelController.surrender();
     }
 }

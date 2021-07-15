@@ -18,6 +18,10 @@ public class Question extends Group {
         return leftButton;
     }
 
+    public JFXButton getRightButton() {
+        return rightButton;
+    }
+
     public Question(){
         leftButton.setStyle("-fx-background-color: #4038E6;");
         leftButton.setText("Cancel");

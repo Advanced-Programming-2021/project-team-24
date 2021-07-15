@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShopController implements EventHandler<MouseEvent> {
+public class twoPaneCards implements EventHandler<MouseEvent> {
     @FXML
     GridPane myCards;
     @FXML
@@ -54,7 +54,7 @@ public class ShopController implements EventHandler<MouseEvent> {
     Image card;
     int cardsCount;
 
-    public ShopController(User user,String deckName,int cardsCount){
+    public twoPaneCards(User user, String deckName, int cardsCount){
         this.user = user;
         this.deckName = deckName;
         this.cardsCount = cardsCount;
@@ -165,6 +165,7 @@ public class ShopController implements EventHandler<MouseEvent> {
     }
 
     private void update() {
+        cost.setText(String.valueOf(cardsList.get(selectedCard).getPrice()));
         myCards.getChildren().clear();
         for (int i = 0; i < targetCards.size(); i++) {
             imageView = new ImageView(new Image(getClass().getResourceAsStream(Common.handleImage(targetCards.get(i)))));
@@ -189,6 +190,7 @@ public class ShopController implements EventHandler<MouseEvent> {
         cost.setOpacity(0);
         if(selectedCard==2*n) return;
         selectedCard++;
+        cost.setText(String.valueOf(cardsList.get(selectedCard).getPrice()));
         handleCardHover();
         cards.get(selectedCard).toFront();
         left.toFront();
@@ -217,6 +219,7 @@ public class ShopController implements EventHandler<MouseEvent> {
         cost.setOpacity(0);
         if(selectedCard == 0) return;
         selectedCard--;
+        cost.setText(String.valueOf(cardsList.get(selectedCard).getPrice()));
         handleCardHover();
         cards.get(selectedCard).toFront();
         left.toFront();

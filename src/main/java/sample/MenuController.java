@@ -190,8 +190,8 @@ public class MenuController {
 
     public void switchToSceneShop(MouseEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/shop.fxml"));
-        ShopController shopController = new ShopController(this.user,null, Card.getAllCards().size());
-        loader.setController(shopController);
+        twoPaneCards twoPaneCards = new twoPaneCards(this.user,null, Card.getAllCards().size());
+        loader.setController(twoPaneCards);
         Parent root = loader.load();
         scene = new Scene(root);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
