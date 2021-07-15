@@ -1,15 +1,19 @@
 package sample;
 
+import controller.Message;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.card.Card;
 import model.card.CardType;
 import model.user.User;
+import org.controlsfx.control.PopOver;
 
 import java.io.IOException;
 
@@ -58,4 +62,21 @@ public class Common {
             return "images/cards/SpellTrap/" + card.getName().replaceAll(" ","")+".jpg";
         }
     }
+
+    public static void handleOkButton(Info info, PopOver popOver){
+        info.getButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                popOver.hide();
+            }
+        });
+    }
+
+    public static void showMessage(Message message,Node node) {
+        Info info = new Info(message);
+        PopOver popOver = new PopOver(info);
+        popOver.show(node);
+        Common.handleOkButton(info,popOver);
+    }
+
 }

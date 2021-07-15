@@ -143,7 +143,7 @@ public class DecksController {
                 card = null;
             else
                 card = decksList.get(i).getMainCards().get(0);
-            sample.Deck deck = new sample.Deck(false,decksList.get(i).getName(),Common.handleImage(card),user,this);
+            sample.Deck deck = new sample.Deck(false,decksList.get(i).getName()+":"+decksList.get(i).getMainCards().size(),Common.handleImage(card),user,this);
             decks.getChildren().add(deck);
             System.out.println(decks.getChildren().toString());
             GridPane.setColumnIndex(deck, i % columnCardCount);

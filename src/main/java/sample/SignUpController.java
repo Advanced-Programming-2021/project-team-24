@@ -2,6 +2,7 @@ package sample;
 
 import com.jfoenix.controls.JFXButton;
 import controller.LoginController;
+import controller.Message;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +25,9 @@ public class SignUpController {
 
     public void submit(MouseEvent mouseEvent) {
         LoginController loginController = new LoginController();
-        System.out.println(loginController.register(username.getText(),password.getText(),nickname.getText()).getContent());
+        Message message = loginController.register(username.getText(),password.getText(),nickname.getText());
+        System.out.println(message.getContent());
+        Common.showMessage(message,submit);
     }
 
     public void switchToSceneSignin(MouseEvent event) throws IOException {

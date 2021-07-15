@@ -227,4 +227,12 @@ public class MenuController {
         stage.show();
     }
 
+    public void switchToSceneSignin(MouseEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("scenes/signin.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
 }

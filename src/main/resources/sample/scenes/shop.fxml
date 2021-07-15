@@ -38,7 +38,7 @@
                         <children>
                             <FontAwesomeIcon fx:id="left" fill="WHITE" iconName="ARROW_CIRCLE_LEFT" layoutX="14.0" layoutY="102.0" onMouseClicked="#left" size="3em" styleClass="button" AnchorPane.bottomAnchor="71.25714340209962" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="71.14285659790039" />
                             <FontAwesomeIcon fx:id="right" fill="WHITE" iconName="ARROW_CIRCLE_RIGHT" layoutX="452.0" layoutY="102.0" onMouseClicked="#right" size="3em" styleClass="button" AnchorPane.bottomAnchor="71.25714340209962" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="71.14285659790039" />
-                        <FontAwesomeIcon fx:id="buy" fill="WHITE" iconName="CART_PLUS" layoutX="224.0" layoutY="104.0" size="6em" styleClass="button" />
+                        <FontAwesomeIcon fx:id="buy" fill="WHITE" iconName="CART_PLUS" layoutX="224.0" layoutY="104.0" size="6em"/>
                         <Label fx:id="cost" alignment="CENTER" contentDisplay="CENTER" layoutX="227.0" layoutY="137.0" text="1799" textFill="WHITE">
                            <font>
                               <Font name="Source Code Pro Black Italic" size="25.0" />
