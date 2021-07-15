@@ -279,7 +279,7 @@ public class Duel {
                                 }
                             }
                         }catch(Exception e){
-                            
+                            e.printStackTrace();
                         }  
                     }
                     
@@ -301,7 +301,7 @@ public class Duel {
                                 }
                         }
                     }catch(Exception e){
-                        
+                        e.printStackTrace();
                     }                    
                 }                
                 CardHolder ans = addCard(getCardHolderById(cardHolderId).getCard(), targetZone, cardState);
@@ -353,7 +353,7 @@ public class Duel {
                         nValue += Integer.parseInt(value);
                         getCardHolderById(integer).setMapValue(key,String.valueOf(nValue), time);    
                     } catch (Exception e) {
-                        //TODO: handle exception
+                        e.printStackTrace();
                     }
                     
                 }

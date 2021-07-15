@@ -74,45 +74,50 @@ public class EffectParser {
 
     public String runEffect()
     {
-        if(effectManager.getEffect().getEffectType() == EffectType.QUICK_PLAY)
-        {            
-            Effect reverseEffect = effect.clone();
-            effectManager.getEffect().setReverse(null);
-            reverseEffect.setEffect(effect.getReverse());
-            reverseEffect.setReverse(null);
-            if(owner.getMap().getEffects().get(Event.END_TURN) == null)
-            {
-                owner.getMap().getEffects().put(Event.END_TURN, new ArrayList<EffectManager>());
+        if(effect.getReverse().length() > 0 || effect.getEffectCommand().length() > 0)
+        {
+            if(effectManager.getEffect().getEffectType() == EffectType.QUICK_PLAY)
+            {            
+                Effect reverseEffect = effect.clone();
+                effectManager.getEffect().setReverse("");
+                reverseEffect.setEffect(effect.getReverse());
+                reverseEffect.setReverse("");
+                if(owner.getMap().getEffects().get(Event.END_TURN) == null)
+                {
+                    owner.getMap().getEffects().put(Event.END_TURN, new ArrayList<EffectManager>());
+                }
+                for(HashMap.Entry<String,String> entry : effectManager.getExtraKeyWords().entrySet())
+                {
+                    owner.getMap().getCardMap().put((String)entry.getKey(), (String)entry.getValue());
+                }
+                EffectManager deathEffectManager = new EffectManager(reverseEffect, owner, owner.getMap().getId());
+                owner.getMap().getEffects().get(Event.END_TURN).add(deathEffectManager);
             }
-            for(HashMap.Entry<String,String> entry : effectManager.getExtraKeyWords().entrySet())
+            else
             {
-                owner.getMap().getCardMap().put((String)entry.getKey(), (String)entry.getValue());
+                Effect reverseEffect = effect.clone();
+                reverseEffect.setEffect(effect.getReverse());
+                reverseEffect.setReverse(null);
+                if(owner.getMap().getEffects().get(Event.END_TURN) == null)
+                {
+                    owner.getMap().getEffects().put(Event.END_TURN, new ArrayList<EffectManager>());
+                }
+                EffectManager deathEffectManager = new EffectManager(reverseEffect, owner, effectManager.getOwnerCardHolderId());
+                if(duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().get(Event.DEATH_OWNER) == null)
+                {
+                    duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().put(Event.DEATH_OWNER , new ArrayList<EffectManager>());
+                }
+                duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().get(Event.DEATH_OWNER).add(deathEffectManager);            
             }
-            EffectManager deathEffectManager = new EffectManager(reverseEffect, owner, owner.getMap().getId());
-            owner.getMap().getEffects().get(Event.END_TURN).add(deathEffectManager);
+            ans = null;
+            effectManager.setActivated(true);        
+            getCommandResult
+            (effect.getEffectCommand()
+            );
+            return ans;
         }
         else
-        {
-            Effect reverseEffect = effect.clone();
-            reverseEffect.setEffect(effect.getReverse());
-            reverseEffect.setReverse(null);
-            if(owner.getMap().getEffects().get(Event.END_TURN) == null)
-            {
-                owner.getMap().getEffects().put(Event.END_TURN, new ArrayList<EffectManager>());
-            }
-            EffectManager deathEffectManager = new EffectManager(reverseEffect, owner, effectManager.getOwnerCardHolderId());
-            if(duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().get(Event.DEATH_OWNER) == null)
-            {
-                duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().put(Event.DEATH_OWNER , new ArrayList<EffectManager>());
-            }
-            duelController.getDuel().getCardHolderById(effectManager.getOwnerCardHolderId()).getEffects().get(Event.DEATH_OWNER).add(deathEffectManager);            
-        }
-        ans = null;
-        effectManager.setActivated(true);        
-        getCommandResult
-        (effect.getEffectCommand()
-        );
-        return ans;
+            return "";
     }
     public Player getOwner()
     {
@@ -393,7 +398,7 @@ public class EffectParser {
         }
         catch(Exception e)
         {    
-
+            e.printStackTrace();
         }
         return command;
     }
@@ -747,6 +752,7 @@ public class EffectParser {
                     try{
                         ans += Integer.parseInt(duelController.getDuel().getCardHolderById(list.get(i)).getValue(value));
                     }catch(Exception e){                        
+                        e.printStackTrace();
                     }                
                 }
                 
