@@ -103,10 +103,13 @@ public class DuelController {
                     public void handle(MouseEvent mouseEvent) {
                         if (mouseEvent.isShiftDown() && flag == 0) {
                             String id = ((ImageView) mouseEvent.getSource()).getId();
-                            CardView cardView = new CardView(map.get(getAddressById(id)));
-                            popOver = new PopOver(cardView);
-                            popOver.show(card);
-                            flag = 1;
+                            CardState cardHolderState = map.get(getAddressById(id)).getCardState();
+                            if(id.charAt(2)=='a' || (cardHolderState == CardState.ACTIVE_MAGIC || cardHolderState == CardState.ATTACK_MONSTER || cardHolderState == CardState.VISIBLE_MAGIC || CardState.DEFENCE_MONSTER == cardHolderState)) {
+                                CardView cardView = new CardView(map.get(getAddressById(id)));
+                                popOver = new PopOver(cardView);
+                                popOver.show(card);
+                                flag = 1;
+                            }
                         }
                     }
                 });
@@ -220,7 +223,7 @@ public class DuelController {
                         setImage(cardHolder, "Unknown.jpg");
                     }
                 } else {
-                    if (cardHolderState == CardState.SET_DEFENCE)
+                    if (cardHolderState == CardState.SET_DEFENCE || cardHolderState == CardState.SET_MAGIC)
                         setImage(cardHolder, "Unknown.jpg");
                     else
                         setImage(cardHolder, name);
