@@ -629,7 +629,7 @@ public class DuelController {
                 }
             } else {
                 int attackAmount = attacker.getAttack();
-                int oppDef = attacker.getDefence();
+                int oppDef = opponent.getDefence();
                 if (oppDef == attackAmount) {
                     return new Message(TypeMessage.SUCCESSFUL, "nothing have happend");
                 } else if (attackAmount > oppDef) {

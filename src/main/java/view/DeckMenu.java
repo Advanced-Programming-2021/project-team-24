@@ -116,5 +116,13 @@ public class DeckMenu extends Menu {
             }
         }
     }
+    public static void main(String[] args) {
+        User x = new User("d","d","d");
+        for(int i = 0; i < Card.getAllCards().size(); i++)
+        {
+            x.addCard(Card.getAllCards().get(i));                        
+        }
+        new DeckMenu(x).run();
+    }
 
 }
