@@ -14,10 +14,26 @@ import java.util.HashMap;
 public class MonsterCard extends Card {
     @SerializedName("attack")
     private int attack;
+
+
+	public void setAttack(int attack) {
+		this.attack = attack;
+	}
+
     @SerializedName("defence")
-    private int defence; 
+    private int defence;
+
+    public void setDefence(int defence) {
+        this.defence = defence;
+    }
+
     @SerializedName("level")
     private int level;
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     @SerializedName("monsterEffectType")
     private MonsterEffectType monsterEffectType;
     @SerializedName("monsterType")
@@ -26,7 +42,7 @@ public class MonsterCard extends Card {
 
     
 
-    @SerializedName("monsterAttribute:")
+    @SerializedName("monsterAttribute")
     private MonsterAttribute monsterAttribute;
 
 
