@@ -323,12 +323,11 @@ public class EffectParser {
                     if(command.length() >= new String("select").length() && command.substring(0, 6).equals("select"))
                     {
                         command = selective(command);
-                        continue;
+                        
                     }
                     if(command.length() >= new String("random_selection").length() && command.substring(0, 16).equals("random_selection"))
                     {
                         command = randomSelection(command);
-                        continue;
                     }
                    
                     if(command.length() >= 8 && command.substring(0, 8).equals("return_f") && ans == null)
@@ -339,12 +338,10 @@ public class EffectParser {
                     if(Global.regexFind(command, "filter"))
                     {
                         command = getListByFilter(command);
-                        continue;
                     }
                     if(Global.regexFind(command ,"coin"))
                     {
                         coin(command);
-                        continue;
                     }
                     
                     

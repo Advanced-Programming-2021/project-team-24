@@ -232,7 +232,7 @@ public class DuelController {
                     if (cardHolder.getCardState() == CardState.SET_MAGIC) {
                         MagicCardHolder magicCard = (MagicCardHolder) cardHolder;
                         if(magicCard.getEffectManager().isConditionSatisfied(new EffectParser(duelMenu, this, magicCard.getEffectManager())))
-                        {
+                        {                            
                             duelEvents.put(Event.ACTIVE_SPELL, -1);
                             cardHolder.flip();
                             new EffectChainer(Event.ACTIVE_SPELL, magicCard, duel.getOpponent(), this).askForChain(duel.getOpponent());;
@@ -289,6 +289,7 @@ public class DuelController {
                                             }
                                             else
                                                 return new Message(TypeMessage.ERROR, "you weren't able to summon");
+                                            eventChainer((MonsterCardHolder)duel.getMap().get(getSelectedAddress()), Event.SUMMON);
                                             updateAutomaticEffect();
                                             eventChainer(delListFromAnother(second, init).get(0), Event.SUMMON);
                                             
@@ -582,6 +583,7 @@ public class DuelController {
 
     private Message attackCalculator(MonsterCardHolder attacker, MonsterCardHolder opponent) {
         //2 poss
+        eventChainer(attacker, Event.ATTACK);
         if (opponent.getCardState() == CardState.SET_DEFENCE) {
             opponent.flip();
             activeEffectByEvent(opponent, Event.FLIP_OWNER);
@@ -711,7 +713,10 @@ public class DuelController {
                             if(card.getCardState() == CardState.SET_DEFENCE)
                             {
                                 card.flip();
-                                ((MonsterCardHolder)card).flipSummon();       
+                                ((MonsterCardHolder)card).flipSummon();  
+                                activeEffectByEvent((MonsterCardHolder)card, Event.FLIP_OWNER);
+                                activeEffectByEvent((MonsterCardHolder)card, Event.FLIP_SUMMON_OWNER);
+                                updateAutomaticEffect();     
                             }
                             else
                             if(card.getCardState() == CardState.ATTACK_MONSTER)
