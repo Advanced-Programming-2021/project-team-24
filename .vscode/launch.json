@@ -14,7 +14,7 @@
         {
             "type": "java",
             "name": "Debug (Launch)-sample.Main<ok>",
-            "request": "launch",
+            "request": "launch",            
             "mainClass": "sample.Main",
             "projectName": "project-team-24"
             ,"vmArgs": "--module-path C:/java_sdk/javafx-sdk-11.0.2/lib --add-modules javafx.controls,javafx.fxml,javafx.media,javafx.base,javafx.graphics"           

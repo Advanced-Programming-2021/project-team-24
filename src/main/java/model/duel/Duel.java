@@ -374,6 +374,7 @@ public class Duel {
         List<CardHolder> ans = new ArrayList<CardHolder>();
         List<CardHolder> all = this.getAllCardHolder();
         for (int i = 0; i < all.size(); i++) {
+            //TODO
             if (this.filterMatch(filter, all.get(i))) {
                 ans.add(all.get(i));
             }
