@@ -85,6 +85,7 @@ public class MenuController {
         gamePane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                MouseEvent originalMouseEvent = mouseEvent;
                 Input input = new Input("Enter opponent username");
                 PopOver popOver = new PopOver(input);
                 popOver.show(gamePane);
@@ -97,7 +98,7 @@ public class MenuController {
                         Common.showMessage(message, gamePane);
                         if (message.getTypeMessage() == TypeMessage.SUCCESSFUL) {
                             try {
-                                switchToSceneDuel(mouseEvent,User.readUser(input.getInput()));
+                                switchToSceneDuel(originalMouseEvent,User.readUser(input.getInput()));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
