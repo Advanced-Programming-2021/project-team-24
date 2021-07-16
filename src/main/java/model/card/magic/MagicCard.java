@@ -56,6 +56,8 @@ public class MagicCard extends Card {
     }
     public Integer getSpeed()
     {
+        if(effect.getSpeed() == null)
+            return 1;
         return this.effect.getSpeed();
     }
     public boolean isSpell()

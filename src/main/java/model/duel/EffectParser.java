@@ -74,7 +74,7 @@ public class EffectParser {
 
     public String runEffect()
     {
-        if(effect.getReverse().length() > 0 || effect.getEffectCommand().length() > 0)
+        if(effect.getEffectCommand() != null && effect.getEffectCommand().length() > 0 && effect.getReverse() != null && effect.getReverse().length() > 0)
         {
             if(effectManager.getEffect().getEffectType() == EffectType.QUICK_PLAY)
             {            
@@ -398,7 +398,6 @@ public class EffectParser {
         }
         catch(Exception e)
         {    
-            e.printStackTrace();
         }
         return command;
     }
