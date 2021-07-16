@@ -141,7 +141,7 @@ public class User {
                     usernames.add(user.getUsername());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }     
     }
     public static User getUserByNameAndPassword(String username, String password) {
