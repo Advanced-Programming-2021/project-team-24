@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -23,6 +24,7 @@ import model.card.CardState;
 import model.card.CardType;
 import model.deck.Deck;
 import model.duel.Duel;
+import model.duel.DuelRoundManager;
 import model.user.Player;
 import model.user.User;
 import model.zone.Address;
@@ -38,7 +40,7 @@ public class DuelController {
     @FXML
     public ImageView graveYard;
     @FXML
-    ImageView imageA, imageB;
+    ImageView imageA, imageB,profilePhoto;
     @FXML
     ImageView h1a, h2a, h3a, h4a, h5a, s1a, s2a, s3a, s4a, s5a, m1a, m2a, m3a, m4a, m5a;
     @FXML
@@ -48,12 +50,12 @@ public class DuelController {
     @FXML
     AnchorPane fieldBG;
     @FXML
-    Label phase, nameA, nameB, LPA, LPB;
+    Label phase, nameA, nameB, LPA, LPB,username;
     @FXML
     Group menu;
     @FXML
     FontAwesomeIcon setting;
-    User user;
+    User user,opponent;
     Image image;
     DuelMenu duelMenu;
     controller.DuelController duelController;
@@ -64,16 +66,22 @@ public class DuelController {
     int flag = 0;
     PopOver popOver;
     MediaPlayer mediaPlayer;
+    AudioClip audioClip;
     private String currentMusic;
+    DuelRoundManager duelRoundManager;
 
-    public DuelController(User user) {
+    public DuelController(User user,User opponent) {
         this.user = user;
+        this.opponent = opponent;
+        this.duelRoundManager = new DuelRoundManager(user,opponent,1);
     }
 
     public void initialize() {
+        profilePhoto.setImage(new Image(getClass().getResourceAsStream(user.getImageAddress())));
+        username.setText(user.getUsername());
         handleMusic("main");
-        User a = new User("alireza", "alireza", "alireza");
-        User b = new User("alir", "alir", "alir");
+        User a = user;
+        User b = opponent;
         model.deck.Deck alireza = new Deck("alireza");
         for (int i = 0; i < Card.getAllCards().size(); i++) {
             alireza.addMainCard(Card.getAllCards().get(i));
@@ -146,6 +154,13 @@ public class DuelController {
         if(mediaPlayer!=null) mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
+    }
+
+    private void handleAudioClip() {
+        String s = "src/main/resources/musics/click.mp3";
+        audioClip = new AudioClip(Paths.get(s).toUri().toString());
+        audioClip.setVolume(0.1);
+        audioClip.play();
     }
 
 
@@ -273,11 +288,9 @@ public class DuelController {
             info.getButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    try {
-                        Common.switchToSceneMainMenu(user);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                        mediaPlayer.stop();
+                        duelRoundManager.nextRound();
+                        //Common.switchToSceneMainMenu(user);
                 }
             });
         }
@@ -309,7 +322,7 @@ public class DuelController {
             String fieldName = fieldCardholder.getCard().getName();
             if (fieldName.equals("Forest"))
                 fieldBG.getStyleClass().add("forest");
-            else if (fieldName.equals("closedForest"))
+            else if (fieldName.equals("Closed Forest"))
                 fieldBG.getStyleClass().add("closedForest");
             else if(fieldName.equals("Yami"))
                 fieldBG.getStyleClass().add("yami");
@@ -332,6 +345,7 @@ public class DuelController {
     }
 
     public void click(MouseEvent mouseEvent) {
+
         Address address = duel.duelAddresses.get(duel.duelZones.get("hand", duel.getCurrentPlayer()), 0);
         String id = ((ImageView) mouseEvent.getSource()).getId();
         if (id.charAt(0) == 'h') {
@@ -348,8 +362,10 @@ public class DuelController {
         }
         duelController.select(address);
         if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-            if (mouseEvent.isShiftDown())
+            if (mouseEvent.isShiftDown()) {
                 System.out.println(duelController.activeMagic().getContent());
+                handleAudioClip();
+            }
             else
                 System.out.println(duelController.changePosition().getContent());
         } else if (mouseEvent.isAltDown())

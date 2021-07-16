@@ -15,9 +15,13 @@ public class MainMenuController {
                     if(userDeck.isValid()){
                         if(opponentDeck.isValid()){
                             if(rounds.equals("1") || rounds.equals("3")){
-                                new DuelRoundManager(user, opponent, Integer.parseInt(rounds)).run();
-                                //TODO                                
-                                return null;
+//                                new DuelRoundManager(user, opponent, Integer.parseInt(rounds)).run();
+//                                //TODO
+//                                return null;
+                                if(!user.getUsername().equals(opponent.getUsername())){
+                                    return new Message(TypeMessage.SUCCESSFUL,"success");}
+                                else
+                                    return new Message(TypeMessage.ERROR,"self confidence?");
                             }
                             else{
                                 return new Message(TypeMessage.ERROR,"number of rounds is not supported");

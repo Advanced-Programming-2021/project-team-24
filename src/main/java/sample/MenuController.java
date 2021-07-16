@@ -1,5 +1,8 @@
 package sample;
 
+import controller.MainMenuController;
+import controller.Message;
+import controller.TypeMessage;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -82,11 +85,26 @@ public class MenuController {
         gamePane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                try {
-                    switchToSceneDuel(mouseEvent);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                MouseEvent originalMouseEvent = mouseEvent;
+                Input input = new Input("Enter opponent username");
+                PopOver popOver = new PopOver(input);
+                popOver.show(gamePane);
+                input.getHBox().requestFocus();
+                input.getButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        Message message = new MainMenuController().createDuel(user, User.readUser(input.getInput()), "1");
+                        System.out.println(message.getContent());
+                        Common.showMessage(message, gamePane);
+                        if (message.getTypeMessage() == TypeMessage.SUCCESSFUL) {
+                            try {
+                                switchToSceneDuel(originalMouseEvent,User.readUser(input.getInput()));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
             }
         });
         deckPane.getStyleClass().add("decksBG");
@@ -203,9 +221,9 @@ public class MenuController {
         stage.show();
     }
 
-    public void switchToSceneDuel(MouseEvent event) throws IOException {
+    public void switchToSceneDuel(MouseEvent event,User opponent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/duel.fxml"));
-        DuelController duelController = new DuelController(this.user);
+        DuelController duelController = new DuelController(this.user,opponent);
         loader.setController(duelController);
         Parent root = loader.load();
         scene = new Scene(root);

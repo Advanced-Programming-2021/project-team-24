@@ -101,7 +101,7 @@ public class DecksController {
         newDeck.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Input input = new Input();
+                Input input = new Input("Enter deck name");
                 PopOver popOver = new PopOver(input);
                 popOver.show(newDeck);
                 input.getHBox().requestFocus();
