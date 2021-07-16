@@ -5,6 +5,7 @@ import controller.LoginController;
 import controller.Message;
 import controller.TypeMessage;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.user.User;
+import org.controlsfx.control.PopOver;
 
 import java.io.IOException;
 
@@ -30,10 +32,13 @@ public class SignInController {
         LoginController loginController = new LoginController();
         Message message = (Message) loginController.login(username.getText(),password.getText()).get(0);
         System.out.println(message.getContent());
+        Common.showMessage(message,submit);
         if(message.getTypeMessage() == TypeMessage.SUCCESSFUL){
             Common.switchToSceneMainMenu((User) loginController.login(username.getText(),password.getText()).get(1));
         }
     }
+
+
 
     public void switchToSceneSignup(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("scenes/signup.fxml"));

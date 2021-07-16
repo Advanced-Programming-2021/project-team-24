@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SignUpController {
+public class CardCreator {
     @FXML
     MFXTextField username,nickname,password;
     @FXML

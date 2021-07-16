@@ -1,6 +1,8 @@
 package sample;
 
 import com.jfoenix.controls.JFXButton;
+import controller.Message;
+import controller.TypeMessage;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -17,7 +19,7 @@ public class Info extends Group {
         return button;
     }
 
-    public Info(String message){
+    public Info(Message message){
         button.setStyle("-fx-background-color: #4038E6;");
         button.setText("OK");
         Font font1 = new Font("Quicksand-Bold",14.0);
@@ -29,13 +31,18 @@ public class Info extends Group {
         hBox1.setPrefHeight(50);
         hBox1.setPrefWidth(381);
         Label label = new Label();
-        label.setText(message);
+        label.setText(message.getContent());
         Font font2 = new Font("Quicksand-Regular",20.0);
         label.setFont(font2);
         VBox vBox = new VBox(label,hBox1);
         vBox.setAlignment(Pos.CENTER);
         FontAwesomeIcon fontAwesomeIcon = new FontAwesomeIcon();
-        fontAwesomeIcon.setIconName("INFO_CIRCLE");
+        if(message.getTypeMessage() == TypeMessage.INFO)
+            fontAwesomeIcon.setIconName("INFO_CIRCLE");
+        else if(message.getTypeMessage() == TypeMessage.ERROR)
+            fontAwesomeIcon.setIconName("TIMES_CIRCLE");
+        else if(message.getTypeMessage() == TypeMessage.SUCCESSFUL)
+            fontAwesomeIcon.setIconName("CHECK_CIRCLE");
         fontAwesomeIcon.setSize("4em");
         fontAwesomeIcon.setWrappingWidth(45);
         //

@@ -59,6 +59,9 @@
     -fx-cursor: hand;
     -fx-opacity: 1;
 }
+.disabledButton{
+    -fx-opacity: 0.8;
+}
 .duelBackground{
 	-fx-background-image: url("../images/backgrounds/duel.gif");
 }

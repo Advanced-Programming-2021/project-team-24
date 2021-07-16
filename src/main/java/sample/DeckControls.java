@@ -80,15 +80,15 @@ public class DeckControls extends Group {
     public void setActive(boolean active) {
         isActive = active;
     }
-
-
+    PopOver popOver;
+    boolean eyeEnterFlag=false;
     public DeckControls(boolean isActive, String name, User user, DecksController deckController,String deckName) {
         borderPane.setLayoutX(borderPaneLayoutX);
         borderPane.setLayoutY(borderPaneLayoutY);
         borderPane.setPrefHeight(borderPanePrefHeight);
         borderPane.setPrefWidth(borderPanePrefWidth);
         Label labelActivate = new Label();
-        this.deckName= deckName;
+        this.deckName= deckName.split(":")[0];
         if (isActive)
             labelActivate.setText("DEACTIVATE");
         else
@@ -96,7 +96,7 @@ public class DeckControls extends Group {
         labelActivate.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println(new DeckController(user.getDecks()).active(name).getContent());
+                System.out.println(new DeckController(user.getDecks()).active(name.split(":")[0]).getContent());
                 deckController.update();
             }
         });
@@ -132,10 +132,42 @@ public class DeckControls extends Group {
                 message.getRightButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        System.out.println(new DeckController(user.getDecks()).delete(deckName).getContent());
+                        System.out.println(new DeckController(user.getDecks()).delete(deckName.split(":")[0]).getContent());
                         deckController.update();
                     }
                 });
+            }
+        });
+
+        eye.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!eyeEnterFlag) {
+                    CardsPresenter cardsPresenter = new CardsPresenter(user.getDecks().getDeckByName(deckName.split(":")[0]).getMainCards());
+                    popOver = new PopOver(cardsPresenter);
+                    popOver.show(eye);
+                    eyeEnterFlag = true;
+                }
+            }
+        });
+        eye.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!eyeEnterFlag) {
+                    CardsPresenter cardsPresenter = new CardsPresenter(user.getDecks().getDeckByName(deckName.split(":")[0]).getMainCards());
+                    popOver = new PopOver(cardsPresenter);
+                    popOver.show(eye);
+                    eyeEnterFlag = true;
+                }
+            }
+        });
+        eye.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(eyeEnterFlag) {
+                    popOver.hide();
+                    eyeEnterFlag = false;
+                }
             }
         });
         FontAwesomeIcon edit = new FontAwesomeIcon();

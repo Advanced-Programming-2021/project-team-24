@@ -1,6 +1,7 @@
 package sample;
 
 import controller.DeckController;
+import controller.Message;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
@@ -56,7 +57,8 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
 
     public twoPaneCards(User user, String deckName, int cardsCount){
         this.user = user;
-        this.deckName = deckName;
+        if(deckName!=null)
+            this.deckName = deckName.split(":")[0];
         this.cardsCount = cardsCount;
     }
 
@@ -245,7 +247,16 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
             public void handle(MouseEvent mouseEvent) {
                 cards.get(selectedCard).setOpacity(0.7);
                 cost.setOpacity(1);
-                buy.setOpacity(1);
+                if(cardsList.get(selectedCard).getPrice()>user.getCoin()) {
+                    buy.getStyleClass().clear();
+                    buy.getStyleClass().add("disabledButton");
+                }
+                else {
+                    buy.setOpacity(0.8);
+                    buy.getStyleClass().clear();
+                    buy.getStyleClass().add("button");
+                    System.out.println(cardsList.get(selectedCard).getPrice());
+                }
             }
         });
         buy.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -253,10 +264,17 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
             public void handle(MouseEvent mouseEvent) {
                 //System.out.println(monsterCards.get(selectedCard).getName());
                 String cardName = cardsList.get(selectedCard).getName();
+                Message message;
                 if(deckName==null) {
-                    System.out.println(shopMenu.buyCard(cardName).getContent());
+                    message = shopMenu.buyCard(cardName);
+                    System.out.println(message.getContent());
+
                 }
-                else System.out.println(deckController.addCard(cardName, deckName, true).getContent());
+                else{
+                    message = deckController.addCard(cardName, deckName, true);
+                    System.out.println(message.getContent());
+                }
+                Common.showMessage(message,buy);
                 update();
             }
         });

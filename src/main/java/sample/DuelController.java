@@ -1,6 +1,7 @@
 package sample;
 
 import controller.Message;
+import controller.TypeMessage;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -256,6 +257,7 @@ public class DuelController {
     }
 
     public void update() {
+        duelController.updateAutomaticEffect();
         handleField();
         if (duelController.isRoundFinished()) {
             System.out.println("End");
@@ -265,7 +267,7 @@ public class DuelController {
             if (same ^ dead) message = "You Lose!";
             else message = "You Win!";
             System.out.println(message);
-            Info info = new Info(message);
+            Info info = new Info(new Message(TypeMessage.INFO,message));
             popOver = new PopOver(info);
             popOver.show(phase);
             info.getButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -307,7 +309,7 @@ public class DuelController {
             String fieldName = fieldCardholder.getCard().getName();
             if (fieldName.equals("Forest"))
                 fieldBG.getStyleClass().add("forest");
-            else if (fieldName.equals("ClosedForest"))
+            else if (fieldName.equals("closedForest"))
                 fieldBG.getStyleClass().add("closedForest");
             else if(fieldName.equals("Yami"))
                 fieldBG.getStyleClass().add("yami");
