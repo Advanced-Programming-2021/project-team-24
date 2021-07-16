@@ -38,7 +38,7 @@ public class DuelController {
     @FXML
     public ImageView graveYard;
     @FXML
-    ImageView imageA, imageB;
+    ImageView imageA, imageB,profilePhoto;
     @FXML
     ImageView h1a, h2a, h3a, h4a, h5a, s1a, s2a, s3a, s4a, s5a, m1a, m2a, m3a, m4a, m5a;
     @FXML
@@ -48,12 +48,12 @@ public class DuelController {
     @FXML
     AnchorPane fieldBG;
     @FXML
-    Label phase, nameA, nameB, LPA, LPB;
+    Label phase, nameA, nameB, LPA, LPB,username;
     @FXML
     Group menu;
     @FXML
     FontAwesomeIcon setting;
-    User user;
+    User user,opponent;
     Image image;
     DuelMenu duelMenu;
     controller.DuelController duelController;
@@ -66,14 +66,17 @@ public class DuelController {
     MediaPlayer mediaPlayer;
     private String currentMusic;
 
-    public DuelController(User user) {
+    public DuelController(User user,User opponent) {
         this.user = user;
+        this.opponent = opponent;
     }
 
     public void initialize() {
+        profilePhoto.setImage(new Image(getClass().getResourceAsStream(user.getImageAddress())));
+        username.setText(user.getUsername());
         handleMusic("main");
-        User a = new User("alireza", "alireza", "alireza");
-        User b = new User("alir", "alir", "alir");
+        User a = user;
+        User b = opponent;
         model.deck.Deck alireza = new Deck("alireza");
         for (int i = 0; i < Card.getAllCards().size(); i++) {
             alireza.addMainCard(Card.getAllCards().get(i));
@@ -309,7 +312,7 @@ public class DuelController {
             String fieldName = fieldCardholder.getCard().getName();
             if (fieldName.equals("Forest"))
                 fieldBG.getStyleClass().add("forest");
-            else if (fieldName.equals("closedForest"))
+            else if (fieldName.equals("Closed Forest"))
                 fieldBG.getStyleClass().add("closedForest");
             else if(fieldName.equals("Yami"))
                 fieldBG.getStyleClass().add("yami");

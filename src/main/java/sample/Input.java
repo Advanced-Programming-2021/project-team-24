@@ -18,7 +18,7 @@ public class Input extends Group {
     JFXButton button;
     MFXTextField input;
 
-    public Input(){
+    public Input(String message){
         FontAwesomeIcon icon = new FontAwesomeIcon();
         icon.setIconName("PLUS_CIRCLE");
         icon.setSelectionFill(Color.BLACK);
@@ -26,7 +26,7 @@ public class Input extends Group {
         icon.setWrappingWidth(45);
         HBox.setMargin(icon,new Insets(0,10,0,0));
         input = new MFXTextField();
-        input.setPromptText("Enter deck name");
+        input.setPromptText(message);
         input.setLineColor(Color.web("#4038E6"));
         HBox.setMargin(input,new Insets(0,10,0,0));
         HBox.setMargin(icon,new Insets(0,10,0,0));
