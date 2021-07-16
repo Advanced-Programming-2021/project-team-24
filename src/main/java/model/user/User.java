@@ -140,7 +140,7 @@ public class User {
                 if(user != null)
                     usernames.add(user.getUsername());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }     
     }

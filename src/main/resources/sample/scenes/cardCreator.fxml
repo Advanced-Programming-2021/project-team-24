@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SignUpController">
+    <children>
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" style="-fx-background-color: #e63838;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" />
+        <BorderPane prefHeight="200.0" prefWidth="200.0">
+            <bottom>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <children>
+                  <FontAwesomeIcon fill="WHITE" iconName="MONEY" size="2em" />
+                        <Label text="5000" textFill="WHITE">
+                            <font>
+                                <Font name="Source Code Pro Medium" size="15.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                </HBox>
+            </bottom>
+               <center>
+                  <VBox alignment="CENTER" prefHeight="478.0" prefWidth="512.0" BorderPane.alignment="CENTER">
+                     <children>
+                      <ImageView fitHeight="254.0" fitWidth="167.0">
+                          <image>
+                              <Image url="@../images/cards/Monsters/Unknown.jpg" />
+                          </image>
+                      </ImageView>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Monster" textFill="WHITE">
+                                 <font>
+                                    <Font name="Source Code Pro Black" size="15.0" />
+                                 </font>
+                              </Label>
+                              <JFXToggleButton text=" " />
+                              <Label text="Magic" textFill="WHITE">
+                                 <font>
+                                    <Font name="Source Code Pro Black" size="15.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                     <BorderPane.margin>
+                        <Insets top="70.0" />
+                     </BorderPane.margin>
+                  </VBox>
+               </center>
+        </BorderPane>
+        <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+            <bottom>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Label text="Wanna see list of effects?" textFill="WHITE">
+                            <font>
+                                <Font name="Source Code Pro Black" size="15.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin>
+                        </Label>
+                        <Label onMouseClicked="#switchToSceneSignin" styleClass="linkLabel" stylesheets="@../styles/style.css" text="Click!">
+                            <font>
+                                <Font name="Source Code Pro Black" size="15.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                </HBox>
+            </bottom>
+            <center>
+                <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="314.0" prefWidth="310.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <FontAwesomeIcon iconName="TH" size="3em" />
+                            </children>
+                        </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <MFXTextField fx:id="username1" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="Username" style="-fx-background-color: white; -fx-text-alignment: center;" styleClass="linkLabel" stylesheets="@../styles/style.css" text="Name">
+                           <font>
+                              <Font name="Source Sans Pro SemiBold" size="12.0" />
+                           </font>
+                        </MFXTextField>
+                     </children>
+                  </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <MFXTextField fx:id="username" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="Username" style="-fx-background-color: white; -fx-text-alignment: center;" styleClass="linkLabel" stylesheets="@../styles/style.css" text="Attack">
+                                    <font>
+                                        <Font name="Source Sans Pro SemiBold" size="12.0" />
+                                    </font></MFXTextField>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <MFXTextField fx:id="nickname" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="Nickname" style="-fx-background-color: white; -fx-text-alignment: center;" text="Defence">
+                                    <font>
+                                        <Font name="Source Sans Pro SemiBold" size="12.0" />
+                                    </font></MFXTextField>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <MFXTextField fx:id="password" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="Password" style="-fx-background-color: white; -fx-text-alignment: center;" text="Effect">
+                                    <font>
+                                        <Font name="Source Sans Pro SemiBold" size="12.0" />
+                                    </font>
+                                </MFXTextField>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <MFXTextField fx:id="password1" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="Password" style="-fx-background-color: white; -fx-text-alignment: center;" text="List of Cards">
+                                 <font>
+                                    <Font name="Source Sans Pro SemiBold" size="12.0" />
+                                 </font>
+                              </MFXTextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="96.0" prefWidth="294.0">
+                            <children>
+                                <JFXButton fx:id="submit" onMouseClicked="#submit" style="-fx-background-color: black;" text="Create" textFill="WHITE">
+                                    <font>
+                                        <Font name="Source Code Pro Black" size="12.0" />
+                                    </font></JFXButton>
+                            </children>
+                        </HBox>
+                    </children>
+                     <BorderPane.margin>
+                        <Insets top="50.0" />
+                     </BorderPane.margin>
+                </VBox>
+            </center>
+        </BorderPane>
+    </children>
+</GridPane>
+<HBox fx:id="menuBar" alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="1024.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<children>
+    <FontAwesomeIcon fx:id="menuIcon" fill="WHITE" iconName="GIFT" size="1.5em">
+        <HBox.margin>
+            <Insets left="20.0" />
+        </HBox.margin>
+    </FontAwesomeIcon>
+    <!--            <Circle fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE">-->
+    <!--                <HBox.margin>-->
+    <!--                    <Insets left="20.0" right="10.0" />-->
+    <!--                </HBox.margin>-->
+    <!--            </Circle>-->
+    <Label fx:id="menuText" text="CardCreator" textFill="WHITE">
+        <HBox.margin>
+            <Insets left="10.0" />
+        </HBox.margin></Label>
+    <FontAwesomeIcon fx:id="menuIcon1" fill="WHITE" iconName="ARROW_LEFT" onMouseClicked="#back" size="1.5em">
+        <HBox.margin>
+            <Insets left="20.0" />
+        </HBox.margin>
+    </FontAwesomeIcon>
+</children>
+</HBox>
+<HBox alignment="CENTER" layoutX="91.0" layoutY="10.0" prefHeight="84.0" prefWidth="843.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0">
+<children>
+    <ImageView fitHeight="57.0" fitWidth="166.0">
+        <image>
+            <Image url="@../images/yugiohLogo.png" />
+        </image>
+    </ImageView>
+</children>
+</HBox>
+<HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="47.0" style="-fx-background-color: black;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<children>
+    <FontAwesomeIcon fx:id="menuIcon2" fill="WHITE" iconName="MONEY" size="1.5em">
+        <HBox.margin>
+            <Insets right="5.0" />
+        </HBox.margin>
+    </FontAwesomeIcon>
+    <Label fx:id="coins" text="500" textFill="WHITE">
+        <HBox.margin>
+            <Insets right="20.0" />
+        </HBox.margin>
+    </Label>
+</children>
+</HBox>
+        </children>
+        </AnchorPane>

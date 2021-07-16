@@ -257,6 +257,7 @@ public class DuelController {
     }
 
     public void update() {
+        duelController.updateAutomaticEffect();
         handleField();
         if (duelController.isRoundFinished()) {
             System.out.println("End");
