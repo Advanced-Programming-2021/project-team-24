@@ -271,6 +271,7 @@ public class User {
     }
 
     public Decks getDecks() {
+        addUser();
         return decks;
     }
     public void setDecks(Decks decks){

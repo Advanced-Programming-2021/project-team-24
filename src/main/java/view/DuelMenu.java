@@ -257,6 +257,7 @@ public class DuelMenu {
                     ans.add(getDuelController().getDuel().getMap().get(address).getId());
                 } else {
                     i--;
+                    //getDuelController().getDuel().getZone(duelController.getDuel().duelZones.get("monster", duelController.getDuel().getOpponent()));
                     System.out.println("invalid selection");
                 }
             }

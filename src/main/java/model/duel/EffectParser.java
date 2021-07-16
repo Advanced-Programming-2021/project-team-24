@@ -74,7 +74,7 @@ public class EffectParser {
 
     public String runEffect()
     {
-        if(effect.getEffectCommand() != null && effect.getEffectCommand().length() > 0 && effect.getReverse() != null && effect.getReverse().length() > 0)
+        if((effect.getEffectCommand() != null && effect.getEffectCommand().length() > 0) || (effect.getReverse() != null && effect.getReverse().length() > 0))
         {
             if(effectManager.getEffect().getEffectType() == EffectType.QUICK_PLAY)
             {            
@@ -553,7 +553,7 @@ public class EffectParser {
         List<String> fields = splitCorrect(splitByParentheses(setCommand).get(0) ,',');
         List<Integer> cardHolders = getArray(fields.get(0));
         String key = fields.get(1);
-        String value = getCommandResult(fields.get(2));
+        String value = getCommandResult(getCommandResult(fields.get(2)));
         if(fields.size() == 3)
         {
             duelController.getDuel().setterMap(cardHolders, key, value, 1);//TODO
