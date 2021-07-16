@@ -105,7 +105,7 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
             targetCards = user.getDecks().getDeckByName(deckName).getMainCards();
             cardsList = user.getCards();
             menuIcon.setIconName("TH");
-            menuText.setText("DECK EDITOR");
+            menuText.setText("DECK EDITOR->"+deckName);
             buy.setIconName("PLUS_CIRCLE");
             coins.setText(String.valueOf(targetCards.size()));
             menuIcon2.setIconName("SORT_NUMERIC_ASC");
