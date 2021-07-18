@@ -393,7 +393,7 @@ public class Duel {
         List<Integer> ans = new ArrayList<Integer>();
         List<CardHolder> all = this.getAllCardHolder();
         for (int i = 0; i < all.size(); i++) {
-            if (this.filterMatch(filter, all.get(i))) {
+            if (filterMatch(filter, all.get(i))) {
                 ans.add(all.get(i).getId());
             }
         }

@@ -539,12 +539,18 @@ public class DuelController {
                                             if (duel.getCurrentPhase().equals(Duel.Phase.BATTLE)) {
                                                 if (attacker.getBoolMapValue("can_attack")) {
                                                     if (opponent.getBoolMapValue("can_be_under_attack")) {
-                                                        if (attacker.getCardState() == CardState.ATTACK_MONSTER) 
+                                                        if(attacker.getBoolMapValue("attack_trun") == true)
                                                         {
-                                                            return attackCalculator(attacker, opponent);                                                        
-                                                        } else {
-                                                            return attackCalculator(attacker, opponent);                                                            
-                                                        }                                                    
+                                                            attacker.setMapValue("attack_turn", "true", 1);
+                                                            if (attacker.getCardState() == CardState.ATTACK_MONSTER) 
+                                                            {
+                                                                return attackCalculator(attacker, opponent);                                                        
+                                                            } else {
+                                                                return attackCalculator(attacker, opponent);                                                                                                                            
+                                                            }                                                    
+                                                        } else{
+                                                            return new Message(TypeMessage.ERROR, "This card performed attack before in this round");
+                                                        }                                                        
                                                     } else {
                                                         return new Message(TypeMessage.ERROR, "This card can't be under attack");
                                                     }
@@ -749,7 +755,7 @@ public class DuelController {
         duelEvents.put(event, 1);
         new EffectChainer(event, duel.getOpponent(), this).askForChain(duel.getOpponent());
         duelEvents.put(event, null);
-    }
+    }    
     public void activeEffectByEvent(CardHolder cardHolder, Event event)
     {
         if(cardHolder.getEffects().get(event)!=null && cardHolder.getEffects().get(event).size() > 0)

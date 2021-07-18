@@ -405,7 +405,7 @@ public class EffectParser {
             {
                 Matcher matcher = Global.getMatcher(command, "Norm\\((.+)\\)");
                 if (matcher.find()) {
-                    command = command.replace("Norm(" + splitByParentheses(matcher.group(0)).get(0) + ")", normSet((matcher.group(0))));
+                    command = command.replace("Norm(" + splitByParentheses(matcher.group(0)).get(0) + ")", normSet("Norm(" + splitByParentheses(matcher.group(0)).get(0) + ")"));
                 }
             }
             else
@@ -553,7 +553,7 @@ public class EffectParser {
         String value = getCommandResult(getCommandResult(fields.get(2)));
         if(fields.size() == 3)
         {
-            duelController.getDuel().setterMap(cardHolders, key, value, 1);//TODO
+            duelController.getDuel().setterMap(cardHolders, key, value, 1000);//TODO
         }
         else
         {
@@ -676,11 +676,11 @@ public class EffectParser {
     public String changeValue(String command)
     {
         //changeValue(List<E>,key,change);
-        if(Global.regexFind(command, "changeValue\\(([^()]+)\\)"))
+        if(Global.regexFind(command, "changeValue\\((.+)\\)"))
         {
-            Matcher matcher = Global.getMatcher(command, "changeValue\\(([^()]+)\\)");
+            Matcher matcher = Global.getMatcher(command, "changeValue\\((.+)\\)");
             matcher.find();
-            List<String> fields = splitCorrect(matcher.group(1), ',');
+            List<String> fields = splitCorrect(splitByParentheses(matcher.group(1)).get(0), ',');
             List<Integer> idCardHolders = getArray(getCommandResult(fields.get(0)));
             String key = fields.get(1);
             String value = getCommandResult(fields.get(2));
@@ -748,7 +748,7 @@ public class EffectParser {
                     try{
                         ans += Integer.parseInt(duelController.getDuel().getCardHolderById(list.get(i)).getValue(value));
                     }catch(Exception e){                        
-                        e.printStackTrace();
+                        //e.printStackTrace();
                     }                
                 }
                 

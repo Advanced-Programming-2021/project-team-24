@@ -24,6 +24,19 @@ public class ZoneHandler extends FilterHandler {
                     flag = 1;
             }
         }
+        else
+        {
+            if(zone.getName().equals("deck") || zone.getName().equals("graveyard"))
+            {
+                IdHandler id = new IdHandler();
+                if(id.singleHandle(filter, cardHolder, duel)) 
+                {
+                    flag = 1;
+                }
+                else
+                flag = 0;
+            }
+        }
         if(flag == 0)
             return false;
         if(nextFilterHandler != null)

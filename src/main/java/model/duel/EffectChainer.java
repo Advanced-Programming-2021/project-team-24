@@ -28,6 +28,7 @@ public class EffectChainer {
         duelMenu = duelController.getDuelMenu();
         idMagicCardHolderChain = new ArrayList<Integer>();
         this.event = event;
+        this.opponent = opponent;
         //askForChain(opponent);        
     }
     public EffectChainer(Event event, MagicCardHolder magicCardHolder, Player opponent, DuelController duelController)

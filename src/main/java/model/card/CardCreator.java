@@ -73,6 +73,10 @@ public class CardCreator {
         return card;
 
     }
+    public void addCurrentGeneratedCard()
+    {
+        
+    }
     public void setEffectHashMap(String effects)
     {
         try{

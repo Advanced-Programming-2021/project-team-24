@@ -67,19 +67,19 @@ public class DeckMenu extends Menu {
                     continue;
                 }
 
-                matcher = Global.getMatcher(command, "deck set-activate (?<name>\\w)");
+                matcher = Global.getMatcher(command, "deck set-activate (?<name>\\w+)");
                 if (matcher.find()) {
                     String deckName = matcher.group("name");
                     System.out.println(deckController.active(deckName).getContent());
                     continue;
                 }
 
-                matcher = Global.getMatcher(command, "deck add-card (?=.*(?:--card (?<cardName>\\w)))(?=.*(?:--deck (?<deckName>\\w)))(?=.*(?<opponent>--side)){0,1}");
+                matcher = Global.getMatcher(command, "deck add-card (?=.*(?:--card (?<cardName>\\w+)))(?=.*(?:--deck (?<deckName>\\w+)))(?=.*(?<opponent>--side)){0,1}");
                 if (matcher.find()) {
                     String deckName = matcher.group("deckName");
                     String cardName = matcher.group("cardName");
                     boolean isMainCard = true;
-                    if (matcher.group("side") != null) {
+                    if (matcher.group("opponent") != null) {
                         isMainCard = false;
                     }
                     Message message = deckController.addCard(cardName, deckName, isMainCard);
@@ -87,12 +87,12 @@ public class DeckMenu extends Menu {
                     continue;
                 }
 
-                matcher = Global.getMatcher(command, "deck rm-card (?=.*(?:--card (?<cardName>\\w)))(?=.*(?:--deck (?<deckName>\\w)))(?=.*(?<opponent>--side)){0,1}");
+                matcher = Global.getMatcher(command, "deck rm-card (?=.*(?:--card (?<cardName>\\w+)))(?=.*(?:--deck (?<deckName>\\w+)))(?=.*(?<opponent>--side)){0,1}");
                 if (matcher.find()) {
                     String deckName = matcher.group("deckName");
                     String cardName = matcher.group("cardName");
                     boolean isMainCard = true;
-                    if (matcher.group("side") != null) {
+                    if (matcher.group("opponent") != null) {
                         isMainCard = false;
                     }
                     Message message = deckController.removeCard(cardName, deckName, isMainCard);
@@ -101,11 +101,11 @@ public class DeckMenu extends Menu {
                 }
 
 
-                matcher = Global.getMatcher(command, "deck show (?=.*(?:--deck (?<deckName>\\w)))(?=.*(?<opponent>--side)){0,1}");
+                matcher = Global.getMatcher(command, "deck show (?=.*(?:--deck (?<deckName>\\w+)))(?=.*(?<opponent>--side)){0,1}");
                 if (matcher.find()) {
                     String deckName = matcher.group("deckName");
                     boolean isMainCard = true;
-                    if (matcher.group("side") != null) {
+                    if (matcher.group("opponent") != null) {
                         isMainCard = false;
                     }
                     Message message = deckController.showDeckCards(deckName, isMainCard);
