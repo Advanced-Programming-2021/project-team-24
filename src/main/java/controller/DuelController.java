@@ -539,7 +539,7 @@ public class DuelController {
                                             if (duel.getCurrentPhase().equals(Duel.Phase.BATTLE)) {
                                                 if (attacker.getBoolMapValue("can_attack")) {
                                                     if (opponent.getBoolMapValue("can_be_under_attack")) {
-                                                        if(attacker.getBoolMapValue("attack_trun") == true)
+                                                        if(attacker.getBoolMapValue("attack_trun") == false)
                                                         {
                                                             attacker.setMapValue("attack_turn", "true", 1);
                                                             if (attacker.getCardState() == CardState.ATTACK_MONSTER) 

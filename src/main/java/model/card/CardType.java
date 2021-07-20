@@ -17,4 +17,13 @@ public enum CardType {
         this.label = label;
     }
 
+
+    public static CardType getByString(String string){
+        for(CardType cardType : values()){
+            if(string.equals(cardType.label))
+                return cardType;
+        }
+        return null;
+    }
+
 }

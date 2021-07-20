@@ -288,6 +288,14 @@ public class EffectParser {
                         ans = "true";
                         return "true";
                     }
+                    if(command.length() >= 2 && command.substring(0, 2).equals("if"))
+                    {
+                        return handleConditional(command);
+                    }
+                    if(command.length() >= 4 && command.substring(0, 4).equals("q_yn"))
+                    {
+                        return q_yn(command);
+                    }
                     if(Global.regexFind(command, "changeValue\\(.+\\)"))
                     {
                         command = changeValue(command);
@@ -301,14 +309,7 @@ public class EffectParser {
                     {
                         command = changeZone(command);                
                     }
-                    if(command.length() >= 2 && command.substring(0, 2).equals("if"))
-                    {
-                        return handleConditional(command);
-                    }
-                    if(command.length() >= 4 && command.substring(0, 4).equals("q_yn"))
-                    {
-                        return q_yn(command);
-                    }
+                    
 
 
                     command = parseKeyWords(command);
@@ -678,7 +679,7 @@ public class EffectParser {
         //changeValue(List<E>,key,change);
         if(Global.regexFind(command, "changeValue\\((.+)\\)"))
         {
-            Matcher matcher = Global.getMatcher(command, "changeValue\\((.+)\\)");
+            Matcher matcher = Global.getMatcher(command, "changeValue(\\(.+\\))");
             matcher.find();
             List<String> fields = splitCorrect(splitByParentheses(matcher.group(1)).get(0), ',');
             List<Integer> idCardHolders = getArray(getCommandResult(fields.get(0)));

@@ -32,6 +32,11 @@ public class MagicCard extends Card {
     public MagicIcon getMagicIcon() {
         return this.magicIcon;
     }
+    
+    public void setCardType(CardType newCardType)
+    {
+        this.cardType = newCardType;
+    }
 
     public void setMagicIcon(MagicIcon magicIcon) {
         this.magicIcon = magicIcon;

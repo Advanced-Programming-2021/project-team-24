@@ -15,7 +15,6 @@ public abstract class CardHolder {
     protected int id;
     protected static int idCounter = 1;
     protected CardState cardState;
-    protected CardType cardType;
     protected Boolean isEmpty;
     protected List <EffectManager> effectManagerList;        
     protected List <Integer> appliedEffects;       
@@ -77,12 +76,9 @@ public abstract class CardHolder {
     }
     
     public CardType getCardType() {
-        return this.cardType;
+        return this.getCard().getCardType();
     }
 
-    public void setCardType(CardType cardType) {
-        this.cardType = cardType;
-    }
            
     public void setMapValue(String key, String value, Integer time)
     {

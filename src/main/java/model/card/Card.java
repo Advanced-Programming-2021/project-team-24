@@ -74,11 +74,8 @@ public abstract class Card {
             }
             for(File file : filesListMagicCard) {
                 String json = new String(Files.readAllBytes(Paths.get(file.getPath())));
-                MagicCard card = new Gson().fromJson(json,MagicCard.class);
-                if(card.getMagicIcon() == MagicIcon.FIELD)
-                {
-                    int b = 1;
-                }
+                MagicCard card = new Gson().fromJson(json,MagicCard.class);                
+                card.setCardType(CardType.getByString(card.getMagicType().getLabel()));
                 card.getEffect().setEffectType(v.get(card.getMagicIcon()));
                 allCards.add(card);
             }
