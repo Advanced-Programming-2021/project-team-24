@@ -43,6 +43,11 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="47.0" style="-fx-background-color: black;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
+            <FontAwesomeIcon fx:id="gather" fill="WHITE" iconName="COMMENTS" onMouseClicked="#switchToSceneImportExport" size="1.5em">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </FontAwesomeIcon>
             <FontAwesomeIcon fx:id="importExport" fill="WHITE" iconName="OUTDENT" onMouseClicked="#switchToSceneImportExport" size="1.5em">
                <HBox.margin>
                   <Insets right="10.0" />

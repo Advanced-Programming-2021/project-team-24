@@ -83,11 +83,14 @@ public class Chat {
         }
         return "invalid command";
     }
-    public String sendMessage(String message, User user){
+    public static String sendMessage(String message, User user){
         Matcher matcher = Global.getMatcher(message, "send --message (.+)");
         matcher.find();
         messageSenders.add(user.getUsername());
         messagesContent.add(matcher.group(1));
         return "message send successfully";
-    }    
+    }
+    public static String getLastMessage(){
+        return messagesContent.get(messagesContent.size()-1);
+    }
 }

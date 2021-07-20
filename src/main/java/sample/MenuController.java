@@ -3,6 +3,7 @@ package sample;
 import controller.MainMenuController;
 import controller.Message;
 import controller.TypeMessage;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -40,6 +41,8 @@ public class MenuController {
     Label username;
     @FXML
     ImageView profilePhoto;
+    @FXML
+    FontAwesomeIcon gather;
     User user;
     private Stage stage;
     private Scene scene;
@@ -74,6 +77,14 @@ public class MenuController {
                         profile.update();
                     }
                 });
+            }
+        });
+        gather.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                GatherRoom gatherRoom = new GatherRoom(user);
+                PopOver popOver = new PopOver(gatherRoom);
+                popOver.show(gather);
             }
         });
         username.setText(user.getUsername());
