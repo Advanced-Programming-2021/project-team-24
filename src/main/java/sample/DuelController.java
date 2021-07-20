@@ -129,9 +129,11 @@ public class DuelController {
                 card.setOnMouseExited(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        if (flag == 1) {
-                            popOver.hide();
-                            flag = 0;
+                        if(!mouseEvent.isShiftDown()) {
+                            if (flag == 1) {
+                                popOver.hide();
+                                flag = 0;
+                            }
                         }
                     }
                 });

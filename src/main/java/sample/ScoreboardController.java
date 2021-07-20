@@ -6,7 +6,9 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import model.user.User;
 
 import java.io.IOException;
@@ -16,7 +18,7 @@ import java.util.List;
 
 public class ScoreboardController {
     @FXML
-    Label p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20;
+    VBox list;
     @FXML
     FontAwesomeIcon back;
     User user;
@@ -33,16 +35,19 @@ public class ScoreboardController {
         dropShadow.setColor(Color.BLACK);
         back.setEffect(dropShadow);
         dropShadow.setSpread(0.8);
-        List<Label> players = Arrays.asList(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20);
+        Font font = new Font("Source Code Pro Black",16);
         String[] scoreboard = scoreboardMenu.showScoreboard().getContent().split("\n");
         for(int i=0;i<scoreboard.length;i++){
-            players.get(i).setText(scoreboard[i]);
-            if(user.getNickname().equals(scoreboard[i].split(" ")[1])){
-                players.get(i).setTextFill(Color.DODGERBLUE);
-            }
-        }
-        for(Label label : players){
+            Label label = new Label();
+            label.setText(scoreboard[i]);
             label.setEffect(dropShadow);
+            label.setFont(font);
+            if(user.getNickname().equals(scoreboard[i].split(" ")[1])){
+                label.setTextFill(Color.DODGERBLUE);
+            }
+            else
+                label.setTextFill(Color.WHITE);
+            list.getChildren().add(label);
         }
     }
     public void back(MouseEvent mouseEvent) throws IOException {

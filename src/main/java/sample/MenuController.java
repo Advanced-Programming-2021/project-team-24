@@ -97,11 +97,21 @@ public class MenuController {
                         System.out.println(message.getContent());
                         Common.showMessage(message, gamePane);
                         if (message.getTypeMessage() == TypeMessage.SUCCESSFUL) {
-                            try {
-                                switchToSceneDuel(originalMouseEvent,User.readUser(input.getInput()));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+
+                                Coin coin = new Coin();
+                                PopOver popOver = new PopOver(coin);
+                                popOver.show(profilePhoto);
+                                coin.getButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent mouseEvent) {
+                                    try {
+                                        switchToSceneDuel(originalMouseEvent, User.readUser(input.getInput()));
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    }
+                                });
+
                         }
                     }
                 });

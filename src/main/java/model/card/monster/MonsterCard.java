@@ -14,36 +14,52 @@ import java.util.HashMap;
 public class MonsterCard extends Card {
     @SerializedName("attack")
     private int attack;
+
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
     @SerializedName("defence")
-    private int defence; 
+    private int defence;
+
+    public void setDefence(int defence) {
+        this.defence = defence;
+    }
+
     @SerializedName("level")
     private int level;
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     @SerializedName("monsterEffectType")
     private MonsterEffectType monsterEffectType;
     @SerializedName("monsterType")
     private MonsterType monsterType;
-    
 
-    
 
-    @SerializedName("monsterAttribute:")
+
+
+    @SerializedName("monsterAttribute")
     private MonsterAttribute monsterAttribute;
 
 
-    
 
-    public void setEffects(HashMap<Event,String> effects)    
+
+    public void setEffects(HashMap<Event,String> effects)
     {
-		this.effects = effects;
-	}
+        this.effects = effects;
+    }
     public int getLevel()
     {
         return level;
-    }  
+    }
     public int getAttack()
     {
         return this.attack;
-    }        
+    }
     public int getDefence()
     {
         return this.defence;
@@ -83,9 +99,9 @@ public class MonsterCard extends Card {
         ans = ans.concat("Name :" + name + "\n");
         ans = ans.concat("Monster\n");
         ans = ans.concat("Type: " +  monsterType.toString() + "\n");
-        ans = ans.concat("ATK :" + Integer.toString(attack) + "\n");        
+        ans = ans.concat("ATK :" + Integer.toString(attack) + "\n");
         ans = ans.concat("DEF :" + Integer.toString(defence) + "\n");
-        ans = ans.concat("Description: " + description  + "\n");                
+        ans = ans.concat("Description: " + description  + "\n");
         return ans;
     }
 }
