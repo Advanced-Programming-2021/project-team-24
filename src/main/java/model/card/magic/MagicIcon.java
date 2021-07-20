@@ -22,4 +22,5 @@ public enum MagicIcon {
     {
         this.label = label;
     }
+    
 }

@@ -17,9 +17,9 @@ public class ShopMenu extends Menu {
                 Matcher matcher = Global.getMatcher(command, "(?<=shop buy ).*");
                 if (matcher.find()) {
                     String cardName = matcher.group();
-                    if(shopMenu.buyCard(cardName).getTypeMessage() != TypeMessage.SUCCESSFUL){
+                    
                         System.out.println(shopMenu.buyCard(cardName).getContent());
-                    }
+                    
                 }
             }
             else if (command.compareToIgnoreCase("shop show --all") == 0) System.out.println(shopMenu.getInfo().getContent());

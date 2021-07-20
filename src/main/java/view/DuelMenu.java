@@ -210,7 +210,7 @@ public class DuelMenu {
     private Address getAddress(String addressString) {
         Matcher matcher = Global.getMatcher(addressString, "select (?<zone>(?:--\\w+\\s*\\d*){1,2})");
         if (matcher.find()) {
-            matcher = Global.getMatcher(matcher.group("zone"), "(?=.*(?<name>--(?:monster|magic|field|hand|graveyard)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}");
+            matcher = Global.getMatcher(matcher.group("zone"), "(?=.*(?<name>--(?:monster|deck|magic|field|hand|graveyard)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}");
             if (matcher.find()) {
                 int place = Integer.parseInt(matcher.group("place"));
 
@@ -224,6 +224,23 @@ public class DuelMenu {
                     address = duelController.getDuel().duelAddresses.get(duelController.getDuel().duelZones.get(zoneName, duelController.getDuel().getCurrentPlayer()), place);
                 else
                     address = duelController.getDuel().duelAddresses.get(duelController.getDuel().duelZones.get(zoneName, duelController.getDuel().getOpponent()), place);
+                return address;
+            } else
+                return null;
+        } else
+            return null;
+    }
+
+    public Address getAddress(String addressString, Player selecter) {
+        Matcher matcher = Global.getMatcher(addressString, "select (?<zone>(?:--\\w+\\s*\\d*){1,2})");
+        if (matcher.find()) {
+            matcher = Global.getMatcher(matcher.group("zone"), "(?=.*(?<name>--(?:monster|magic|field|hand|graveyard)))(?=.*(?<place>\\d))(?=.*(?<opponent>--opponent)){0,1}");
+            if (matcher.find()) {
+                int place = Integer.parseInt(matcher.group("place"));
+
+                String zoneName = matcher.group("name").replaceAll("-", "");
+                Address address;
+                address = duelController.getDuel().duelAddresses.get(duelController.getDuel().duelZones.get(zoneName, selecter), place);
                 return address;
             } else
                 return null;
@@ -277,6 +294,42 @@ public class DuelMenu {
         return ans;
     }
 
+    public List<Integer> selective(List<Integer> cardHolderId, int count, String messageSelection, Player selecter) {
+        if (messageSelection != null && messageSelection.length() > 0)
+            System.out.println(messageSelection);
+
+        List<Integer> ans = new ArrayList<Integer>();
+        while (true) {
+            for (int i = 0; i < count; i++) {
+                String command = Global.nextLine();
+                Address address = getAddress(command, selecter);
+                if (address != null &&
+                        getDuelController().getDuel().getMap().get(address) != null &&
+                        checkCardHolderInList(cardHolderId, getDuelController().getDuel().getMap().get(address))) {
+                    ans.add(getDuelController().getDuel().getMap().get(address).getId());
+                } else {
+                    i--;
+                    //getDuelController().getDuel().getZone(duelController.getDuel().duelZones.get("monster", duelController.getDuel().getOpponent()));
+                    System.out.println("invalid selection");
+                }
+            }
+            int flag = 0;
+            for (int i = 0; i < count; i++) {
+                for (int j = 0; j < count; j++) {
+                    if (i != j && ans.get((i)) == ans.get(j)) {
+                        flag = 1;
+                    }
+                }
+            }
+            if (flag == 0)
+                break;
+            else
+                System.out.println("You have same number in your input");
+        }
+        return ans;
+    }
+
+    
     public List<Integer> selective(List<Integer> cardHolderId, int count, String message, String condition) {
         if (message != null && message.length() > 0)
             System.out.println(message);

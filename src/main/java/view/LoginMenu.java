@@ -4,6 +4,8 @@ import java.util.regex.Matcher;
 
 import controller.LoginController;
 import controller.Message;
+import controller.TypeMessage;
+import model.user.User;
 
 public class LoginMenu {
     private LoginController loginController = new LoginController();
@@ -33,7 +35,11 @@ public class LoginMenu {
                 if (matcher.find()) {
                     System.out.println(
                     ((Message)loginController.login(matcher.group("username"),matcher.group("password")).get(0)).getContent()                    
-                    );                    
+                    );      
+                    if(((Message) loginController.login(matcher.group("username"), matcher.group("password")).get(0)).getTypeMessage() == TypeMessage.SUCCESSFUL)
+                    {
+                        new MainMenu(User.readUser(matcher.group("username"))).run();
+                    }
                     continue;
                 }
                 System.out.println("invalid command");

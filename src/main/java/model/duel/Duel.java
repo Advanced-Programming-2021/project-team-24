@@ -14,6 +14,7 @@ import model.duel.filterhandle.DefenceHandler;
 import model.duel.filterhandle.IdHandler;
 import model.duel.filterhandle.LevelHandler;
 import model.duel.filterhandle.MonsterTypeHandler;
+import model.zone.Address;
 import model.duel.filterhandle.ZoneHandler;
 import model.effect.Effect;
 import model.effect.EffectManager;
@@ -193,9 +194,15 @@ public class Duel {
     public Address getCardHolderAddressById(int cardHolderId) {
         for (Zone zone : duelZones.getAllZones()) {
             List<CardHolder> v = getZone(zone);
-            for (int i = 0; i < v.size(); i++)
-                if (v.get(i).getId() == cardHolderId)
-                    return duelAddresses.get(zone, i);
+            for (int i = 0; i < ZonesName.valueOfLabel(zone.getName()).capacity; i++)
+            {
+                Address cc = duelAddresses.get(zone, i);
+                if(map.get(cc) != null)
+                {
+                    if(map.get(cc).getId() == cardHolderId)
+                        return cc;
+                }
+            }
         }
         return null;
     }
@@ -386,7 +393,7 @@ public class Duel {
         List<Integer> ans = new ArrayList<Integer>();
         List<CardHolder> all = this.getAllCardHolder();
         for (int i = 0; i < all.size(); i++) {
-            if (this.filterMatch(filter, all.get(i))) {
+            if (filterMatch(filter, all.get(i))) {
                 ans.add(all.get(i).getId());
             }
         }

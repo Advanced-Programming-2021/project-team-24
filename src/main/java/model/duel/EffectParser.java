@@ -288,6 +288,14 @@ public class EffectParser {
                         ans = "true";
                         return "true";
                     }
+                    if(command.length() >= 2 && command.substring(0, 2).equals("if"))
+                    {
+                        return handleConditional(command);
+                    }
+                    if(command.length() >= 4 && command.substring(0, 4).equals("q_yn"))
+                    {
+                        return q_yn(command);
+                    }
                     if(Global.regexFind(command, "changeValue\\(.+\\)"))
                     {
                         command = changeValue(command);
@@ -301,14 +309,7 @@ public class EffectParser {
                     {
                         command = changeZone(command);                
                     }
-                    if(command.length() >= 2 && command.substring(0, 2).equals("if"))
-                    {
-                        return handleConditional(command);
-                    }
-                    if(command.length() >= 4 && command.substring(0, 4).equals("q_yn"))
-                    {
-                        return q_yn(command);
-                    }
+                    
 
 
                     command = parseKeyWords(command);
@@ -323,12 +324,11 @@ public class EffectParser {
                     if(command.length() >= new String("select").length() && command.substring(0, 6).equals("select"))
                     {
                         command = selective(command);
-                        continue;
+                        
                     }
                     if(command.length() >= new String("random_selection").length() && command.substring(0, 16).equals("random_selection"))
                     {
                         command = randomSelection(command);
-                        continue;
                     }
                    
                     if(command.length() >= 8 && command.substring(0, 8).equals("return_f") && ans == null)
@@ -339,12 +339,10 @@ public class EffectParser {
                     if(Global.regexFind(command, "filter"))
                     {
                         command = getListByFilter(command);
-                        continue;
                     }
                     if(Global.regexFind(command ,"coin"))
                     {
                         coin(command);
-                        continue;
                     }
                     
                     
@@ -408,7 +406,7 @@ public class EffectParser {
             {
                 Matcher matcher = Global.getMatcher(command, "Norm\\((.+)\\)");
                 if (matcher.find()) {
-                    command = command.replace("Norm(" + splitByParentheses(matcher.group(0)).get(0) + ")", normSet((matcher.group(0))));
+                    command = command.replace("Norm(" + splitByParentheses(matcher.group(0)).get(0) + ")", normSet("Norm(" + splitByParentheses(matcher.group(0)).get(0) + ")"));
                 }
             }
             else
@@ -556,7 +554,7 @@ public class EffectParser {
         String value = getCommandResult(getCommandResult(fields.get(2)));
         if(fields.size() == 3)
         {
-            duelController.getDuel().setterMap(cardHolders, key, value, 1);//TODO
+            duelController.getDuel().setterMap(cardHolders, key, value, 1000);//TODO
         }
         else
         {
@@ -679,11 +677,11 @@ public class EffectParser {
     public String changeValue(String command)
     {
         //changeValue(List<E>,key,change);
-        if(Global.regexFind(command, "changeValue\\(([^()]+)\\)"))
+        if(Global.regexFind(command, "changeValue\\((.+)\\)"))
         {
-            Matcher matcher = Global.getMatcher(command, "changeValue\\(([^()]+)\\)");
+            Matcher matcher = Global.getMatcher(command, "changeValue(\\(.+\\))");
             matcher.find();
-            List<String> fields = splitCorrect(matcher.group(1), ',');
+            List<String> fields = splitCorrect(splitByParentheses(matcher.group(1)).get(0), ',');
             List<Integer> idCardHolders = getArray(getCommandResult(fields.get(0)));
             String key = fields.get(1);
             String value = getCommandResult(fields.get(2));
@@ -751,7 +749,7 @@ public class EffectParser {
                     try{
                         ans += Integer.parseInt(duelController.getDuel().getCardHolderById(list.get(i)).getValue(value));
                     }catch(Exception e){                        
-                        e.printStackTrace();
+                        //e.printStackTrace();
                     }                
                 }
                 

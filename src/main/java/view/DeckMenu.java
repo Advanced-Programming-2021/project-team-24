@@ -79,7 +79,7 @@ public class DeckMenu extends Menu {
                     String deckName = matcher.group("deckName");
                     String cardName = matcher.group("cardName");
                     boolean isMainCard = true;
-                    if (matcher.group("side") != null) {
+                    if (matcher.group("opponent") != null) {
                         isMainCard = false;
                     }
                     Message message = deckController.addCard(cardName, deckName, isMainCard);
@@ -92,7 +92,7 @@ public class DeckMenu extends Menu {
                     String deckName = matcher.group("deckName");
                     String cardName = matcher.group("cardName");
                     boolean isMainCard = true;
-                    if (matcher.group("side") != null) {
+                    if (matcher.group("opponent") != null) {
                         isMainCard = false;
                     }
                     Message message = deckController.removeCard(cardName, deckName, isMainCard);
@@ -105,7 +105,7 @@ public class DeckMenu extends Menu {
                 if (matcher.find()) {
                     String deckName = matcher.group("deckName");
                     boolean isMainCard = true;
-                    if (matcher.group("side") != null) {
+                    if (matcher.group("opponent") != null) {
                         isMainCard = false;
                     }
                     Message message = deckController.showDeckCards(deckName, isMainCard);
