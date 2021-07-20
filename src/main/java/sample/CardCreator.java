@@ -9,32 +9,48 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.user.User;
 
 import java.io.IOException;
 
 public class CardCreator {
     @FXML
-    MFXTextField username,nickname,password;
+    MFXTextField name,attack,defence,effects,cards;
     @FXML
-    JFXButton submit;
+    JFXButton createButton;
+    @FXML
+    Label coins;
 
     private Stage stage;
     private Scene scene;
 
-    public void submit(MouseEvent mouseEvent) {
-        LoginController loginController = new LoginController();
-        Message message = loginController.register(username.getText(),password.getText(),nickname.getText());
-        System.out.println(message.getContent());
-        Common.showMessage(message,submit);
+    User user;
+
+    public CardCreator(User user){
+        this.user = user;
     }
 
-    public void switchToSceneSignin(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("scenes/signin.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    public void initialize() {
+        update();
+    }
+
+    public void createCard(MouseEvent mouseEvent) {
+        model.card.CardCreator cardCreator = new model.card.CardCreator();
+        cardCreator.setAttack(Integer.parseInt(attack.getText()));
+        cardCreator.setDefence(Integer.parseInt(defence.getText()));
+        cardCreator.setEffectHashMap(effects.getText());
+        cardCreator.loadCombineEffect(cards.getText());
+        cardCreator.generateCard();
+    }
+
+    public void back(MouseEvent mouseEvent) throws IOException {
+        Common.switchToSceneMainMenu(user);
+    }
+
+    private void update(){
+        coins.setText(String.valueOf(user.getCoin()));
     }
 }

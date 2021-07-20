@@ -287,4 +287,16 @@ public class MenuController {
         stage.show();
     }
 
+    public void switchToSceneCardCreator(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/cardCreator.fxml"));
+        CardCreator cardCreator = new CardCreator(user);
+        loader.setController(cardCreator);
+        Parent root = loader.load();
+        scene = new Scene(root);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+
 }
