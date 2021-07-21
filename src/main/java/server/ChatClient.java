@@ -24,4 +24,7 @@ public class ChatClient {
     public static Message ignoreMatchRequest() throws IOException{
         return Client.getResponse("--request --ignore 3").getMessage();
     }    
+    public static Message getAllMessage() throws IOException{
+        return Client.getResponse("getAllMessages").getMessage();
+    }
 }
