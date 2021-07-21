@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 
 import com.google.gson.Gson;
 
+import controller.Message;
 import controller.TypeMessage;
 import controller.client.TokenManager;
 import model.Request;
@@ -20,7 +21,7 @@ public class ChatServer {
     static List<User> requestSingleRound = new ArrayList<>();
     static List<User> requestMatch = new ArrayList<>();
 
-    public synchronized Response handle(Request command)
+    public static synchronized Response handle(Request command)
     {
         
         if(TokenManager.isValidToken(command)){
@@ -48,19 +49,19 @@ public class ChatServer {
             case 1:
                 for(int i = 0; i < requestSingleRound.size(); i++){
                     if(requestSingleRound.get(i).getUsername().equals(user.getUsername()))
-                        return "you have requested before";
+                        return new Message(TypeMessage.ERROR, "you have requested before");
                 }                
                 requestSingleRound.add(user);
-                return "you request added";
+                return new Message(TypeMessage.SUCCESSFUL, "you request added");
             case 3:
                 for(int i = 0; i < requestMatch.size(); i++){
                     if(requestMatch.get(i).getUsername().equals(requestMatch.get(i).getUsername())){
-                        return "you have requested before";
+                        return new Message(TypeMessage.SUCCESSFUL, "you have requested before");
                     }
                 }
-                return "you request added";
+                return new Message(TypeMessage.ERROR, "you request added");
         }
-        return "invalid command";
+        return new Message(TypeMessage.ERROR, "invalid command");
     }    
     public static Message ignoreRequent(String requst, User user){
         Matcher matcher = Global.getMatcher(requst, "--request --ignore ([13])");        

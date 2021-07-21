@@ -36,6 +36,8 @@ public class MainMenu extends Menu {
     }
 
     public synchronized Response process(String command) {
+        Respone respone = ChatServer.handle(command);
+        if (respone != null) return respone;
         if (command.equals("menu show-current")) {
             return new Response(new Message(TypeMessage.SUCCESSFUL, "Main Menu"), Situation.MAIN);
         }

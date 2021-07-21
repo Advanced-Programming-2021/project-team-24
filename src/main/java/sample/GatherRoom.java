@@ -16,7 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import model.user.User;
-import server.ChatClient;
+
 
 import java.io.IOException;
 
@@ -39,10 +39,7 @@ public class GatherRoom extends Parent {
         FontAwesomeIcon sendIcon = new FontAwesomeIcon();
         sendIcon.setIconName("SHARE_SQUARE");
         sendIcon.setSize("2em");
-        FontAwesomeIcon refresh = new FontAwesomeIcon();
-        refresh.setIconName("REFRESH");
-        refresh.setSize("2em");
-        HBox sendMessage = new HBox(textField,sendIcon,refresh);
+        HBox sendMessage = new HBox(textField,sendIcon);
         sendMessage.setAlignment(Pos.CENTER);
         sendMessage.setPrefWidth(30);
         sendMessage.setPrefHeight(160);
@@ -78,8 +75,7 @@ public class GatherRoom extends Parent {
             public void handle(MouseEvent mouseEvent) {
                 //server.Chat.sendMessage("send --message "+ textField.getText(),user);
                 try {
-                    ChatClient.sendMessage(textField.getText());
-                    //Client.getResponse("send --message "+ textField.getText());
+                    Client.getResponse("send --message "+ textField.getText());
                     update();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -90,18 +86,7 @@ public class GatherRoom extends Parent {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 try {
-                    ChatClient.sendSingleRequest();
-                    //System.out.println(Client.getResponse("--request 1").getMessage().getContent());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        refresh.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                try {
-                    update();
+                    System.out.println(Client.getResponse("--request 1").getMessage().getContent());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -109,8 +94,7 @@ public class GatherRoom extends Parent {
         });
     }
     private void update() throws IOException {
-        //textArea.setText(Client.getResponse("getAllMessages").getMessage().getContent());
-        textArea.setText(ChatClient.getAllMessage().getContent());
+        textArea.setText(Client.getResponse("getAllMessages").getMessage().getContent());
         textField.setText("");
     }
 }
