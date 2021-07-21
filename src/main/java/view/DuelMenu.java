@@ -180,7 +180,7 @@ public class DuelMenu {
     }
 
 
-    public Boolean BooleanQYN(String question) {
+    public Boolean BooleanQYN(String question, Player player) {
         System.out.println(question);
         String out = Global.nextLine();
         if (out.toLowerCase().equals("y"))
@@ -189,7 +189,7 @@ public class DuelMenu {
             return false;
         else {
             System.out.println("please enter valid answer");
-            return BooleanQYN(question);
+            return BooleanQYN(question, player);
         }
     }
 
@@ -259,41 +259,6 @@ public class DuelMenu {
         return false;
     }
 
-    public List<Integer> selective(List<Integer> cardHolderId, int count, String messageSelection) {
-        if (messageSelection != null && messageSelection.length() > 0)
-            System.out.println(messageSelection);
-
-        List<Integer> ans = new ArrayList<Integer>();
-        while (true) {
-            for (int i = 0; i < count; i++) {
-                String command = Global.nextLine();
-                Address address = getAddress(command);
-                if (address != null &&
-                        getDuelController().getDuel().getMap().get(address) != null &&
-                        checkCardHolderInList(cardHolderId, getDuelController().getDuel().getMap().get(address))) {
-                    ans.add(getDuelController().getDuel().getMap().get(address).getId());
-                } else {
-                    i--;
-                    //getDuelController().getDuel().getZone(duelController.getDuel().duelZones.get("monster", duelController.getDuel().getOpponent()));
-                    System.out.println("invalid selection");
-                }
-            }
-            int flag = 0;
-            for (int i = 0; i < count; i++) {
-                for (int j = 0; j < count; j++) {
-                    if (i != j && ans.get((i)) == ans.get(j)) {
-                        flag = 1;
-                    }
-                }
-            }
-            if (flag == 0)
-                break;
-            else
-                System.out.println("You have same number in your input");
-        }
-        return ans;
-    }
-
     public List<Integer> selective(List<Integer> cardHolderId, int count, String messageSelection, Player selecter) {
         if (messageSelection != null && messageSelection.length() > 0)
             System.out.println(messageSelection);
@@ -330,7 +295,7 @@ public class DuelMenu {
     }
 
     
-    public List<Integer> selective(List<Integer> cardHolderId, int count, String message, String condition) {
+    public List<Integer> selective(List<Integer> cardHolderId, int count, String message, String condition, Player player) {
         if (message != null && message.length() > 0)
             System.out.println(message);
 

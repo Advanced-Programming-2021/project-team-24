@@ -71,7 +71,7 @@ public class EffectChainer {
         }
         if(Global.delListFromList(v, idMagicCardHolderChain).size() > 0)
         {
-            boolean ans = duelMenu.BooleanQYN("Do you want to chain another card?");
+            boolean ans = duelMenu.BooleanQYN("Do you want to chain another card?", currentChainer);
             if(ans)
             {
                 int number = duelMenu.selective(v, 1, "select magic card to chain:", currentChainer).get(0);

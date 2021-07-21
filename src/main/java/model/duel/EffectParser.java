@@ -200,7 +200,7 @@ public class EffectParser {
         Matcher matcher = Global.getMatcher(command, "q_yn\\(([^{}()]+)\\)(.+)");
         if (matcher.find()) {
             String queString = matcher.group(1);
-            Boolean ans = duelMenu.BooleanQYN(queString);
+            Boolean ans = duelMenu.BooleanQYN(queString, getOwner());
             List<String> ifElsePart = splitByParentheses(matcher.group(2));
             if (ans) {
                 return getCommandResult(ifElsePart.get(0));
@@ -803,10 +803,10 @@ public class EffectParser {
             int count = Integer.parseInt(getCommandResult(fields.get(1)));
             List<Integer> selected;
             if(fields.size() == 3)
-                selected =  duelMenu.selective(array, count, fields.get(2));
+                selected =  duelMenu.selective(array, count, fields.get(2), getOwner());
             else
             {
-                selected = duelMenu.selective(array, count, fields.get(2), fields.get(3));
+                selected = duelMenu.selective(array, count, fields.get(2), fields.get(3), getOwner());
             }
             command = command.replace(ans.group(0), new Gson().toJson(convertToString(selected), new ArrayList<String>().getClass()));
             return command;
