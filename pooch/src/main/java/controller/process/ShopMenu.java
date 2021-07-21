@@ -37,7 +37,7 @@ public class ShopMenu extends Menu {
         else if (checkMenuExit(command)) {
             return new Response(new Message(TypeMessage.SUCCESSFUL, ""), Situation.MAIN);
         } if(Global.regexFind("ban (.+)")){            
-            Matcher matcher = Global.getMatcher(command, "ban (.+)");
+            Matcher matcher = Global.getMatcher(command, "^ban (.+)$");
             matcher.find();
             return new Response(this.shopMenu.banCard(matcher.group(1)), Situation.SHOP);
         }  else if(Global.regexFind(command, "unban (.+)")){            

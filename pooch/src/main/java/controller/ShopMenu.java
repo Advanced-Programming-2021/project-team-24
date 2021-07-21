@@ -65,7 +65,7 @@ public class ShopMenu extends MainMenu {
                 Card card = Card.getCardByName(cardName);
                 card.isBanned = false;
                 card.updateCard();
-                return new Message(TypeMessage.SUCCESSFUL, "card banned successfully");                
+                return new Message(TypeMessage.SUCCESSFUL, "card unbanned successfully");                
             }
             else{
                 return new Message(TypeMessage.ERROR, "you are not allowed to do this");
