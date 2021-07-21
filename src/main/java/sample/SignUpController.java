@@ -27,7 +27,7 @@ public class SignUpController {
     public void submit(MouseEvent mouseEvent) throws IOException {
         LoginController loginController = new LoginController();
         //Message message = loginController.register(username.getText(),password.getText(),nickname.getText());
-        Message message = (Message) Client.getResponse("user login --username "+username.getText()+" --password "+password.getText() + " --nickname "+nickname.getText()).getMessage();
+        Message message = (Message) Client.getResponse("user create --username "+username.getText()+" --password "+password.getText() + " --nickname "+nickname.getText()).getMessage();
         System.out.println(message.getContent());
         Common.showMessage(message,submit);
     }

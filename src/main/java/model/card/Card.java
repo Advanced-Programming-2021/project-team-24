@@ -25,7 +25,7 @@ import model.effect.EffectType;
 
 
 
-public abstract class Card {
+public class Card {
     protected String name;
     protected String description;
     protected Integer price;
@@ -35,8 +35,9 @@ public abstract class Card {
     @SerializedName("effects")
     protected HashMap<Event, String> effects;
 
+
     static List <Card> allCards = new ArrayList<>();
-    public abstract String toString();
+    //public abstract String toString();
     public static List <Card> getAllCards()
     {
         return allCards;

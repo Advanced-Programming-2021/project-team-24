@@ -156,7 +156,7 @@ public class User {
     public static User readUser(String username)
     {
         try {
-            String json = Client.getResponse("getUser " + username).getMessage().getContent();
+            String json = Client.getResponse("readUser " + username).getMessage().getContent();
             User temp = fillUserCards(json);
             return temp;
         } catch (IOException e) {

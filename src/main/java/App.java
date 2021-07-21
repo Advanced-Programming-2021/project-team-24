@@ -10,7 +10,6 @@ import view.LoginMenu;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        User.initialize();
         User a = new User("alireza", "alireza", "alireza");
         User b = new User("alir", "alir", "alir");
         for(int i = 0; i < Card.getAllCards().size(); i++)
