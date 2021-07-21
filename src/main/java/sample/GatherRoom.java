@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import model.user.User;
+import server.Chat;
 
 public class GatherRoom extends Parent {
     User user;

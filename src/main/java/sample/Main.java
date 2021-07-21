@@ -7,10 +7,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.user.User;
 
+import static controller.client.Client.initializeNetwork;
+
 public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception{
+        initializeNetwork();
         User.initialize();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/scenes/signin.fxml"));
 //        ShopController shopController = new ShopController();

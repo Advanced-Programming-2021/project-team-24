@@ -35,21 +35,16 @@ public class Client {
     }
     public static void runApp() {
         initializeNetwork();
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            try {
-                String command = scanner.nextLine();
-                Request request = new Request(command, currentSituation, token);
-                if (command.equals("menu exit") && currentSituation == Situation.LOGIN) System.exit(0);
-                dataOutputStream.writeUTF(GsonConverter.serialize(request));
-                dataOutputStream.flush();
-                String result = dataInputStream.readUTF();
-                Response response = (Response) GsonConverter.deserialize(result, Response.class);
-                setAfterResponse(response);
-                System.out.println(response.getMessage().getContent());
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
+    }
+
+    public static Response getResponse(String command) throws IOException {
+        Request request = new Request(command, currentSituation, token);
+        if (command.equals("menu exit") && currentSituation == Situation.LOGIN) System.exit(0);
+        dataOutputStream.writeUTF(GsonConverter.serialize(request));
+        dataOutputStream.flush();
+        String result = dataInputStream.readUTF();
+        Response response = (Response) GsonConverter.deserialize(result, Response.class);
+        setAfterResponse(response);
+        return response;
     }
 }

@@ -33,7 +33,7 @@ public class Chat {
         }        
         return null;
     }
-    public String addRequest(String request, User user){
+    public static String addRequest(String request, User user){
         Matcher matcher = Global.getMatcher(request, "--request ([13])");
         matcher.find();
         Integer v = Integer.parseInt(matcher.group(1));
@@ -56,7 +56,7 @@ public class Chat {
         }
         return "invalid command";
     }    
-    public String ignoreRequent(String requst, User user){
+    public static String ignoreRequent(String requst, User user){
         Matcher matcher = Global.getMatcher(requst, "--request --ignore ([13])");        
         matcher.find();
         Integer v = Integer.parseInt(matcher.group(1));

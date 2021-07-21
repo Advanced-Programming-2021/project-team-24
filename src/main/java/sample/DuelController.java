@@ -31,6 +31,7 @@ import model.zone.Address;
 import model.zone.Zone;
 import org.controlsfx.control.PopOver;
 import view.DuelMenu;
+import controller.client.Client;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -95,7 +96,13 @@ public class DuelController {
         duel = duelController.getDuel();
         map = duel.getMap();
         duelMenu.checkPhase();
-        phase.setText(duel.getCurrentPhase().name());
+//        String phaseName = duel.getCurrentPhase().name();
+//        phase.setText(phaseName);
+        try {
+            phase.setText(Client.getResponse("getPhaseName").getMessage().getContent());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         handA = new ArrayList<>(Arrays.asList(h1a, h2a, h3a, h4a, h5a));
         spellA = new ArrayList<>(Arrays.asList(s1a, s2a, s3a, s4a, s5a));
         monsterA = new ArrayList<>(Arrays.asList(m1a, m2a, m3a, m4a, m5a));
@@ -197,6 +204,7 @@ public class DuelController {
                 boolean success = false;
                 if (db.hasString()) {
                     String id = ((ImageView) event.getSource()).getId();
+
                     System.out.println(duelController.attack(duel.duelAddresses.get(duel.duelZones.get("monster", duel.getOpponent()), Character.getNumericValue(id.charAt(1)) - 1)).getContent());
                     update();
                     success = true;
