@@ -4,11 +4,12 @@ package controller;
 import model.card.Card;
 import model.user.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class ShopMenu extends MainMenu {
-    List<String> bannedCard = new ArrayList<>();    
+    List<String> bannedCard = new ArrayList<>();
     public ShopMenu(User user){
         super(user);
     }
@@ -34,7 +35,7 @@ public class ShopMenu extends MainMenu {
     }
     public boolean isBanned(String cardName)
     {
-        if(bannedCard.indexOf(cardName) > -1 && bannedCard.indexOf(cardName) < bannedCard.size()){
+        if(bannedCard.contains(cardName) && bannedCard.indexOf(cardName) < bannedCard.size()){
             return true;
         }else{
             return false;
@@ -42,7 +43,7 @@ public class ShopMenu extends MainMenu {
     }
 
     public Message banCard(String cardName){
-        if(isBanned(cardName))
+        if(Card.getCardByName(cardName).isBanned)
         {
             return new Message(TypeMessage.ERROR, "this card is banned before");            
         }else{
@@ -51,7 +52,7 @@ public class ShopMenu extends MainMenu {
                 card.isBanned = true;
                 card.updateCard();
                 bannedCard.add(cardName);
-
+                return new Message(TypeMessage.SUCCESSFUL, "Successfully banned");
             }
             else
                 return new Message(TypeMessage.ERROR, "you are not allowed to do this");
@@ -59,13 +60,13 @@ public class ShopMenu extends MainMenu {
         }
     }
     public Message unbanCard(String cardName){
-        if(isBanned(cardName)){
+        if(Card.getCardByName(cardName).isBanned){
             if(user.getIsAdmin()){
                 bannedCard.remove(cardName);
                 Card card = Card.getCardByName(cardName);
                 card.isBanned = false;
                 card.updateCard();
-                return new Message(TypeMessage.SUCCESSFUL, "card banned successfully");                
+                return new Message(TypeMessage.SUCCESSFUL, "successfully unbanned");
             }
             else{
                 return new Message(TypeMessage.ERROR, "you are not allowed to do this");

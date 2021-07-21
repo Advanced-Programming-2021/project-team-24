@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import com.google.inject.internal.Errors;
 import controller.DuelController;
 import controller.Message;
 import controller.TypeMessage;
@@ -33,18 +32,12 @@ import model.zone.Address;
 public class DuelMenu {
 
     DuelController duelController;
-    private static ArrayList<DuelMenu> duelMenus = new ArrayList<>();
+
     public DuelMenu(Player user, Player opponent) {
         this.duelController = new DuelController(new Duel(user, opponent));
         duelController.setDuelMenu(this);
-        duelMenus.add(this);
     }
-    public static DuelMenu getDuelMenuByUser(User user){
-        for (int i = 0; i < duelMenus.size(); i++) {
-            if (duelMenus.get(i).getPlayer(false).getUser().getNickname().equals(user.getNickname())) return duelMenus.get(i);
-        }
-        return null;
-    }
+
     private static HashMap<CardState, String> stringOfCardState = new HashMap<CardState, String>();
 
     static {
