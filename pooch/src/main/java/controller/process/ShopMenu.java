@@ -7,6 +7,7 @@ import model.Response;
 import model.Situation;
 import model.card.Card;
 import model.user.User;
+import view.Global;
 
 import java.util.regex.Matcher;
 
@@ -35,14 +36,14 @@ public class ShopMenu extends Menu {
         }
         else if (checkMenuExit(command)) {
             return new Response(new Message(TypeMessage.SUCCESSFUL, ""), Situation.MAIN);
-        } if(Global.regexFind(command,"^ban (.+)$")){
-            Matcher matcher = Global.getMatcher(command, "ban (.+)");
+        } if(Global.regexFind("ban (.+)")){            
+            Matcher matcher = Global.getMatcher(command, "^ban (.+)$");
             matcher.find();
             return new Response(this.shopMenu.banCard(matcher.group(1)), Situation.SHOP);
-        }  else if(Global.regexFind(command, "^unban (.+)$")){
+        }  else if(Global.regexFind(command, "unban (.+)")){            
             Matcher matcher = Global.getMatcher(command, "unban (.+)");
             matcher.find();
-            return new Response(this.shopMenu.unbanCard(matcher.group(1)), Situation.SHOP);
+            return new Response(this.shopMenu.unban(matcher.group(1)), Situation.SHOP);
         } else if(Global.regexFind(command, "increase (.+)")){            
             Matcher matcher = Global.getMatcher(command, "increase (.+)");
             matcher.find();
