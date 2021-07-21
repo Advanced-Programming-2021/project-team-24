@@ -506,7 +506,10 @@ public class EffectParser {
 
 
         List<String> opp = new ArrayList<String>();
-        opp.add(String.valueOf(effectManager.getOwner().getMap().getId()));
+        Player opponentPlayer = duelController.getDuel().getCurrentPlayer();
+        if(effectManager.getOwner().equals(opponentPlayer))
+            opponentPlayer = duel.getOpponent();
+        opp.add(String.valueOf(opponentPlayer.getMap().getId()));
         command = command.replace("*opp*", new Gson().toJson(opp));
         
         return command;

@@ -39,7 +39,10 @@ public class EffectChainer {
         this.opponent = opponent;
         this.event = event;        
         if(event == Event.ACTIVE_SPELL)
+        {
             idMagicCardHolderChain.add(magicCardHolder.getId());
+            magicCardHolder.setCardState(CardState.CHAIN_MAGIC);
+        }
         //askForChain(opponent);
     }
 
@@ -55,13 +58,13 @@ public class EffectChainer {
         if(!currentChainer.equals(opponent))
         {
             filter.setCardType(CardType.MAGIC);
-        }
+        }    
         List<Integer> vv = duelController.getDuel().getIdCardHolderFilter(filter);
         List<Integer> v = new ArrayList<Integer>();
         for(int i = 0; i < vv.size(); i++)
         {
             MagicCardHolder magic = (MagicCardHolder)duelController.getDuel().getCardHolderById(vv.get(i));
-            if(magic.getEffectManager().isConditionSatisfied(new EffectParser(duelMenu, duelController, magic.getEffectManager())))
+            if(magic.getEffectManager().isConditionSatisfied(new EffectParser(duelMenu, duelController, magic.getEffectManager())) && !magic.getEffectManager().getActivated())
             {
                 v.add(vv.get(i));
             }
