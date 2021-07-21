@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectOutputStream.PutField;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ public abstract class Card {
     protected CardType cardType;    
     @SerializedName("effects")
     protected HashMap<Event, String> effects;
+    public int count;
 
     static List <Card> allCards = new ArrayList<>();
     public abstract String toString();

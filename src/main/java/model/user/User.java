@@ -34,6 +34,7 @@ public class User {
     private int coin;
     private String imageAddress;
     private List<String> cardNames;
+    private boolean isAdmin = false;
 
    
 
@@ -116,7 +117,7 @@ public class User {
         return r.nextInt((max - min) + 1) + min;
     }
 
-    private void addUser(){
+    public void addUser(){
         try {
             Client.getResponse("updateUser " + new Gson().toJson(this));
         } catch (IOException e) {

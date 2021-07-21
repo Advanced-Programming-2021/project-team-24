@@ -30,7 +30,8 @@ public abstract class Card {
     protected String description;
     protected Integer price;
     protected LimitType limitType;
-    protected CardType cardType;    
+    protected CardType cardType; 
+    public int count;   
     @SerializedName("effects")
     protected HashMap<Event, String> effects;
 

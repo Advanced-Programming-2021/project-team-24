@@ -30,7 +30,7 @@ public class User {
     private int coin;
     private String imageAddress;
     private List<String> cardNames;
-
+    private boolean isAdmin = false;
    
 
     private transient List<Card> cards = new ArrayList<>();// fill it after reading json
@@ -39,6 +39,9 @@ public class User {
     static{
         //read users from json files in "/users" folder
         //initialize();
+    }
+    public boolean getIsAdmin(){
+        return this.isAdmin;
     }
     public List<String> getCardNames() {
         return this.cardNames;
