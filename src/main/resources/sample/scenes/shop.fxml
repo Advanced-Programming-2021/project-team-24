@@ -38,7 +38,7 @@
                         <children>
                             <FontAwesomeIcon fx:id="left" fill="WHITE" iconName="ARROW_CIRCLE_LEFT" layoutX="14.0" layoutY="102.0" onMouseClicked="#left" size="3em" styleClass="button" AnchorPane.bottomAnchor="71.25714340209962" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="71.14285659790039" />
                             <FontAwesomeIcon fx:id="right" fill="WHITE" iconName="ARROW_CIRCLE_RIGHT" layoutX="452.0" layoutY="102.0" onMouseClicked="#right" size="3em" styleClass="button" AnchorPane.bottomAnchor="71.25714340209962" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="71.14285659790039" />
-                        <FontAwesomeIcon fx:id="buy" fill="WHITE" iconName="CART_PLUS" layoutX="224.0" layoutY="104.0" size="6em"/>
+                        <FontAwesomeIcon fx:id="buy" fill="WHITE" iconName="CART_PLUS" layoutX="224.0" layoutY="104.0" size="6em" />
                         <Label fx:id="cost" alignment="CENTER" contentDisplay="CENTER" layoutX="227.0" layoutY="137.0" text="1799" textFill="WHITE">
                            <font>
                               <Font name="Source Code Pro Black Italic" size="25.0" />
@@ -129,6 +129,26 @@
     </HBox>
     <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="47.0" style="-fx-background-color: black;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <children>
+            <FontAwesomeIcon fx:id="menuIcon2111" fill="WHITE" iconName="ARROW_DOWN" onMouseClicked="#decrease" size="1.5em">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </FontAwesomeIcon>
+            <FontAwesomeIcon fx:id="menuIcon211" fill="WHITE" iconName="ARROW_UP" onMouseClicked="#increase" size="1.5em">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </FontAwesomeIcon>
+            <FontAwesomeIcon fx:id="menuIcon212" fill="WHITE" iconName="CHECK" onMouseClicked="#unban" size="1.5em">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </FontAwesomeIcon>
+            <FontAwesomeIcon fx:id="menuIcon21" fill="WHITE" iconName="BAN" onMouseClicked="#ban" size="1.5em">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </FontAwesomeIcon>
             <FontAwesomeIcon fx:id="menuIcon2" fill="WHITE" iconName="MONEY" size="1.5em">
                 <HBox.margin>
                     <Insets right="5.0" />

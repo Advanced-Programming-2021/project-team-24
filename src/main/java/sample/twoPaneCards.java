@@ -358,4 +358,20 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
         stage.setResizable(false);
         stage.show();
     }
+
+    public void ban() throws IOException {
+        Common.showMessage(Client.getResponse("ban "+cardsList.get(selectedCard).getName()).getMessage(),cards.get(selectedCard));
+    }
+
+    public void decrease() throws IOException {
+        Common.showMessage(Client.getResponse("increase "+cardsList.get(selectedCard).getName()).getMessage(),cards.get(selectedCard));
+    }
+
+    public void increase() throws IOException {
+        Common.showMessage(Client.getResponse("decrease "+cardsList.get(selectedCard).getName()).getMessage(),cards.get(selectedCard));
+    }
+
+    public void unban() throws IOException {
+        Common.showMessage(Client.getResponse("unban "+cardsList.get(selectedCard).getName()).getMessage(),cards.get(selectedCard));
+    }
 }
