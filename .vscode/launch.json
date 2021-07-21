@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch App",
+            "request": "launch",
+            "mainClass": "App",
+            "projectName": "project-team-24"
+        },
+        {
+            "type": "java",
             "name": "Launch DuelMenu",
             "request": "launch",
             "mainClass": "view.DuelMenu",

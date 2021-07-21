@@ -18,4 +18,9 @@ public class TokenManager {
             return loggedInUsers.get(token);
         }
     }
+    public static boolean isValidToken(String toekn){
+        if(loggedInUsers.get(toekn) == null)
+            return false;
+        return true;
+    }
 }
