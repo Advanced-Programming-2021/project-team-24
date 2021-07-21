@@ -139,6 +139,11 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </FontAwesomeIcon>
+            <FontAwesomeIcon fx:id="menuIcon212" fill="WHITE" iconName="CHECK" onMouseClicked="#unban" size="1.5em">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </FontAwesomeIcon>
             <FontAwesomeIcon fx:id="menuIcon21" fill="WHITE" iconName="BAN" onMouseClicked="#ban" size="1.5em">
                <HBox.margin>
                   <Insets right="20.0" />

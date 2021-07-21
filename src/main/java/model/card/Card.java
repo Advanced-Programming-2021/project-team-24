@@ -16,6 +16,8 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import com.google.gson.reflect.TypeToken;
+import controller.client.Client;
 import model.card.magic.LimitType;
 import model.card.magic.MagicCard;
 import model.card.magic.MagicIcon;
@@ -41,6 +43,11 @@ public class Card {
     //public abstract String toString();
     public static List <Card> getAllCards()
     {
+        try {
+            allCards = new Gson().fromJson(Client.getResponse("getAllCards").getMessage().getContent(), new TypeToken<List<Card>>(){}.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return allCards;
     }
     public static List <Card> getMonsterCards(){
