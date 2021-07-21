@@ -1,0 +1,1 @@
+{"effect":{"requirement":"return_t;","effect":"changeZone($opp_monster$,opp_graveyard);","askForActivation":false,"name":"","reverse":"","askAbleMessage":"","requiredEvents":[],"speed":1},"magicIcon":"Normal","magicType":"Spell","name":"Raigeki","description":"Destroy all monsters your opponent controls.","price":2500,"limitType":"Limited","cardType":"MAGIC"}
