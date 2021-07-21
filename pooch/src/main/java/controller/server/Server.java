@@ -76,7 +76,7 @@ public class Server {
                 response = new ImportExportMenu(user).process(request.getInput());
                 break;
             case MAIN:
-                response = new MainMenu(user).process(request.getInput());
+                response = new MainMenu(user).process(request);
                 break;
             case LOGIN:
                 response = new LoginMenu().process(request.getInput());

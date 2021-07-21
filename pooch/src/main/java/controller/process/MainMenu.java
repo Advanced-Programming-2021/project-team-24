@@ -10,10 +10,9 @@ import java.util.regex.Matcher;
 
 import com.google.gson.Gson;
 
-import controller.DuelController;
-import controller.MainMenuController;
-import controller.Message;
-import controller.TypeMessage;
+import controller.*;
+import controller.server.GsonConverter;
+import model.Request;
 import model.Response;
 import model.Situation;
 import model.card.Card;
@@ -35,11 +34,15 @@ public class MainMenu extends Menu {
         this.mainMenuController = new MainMenuController();
     }
 
-    public synchronized Response process(String command) {
-        Respone respone = ChatServer.handle(command);
-        if (respone != null) return respone;
+    public synchronized Response process(Request command1) {
+        Response response = ChatServer.handle(command1);
+        String command = command1.getInput();
+        if (response != null) return response;
         if (command.equals("menu show-current")) {
             return new Response(new Message(TypeMessage.SUCCESSFUL, "Main Menu"), Situation.MAIN);
+        }
+        else if(command.equals("getUser")){
+            return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(user)),Situation.MAIN);
         }
         else if(command.equals("user logout")){
             return new Response(new Message(TypeMessage.SUCCESSFUL, "user logged out successfully!"), Situation.LOGIN);

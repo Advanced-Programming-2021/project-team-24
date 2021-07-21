@@ -1,19 +1,17 @@
-package server;
+package controller;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import com.google.gson.Gson;
-
 import controller.Message;
 import controller.TypeMessage;
-import controller.client.TokenManager;
+import controller.process.Global;
+import controller.server.TokenManager;
 import model.Request;
 import model.Response;
 import model.Situation;
 import model.user.User;
-import view.Global;
 
 public class ChatServer {
     static List<String> messagesContent = new ArrayList<>();
@@ -24,7 +22,7 @@ public class ChatServer {
     public static synchronized Response handle(Request command)
     {
         
-        if(TokenManager.isValidToken(command)){
+        if(TokenManager.isValidToken(command.getToken())){
             String cmd = command.getInput();
             if(cmd.equals("--request [13]")){
                 return new Response(addRequest(cmd, TokenManager.getUser(command.getToken())), Situation.MAIN);
@@ -33,12 +31,12 @@ public class ChatServer {
                 return new Response(ignoreRequent(cmd, TokenManager.getUser(command.getToken())), Situation.MAIN);
             }   
             else if(Global.regexFind(cmd, "send --message .+")){
-                return new Respone(sendMessage(cmd, TokenManager.getUser(command.getToken())), Situation.MAIN);
+                return new Response(sendMessage(cmd, TokenManager.getUser(command.getToken())), Situation.MAIN);
             }else if(cmd.equals("getAllMessages")){
                 return new Response(new Message(TypeMessage.INFO, getAllMessages()), Situation.MAIN);
             }         
         }        
-        return new Response(new Message(TypeMessage.ERROR, "invalid token"), Situation.Main);
+        return null;
     }
     public static Message addRequest(String request, User user){
         Matcher matcher = Global.getMatcher(request, "--request ([13])");
@@ -103,8 +101,8 @@ public class ChatServer {
     public static String getAllMessages(){
         String ans = "";
         for(int i = 0; i < messagesContent.size(); i++){
-            ans += messageSenders.get(i) + " " + messagesContent.get(i) + "\n";
+            ans += messageSenders.get(i) + ": " + messagesContent.get(i) + "\n";
         }
-        return new Message(TypeMessage.INFO, ans);
+        return new Message(TypeMessage.INFO, ans).getContent();
     }
 }

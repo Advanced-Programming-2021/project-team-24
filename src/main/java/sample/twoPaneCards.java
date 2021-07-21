@@ -52,7 +52,7 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
     int cardMargin = 20;
     int columnCardCount = 5;
     int rowCardCount;
-    List<Card> targetCards;
+    List<Card> targetCards = new ArrayList<>();
     String deckName;
     Image card;
     int cardsCount;
@@ -84,7 +84,7 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
         imageView.setEffect(perspectiveTransform);
     }
 
-    List<Card> cardsList;
+    List<Card> cardsList = new ArrayList<>();
     static int d = 100;
     int cardWidth = 125;
     int selectedCard;
