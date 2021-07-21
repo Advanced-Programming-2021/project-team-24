@@ -1,5 +1,6 @@
 package sample;
 
+import com.google.gson.Gson;
 import controller.Message;
 import controller.TypeMessage;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -41,7 +42,7 @@ public class DuelController {
     @FXML
     public ImageView graveYard;
     @FXML
-    ImageView imageA, imageB,profilePhoto;
+    ImageView imageA, imageB, profilePhoto;
     @FXML
     ImageView h1a, h2a, h3a, h4a, h5a, s1a, s2a, s3a, s4a, s5a, m1a, m2a, m3a, m4a, m5a;
     @FXML
@@ -51,12 +52,12 @@ public class DuelController {
     @FXML
     AnchorPane fieldBG;
     @FXML
-    Label phase, nameA, nameB, LPA, LPB,username;
+    Label phase, nameA, nameB, LPA, LPB, username;
     @FXML
     Group menu;
     @FXML
     FontAwesomeIcon setting;
-    User user,opponent;
+    User user, opponent;
     Image image;
     DuelMenu duelMenu;
     controller.DuelController duelController;
@@ -70,14 +71,15 @@ public class DuelController {
     AudioClip audioClip;
     private String currentMusic;
     DuelRoundManager duelRoundManager;
+    Gson g = new Gson();
 
-    public DuelController(User user,User opponent) {
+    public DuelController(User user, User opponent) {
         this.user = user;
         this.opponent = opponent;
-        this.duelRoundManager = new DuelRoundManager(user,opponent,1);
+        this.duelRoundManager = new DuelRoundManager(user, opponent, 1);
     }
 
-    public void initialize() {
+    public void initialize() throws IOException {
         profilePhoto.setImage(new Image(getClass().getResourceAsStream(user.getImageAddress())));
         username.setText(user.getUsername());
         handleMusic("main");
@@ -94,8 +96,9 @@ public class DuelController {
         duelMenu = new DuelMenu(new Player(a), new Player(b));
         duelController = duelMenu.getDuelController();
         duel = duelController.getDuel();
-        map = duel.getMap();
-        duelMenu.checkPhase();
+        //map = duel.getMap();
+        updateMap();
+        //duelMenu.checkPhase();
 //        String phaseName = duel.getCurrentPhase().name();
 //        phase.setText(phaseName);
         try {
@@ -109,9 +112,9 @@ public class DuelController {
         handB = new ArrayList<>(Arrays.asList(h1b, h2b, h3b, h4b, h5b));
         spellB = new ArrayList<>(Arrays.asList(s1b, s2b, s3b, s4b, s5b));
         monsterB = new ArrayList<>(Arrays.asList(m1b, m2b, m3b, m4b, m5b));
-        fieldA  = new ArrayList<>(Collections.singletonList(f1a));
-        fieldB  = new ArrayList<>(Collections.singletonList(f1b));
-        allCards = new ArrayList<>(Arrays.asList(handA, spellA, monsterA, spellB, handB, monsterB,fieldA,fieldB));
+        fieldA = new ArrayList<>(Collections.singletonList(f1a));
+        fieldB = new ArrayList<>(Collections.singletonList(f1b));
+        allCards = new ArrayList<>(Arrays.asList(handA, spellA, monsterA, spellB, handB, monsterB, fieldA, fieldB));
         for (ArrayList<ImageView> zone : allCards) {
             for (ImageView card : zone) {
                 card.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -120,7 +123,7 @@ public class DuelController {
                         if (mouseEvent.isShiftDown() && flag == 0) {
                             String id = ((ImageView) mouseEvent.getSource()).getId();
                             CardState cardHolderState = map.get(getAddressById(id)).getCardState();
-                            if(id.charAt(2)=='a' || (cardHolderState == CardState.ACTIVE_MAGIC || cardHolderState == CardState.ATTACK_MONSTER || cardHolderState == CardState.VISIBLE_MAGIC || CardState.DEFENCE_MONSTER == cardHolderState)) {
+                            if (id.charAt(2) == 'a' || (cardHolderState == CardState.ACTIVE_MAGIC || cardHolderState == CardState.ATTACK_MONSTER || cardHolderState == CardState.VISIBLE_MAGIC || CardState.DEFENCE_MONSTER == cardHolderState)) {
                                 CardView cardView = new CardView(map.get(getAddressById(id)));
                                 popOver = new PopOver(cardView);
                                 popOver.show(card);
@@ -136,7 +139,7 @@ public class DuelController {
                 card.setOnMouseExited(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        if(!mouseEvent.isShiftDown()) {
+                        if (!mouseEvent.isShiftDown()) {
                             if (flag == 1) {
                                 popOver.hide();
                                 flag = 0;
@@ -156,11 +159,19 @@ public class DuelController {
         }
     }
 
+    private void updateMap() {
+        try {
+            map = g.fromJson(Client.getResponse("getMap").getMessage().getContent(), map.getClass());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void handleMusic(String name) {
         currentMusic = name;
-        String s = "src/main/resources/musics/"+name+".mp3";
+        String s = "src/main/resources/musics/" + name + ".mp3";
         Media h = new Media(Paths.get(s).toUri().toString());
-        if(mediaPlayer!=null) mediaPlayer.stop();
+        if (mediaPlayer != null) mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(h);
         mediaPlayer.play();
     }
@@ -177,7 +188,12 @@ public class DuelController {
         source.setOnDragDetected(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 String id = ((ImageView) event.getSource()).getId();
-                duelController.select(getAddress(id, "monster"));
+                //duelController.select(getAddress(id, "monster"));
+                try {
+                    System.out.println(Client.getResponse("select --monster " + id));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Dragboard db = source.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent content = new ClipboardContent();
                 content.putString(id);
@@ -204,9 +220,17 @@ public class DuelController {
                 boolean success = false;
                 if (db.hasString()) {
                     String id = ((ImageView) event.getSource()).getId();
-
-                    System.out.println(duelController.attack(duel.duelAddresses.get(duel.duelZones.get("monster", duel.getOpponent()), Character.getNumericValue(id.charAt(1)) - 1)).getContent());
-                    update();
+                    try {
+                        System.out.println(Client.getResponse("attack " + (Character.getNumericValue(id.charAt(1)) - 1)));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //System.out.println(duelController.attack(duel.duelAddresses.get(duel.duelZones.get("monster", duel.getOpponent()), Character.getNumericValue(id.charAt(1)) - 1)).getContent());
+                    try {
+                        update();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     success = true;
                 }
                 event.setDropCompleted(success);
@@ -256,7 +280,7 @@ public class DuelController {
                 }
                 handleRotate(cards.get(i), cardHolder.getCardState());
             } else {
-                if(zone.equals("field"))
+                if (zone.equals("field"))
                     image = new Image(getClass().getResourceAsStream("images/duel/field.png"));
                 else image = null;
             }
@@ -281,37 +305,41 @@ public class DuelController {
         }
     }
 
-    public void update() {
-        duelController.updateAutomaticEffect();
+    public void update() throws IOException {
+        updateMap();
+        Client.getResponse("updateAutomaticEffect");
+        //duelController.updateAutomaticEffect();
         handleField();
-        if (duelController.isRoundFinished()) {
+        //if (duelController.isRoundFinished()) {
+        if (Boolean.parseBoolean(Client.getResponse("isRoundFinished").getMessage().getContent())) {
             System.out.println("End");
             String message;
-            boolean same = duel.getCurrentPlayer().getUser().equals(user);
-            boolean dead = duel.getCurrentPlayer().isDead();
-            if (same ^ dead) message = "You Lose!";
-            else message = "You Win!";
+//            boolean same = duel.getCurrentPlayer().getUser().equals(user);
+//            boolean dead = duel.getCurrentPlayer().isDead();
+//            if (same ^ dead) message = "You Lose!";
+//            else message = "You Win!";
+            message = "Match Ended";
             System.out.println(message);
-            Info info = new Info(new Message(TypeMessage.INFO,message));
+            Info info = new Info(new Message(TypeMessage.INFO, message));
             popOver = new PopOver(info);
             popOver.show(phase);
             info.getButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                        mediaPlayer.stop();
-                        duelRoundManager.nextRound();
-                        //Common.switchToSceneMainMenu(user);
+                    mediaPlayer.stop();
+                    duelRoundManager.nextRound();
+                    //Common.switchToSceneMainMenu(user);
                 }
             });
         }
-        updateCards(fieldA,"field",false);
+        updateCards(fieldA, "field", false);
         updateCards(spellA, "magic", false);
         updateCards(monsterA, "monster", false);
         updateCards(handA, "hand", false);
         updateCards(spellB, "magic", true);
         updateCards(monsterB, "monster", true);
         updateCards(handB, "hand", true);
-        updateCards(fieldB,"field",true);
+        updateCards(fieldB, "field", true);
         nameA.setText(duel.getCurrentPlayer().getNickname());
         nameB.setText(duel.getOpponent().getNickname());
         LPA.setText(String.valueOf(duel.getCurrentPlayer().getLifePoint()));
@@ -320,13 +348,14 @@ public class DuelController {
         LPB.setTextFill(getColorByLP(duel.getOpponent().getLifePoint()));
         imageA.setImage(new Image(getClass().getResourceAsStream(duel.getCurrentPlayer().getUser().getImageAddress())));
         imageB.setImage(new Image(getClass().getResourceAsStream(duel.getOpponent().getUser().getImageAddress())));
+        updateMap();
     }
 
     private void handleField() {
-        Address fieldAddress = duel.duelAddresses.get(duel.duelZones.get("field",duel.getCurrentPlayer()),0);
+        Address fieldAddress = duel.duelAddresses.get(duel.duelZones.get("field", duel.getCurrentPlayer()), 0);
         CardHolder fieldCardholder = map.get(fieldAddress);
-        if(fieldCardholder!=null){
-            if(currentMusic.equals("main"))
+        if (fieldCardholder != null) {
+            if (currentMusic.equals("main"))
                 handleMusic("fieldActive");
             fieldBG.getStyleClass().clear();
             String fieldName = fieldCardholder.getCard().getName();
@@ -334,9 +363,9 @@ public class DuelController {
                 fieldBG.getStyleClass().add("forest");
             else if (fieldName.equals("Closed Forest"))
                 fieldBG.getStyleClass().add("closedForest");
-            else if(fieldName.equals("Yami"))
+            else if (fieldName.equals("Yami"))
                 fieldBG.getStyleClass().add("yami");
-            else if(fieldName.equals("Umiiruka"))
+            else if (fieldName.equals("Umiiruka"))
                 fieldBG.getStyleClass().add("umiiruka");
         }
     }
@@ -354,34 +383,39 @@ public class DuelController {
         return Color.rgb(red, green, 0);
     }
 
-    public void click(MouseEvent mouseEvent) {
+    public void click(MouseEvent mouseEvent) throws IOException {
 
-        Address address = duel.duelAddresses.get(duel.duelZones.get("hand", duel.getCurrentPlayer()), 0);
+        Address address;
         String id = ((ImageView) mouseEvent.getSource()).getId();
         if (id.charAt(0) == 'h') {
             address = getAddress(id, "hand");
         } else if (id.charAt(0) == 'm') {
             address = getAddress(id, "monster");
-        } else if (id.charAt(0) == 's') {
+        } else {
             address = getAddress(id, "magic");
         }
-        if (id.charAt(2) == 'b' && id.charAt(0) == 'm' && mouseEvent.isShiftDown()) {
-            System.out.println(duelController.attack(address).getContent());
-            update();
-            return;
-        }
-        duelController.select(address);
+//        if (id.charAt(2) == 'b' && id.charAt(0) == 'm' && mouseEvent.isShiftDown()) {
+//            System.out.println(Client.getResponse("").getMessage().getContent());
+//            //System.out.println(duelController.attack(address).getContent());
+//            update();
+//            return;
+//        }
+        Client.getResponse("select --" + address.getZone().getName() + " " + address.getPlace());
+        //duelController.select(address);
         if (mouseEvent.getButton() == MouseButton.SECONDARY) {
             if (mouseEvent.isShiftDown()) {
-                System.out.println(duelController.activeMagic().getContent());
+                System.out.println(Client.getResponse("activeMagic").getMessage().getContent());
+                //System.out.println(duelController.activeMagic().getContent());
                 handleAudioClip();
-            }
-            else
-                System.out.println(duelController.changePosition().getContent());
+            } else
+                System.out.println(Client.getResponse("changePosition").getMessage().getContent());
+            //System.out.println(duelController.changePosition().getContent());
         } else if (mouseEvent.isAltDown())
-            System.out.println(duelController.summon().getContent());
+            System.out.println(Client.getResponse("summon").getMessage().getContent());
+            //System.out.println(duelController.summon().getContent());
         else if (mouseEvent.isControlDown())
-            System.out.println(duelController.set().getContent());
+            System.out.println(Client.getResponse("set").getMessage().getContent());
+        //System.out.println(duelController.set().getContent());
         update();
     }
 
@@ -395,35 +429,43 @@ public class DuelController {
     }
 
 
-
-
-    public void nextPhase() {
-        System.out.println(duelController.nextPhase().getContent());
-        phase.setText(duel.getCurrentPhase().name());
+    public void nextPhase() throws IOException {
+        System.out.println(Client.getResponse("next phase").getMessage().getContent());
+        //System.out.println(duelController.nextPhase().getContent());
+        phase.setText(Client.getResponse("getPhaseName").getMessage().getContent());
+        //phase.setText(duel.getCurrentPhase().name());
         checkPhase();
     }
 
-    public void checkPhase() {
-        if (duelController.getDuel().getCurrentPhase() == Duel.Phase.DRAW) {
-            System.out.println(duelController.draw().getContent());
+    public void checkPhase() throws IOException {
+        //if (duelController.getDuel().getCurrentPhase() == Duel.Phase.DRAW) {
+        if (Client.getResponse("getPhaseName").getMessage().getContent().equals(Duel.Phase.DRAW.toString())) {
+            System.out.println(Client.getResponse("draw").getMessage().getContent());
+            //System.out.println(duelController.draw().getContent());
             nextPhase();
             update();
-            phase.setText(duel.getCurrentPhase().name());
-            return;
-        } else if (duelController.getDuel().getCurrentPhase() == Duel.Phase.STANDBY) {
-            duelController.updateAutomaticEffect();
+            phase.setText(Client.getResponse("getPhaseName").getMessage().getContent());
+            //phase.setText(duel.getCurrentPhase().name());
+            //return;
+            //} else if (duelController.getDuel().getCurrentPhase() == Duel.Phase.STANDBY) {
+        } else if (Client.getResponse("getPhaseName").getMessage().getContent().equals(Duel.Phase.STANDBY.toString())) {
+            Client.getResponse("updateAutomaticEffect");
+            //duelController.updateAutomaticEffect();
             nextPhase();
             update();
-            phase.setText(duel.getCurrentPhase().name());
-            return;
-        } else if (duelController.getDuel().getCurrentPhase() == Duel.Phase.END) {
+            phase.setText(Client.getResponse("getPhaseName").getMessage().getContent());
+            //phase.setText(duel.getCurrentPhase().name());
+            //return;
+            //} else if (duelController.getDuel().getCurrentPhase() == Duel.Phase.END) {
+        } else if (Client.getResponse("getPhaseName").getMessage().getContent().equals(Duel.Phase.END.toString())) {
             nextPhase();
         }
     }
 
-    public void directAttack(MouseEvent mouseEvent) {
+    public void directAttack(MouseEvent mouseEvent) throws IOException {
         if (mouseEvent.isShiftDown()) {
-            System.out.println(duelController.directAttack().getContent());
+            System.out.println(Client.getResponse("attack direct").getMessage().getContent());
+            //System.out.println(duelController.directAttack().getContent());
             update();
         }
     }
@@ -449,6 +491,7 @@ public class DuelController {
 
     public void showGraveyard(MouseEvent mouseEvent) {
         List<Card> cards = new ArrayList<>();
+        updateMap();
         List<CardHolder> cardHolders = duel.getZone(duel.duelZones.get("graveyard", duel.getCurrentPlayer()));
         for (CardHolder cardHolder : cardHolders) {
             cards.add(cardHolder.getCard());
@@ -458,7 +501,8 @@ public class DuelController {
         popOver.show(graveYard);
     }
 
-    public void surrender(){
-        duelController.surrender();
+    public void surrender() throws IOException {
+        Client.getResponse("surrender").getMessage().getContent();
+        //duelController.surrender();
     }
 }
