@@ -69,7 +69,7 @@ public class GatherRoom extends Parent {
         sendIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                server.Chat.sendMessage("send --message "+ textField.getText(),user);
+                server.ChatServer.sendMessage("send --message "+ textField.getText(),user);
                 update();
             }
         });
@@ -81,7 +81,7 @@ public class GatherRoom extends Parent {
         });
     }
     private void update(){
-        textArea.appendText(user.getUsername()+": "+server.Chat.getLastMessage()+'\n');
+        textArea.appendText(user.getUsername()+": "+server.ChatServer.getLastMessage()+'\n');
         textField.setText("");
     }
 }

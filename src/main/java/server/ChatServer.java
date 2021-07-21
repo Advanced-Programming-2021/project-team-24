@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import model.user.User;
 import view.Global;
 
-public class Chat {
+public class ChatServer {
     static List<String> messagesContent = new ArrayList<>();
     static List<String> messageSenders = new ArrayList<>();
     static List<User> requestSingleRound = new ArrayList<>();

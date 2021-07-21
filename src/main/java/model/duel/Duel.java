@@ -39,7 +39,7 @@ public class Duel {
     Player user;
     Player opponent;
     Player currentPlayer;
-    private static List<EffectManager> effectManagerList;
+    
     private HashMap<Address, CardHolder> map = new HashMap<>();
     private Phase currentPhase;
     private HashMap<Phase, Phase> nextPhase = new HashMap<Phase, Phase>();
@@ -74,12 +74,6 @@ public class Duel {
     }
 
 
-    public static EffectManager getEffectManagerById(int id) {
-        for (int i = 0; i < effectManagerList.size(); i++) {
-            if (effectManagerList.get(i).getId() == id) return effectManagerList.get(i);
-        }
-        return null;
-    }
 
 
     public Duel(Player user, Player opponent) {
@@ -143,9 +137,6 @@ public class Duel {
             return currentPlayer;
     }
 
-    public void addEffectManager(EffectManager effectManager) {
-        effectManagerList.add(effectManager);
-    }
 
     public List<CardHolder> getAllCardHolder() {
         List<CardHolder> ans = new ArrayList<CardHolder>();

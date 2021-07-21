@@ -151,7 +151,7 @@ public class DuelController {
                 {
                     ans.add(getZone(duel.duelZones.get("hand", duel.getCurrentPlayer())).get(i).getId());
                 }
-                duel.changeZone(duelMenu.selective(ans, 1, "please select one card from your hand to remove").get(0), duel.duelZones.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
+                duel.changeZone(duelMenu.selective(ans, 1, "please select one card from your hand to remove",  duel.getCurrentPlayer()).get(0), duel.duelZones.get("graveyard", duel.getCurrentPlayer()), CardState.NONE, duelMenu);
 
             }
             Zone deck = duel.duelZones.get("deck", duel.getCurrentPlayer());
@@ -436,7 +436,7 @@ public class DuelController {
                     
                 }
                 added = (MagicCardHolder) duel.changeZone(duel.getMap().get(getSelectedAddress()).getId(), duel.duelZones.get("field", duel.getCurrentPlayer()), CardState.ACTIVE_MAGIC, duelMenu);                
-                new EffectChainer(Event.ACTIVE_SPELL, added, duel.getOpponent(), this).askForChain(duel.getOpponent());;
+                //new EffectChainer(Event.ACTIVE_SPELL, added, duel.getOpponent(), this).askForChain(duel.getOpponent());;
                 updateAutomaticEffect();
             }
             else
