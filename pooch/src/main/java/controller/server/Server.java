@@ -18,8 +18,6 @@ import java.util.regex.Matcher;
 
 public class Server {
     private static User user;
-    private static Player player1;
-    private static Player player2;
     public static void runApp() {
         try {
             ServerSocket serverSocket = new ServerSocket(7777);
@@ -64,14 +62,14 @@ public class Server {
         if(Global.regexFind(request.getInput(), "updateUser (.+)")){
             Matcher matcher = Global.getMatcher(request.getInput(), "updateUser (.+)");
             matcher.find();
-            User tmep = (User) GsonConverter.deserialize(matcher.group(1), User.class);
-            tmep.addUser();
+            User temp = (User) GsonConverter.deserialize(matcher.group(1), User.class);
+            temp.addUser();
         }
         if(Global.regexFind(request.getInput(), "readUser (.+)")){
             Matcher matcher = Global.getMatcher(request.getInput(), "readUser (.+)");
             matcher.find();
-            User tmep = User.readUser(matcher.group(1));
-            return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(tmep)), situation);
+            User temp = User.readUser(matcher.group(1));
+            return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(temp)), situation);
         }
         Response response = null;
         switch (situation){
@@ -79,7 +77,7 @@ public class Server {
                 response = new DeckMenu(user).process(request.getInput());
                 break;
             case DUEL:
-                response = new DuelMenu(player1, player2).process(request.getInput());
+                response = DuelMenu.getDuelMenuByUser(user).process(request.getInput());
                 break;
             case SCOREBOARD:
                 response = new ScoreboardMenu(user).process(request.getInput());

@@ -6,7 +6,9 @@ import java.util.regex.Matcher;
 
 import controller.Message;
 import controller.TypeMessage;
+import controller.process.DuelMenu;
 import controller.process.Global;
+import controller.server.Server;
 import controller.server.TokenManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -14,7 +16,9 @@ import javafx.util.Duration;
 import model.Request;
 import model.Response;
 import model.Situation;
+import model.user.Player;
 import model.user.User;
+import sun.jvm.hotspot.runtime.BasicObjectLock;
 
 public class ChatServer {
     static List<String> messagesContent = new ArrayList<>();
@@ -35,6 +39,7 @@ public class ChatServer {
 
         }));
     }
+    static Boolean isGameStarted = false;
 
     public static synchronized Response handle(Request command)
     {
@@ -43,8 +48,11 @@ public class ChatServer {
         if(TokenManager.isValidToken(command.getToken())){
             String cmd = command.getInput();
             if(cmd.equals("--request [13]")){
-                return new Response(addRequest(cmd, TokenManager.getUser(command.getToken())), Situation.MAIN);
-            }            
+                return addRequest(cmd, TokenManager.getUser(command.getToken()));
+            }
+            else if (cmd.equals("update")){
+                return update(cmd,TokenManager.getUser(command.getToken()));
+            }
             else if(cmd.equals("--request --ignore [13]")){
                 return new Response(ignoreRequent(cmd, TokenManager.getUser(command.getToken())), Situation.MAIN);
             }   
@@ -56,7 +64,63 @@ public class ChatServer {
         }        
         return null;
     }
-    public static Message addRequest(String request, User user){
+    public synchronized static Response update(String request, User user) {
+        if (request.equals("update")) {
+            if (requestSingleRound.size() == 2) {
+                String nickname = user.getNickname();
+                if (nickname.equals(requestSingleRound.get(0).getNickname())) {
+                    Player player1 = new Player(requestSingleRound.get(0));
+                    Player player2 = new Player(requestSingleRound.get(1));
+                    new DuelMenu(player1, player2);
+                    requestSingleRound.remove(0);
+                    isGameStarted = true;
+                    return new Response(new Message(TypeMessage.SUCCESSFUL, "Duel Started"), Situation.DUEL);
+                } else if (nickname.equals(requestSingleRound.get(1).getNickname())) {
+                    Player player1 = new Player(requestSingleRound.get(0));
+                    Player player2 = new Player(requestSingleRound.get(1));
+                    new DuelMenu(player1, player2);
+                    requestSingleRound.remove(1);
+                    isGameStarted = true;
+                    return new Response(new Message(TypeMessage.SUCCESSFUL, "Duel Started"), Situation.DUEL);
+                }
+            } else if (requestSingleRound.size() == 1) {
+                if (user.getNickname().equals(requestSingleRound.get(0).getNickname())) {
+                    if (isGameStarted) {
+                        requestSingleRound.remove(0);
+                        isGameStarted = false;
+                        return new Response(new Message(TypeMessage.SUCCESSFUL, "Duel Started"), Situation.DUEL);
+                    }
+                }
+            } else if (requestMatch.size() == 2) {
+                String nickname = user.getNickname();
+                if (nickname.equals(requestMatch.get(0).getNickname())) {
+                    Player player1 = new Player(requestMatch.get(0));
+                    Player player2 = new Player(requestMatch.get(1));
+                    new DuelMenu(player1, player2);
+                    requestMatch.remove(0);
+                    isGameStarted = true;
+                    return new Response(new Message(TypeMessage.SUCCESSFUL, "Duel Started"), Situation.DUEL);
+                } else if (nickname.equals(requestMatch.get(1).getNickname())) {
+                    Player player1 = new Player(requestMatch.get(0));
+                    Player player2 = new Player(requestMatch.get(1));
+                    new DuelMenu(player1, player2);
+                    requestMatch.remove(1);
+                    isGameStarted = true;
+                    return new Response(new Message(TypeMessage.SUCCESSFUL, "Duel Started"), Situation.DUEL);
+                }
+            } else if (requestMatch.size() == 1) {
+                if (user.getNickname().equals(requestMatch.get(0).getNickname())) {
+                    if (isGameStarted) {
+                        requestMatch.remove(0);
+                        isGameStarted = false;
+                        return new Response(new Message(TypeMessage.SUCCESSFUL, "Duel Started"), Situation.DUEL);
+                    }
+                }
+            }
+        }
+        return new Response(new Message(TypeMessage.ERROR, ""), Situation.MAIN);
+    }
+    public static Response addRequest(String request, User user){
         Matcher matcher = Global.getMatcher(request, "--request ([13])");
         matcher.find();
         Integer v = Integer.parseInt(matcher.group(1));
@@ -65,19 +129,20 @@ public class ChatServer {
             case 1:
                 for(int i = 0; i < requestSingleRound.size(); i++){
                     if(requestSingleRound.get(i).getUsername().equals(user.getUsername()))
-                        return new Message(TypeMessage.ERROR, "you have requested before");
+                        return new Response(new Message(TypeMessage.ERROR, "you have requested before"),Situation.MAIN);
                 }                
                 requestSingleRound.add(user);
-                return new Message(TypeMessage.SUCCESSFUL, "you request added");
+                return new Response(new Message(TypeMessage.ERROR, "you request added"),Situation.MAIN);
             case 3:
                 for(int i = 0; i < requestMatch.size(); i++){
                     if(requestMatch.get(i).getUsername().equals(requestMatch.get(i).getUsername())){
-                        return new Message(TypeMessage.SUCCESSFUL, "you have requested before");
+                        return new Response(new Message(TypeMessage.ERROR, "you have requested before"),Situation.MAIN);
                     }
                 }
-                return new Message(TypeMessage.ERROR, "you request added");
+                requestMatch.add(user);
+                return new Response(new Message(TypeMessage.ERROR, "you request added"),Situation.MAIN);
         }
-        return new Message(TypeMessage.ERROR, "invalid command");
+        return new Response(new Message(TypeMessage.ERROR, "invalid command"), Situation.MAIN);
     }    
     public static Message ignoreRequent(String requst, User user){
         Matcher matcher = Global.getMatcher(requst, "--request --ignore ([13])");        

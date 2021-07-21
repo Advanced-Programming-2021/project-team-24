@@ -106,7 +106,8 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
         if (deckName == null) {
             targetCards = user.getCards();
             //System.out.println(new ArrayList<Card>().getClass());
-            cardsList = g.fromJson(Client.getResponse("getAllCards").getMessage().getContent(), new TypeToken<List<Card>>(){}.getType());
+            //cardsList = g.fromJson(Client.getResponse("getAllCards").getMessage().getContent(), new TypeToken<List<Card>>(){}.getType());
+            cardsList = Card.getAllCards();
             //System.out.println("****************"+cardsList.get(0).getPrice());
             //cardsList = Card.getAllCards();
             coins.setText(String.valueOf(user.getCoin()));
@@ -213,6 +214,7 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
         cost.setOpacity(0);
         if (selectedCard == 2 * n) return;
         selectedCard++;
+        handleIcon();
         cost.setText(String.valueOf(cardsList.get(selectedCard).getPrice()));
         handleCardHover();
         cards.get(selectedCard).toFront();
@@ -233,6 +235,11 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
         k--;
     }
 
+    private void handleIcon() {
+        if(cardsList.get(selectedCard).isBanned) buy.setIconName("BAN");
+        else buy.setIconName("CART_PLUS");
+    }
+
     int k = 0;
 
     public void right(MouseEvent mouseEvent) throws IOException {
@@ -243,6 +250,7 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
         cost.setOpacity(0);
         if (selectedCard == 0) return;
         selectedCard--;
+        handleIcon();
         cost.setText(String.valueOf(cardsList.get(selectedCard).getPrice()));
         handleCardHover();
         cards.get(selectedCard).toFront();
@@ -361,17 +369,21 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
 
     public void ban() throws IOException {
         Common.showMessage(Client.getResponse("ban "+cardsList.get(selectedCard).getName()).getMessage(),cards.get(selectedCard));
+        cardsList = Card.getAllCards();
     }
 
     public void decrease() throws IOException {
-        Common.showMessage(Client.getResponse("increase "+cardsList.get(selectedCard).getName()).getMessage(),cards.get(selectedCard));
+        Common.showMessage(Client.getResponse("decrease "+cardsList.get(selectedCard).getName()).getMessage(),cards.get(selectedCard));
+        cardsList = Card.getAllCards();
     }
 
     public void increase() throws IOException {
-        Common.showMessage(Client.getResponse("decrease "+cardsList.get(selectedCard).getName()).getMessage(),cards.get(selectedCard));
+        Common.showMessage(Client.getResponse("increase "+cardsList.get(selectedCard).getName()).getMessage(),cards.get(selectedCard));
+        cardsList = Card.getAllCards();
     }
 
     public void unban() throws IOException {
         Common.showMessage(Client.getResponse("unban "+cardsList.get(selectedCard).getName()).getMessage(),cards.get(selectedCard));
+        cardsList = Card.getAllCards();
     }
 }
