@@ -10,9 +10,6 @@ import controller.process.DuelMenu;
 import controller.process.Global;
 import controller.server.Server;
 import controller.server.TokenManager;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
 import model.Request;
 import model.Response;
 import model.Situation;
@@ -25,25 +22,10 @@ public class ChatServer {
     static List<String> messageSenders = new ArrayList<>();
     static List<User> requestSingleRound = new ArrayList<>();
     static List<User> requestMatch = new ArrayList<>();
-    static Timeline timeline = new Timeline();
-    static{
-        timeline.setDelay(2000);
-        KeyFrame updateRequest = new KeyFrame(Duration.seconds(2), events->{
-            for(User user : requestSingleRound)
-            {
-                
-            }
-        });
-
-        timeline.getKeyFrames().add(new KeyFrame(2000, new EventHandler<>(){
-
-        }));
-    }
     static Boolean isGameStarted = false;
 
     public static synchronized Response handle(Request command)
     {
-        timeline.setDelay(2);
         
         if(TokenManager.isValidToken(command.getToken())){
             String cmd = command.getInput();
