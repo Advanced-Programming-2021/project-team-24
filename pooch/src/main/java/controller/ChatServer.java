@@ -21,7 +21,7 @@ public class ChatServer {
     static List<User> requestSingleRound = new ArrayList<>();
     static List<User> requestMatch = new ArrayList<>();
 
-    public synchronized Response handle(Request command)
+    public static synchronized Response handle(Request command)
     {
         
         if(TokenManager.isValidToken(command)){
