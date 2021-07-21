@@ -83,14 +83,47 @@ public class User {
         return cards;
     }
 
-    
+    public User(String username, String password, String nickname)
+    {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.cards = new ArrayList<>();
+        this.score = 8000;
+        this.coin = 100000;        
+        usernames.add(username);
+        this.cardNames = new ArrayList<>();
+        this.cards = new ArrayList<>();
+        this.imageAddress = "images/duel/characters/Chara001.dds"+ getRandomNumberInRange(1, 38) +".png";
+        addUser();
+    }
 
     public String getImageAddress() {
         return imageAddress;
     }
 
-    
-        
+    private static int getRandomNumberInRange(int min, int max) {
+
+        if (min >= max) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
+
+        Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
+    }
+
+    private void addUser(){
+        try {
+            File file = new File("users/"+this.username+".json");
+            file.createNewFile();
+            FileWriter fileWriter = new FileWriter(file);        
+            fileWriter.write(new Gson().toJson(this));            
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static User getUserByNameAndPassword(String username, String password) {
         User loging = readUser(username);
         if (loging == null) {
@@ -106,6 +139,17 @@ public class User {
     public void logout()
     {
         //update json file of user
+    }
+    public boolean changePassword(String oldPassword, String newPassword)
+    {
+        if(this.password.compareTo(oldPassword) == 0)
+        {
+            this.password = newPassword;
+            addUser();
+            return true;
+        }
+        else
+            return false;
     }
 
 
@@ -147,26 +191,77 @@ public class User {
     }
 
     private boolean comparePassword(String password)
+
     {
         if(password.compareTo(this.password) == 0) return true;
         else
         {
             return false;
         }
-
+    }
+    public void addCard(Card newCard){
+        cards.add(newCard);
+        this.cardNames.add(newCard.getName());
+        addUser();
     }
 
-    
-    public static void updateUser(User user){
-        //user =  new updated one
+    public static Message register(String username, String password, String nickname)
+    {
+        User register = readUser(username);
+        if(register == null)
+        {
+            for(int i = 0; i < usernames.size(); i++)
+            {
+                if(readUser(usernames.get(i)).getNickname().compareTo(nickname) == 0)
+                {
+                    return new Message(TypeMessage.SUCCESSFUL, "user with nickname " + nickname + " already exists");
+                }
+            }
+            //add new user
+            new User(username, password, nickname);
+            return new Message(TypeMessage.SUCCESSFUL, "user created successfully!");
+        }
+        else
+        {
+            return new Message(TypeMessage.ERROR, "user with username " + username + " already exists");
+        }
+    }
+    public static Message login(String username, String password)
+    {
+        User loging = readUser(username);
+        if(loging == null)
+        {
+            return new Message(TypeMessage.ERROR, "Username and password didn’t match!");
+        }
+        else
+        {
+            if(loging.comparePassword(password))
+            {
+                return new Message(TypeMessage.SUCCESSFUL, "user logged in successfully!");
+            }
+            else
+                return new Message(TypeMessage.ERROR, "Username and password didn’t match!");
+        }
     }
 
-    
-    
+    public void changeScore(int changeScore)
+    {
+        this.score += changeScore;
+        addUser();
+    }
+
+    public void changeNickname(String nickname){
+        this.nickname = nickname;
+        addUser();
+    }
 
     public Decks getDecks() {
-        updateUser(this);
+        addUser();
         return decks;
+    }
+    public void setDecks(Decks decks){
+        this.decks = decks;
+        addUser();
     }
     //for test
     public static void deleteUser(String username){
@@ -176,5 +271,13 @@ public class User {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void setCoin(int coin){
+        this.coin = coin;
+        addUser();
+    }
+    public void increaseCoin(int increment){
+        this.coin += increment;
+        addUser();
     }
 }
