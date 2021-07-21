@@ -1,5 +1,6 @@
 package sample;
 
+import controller.client.Client;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -27,7 +28,7 @@ public class ScoreboardController {
         this.user = user;
         scoreboardMenu = new controller.ScoreboardMenu(this.user);
     }
-    public void initialize(){
+    public void initialize() throws IOException {
         DropShadow dropShadow = new DropShadow();
         dropShadow.setRadius(5.0);
         dropShadow.setOffsetX(0);
@@ -36,7 +37,8 @@ public class ScoreboardController {
         back.setEffect(dropShadow);
         dropShadow.setSpread(0.8);
         Font font = new Font("Source Code Pro Black",16);
-        String[] scoreboard = scoreboardMenu.showScoreboard().getContent().split("\n");
+        //String[] scoreboard = scoreboardMenu.showScoreboard().getContent().split("\n");
+        String[] scoreboard = Client.getResponse("scoreboard show").getMessage().getContent().split("\n");
         for(int i=0;i<scoreboard.length;i++){
             Label label = new Label();
             label.setText(scoreboard[i]);
@@ -51,6 +53,7 @@ public class ScoreboardController {
         }
     }
     public void back(MouseEvent mouseEvent) throws IOException {
+        System.out.println(Client.getResponse("menu exit").getMessage().getContent());
         Common.switchToSceneMainMenu(this.user);
     }
 }

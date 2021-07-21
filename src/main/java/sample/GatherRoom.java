@@ -1,6 +1,7 @@
 package sample;
 
 import com.jfoenix.controls.JFXTextArea;
+import controller.client.Client;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -16,6 +17,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import model.user.User;
 import server.Chat;
+
+import java.io.IOException;
 
 public class GatherRoom extends Parent {
     User user;
@@ -70,19 +73,28 @@ public class GatherRoom extends Parent {
         sendIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                server.Chat.sendMessage("send --message "+ textField.getText(),user);
-                update();
+                //server.Chat.sendMessage("send --message "+ textField.getText(),user);
+                try {
+                    Client.getResponse("send --message "+ textField.getText());
+                    update();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         button1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-
+                try {
+                    System.out.println(Client.getResponse("--request 1").getMessage().getContent());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
-    private void update(){
-        textArea.appendText(user.getUsername()+": "+server.Chat.getLastMessage()+'\n');
+    private void update() throws IOException {
+        textArea.setText(Client.getResponse("getAllMessages").getMessage().getContent());
         textField.setText("");
     }
 }

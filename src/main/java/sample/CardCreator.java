@@ -3,6 +3,7 @@ package sample;
 import com.jfoenix.controls.JFXButton;
 import controller.LoginController;
 import controller.Message;
+import controller.client.Client;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,12 +42,15 @@ public class CardCreator {
         model.card.CardCreator cardCreator = new model.card.CardCreator();
         cardCreator.setAttack(Integer.parseInt(attack.getText()));
         cardCreator.setDefence(Integer.parseInt(defence.getText()));
-        cardCreator.setEffectHashMap(effects.getText());
-        cardCreator.loadCombineEffect(cards.getText());
-        cardCreator.generateCard();
+        if(!effects.getText().equals("*"))
+            cardCreator.setEffectHashMap(effects.getText());
+        if(!cards.getText().equals("*"))
+            cardCreator.loadCombineEffect(cards.getText());
+        cardCreator.generateCard().updateCard();
     }
 
     public void back(MouseEvent mouseEvent) throws IOException {
+        System.out.println(Client.getResponse("menu exit").getMessage().getContent());
         Common.switchToSceneMainMenu(user);
     }
 

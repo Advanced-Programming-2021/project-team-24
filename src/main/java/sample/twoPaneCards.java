@@ -1,7 +1,9 @@
 package sample;
 
+import com.google.gson.Gson;
 import controller.DeckController;
 import controller.Message;
+import controller.client.Client;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
@@ -34,13 +36,13 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
     @FXML
     AnchorPane shopCards;
     @FXML
-    FontAwesomeIcon left,right,buy;
+    FontAwesomeIcon left, right, buy;
     @FXML
     SplitPane splitPane;
     @FXML
     HBox menuBar;
     @FXML
-    Label cost,coins;
+    Label cost, coins;
     User user;
     ImageView imageView;
     double windowWidth = 1024;
@@ -55,9 +57,9 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
     Image card;
     int cardsCount;
 
-    public twoPaneCards(User user, String deckName, int cardsCount){
+    public twoPaneCards(User user, String deckName, int cardsCount) {
         this.user = user;
-        if(deckName!=null)
+        if (deckName != null)
             this.deckName = deckName.split(":")[0];
         this.cardsCount = cardsCount;
     }
@@ -81,6 +83,7 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
         perspectiveTransform.setLrx(x + (1 - Math.abs(f)) * w / 2);
         imageView.setEffect(perspectiveTransform);
     }
+
     List<Card> cardsList;
     static int d = 100;
     int cardWidth = 125;
@@ -90,22 +93,24 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
     controller.ShopMenu shopMenu;
     DeckController deckController;
     @FXML
-    FontAwesomeIcon menuIcon,menuIcon2;
+    FontAwesomeIcon menuIcon, menuIcon2;
     @FXML
     Label menuText;
     int n;
     ArrayList<ImageView> cards = new ArrayList<ImageView>();
-    public void initialize() {
-        if(deckName == null) {
+    Gson g = new Gson();
+
+    public void initialize() throws IOException {
+        if (deckName == null) {
             targetCards = user.getCards();
-            cardsList = Card.getAllCards();
+            cardsList = g.fromJson(Client.getResponse("getAllCards").getMessage().getContent(), cardsList.getClass());
+            //cardsList = Card.getAllCards();
             coins.setText(String.valueOf(user.getCoin()));
-        }
-        else {
+        } else {
             targetCards = user.getDecks().getDeckByName(deckName).getMainCards();
             cardsList = user.getCards();
             menuIcon.setIconName("TH");
-            menuText.setText("DECK EDITOR->"+deckName);
+            menuText.setText("DECK EDITOR->" + deckName);
             buy.setIconName("PLUS_CIRCLE");
             coins.setText(String.valueOf(targetCards.size()));
             menuIcon2.setIconName("SORT_NUMERIC_ASC");
@@ -113,8 +118,8 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
         n = cardsCount / 2;
         selectedCard = n;
         curve = n * 10;
-        size = ((double)cardWidth*(2*n+1))/2;
-        rowCardCount = targetCards.size()/5;
+        size = ((double) cardWidth * (2 * n + 1)) / 2;
+        rowCardCount = targetCards.size() / 5;
         shopMenu = new controller.ShopMenu(user);
         deckController = new DeckController(user.getDecks());
         DropShadow dropShadow = new DropShadow();
@@ -131,17 +136,17 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
         buy.setEffect(dropShadow);
         cost.setEffect(dropShadow);
         for (int i = 1; i <= 2 * n; i++) {
-            imageView = new ImageView(new Image(getClass().getResourceAsStream(Common.handleImage(cardsList.get(i-1)))));
+            imageView = new ImageView(new Image(getClass().getResourceAsStream(Common.handleImage(cardsList.get(i - 1)))));
             imageView.setFitWidth(cardWidth);
             imageView.setFitHeight(imageView.getFitWidth() * cardRatio);
-            imageView.setLayoutX(size * i / (2 * n + 2)-(size-windowWidth/2)/2);
+            imageView.setLayoutX(size * i / (2 * n + 2) - (size - windowWidth / 2) / 2);
             setPrespective(imageView, 0, 0, (curve / n) * i - curve * (((float) n + 1) / (float) n));
             shopCards.getChildren().add(imageView);
             cards.add(imageView);
-            if(i>n+1){
-                shopCards.getChildren().get(i+1).toBack();
+            if (i > n + 1) {
+                shopCards.getChildren().get(i + 1).toBack();
             }
-            if(i==n+1){
+            if (i == n + 1) {
                 shopCards.getChildren().get(0).toFront();
                 shopCards.getChildren().get(0).toFront();
             }
@@ -166,7 +171,22 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
         handleCardHover();
     }
 
+    private void updateUser() {
+        try {
+            user = g.fromJson(Client.getResponse("getUser").getMessage().getContent(), User.class);
+            if (deckName == null) {
+                targetCards = user.getCards();
+            } else {
+                targetCards = user.getDecks().getDeckByName(deckName).getMainCards();
+                cardsList = user.getCards();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void update() {
+        updateUser();
         cost.setText(String.valueOf(cardsList.get(selectedCard).getPrice()));
         myCards.getChildren().clear();
         for (int i = 0; i < targetCards.size(); i++) {
@@ -177,20 +197,20 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
             GridPane.setColumnIndex(imageView, i % columnCardCount);
             GridPane.setRowIndex(imageView, i / columnCardCount);
         }
-        if(deckName==null)
+        if (deckName == null)
             coins.setText(String.valueOf(user.getCoin()));
         else
             coins.setText(String.valueOf(targetCards.size()));
     }
 
 
-    public void left(MouseEvent mouseEvent){
+    public void left(MouseEvent mouseEvent) {
         cards.get(selectedCard).setOpacity(1);
         cards.get(selectedCard).setOnMouseExited(null);
         cards.get(selectedCard).setOnMouseEntered(null);
         buy.setOpacity(0);
         cost.setOpacity(0);
-        if(selectedCard==2*n) return;
+        if (selectedCard == 2 * n) return;
         selectedCard++;
         cost.setText(String.valueOf(cardsList.get(selectedCard).getPrice()));
         handleCardHover();
@@ -201,25 +221,26 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
         cost.toFront();
         for (int i = 1; i < shopCards.getChildren().size() - 3; i++) {
             TranslateTransition translateTransition = new TranslateTransition();
-            translateTransition.setNode(cards.get(i-1));
-            translateTransition.setByX(-1*size / (2 * n + 2));
+            translateTransition.setNode(cards.get(i - 1));
+            translateTransition.setByX(-1 * size / (2 * n + 2));
             translateTransition.setDuration(Duration.millis(800));
             translateTransition.setCycleCount(1);
             translateTransition.play();
-            Prespective prespective = new Prespective(cards.get(i-1), (curve / n) * (i+k) - curve * (((float) n + 1) / (float) n), (curve / n) * (i+k-1) - curve * (((float) n + 1) / (float) n));
+            Prespective prespective = new Prespective(cards.get(i - 1), (curve / n) * (i + k) - curve * (((float) n + 1) / (float) n), (curve / n) * (i + k - 1) - curve * (((float) n + 1) / (float) n));
             prespective.play();
         }
         k--;
     }
 
     int k = 0;
+
     public void right(MouseEvent mouseEvent) throws IOException {
         cards.get(selectedCard).setOpacity(1);
         cards.get(selectedCard).setOnMouseExited(null);
         cards.get(selectedCard).setOnMouseEntered(null);
         buy.setOpacity(0);
         cost.setOpacity(0);
-        if(selectedCard == 0) return;
+        if (selectedCard == 0) return;
         selectedCard--;
         cost.setText(String.valueOf(cardsList.get(selectedCard).getPrice()));
         handleCardHover();
@@ -230,12 +251,12 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
         cost.toFront();
         for (int i = 1; i < shopCards.getChildren().size() - 3; i++) {
             TranslateTransition translateTransition = new TranslateTransition();
-            translateTransition.setNode(cards.get(i-1));
+            translateTransition.setNode(cards.get(i - 1));
             translateTransition.setByX(size / (2 * n + 2));
             translateTransition.setDuration(Duration.millis(800));
             translateTransition.setCycleCount(1);
             translateTransition.play();
-            Prespective prespective = new Prespective(cards.get(i-1), (curve / n) * (i+k) - curve * (((float) n + 1) / (float) n), (curve / n) * (i+k+1) - curve * (((float) n + 1) / (float) n));
+            Prespective prespective = new Prespective(cards.get(i - 1), (curve / n) * (i + k) - curve * (((float) n + 1) / (float) n), (curve / n) * (i + k + 1) - curve * (((float) n + 1) / (float) n));
             prespective.play();
         }
         k++;
@@ -247,11 +268,10 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
             public void handle(MouseEvent mouseEvent) {
                 cards.get(selectedCard).setOpacity(0.7);
                 cost.setOpacity(1);
-                if(cardsList.get(selectedCard).getPrice()>user.getCoin()) {
+                if (cardsList.get(selectedCard).getPrice() > user.getCoin()) {
                     buy.getStyleClass().clear();
                     buy.getStyleClass().add("disabledButton");
-                }
-                else {
+                } else {
                     buy.setOpacity(0.8);
                     buy.getStyleClass().clear();
                     buy.getStyleClass().add("button");
@@ -265,22 +285,31 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
                 //System.out.println(monsterCards.get(selectedCard).getName());
                 String cardName = cardsList.get(selectedCard).getName();
                 Message message;
-                if(deckName==null) {
-                    message = shopMenu.buyCard(cardName);
-                    System.out.println(message.getContent());
-
+                if (deckName == null) {
+//                    message = shopMenu.buyCard(cardName);
+//                    System.out.println(message.getContent());
+                    try {
+                        message = Client.getResponse("shop buy " + cardName).getMessage();
+                        Common.showMessage(message, buy);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    //message = deckController.addCard(cardName, deckName, true);
+                    try {
+                        message = Client.getResponse("deck add-card --card " + cardName + "--deck " + deckName).getMessage();
+                        Common.showMessage(message, buy);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //System.out.println(message.getContent());
                 }
-                else{
-                    message = deckController.addCard(cardName, deckName, true);
-                    System.out.println(message.getContent());
-                }
-                Common.showMessage(message,buy);
                 update();
             }
         });
     }
 
-    private void handleCardHover(){
+    private void handleCardHover() {
         cards.get(selectedCard).setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -300,27 +329,30 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
     }
 
     public void back(MouseEvent mouseEvent) throws IOException {
-        if(deckName==null)
+        if (deckName == null) {
+            Client.getResponse("menu exit");
             Common.switchToSceneMainMenu(this.user);
-        else
+        }
+        else {
             switchToSceneDecks(mouseEvent);
+        }
     }
 
     @Override
-    public void handle(MouseEvent mouseEvent){
+    public void handle(MouseEvent mouseEvent) {
         Common.disableDivider(splitPane);
     }
 
     Scene scene;
     Stage stage;
 
-    public void switchToSceneDecks(MouseEvent event) throws IOException{
+    public void switchToSceneDecks(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/decks.fxml"));
         DecksController decksController = new DecksController(this.user);
         loader.setController(decksController);
         Parent root = loader.load();
         scene = new Scene(root);
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         //decksController.init();
         stage.setResizable(false);

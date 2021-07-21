@@ -3,6 +3,7 @@ package sample;
 import controller.MainMenuController;
 import controller.Message;
 import controller.TypeMessage;
+import controller.client.Client;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -217,6 +218,7 @@ public class MenuController {
     }
 
     public void switchToSceneDecks(MouseEvent event) throws IOException {
+        System.out.println(Client.getResponse("menu enter Deck").getMessage().getContent());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/decks.fxml"));
         DecksController decksController = new DecksController(this.user);
         loader.setController(decksController);
@@ -230,6 +232,7 @@ public class MenuController {
     }
 
     public void switchToSceneShop(MouseEvent event) throws IOException {
+        System.out.println(Client.getResponse("menu enter Shop").getMessage().getContent());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/shop.fxml"));
         twoPaneCards twoPaneCards = new twoPaneCards(this.user, null, Card.getAllCards().size());
         loader.setController(twoPaneCards);
@@ -243,6 +246,7 @@ public class MenuController {
     }
 
     public void switchToSceneDuel(MouseEvent event,User opponent) throws IOException {
+        System.out.println(Client.getResponse("menu enter Duel").getMessage().getContent());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/duel.fxml"));
         DuelController duelController = new DuelController(this.user,opponent);
         loader.setController(duelController);
@@ -256,6 +260,7 @@ public class MenuController {
     }
 
     public void switchToSceneScoreboard(MouseEvent event) throws IOException {
+        System.out.println(Client.getResponse("menu enter Scoreboard").getMessage().getContent());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/scoreboard.fxml"));
         ScoreboardController scoreboardController = new ScoreboardController(this.user);
         loader.setController(scoreboardController);
@@ -268,6 +273,7 @@ public class MenuController {
     }
 
     public void switchToSceneSignin(MouseEvent event) throws IOException {
+        System.out.println(Client.getResponse("user logout").getMessage().getContent());
         Parent root = FXMLLoader.load(getClass().getResource("scenes/signin.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -276,6 +282,7 @@ public class MenuController {
     }
 
     public void switchToSceneImportExport(MouseEvent event) throws IOException {
+        System.out.println(Client.getResponse("menu enter ImportExport").getMessage().getContent());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/importExport.fxml"));
         ImportExport importExport = new ImportExport(this.user);
         loader.setController(importExport);
