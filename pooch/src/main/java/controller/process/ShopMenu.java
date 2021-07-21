@@ -7,6 +7,7 @@ import model.Response;
 import model.Situation;
 import model.card.Card;
 import model.user.User;
+import view.Global;
 
 import java.util.regex.Matcher;
 
@@ -33,11 +34,24 @@ public class ShopMenu extends Menu {
         else if (command.equals("getAllCards")){
             return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(Card.getAllCards())), Situation.SHOP);
         }
-        else if (command.equals("getUser")){
-            return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(user)), Situation.SHOP);
-        }
         else if (checkMenuExit(command)) {
             return new Response(new Message(TypeMessage.SUCCESSFUL, ""), Situation.MAIN);
+        } if(Global.regexFind("ban (.+)")){            
+            Matcher matcher = Global.getMatcher(command, "ban (.+)");
+            matcher.find();
+            return new Response(this.shopMenu.banCard(matcher.group(1)), Situation.SHOP);
+        }  else if(Global.regexFind(command, "unban (.+)")){            
+            Matcher matcher = Global.getMatcher(command, "unban (.+)");
+            matcher.find();
+            return new Response(this.shopMenu.unban(matcher.group(1)), Situation.SHOP);
+        } else if(Global.regexFind(command, "increase (.+)")){            
+            Matcher matcher = Global.getMatcher(command, "increase (.+)");
+            matcher.find();
+            return new Response(this.shopMenu.increaseCardAmount(1, matcher.group(1)), Situation.SHOP);
+        } else if(Global.regexFind(command, "decrease (.+)")){            
+            Matcher matcher = Global.getMatcher(command, "decrease (.+)");
+            matcher.find();
+            return new Response(this.shopMenu.decreaseCardAmount(1, matcher.group(1)), Situation.SHOP);
         }
         return new Response(new Message(TypeMessage.ERROR, "invalid command"), Situation.SHOP);
     }
