@@ -1,9 +1,4 @@
 import controller.server.Server;
-import model.card.Card;
-import model.deck.Deck;
-import model.deck.Decks;
-import org.junit.Assert;
-import org.junit.Test;
 
 import model.user.User;
 import controller.process.LoginMenu;

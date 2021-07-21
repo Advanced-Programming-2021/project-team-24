@@ -12,10 +12,6 @@ import java.util.Random;
 
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
-import com.google.gson.internal.Excluder;
-
 //import javafx.scene.image.Image;
 import model.deck.*;
 import controller.Message;
@@ -30,8 +26,11 @@ public class User {
     private int coin;
     private String imageAddress;
     private List<String> cardNames;
+    private boolean isAdmin = false;
 
-   
+    public boolean getIsAdmin(){
+        return isAdmin;
+    }
 
     private transient List<Card> cards = new ArrayList<>();// fill it after reading json
     private Decks decks = new Decks();
@@ -90,7 +89,7 @@ public class User {
         this.nickname = nickname;
         this.cards = new ArrayList<>();
         this.score = 8000;
-        this.coin = 100000;        
+        this.coin = 100000;
         usernames.add(username);
         this.cardNames = new ArrayList<>();
         this.cards = new ArrayList<>();
@@ -116,8 +115,8 @@ public class User {
         try {
             File file = new File("users/"+this.username+".json");
             file.createNewFile();
-            FileWriter fileWriter = new FileWriter(file);        
-            fileWriter.write(new Gson().toJson(this));            
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(new Gson().toJson(this));
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -142,7 +141,7 @@ public class User {
             }
         } catch (Exception e) {
             //e.printStackTrace();
-        }     
+        }
     }
     public static User getUserByNameAndPassword(String username, String password) {
         User loging = readUser(username);
@@ -189,7 +188,7 @@ public class User {
                 {
                     for(int i = 0; i < temp.getDecks().getDecks().get(j).getMainCardName().size(); i++)
                     {
-                        temp.getDecks().getDecks().get(j).getMainCards().add(Card.getCardByName(temp.getDecks().getDecks().get(j).getMainCardName().get(i)));                        
+                        temp.getDecks().getDecks().get(j).getMainCards().add(Card.getCardByName(temp.getDecks().getDecks().get(j).getMainCardName().get(i)));
                     }
                     for(int i = 0; i < temp.getDecks().getDecks().get(j).getSideCardName().size(); i++)
                     {

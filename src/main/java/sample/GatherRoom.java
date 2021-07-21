@@ -1,20 +1,25 @@
 package sample;
 
 import com.jfoenix.controls.JFXTextArea;
+import controller.TypeMessage;
 import controller.client.Client;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import model.user.User;
 import server.ChatClient;
 
@@ -101,12 +106,30 @@ public class GatherRoom extends Parent {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 try {
+                    if(Client.getResponse("update").getMessage().getTypeMessage()== TypeMessage.SUCCESSFUL){
+                           //switchToSceneDuel(mouseEvent,Client.getResponse("getOpponent").getMessage().getContent());
+                    }
                     update();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+    Stage stage;
+    Scene scene;
+    public void switchToSceneDuel(MouseEvent event,User opponent) throws IOException {
+        System.out.println(Client.getResponse("menu enter Duel").getMessage().getContent());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/duel.fxml"));
+        DuelController duelController = new DuelController(this.user,opponent);
+        loader.setController(duelController);
+        Parent root = loader.load();
+        scene = new Scene(root);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        //decksController.init();
+        stage.setResizable(false);
+        stage.show();
     }
     private void update() throws IOException {
         //textArea.setText(Client.getResponse("getAllMessages").getMessage().getContent());

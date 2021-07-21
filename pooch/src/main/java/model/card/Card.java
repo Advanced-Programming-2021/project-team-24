@@ -30,7 +30,9 @@ public abstract class Card {
     protected String description;
     protected Integer price;
     protected LimitType limitType;
-    protected CardType cardType;    
+    protected CardType cardType;
+    public int count;
+    public boolean isBanned;
     @SerializedName("effects")
     protected HashMap<Event, String> effects;
 
@@ -66,7 +68,7 @@ public abstract class Card {
             assert filesListMonsterCard != null;
             assert filesListMagicCard != null;
             for(File file : filesListMonsterCard) {
-                
+
                 String json = new String(Files.readAllBytes(Paths.get(file.getPath())));
                 MonsterCard card = new Gson().fromJson(json,MonsterCard.class);
                 allCards.add(card);
@@ -109,7 +111,7 @@ public abstract class Card {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            
+
         }
         else
         {
@@ -160,6 +162,6 @@ public abstract class Card {
         {
             effects = new HashMap<Event,String>();
         }
-		return this.effects;
-	}
+        return this.effects;
+    }
 }

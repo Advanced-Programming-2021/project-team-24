@@ -15,7 +15,6 @@ import model.Response;
 import model.Situation;
 import model.user.Player;
 import model.user.User;
-import sun.jvm.hotspot.runtime.BasicObjectLock;
 
 public class ChatServer {
     static List<String> messagesContent = new ArrayList<>();
@@ -26,7 +25,7 @@ public class ChatServer {
 
     public static synchronized Response handle(Request command)
     {
-        
+
         if(TokenManager.isValidToken(command.getToken())){
             String cmd = command.getInput();
             if(cmd.equals("--request [13]")){
@@ -37,13 +36,13 @@ public class ChatServer {
             }
             else if(cmd.equals("--request --ignore [13]")){
                 return new Response(ignoreRequent(cmd, TokenManager.getUser(command.getToken())), Situation.MAIN);
-            }   
+            }
             else if(Global.regexFind(cmd, "send --message .+")){
                 return new Response(sendMessage(cmd, TokenManager.getUser(command.getToken())), Situation.MAIN);
             }else if(cmd.equals("getAllMessages")){
                 return new Response(new Message(TypeMessage.INFO, getAllMessages()), Situation.MAIN);
-            }         
-        }        
+            }
+        }
         return null;
     }
     public synchronized static Response update(String request, User user) {
@@ -112,7 +111,7 @@ public class ChatServer {
                 for(int i = 0; i < requestSingleRound.size(); i++){
                     if(requestSingleRound.get(i).getUsername().equals(user.getUsername()))
                         return new Response(new Message(TypeMessage.ERROR, "you have requested before"),Situation.MAIN);
-                }                
+                }
                 requestSingleRound.add(user);
                 return new Response(new Message(TypeMessage.ERROR, "you request added"),Situation.MAIN);
             case 3:
@@ -125,9 +124,9 @@ public class ChatServer {
                 return new Response(new Message(TypeMessage.ERROR, "you request added"),Situation.MAIN);
         }
         return new Response(new Message(TypeMessage.ERROR, "invalid command"), Situation.MAIN);
-    }    
+    }
     public static Message ignoreRequent(String requst, User user){
-        Matcher matcher = Global.getMatcher(requst, "--request --ignore ([13])");        
+        Matcher matcher = Global.getMatcher(requst, "--request --ignore ([13])");
         matcher.find();
         Integer v = Integer.parseInt(matcher.group(1));
         switch(v)
@@ -139,7 +138,7 @@ public class ChatServer {
                         requestSingleRound.remove(i);
                         return new Message(TypeMessage.SUCCESSFUL, "your request removed");
                     }
-                }                
+                }
                 requestSingleRound.add(user);
                 return new Message(TypeMessage.ERROR, "you didn't requested yet");
             case 3:

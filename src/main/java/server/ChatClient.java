@@ -16,9 +16,9 @@ public class ChatClient {
     Timeline time = new Timeline();
     static{
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.1), events->{
-            java.time.LocalTime.now().getSecond()
+            java.time.LocalTime.now().getSecond();
             if(java.time.LocalTime.now().getSecond() < 30 && java.time.LocalTime.now().getSecond() > 20){
-                Client.getres
+//                Client.getres
             }
         });
     }
