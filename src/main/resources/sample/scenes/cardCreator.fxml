@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SignUpController">
+<AnchorPane fx:id="menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <children>
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" style="-fx-background-color: #e63838;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
@@ -87,7 +87,7 @@
                                 <Insets />
                             </HBox.margin>
                         </Label>
-                        <Label onMouseClicked="#switchToSceneSignin" styleClass="linkLabel" stylesheets="@../styles/style.css" text="Click!">
+                        <Label styleClass="linkLabel" stylesheets="@../styles/style.css" text="Click!">
                             <font>
                                 <Font name="Source Code Pro Black" size="15.0" />
                             </font>
@@ -108,7 +108,7 @@
                         </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <MFXTextField fx:id="username1" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="Username" style="-fx-background-color: white; -fx-text-alignment: center;" styleClass="linkLabel" stylesheets="@../styles/style.css" text="Name">
+                        <MFXTextField fx:id="name" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="Name" style="-fx-background-color: white; -fx-text-alignment: center;" styleClass="linkLabel" stylesheets="@../styles/style.css">
                            <font>
                               <Font name="Source Sans Pro SemiBold" size="12.0" />
                            </font>
@@ -117,7 +117,7 @@
                   </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                             <children>
-                                <MFXTextField fx:id="username" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="Username" style="-fx-background-color: white; -fx-text-alignment: center;" styleClass="linkLabel" stylesheets="@../styles/style.css" text="Attack">
+                                <MFXTextField fx:id="attack" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="Attack" style="-fx-background-color: white; -fx-text-alignment: center;" styleClass="linkLabel" stylesheets="@../styles/style.css">
                                     <font>
                                         <Font name="Source Sans Pro SemiBold" size="12.0" />
                                     </font></MFXTextField>
@@ -125,7 +125,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                             <children>
-                                <MFXTextField fx:id="nickname" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="Nickname" style="-fx-background-color: white; -fx-text-alignment: center;" text="Defence">
+                                <MFXTextField fx:id="defence" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="Defence" style="-fx-background-color: white; -fx-text-alignment: center;">
                                     <font>
                                         <Font name="Source Sans Pro SemiBold" size="12.0" />
                                     </font></MFXTextField>
@@ -133,7 +133,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                             <children>
-                                <MFXTextField fx:id="password" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="Password" style="-fx-background-color: white; -fx-text-alignment: center;" text="Effect">
+                                <MFXTextField fx:id="effect" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="Effect" style="-fx-background-color: white; -fx-text-alignment: center;">
                                     <font>
                                         <Font name="Source Sans Pro SemiBold" size="12.0" />
                                     </font>
@@ -142,7 +142,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <MFXTextField fx:id="password1" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="Password" style="-fx-background-color: white; -fx-text-alignment: center;" text="List of Cards">
+                              <MFXTextField fx:id="cards" alignment="CENTER" lineColor="RED" lineStrokeWidth="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="274.0" promptText="List of Cards" style="-fx-background-color: white; -fx-text-alignment: center;">
                                  <font>
                                     <Font name="Source Sans Pro SemiBold" size="12.0" />
                                  </font>
@@ -151,7 +151,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="96.0" prefWidth="294.0">
                             <children>
-                                <JFXButton fx:id="submit" onMouseClicked="#submit" style="-fx-background-color: black;" text="Create" textFill="WHITE">
+                                <JFXButton fx:id="createButton" onMouseClicked="#createCard" style="-fx-background-color: black;" text="Create" textFill="WHITE">
                                     <font>
                                         <Font name="Source Code Pro Black" size="12.0" />
                                     </font></JFXButton>

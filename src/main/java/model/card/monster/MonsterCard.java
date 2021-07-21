@@ -16,9 +16,9 @@ public class MonsterCard extends Card {
     private int attack;
 
 
-	public void setAttack(int attack) {
-		this.attack = attack;
-	}
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
 
     @SerializedName("defence")
     private int defence;
@@ -38,28 +38,28 @@ public class MonsterCard extends Card {
     private MonsterEffectType monsterEffectType;
     @SerializedName("monsterType")
     private MonsterType monsterType;
-    
 
-    
+
+
 
     @SerializedName("monsterAttribute")
     private MonsterAttribute monsterAttribute;
 
 
-    
 
-    public void setEffects(HashMap<Event,String> effects)    
+
+    public void setEffects(HashMap<Event,String> effects)
     {
-		this.effects = effects;
-	}
+        this.effects = effects;
+    }
     public int getLevel()
     {
         return level;
-    }  
+    }
     public int getAttack()
     {
         return this.attack;
-    }        
+    }
     public int getDefence()
     {
         return this.defence;
@@ -99,9 +99,9 @@ public class MonsterCard extends Card {
         ans = ans.concat("Name :" + name + "\n");
         ans = ans.concat("Monster\n");
         ans = ans.concat("Type: " +  monsterType.toString() + "\n");
-        ans = ans.concat("ATK :" + Integer.toString(attack) + "\n");        
+        ans = ans.concat("ATK :" + Integer.toString(attack) + "\n");
         ans = ans.concat("DEF :" + Integer.toString(defence) + "\n");
-        ans = ans.concat("Description: " + description  + "\n");                
+        ans = ans.concat("Description: " + description  + "\n");
         return ans;
     }
 }

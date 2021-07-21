@@ -19,7 +19,7 @@ public class DeckMenu extends Menu {
         this.deckController = new DeckController(user.getDecks());
     }
 
-    private static final String REGEX_ENTER_MENU = "menu enter (\\w+)";
+    private static final String REGEX_ENTER_MENU = "menu enter (\\w++)";
 
     public void run() {
         while (true) {
@@ -52,14 +52,14 @@ public class DeckMenu extends Menu {
                 }
             }
             else {
-                Matcher matcher = Global.getMatcher(command, "deck create (?<name>\\w)");
+                Matcher matcher = Global.getMatcher(command, "deck create (?<name>\\w++)");
                 if (matcher.find()) {
                     String deckName = matcher.group("name");
                     System.out.println(deckController.create(deckName).getContent());
                     continue;
                 }
 
-                matcher = Global.getMatcher(command, "deck delete (?<name>\\w)");
+                matcher = Global.getMatcher(command, "deck delete (?<name>\\w+)");
                 if (matcher.find()) {
                     String deckName = matcher.group("name");
                     Message message = deckController.delete(deckName);

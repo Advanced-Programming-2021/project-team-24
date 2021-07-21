@@ -18,7 +18,7 @@ public class CardCreator {
     List<String> combineEffect = new ArrayList<>();
     HashMap<Event,String> effects = new HashMap<>();
     public CardCreator()
-    {        
+    {
     }
     public int calculatePrice()
     {
@@ -44,8 +44,8 @@ public class CardCreator {
                 ans.add(cardName[i]);
 
             }
-        }   
-        
+        }
+
     }
     public Card generateCard()
     {
@@ -60,7 +60,7 @@ public class CardCreator {
             {
                 if(x.getEffects().get(maEntry.getKey()) == null)
                 {
-                    x.getEffects().put(maEntry.getKey(), "");                    
+                    x.getEffects().put(maEntry.getKey(), "");
                 }
                 if(x.getEffects().get(maEntry.getKey()) != null)
                     card.getEffects().put(maEntry.getKey(), card.getEffects().get(maEntry.getKey()) + x.getEffects().get(maEntry.getKey()));
@@ -73,16 +73,12 @@ public class CardCreator {
         return card;
 
     }
-    public void addCurrentGeneratedCard()
-    {
-        
-    }
     public void setEffectHashMap(String effects)
     {
         try{
-        this.effects = new Gson().fromJson(effects, new HashMap<Event,String>().getClass());
+            this.effects = new Gson().fromJson(effects, new HashMap<Event,String>().getClass());
         }catch(Exception e){
-            
+
         }
     }
 }

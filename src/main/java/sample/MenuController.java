@@ -3,6 +3,7 @@ package sample;
 import controller.MainMenuController;
 import controller.Message;
 import controller.TypeMessage;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -40,6 +41,8 @@ public class MenuController {
     Label username;
     @FXML
     ImageView profilePhoto;
+    @FXML
+    FontAwesomeIcon gather;
     User user;
     private Stage stage;
     private Scene scene;
@@ -76,6 +79,14 @@ public class MenuController {
                 });
             }
         });
+        gather.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                GatherRoom gatherRoom = new GatherRoom(user);
+                PopOver popOver = new PopOver(gatherRoom);
+                popOver.show(gather);
+            }
+        });
         username.setText(user.getUsername());
         Pane gamePane = new Pane();
         Pane deckPane = new Pane();
@@ -97,11 +108,21 @@ public class MenuController {
                         System.out.println(message.getContent());
                         Common.showMessage(message, gamePane);
                         if (message.getTypeMessage() == TypeMessage.SUCCESSFUL) {
-                            try {
-                                switchToSceneDuel(originalMouseEvent,User.readUser(input.getInput()));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+
+                                Coin coin = new Coin();
+                                PopOver popOver = new PopOver(coin);
+                                popOver.show(profilePhoto);
+                                coin.getButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent mouseEvent) {
+                                    try {
+                                        switchToSceneDuel(originalMouseEvent, User.readUser(input.getInput()));
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    }
+                                });
+
                         }
                     }
                 });
@@ -258,6 +279,18 @@ public class MenuController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/importExport.fxml"));
         ImportExport importExport = new ImportExport(this.user);
         loader.setController(importExport);
+        Parent root = loader.load();
+        scene = new Scene(root);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    public void switchToSceneCardCreator(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/cardCreator.fxml"));
+        CardCreator cardCreator = new CardCreator(user);
+        loader.setController(cardCreator);
         Parent root = loader.load();
         scene = new Scene(root);
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
