@@ -19,6 +19,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -238,6 +240,15 @@ public class MenuController {
         loader.setController(twoPaneCards);
         Parent root = loader.load();
         scene = new Scene(root);
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+            if(key.getCode()== KeyCode.Q) {
+                try {
+                    Common.showMessage(Client.getResponse("").getMessage(),);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         //decksController.init();
