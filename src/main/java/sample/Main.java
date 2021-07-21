@@ -14,7 +14,6 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception{
         initializeNetwork();
-        User.initialize();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/scenes/signin.fxml"));
 //        ShopController shopController = new ShopController();
 //        loader.setController(shopController);
