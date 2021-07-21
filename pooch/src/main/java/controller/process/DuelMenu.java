@@ -101,7 +101,7 @@ public class DuelMenu {
                 return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(duelController.getDuel().getMap())), Situation.DUEL);
              }
             else if (command.equals("isRoundFinished")){
-                 return new Response(new Message(TypeMessage.INFO, duelController.isRoundFinished().toString()), Situation.DUEL);
+                 return new Response(new Message(TypeMessage.INFO, Boolean(duelController.isRoundFinished()).toString()), Situation.DUEL);
              }
             else if (command.equals("getCurrentPlayer")){
                  return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(duelController.getDuel().getCurrentPlayer())), Situation.DUEL);
