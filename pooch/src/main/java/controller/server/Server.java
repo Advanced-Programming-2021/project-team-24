@@ -1,17 +1,21 @@
 package controller.server;
 
+import controller.TypeMessage;
+import controller.client.GsonConverter;
 import controller.process.*;
 import model.Request;
 import model.Response;
 import model.Situation;
 import model.user.Player;
 import model.user.User;
+import view.Global;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.regex.Matcher;
 
 public class Server {
     private static User user;
@@ -58,6 +62,18 @@ public class Server {
     }
     private static Response getResponse(Request request){
         Situation situation = request.getCurrentSituation();
+        if(Global.regexFind(request.getInput(), "updateUser (.+)")){
+            Matcher matcher = Global.getMatcher(request.getInput(), "updateUser (.+)");
+            matcher.find();
+            User tmep = GsonConverter.deserialize(matcher.group(1), User.class);
+            tmep.addUser();
+        }
+        if(Global.regexFind(request.getInput(), "readUser (.+)")){
+            Matcher matcher = Global.getMatcher(request.getInput(), "readUser (.+)");
+            matcher.find();
+            User tmep = User.readUser(matcher.group(1));
+            return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(tmep)), situation);
+        }
         Response response = null;
         switch (situation){
             case DECK:

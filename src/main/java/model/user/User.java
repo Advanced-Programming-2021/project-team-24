@@ -19,6 +19,10 @@ import com.google.gson.internal.Excluder;
 //import javafx.scene.image.Image;
 import model.deck.*;
 import controller.Message;
+import controller.client.Client;
+import model.Request;
+import model.Response;
+import model.Situation;
 import model.card.*;
 import controller.*;
 
@@ -114,11 +118,7 @@ public class User {
 
     private void addUser(){
         try {
-            File file = new File("users/"+this.username+".json");
-            file.createNewFile();
-            FileWriter fileWriter = new FileWriter(file);        
-            fileWriter.write(new Gson().toJson(this));            
-            fileWriter.close();
+            Client.getResponse("updateUser " + new Gson().toJson(this));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -156,13 +156,9 @@ public class User {
     public static User readUser(String username)
     {
         try {
-            File file = new File("users/"+username+".json");
-            if (file.exists()) {
-                String json = new String(Files.readAllBytes(Paths.get("users/" + username + ".json")));
-                User temp = fillUserCards(json);
-                return temp;
-            }
-            else return null;
+            String json = Client.getResponse("getUser " + username).getMessage().getContent();
+            User temp = fillUserCards(json);
+            return temp;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

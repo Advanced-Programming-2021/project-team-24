@@ -112,7 +112,7 @@ public class User {
         return r.nextInt((max - min) + 1) + min;
     }
 
-    private void addUser(){
+    public void addUser(){
         try {
             File file = new File("users/"+this.username+".json");
             file.createNewFile();
