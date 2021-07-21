@@ -38,7 +38,8 @@ public class SignInController {
         System.out.println(message.getContent());
         if(message.getTypeMessage() == TypeMessage.SUCCESSFUL){
             //Common.switchToSceneMainMenu((User) loginController.login(username.getText(),password.getText()).get(1));
-            Common.switchToSceneMainMenu( new Gson().fromJson(Client.getResponse("getUser").getMessage().getContent(), User.class));
+            //Common.switchToSceneMainMenu( new Gson().fromJson(Client.getResponse("getUser").getMessage().getContent(), User.class));
+            Common.switchToSceneMainMenu(User.readUser(username.getText()));
         }
         else
             Common.showMessage(message,submit);

@@ -1,14 +1,13 @@
 package controller.server;
 
+import controller.Message;
 import controller.TypeMessage;
-import controller.client.GsonConverter;
 import controller.process.*;
 import model.Request;
 import model.Response;
 import model.Situation;
 import model.user.Player;
 import model.user.User;
-import view.Global;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -65,7 +64,7 @@ public class Server {
         if(Global.regexFind(request.getInput(), "updateUser (.+)")){
             Matcher matcher = Global.getMatcher(request.getInput(), "updateUser (.+)");
             matcher.find();
-            User tmep = GsonConverter.deserialize(matcher.group(1), User.class);
+            User tmep = (User) GsonConverter.deserialize(matcher.group(1), User.class);
             tmep.addUser();
         }
         if(Global.regexFind(request.getInput(), "readUser (.+)")){

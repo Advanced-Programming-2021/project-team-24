@@ -1,6 +1,7 @@
 package sample;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import controller.DeckController;
 import controller.Message;
 import controller.client.Client;
@@ -28,6 +29,7 @@ import model.user.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class twoPaneCards implements EventHandler<MouseEvent> {
@@ -103,7 +105,9 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
     public void initialize() throws IOException {
         if (deckName == null) {
             targetCards = user.getCards();
-            cardsList = g.fromJson(Client.getResponse("getAllCards").getMessage().getContent(), cardsList.getClass());
+            //System.out.println(new ArrayList<Card>().getClass());
+            cardsList = g.fromJson(Client.getResponse("getAllCards").getMessage().getContent(), new TypeToken<List<Card>>(){}.getType());
+            //System.out.println("****************"+cardsList.get(0).getPrice());
             //cardsList = Card.getAllCards();
             coins.setText(String.valueOf(user.getCoin()));
         } else {
@@ -136,7 +140,7 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
         buy.setEffect(dropShadow);
         cost.setEffect(dropShadow);
         for (int i = 1; i <= 2 * n; i++) {
-            imageView = new ImageView(new Image(getClass().getResourceAsStream(Common.handleImage(cardsList.get(i - 1)))));
+            imageView = new ImageView(new Image(getClass().getResourceAsStream(Common.handleImage(cardsList.get(i-1)))));
             imageView.setFitWidth(cardWidth);
             imageView.setFitHeight(imageView.getFitWidth() * cardRatio);
             imageView.setLayoutX(size * i / (2 * n + 2) - (size - windowWidth / 2) / 2);
@@ -172,17 +176,14 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
     }
 
     private void updateUser() {
-        try {
-            user = g.fromJson(Client.getResponse("getUser").getMessage().getContent(), User.class);
+            String username =  user.getUsername();
+            user = User.readUser(username);
             if (deckName == null) {
                 targetCards = user.getCards();
             } else {
                 targetCards = user.getDecks().getDeckByName(deckName).getMainCards();
                 cardsList = user.getCards();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void update() {
@@ -275,7 +276,6 @@ public class twoPaneCards implements EventHandler<MouseEvent> {
                     buy.setOpacity(0.8);
                     buy.getStyleClass().clear();
                     buy.getStyleClass().add("button");
-                    System.out.println(cardsList.get(selectedCard).getPrice());
                 }
             }
         });
