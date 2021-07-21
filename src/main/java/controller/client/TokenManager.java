@@ -1,5 +1,6 @@
 package controller.client;
 
+import model.Request;
 import model.user.User;
 
 import java.util.HashMap;
@@ -18,4 +19,12 @@ public class TokenManager {
             return loggedInUsers.get(token);
         }
     }
+    public static synchronized boolean isValidToken(Request token){
+        if(loggedInUsers.get(token.getToken()) == null)
+        {
+            return false;
+        }
+        else
+            return true;
+    }    
 }

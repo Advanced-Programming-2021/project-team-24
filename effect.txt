@@ -1,1 +1,0 @@
-set(*opp*,can_draw,false,2);

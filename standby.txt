@@ -1,7 +1,0 @@
-q_yn(do_you_want_to_pay_100_lp_to_keep_card?)
-(
-    changeLP(own,-100);
-)
-(
-    changeZone(get(this,ter),my_graveyard);
-)

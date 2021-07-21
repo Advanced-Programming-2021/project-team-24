@@ -1,1 +1,0 @@
-set(this,attack,sum(filter("cardHolderId":$my_monster$,"cardStates":["ATTACK_MONSTER"]),level) * 300);

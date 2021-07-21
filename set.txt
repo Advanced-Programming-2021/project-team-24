@@ -1,1 +1,0 @@
-message(you_should_first_special_summon_the_card);
