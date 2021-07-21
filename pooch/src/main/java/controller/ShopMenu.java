@@ -47,7 +47,11 @@ public class ShopMenu extends MainMenu {
             return new Message(TypeMessage.ERROR, "this card is banned before");            
         }else{
             if(user.getIsAdmin()){
+                Card card = Card.getCardByName(cardName);
+                card.isBanned = true;
+                card.updateCard();
                 bannedCard.add(cardName);
+
             }
             else
                 return new Message(TypeMessage.ERROR, "you are not allowed to do this");
@@ -58,7 +62,10 @@ public class ShopMenu extends MainMenu {
         if(isBanned(cardName)){
             if(user.getIsAdmin()){
                 bannedCard.remove(cardName);
-                return new Message(TypeMessage.SUCCESSFUL, "card banned successfully");
+                Card card = Card.getCardByName(cardName);
+                card.isBanned = false;
+                card.updateCard();
+                return new Message(TypeMessage.SUCCESSFUL, "card banned successfully");                
             }
             else{
                 return new Message(TypeMessage.ERROR, "you are not allowed to do this");

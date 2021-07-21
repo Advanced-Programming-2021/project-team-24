@@ -32,6 +32,7 @@ public abstract class Card {
     protected LimitType limitType;
     protected CardType cardType; 
     public int count;   
+    public boolean isBanned;
     @SerializedName("effects")
     protected HashMap<Event, String> effects;
 

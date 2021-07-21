@@ -33,6 +33,7 @@ public class Card {
     protected CardType cardType;    
     @SerializedName("effects")
     protected HashMap<Event, String> effects;
+    public boolean isBanned;
     public int count;
 
 
