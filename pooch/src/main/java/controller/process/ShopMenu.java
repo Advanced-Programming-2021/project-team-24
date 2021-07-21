@@ -20,8 +20,9 @@ public class ShopMenu extends Menu {
             Matcher matcher = Global.getMatcher(command, "(?<=shop buy ).*");
             if (matcher.find()) {
                 String cardName = matcher.group();
-                if(shopMenu.buyCard(cardName).getTypeMessage() != TypeMessage.SUCCESSFUL){
-                    return new Response(shopMenu.buyCard(cardName), Situation.SHOP);
+                Message message = shopMenu.buyCard(cardName);
+                if(message.getTypeMessage() == TypeMessage.SUCCESSFUL){
+                    return new Response(message, Situation.SHOP);
                 }
             }
         }
