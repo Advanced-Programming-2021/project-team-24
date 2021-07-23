@@ -21,6 +21,7 @@ public class ChatServer {
     static List<String> messageSenders = new ArrayList<>();
     static List<User> requestSingleRound = new ArrayList<>();
     static List<User> requestMatch = new ArrayList<>();
+    static int pinIndex = -1;
     static Boolean isGameStarted = false;
 
     public static synchronized Response handle(Request command)
@@ -36,8 +37,15 @@ public class ChatServer {
             }
             else if(cmd.equals("--request --ignore [13]")){
                 return new Response(ignoreRequent(cmd, TokenManager.getUser(command.getToken())), Situation.MAIN);
-            }
-            else if(Global.regexFind(cmd, "send --message .+")){
+            }else if(Global.regexFind(cmd, "reply --number [0-9]+ --message (.+)")){
+                return replyMessage(cmd, TokenManager.getUser(commmand.getToken()));
+            }else if(view.Global.regexFind(cmd, "unpin")){
+                return unpinMessage();
+            }else if(Global.regexFind(cmd, "pin --number [0-9]+")){
+                return pinMessage(cmd);
+            }else if(view.Global.regexFind(cmd, "delete --number [0-9]+")){
+                return new Response(deleteMessage(cmd), Situation.MAIN);
+            }else if(Global.regexFind(cmd, "send --message .+")){
                 return new Response(sendMessage(cmd, TokenManager.getUser(command.getToken())), Situation.MAIN);
             }else if(cmd.equals("getAllMessages")){
                 return new Response(new Message(TypeMessage.INFO, getAllMessages()), Situation.MAIN);
@@ -45,6 +53,62 @@ public class ChatServer {
         }
         return null;
     }
+    public static Response pinMessage(String request){
+        Matcher matcher = view.Global.getMatcher(request, "pin --number [0-9]+");
+        matcher.find();
+        Integer pinC = Integer.parseInt(matcher.group(1));
+        if(pinC > -1 && pinC < messageSenders.size()){
+            pinIndex = pinC;
+            return new Response(new Message(TypeMessage.SUCCESSFUL, "pinned successfully"), Situation.MAIN);
+        }
+        else
+            return new Response(new Message(TypeMessage.ERROR, "invalid index"), Situation.MAIN);
+    }
+    public static Response unpinMessage(){
+        pinIndex = -1;
+        return new Response(new Message(TypeMessage.SUCCESSFUL, ""), Situation.MAIN);
+    }
+    public static Response replyMessage(String request, User user){
+        Matcher matcher = view.Global.getMatcher(request, "reply --number [0-9]+ --message (.+)");
+        Integer number = Integer.parseInt(matcher.group(1));
+        if(number > messageSenders.size() - 1 || number < 0){
+            return new Response(new Message(TypeMessage.ERROR, "Invalid index"), Situation.MAIN);
+        }
+        messageSenders.add(user.getUsername());
+        messagesContent.add("replied " + number + " -> " + matcher.group(2));
+        return new Response(new Message(TypeMessage.SUCCESSFUL, "message replied"), Situation.MAIN);
+    }
+
+    public static Response editMessage(String request, User user){
+        Matcher matcher = view.Global.getMatcher(request, "edit --number [0-9]+ --message (.+)");
+        Integer number = Integer.parseInt(matcher.group(1));
+        if(number > messageSenders.size() - 1 || number < 0){
+            return new Response(new Message(TypeMessage.ERROR, "Invalid index"), Situation.MAIN);
+        }
+        else
+        {
+            if(messageSenders.get(number).equals(user.getUsername())){
+                messagesContent.remove(i);
+                messageSenders.add(i, matcher.group(2));
+                return new Respone(new Message(TypeMessage.SUCCESSFUL, "message edited successfully"));
+            }
+            else
+            return new Response(new Message(TypeMessage.ERROR, "this is not your message"), Situation.MAIN);
+        }        
+    }
+    
+    public static Message deleteMessage(String request){
+        Matcher matcher = Global.getMatcher(request, "delete --number ([0-9]+)");
+        matcher.find();
+        Integer number = Integer.parseInt(matcher.group(1));
+        if(number < 0 || number > messagesContent.size() - 1){
+            return new Message(TypeMessage.ERROR, "invalid index");
+        }
+        messageSenders.remove(number);
+        messagesContent.remove(number);
+        return new Message(TypeMessage.SUCCESSFUL, "message removed successfully");        
+    }
+
     public synchronized static Response update(String request, User user) {
         if (request.equals("update")) {
             if (requestSingleRound.size() == 2) {
@@ -101,6 +165,8 @@ public class ChatServer {
         }
         return new Response(new Message(TypeMessage.ERROR, ""), Situation.MAIN);
     }
+
+
     public static Response addRequest(String request, User user){
         Matcher matcher = Global.getMatcher(request, "--request ([13])");
         matcher.find();
@@ -113,7 +179,7 @@ public class ChatServer {
                         return new Response(new Message(TypeMessage.ERROR, "you have requested before"),Situation.MAIN);
                 }
                 requestSingleRound.add(user);
-                return new Response(new Message(TypeMessage.ERROR, "you request added"),Situation.MAIN);
+                return new Response(new Message(TypeMessage.SUCCESSFUL, "you request added"),Situation.MAIN);
             case 3:
                 for(int i = 0; i < requestMatch.size(); i++){
                     if(requestMatch.get(i).getUsername().equals(requestMatch.get(i).getUsername())){
@@ -121,10 +187,12 @@ public class ChatServer {
                     }
                 }
                 requestMatch.add(user);
-                return new Response(new Message(TypeMessage.ERROR, "you request added"),Situation.MAIN);
+                return new Response(new Message(TypeMessage.SUCCESSFUL, "you request added"),Situation.MAIN);
         }
         return new Response(new Message(TypeMessage.ERROR, "invalid command"), Situation.MAIN);
     }
+    
+    
     public static Message ignoreRequent(String requst, User user){
         Matcher matcher = Global.getMatcher(requst, "--request --ignore ([13])");
         matcher.find();
@@ -152,6 +220,8 @@ public class ChatServer {
         }
         return new Message(TypeMessage.ERROR, "invalid command");
     }
+    
+    
     public static Message sendMessage(String message, User user){
         Matcher matcher = Global.getMatcher(message, "send --message (.+)");
         matcher.find();
@@ -163,9 +233,13 @@ public class ChatServer {
         return messagesContent.get(messagesContent.size()-1);
     }
     public static String getAllMessages(){
+    
         String ans = "";
+        if(pinIndex > 0){
+            ans += "pin -> " + messageSenders.get(pinIndex) + " : " + messagesContent.get(pinIndex) + '\n';
+        }
         for(int i = 0; i < messagesContent.size(); i++){
-            ans += messageSenders.get(i) + ": " + messagesContent.get(i) + "\n";
+            ans += messageSenders.get(i) + "(" + i + "): " + messagesContent.get(i) + "\n";
         }
         return new Message(TypeMessage.INFO, ans).getContent();
     }
