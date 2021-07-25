@@ -336,6 +336,9 @@ public class EffectParser {
                         ans = "false";
                         return "false";
                     }
+                    if(Global.regexFind(command, "flip\\([^()]+\\)")){
+                        flip(command);
+                    }
                     if(Global.regexFind(command, "filter"))
                     {
                         command = getListByFilter(command);
