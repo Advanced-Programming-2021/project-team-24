@@ -199,7 +199,7 @@ public class User {
     public void addCard(Card newCard){
         cards.add(newCard);
         this.cardNames.add(newCard.getName());
-        addUser();
+        //addUser();
     }
 
     public static Message register(String username, String password, String nickname)
@@ -253,7 +253,7 @@ public class User {
     }
 
     public Decks getDecks() {
-        addUser();
+        //addUser();
         return decks;
     }
     public void setDecks(Decks decks){

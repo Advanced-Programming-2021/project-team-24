@@ -43,7 +43,9 @@ public class Card {
     //public abstract String toString();
     public static List <Card> getAllCards()
     {
+        //System.out.println("okokkokokokok");
         try {
+            //System.out.println(Client.getResponse("getAllCards").getMessage().getContent());
             allCards = new Gson().fromJson(Client.getResponse("getAllCards").getMessage().getContent(), new TypeToken<List<Card>>(){}.getType());
         } catch (IOException e) {
             e.printStackTrace();

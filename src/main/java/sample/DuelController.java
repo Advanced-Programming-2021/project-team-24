@@ -1,6 +1,7 @@
 package sample;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import controller.Message;
 import controller.TypeMessage;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -35,6 +36,7 @@ import view.DuelMenu;
 import controller.client.Client;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -80,22 +82,29 @@ public class DuelController {
     }
 
     public void initialize() throws IOException {
+        //System.out.println("okokkokokokok");
         profilePhoto.setImage(new Image(getClass().getResourceAsStream(user.getImageAddress())));
+        //System.out.println("okokkokokokok");
         username.setText(user.getUsername());
         handleMusic("main");
+        //System.out.println("okokkokokokok");
         User a = user;
         User b = opponent;
         model.deck.Deck alireza = new Deck("alireza");
-        for (int i = 0; i < Card.getAllCards().size(); i++) {
-            alireza.addMainCard(Card.getAllCards().get(i));
+        List<Card> getAllCards = Card.getAllCards();
+        for (int i = 0; i < getAllCards.size(); i++) {
+            alireza.addMainCard(getAllCards.get(i));
         }
+        //System.out.println("okokkokokokok");
         a.getDecks().add(alireza);
         a.getDecks().setActiveDeck(a.getDecks().getDeckByName("alireza"));
         b.getDecks().add(alireza);
         b.getDecks().setActiveDeck(b.getDecks().getDeckByName("alireza"));
+        //System.out.println("okokkokokokok");
         duelMenu = new DuelMenu(new Player(a), new Player(b));
         duelController = duelMenu.getDuelController();
         duel = duelController.getDuel();
+        //System.out.println("okokkokokokok");
         //map = duel.getMap();
         updateMap();
         //duelMenu.checkPhase();
@@ -122,7 +131,9 @@ public class DuelController {
                     public void handle(MouseEvent mouseEvent) {
                         if (mouseEvent.isShiftDown() && flag == 0) {
                             String id = ((ImageView) mouseEvent.getSource()).getId();
+                            System.out.println("flag$");
                             CardState cardHolderState = map.get(getAddressById(id)).getCardState();
+                            System.out.println("flag^");
                             if (id.charAt(2) == 'a' || (cardHolderState == CardState.ACTIVE_MAGIC || cardHolderState == CardState.ATTACK_MONSTER || cardHolderState == CardState.VISIBLE_MAGIC || CardState.DEFENCE_MONSTER == cardHolderState)) {
                                 CardView cardView = new CardView(map.get(getAddressById(id)));
                                 popOver = new PopOver(cardView);
@@ -161,8 +172,14 @@ public class DuelController {
 
     private void updateMap() {
         try {
-            map = g.fromJson(Client.getResponse("getMap").getMessage().getContent(), map.getClass());
-        } catch (IOException e) {
+            Type type = new TypeToken<HashMap<Address, CardHolder>>(){}.getType();
+            Thread.sleep(100);
+            System.out.println("ghabl");
+            //System.out.println("*********"+Client.getResponse("getMap").getMessage().getContent());
+            Message message = Client.getResponse("getMap").getMessage();
+            System.out.println(message.getContent());
+            map = g.fromJson(message.getContent(), type);
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -306,7 +323,7 @@ public class DuelController {
     }
 
     public void update() throws IOException {
-        updateMap();
+        //updateMap();
         Client.getResponse("updateAutomaticEffect");
         //duelController.updateAutomaticEffect();
         handleField();
@@ -348,7 +365,7 @@ public class DuelController {
         LPB.setTextFill(getColorByLP(duel.getOpponent().getLifePoint()));
         imageA.setImage(new Image(getClass().getResourceAsStream(duel.getCurrentPlayer().getUser().getImageAddress())));
         imageB.setImage(new Image(getClass().getResourceAsStream(duel.getOpponent().getUser().getImageAddress())));
-        updateMap();
+        //updateMap();
     }
 
     private void handleField() {

@@ -17,36 +17,36 @@ public abstract class CardHolder {
     protected CardState cardState;
     protected CardType cardType;
     protected Boolean isEmpty;
-    protected List <EffectManager> effectManagerList;        
-    protected List <Integer> appliedEffects;       
-    protected HashMap<String, String> cardMap = new HashMap<String, String>();
-    protected HashMap<String, Integer> ageEffects = new HashMap<String, Integer>();
-    protected HashMap<Event, List<EffectManager>> effects = new HashMap<Event, List<EffectManager>>();    
-    protected Player owner;
+    protected transient List <EffectManager> effectManagerList;
+    protected transient List <Integer> appliedEffects;
+    protected transient HashMap<String, String> cardMap = new HashMap<String, String>();
+    protected transient HashMap<String, Integer> ageEffects = new HashMap<String, Integer>();
+    protected transient HashMap<Event, List<EffectManager>> effects = new HashMap<Event, List<EffectManager>>();
+    protected transient Player owner;
 
 
     public HashMap<Event, List<EffectManager>> getEffects()
     {
         return this.effects;
     }
-    
+
     public String getOwnerName()
     {
         return this.owner.getNickname();
-    }        
+    }
     public Player getOwner()
     {
         return this.owner;
     }
-    
+
     public CardHolder(Player owner)
-    {                
-        this.owner = owner;        
+    {
+        this.owner = owner;
         this.cardState = null;
-        this.id = idCounter;   
-        idCounter++;    
+        this.id = idCounter;
+        idCounter++;
         this.appliedEffects = new ArrayList<Integer>();
-        this.effectManagerList = new ArrayList<EffectManager>();              
+        this.effectManagerList = new ArrayList<EffectManager>();
     }
     public CardHolder(Player owner, CardState cardState) {
         this.owner = owner;
@@ -55,11 +55,11 @@ public abstract class CardHolder {
         idCounter++;
         this.appliedEffects = new ArrayList<Integer>();
         this.effectManagerList = new ArrayList<EffectManager>();
-    }    
+    }
     public abstract String toString();
 
     public void endTurn()
-    {    
+    {
         for(Map.Entry<String, Integer> mapEntry : ageEffects.entrySet())
         {
             try{
@@ -71,11 +71,11 @@ public abstract class CardHolder {
                 if(mapEntry.getValue() != null)
                     ageEffects.put(mapEntry.getKey(), mapEntry.getValue() - 1);
             }catch(Exception e){
-                
-            }                
+
+            }
         }
     }
-    
+
     public CardType getCardType() {
         return this.cardType;
     }
@@ -83,7 +83,7 @@ public abstract class CardHolder {
     public void setCardType(CardType cardType) {
         this.cardType = cardType;
     }
-           
+
     public void setMapValue(String key, String value, Integer time)
     {
         cardMap.put(key, value);
@@ -94,7 +94,7 @@ public abstract class CardHolder {
     }
     public abstract void flip();
     public String getValue(String string)
-    {    
+    {
         if(cardMap.get(string) == null)
             return "";
         return cardMap.get(string);
@@ -102,11 +102,11 @@ public abstract class CardHolder {
     public Boolean getBoolMapValue(String string)
     {
         if(cardMap.get(string) == null)
-            {
-                if(string.substring(0, 3).equals("can"))
-                    return true;
-                return false;
-            }
+        {
+            if(string.substring(0, 3).equals("can"))
+                return true;
+            return false;
+        }
         else
             return Boolean.parseBoolean(cardMap.get(string));
     }
@@ -129,11 +129,11 @@ public abstract class CardHolder {
             if(this.appliedEffects.get(i) == idEffectManager)
                 return true;
         }
-        return false;        
+        return false;
     }
-    
-    
-    
+
+
+
     public void addEffect(int idEffectManager)
     {
         if(haveEffectWithId(idEffectManager) == false)
@@ -141,19 +141,19 @@ public abstract class CardHolder {
             appliedEffects.add(idEffectManager);
         }
     }
-    
+
     public void removeEffect(int idEffectManager)
     {
         for(int i = 0; i < appliedEffects.size(); i++)
         {
             if(appliedEffects.get(i) == idEffectManager)
             {
-                appliedEffects.remove(idEffectManager); 
+                appliedEffects.remove(idEffectManager);
             }
-        }        
-    }    
-    
-    
+        }
+    }
+
+
     public boolean isEmpty()
     {
         if(this.getCard() == null)
@@ -161,9 +161,9 @@ public abstract class CardHolder {
             return true;
         }
         else
-            return false;        
+            return false;
     }
-    
+
     protected void addEffectManager(EffectManager effectManager)
     {
         this.effectManagerList.add(effectManager);
@@ -172,16 +172,16 @@ public abstract class CardHolder {
     {
         return this.cardState;
     }
-    
-    
-    
-    public abstract Card getCard();    
-    
+
+
+
+    public abstract Card getCard();
+
     public int getId()
     {
         return id;
     }
-    
+
     public void setCardMap(HashMap<String, String> cardMap){
         this.cardMap = cardMap;
     }

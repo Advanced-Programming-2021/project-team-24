@@ -33,7 +33,7 @@ public class SignInController {
     public void submit(MouseEvent mouseEvent) throws IOException {
         LoginController loginController = new LoginController();
         //Message message = (Message) loginController.login(username.getText(),password.getText()).get(0);
-        System.out.println("user login --username "+username.getText()+" --password "+password.getText());
+        //System.out.println("user login --username "+username.getText()+" --password "+password.getText());
         Message message = Client.getResponse("user login --username "+username.getText()+" --password "+password.getText()).getMessage();
         System.out.println(message.getContent());
         if(message.getTypeMessage() == TypeMessage.SUCCESSFUL){

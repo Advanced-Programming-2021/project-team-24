@@ -9,6 +9,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +28,7 @@ import javafx.util.Duration;
 import model.card.Card;
 import model.user.User;
 import org.controlsfx.control.PopOver;
+import sample.gatherRoom.GatherRoomController;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,14 +82,14 @@ public class MenuController {
                 });
             }
         });
-        gather.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                GatherRoom gatherRoom = new GatherRoom(user);
-                PopOver popOver = new PopOver(gatherRoom);
-                popOver.show(gather);
-            }
-        });
+//        gather.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                GatherRoomPopup gatherRoomPopup = new GatherRoomPopup(user);
+//                PopOver popOver = new PopOver(gatherRoomPopup);
+//                popOver.show(gather);
+//            }
+//        });
         username.setText(user.getUsername());
         Pane gamePane = new Pane();
         Pane deckPane = new Pane();
@@ -306,5 +308,34 @@ public class MenuController {
         stage.show();
     }
 
+    public void switchToSceneGatherRoom(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/gatherRoom.fxml"));
+        GatherRoomController gatherRoomController = new GatherRoomController(user);
+        loader.setController(gatherRoomController);
+        Parent root = loader.load();
+        scene = new Scene(root);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    public void switchToSceneTV(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/tv.fxml"));
+//        GatherRoomController gatherRoomController = new GatherRoomController(user);
+//        loader.setController(gatherRoomController);
+        Parent root = loader.load();
+        scene = new Scene(root);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    public void exit() throws IOException {
+        Client.getResponse("exit");
+        Platform.exit();
+        System.exit(0);
+    }
 
 }

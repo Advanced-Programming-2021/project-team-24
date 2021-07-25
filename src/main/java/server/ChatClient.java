@@ -24,7 +24,7 @@ public class ChatClient {
     }
 
     public static Message sendMessage(String message) throws IOException{
-        return (Client.getResponse("send --message " + message).getMessage());        
+        return (Client.getResponse(message).getMessage());
     }
     public static Message sendSingleRequest() throws IOException
     {

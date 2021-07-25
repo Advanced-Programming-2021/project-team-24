@@ -6,6 +6,7 @@ import controller.process.*;
 import model.Request;
 import model.Response;
 import model.Situation;
+import model.card.Card;
 import model.user.Player;
 import model.user.User;
 
@@ -18,11 +19,13 @@ import java.util.regex.Matcher;
 
 public class Server {
     private static User user;
+    private static Socket socket;
     public static void runApp() {
         try {
             ServerSocket serverSocket = new ServerSocket(7777);
+            //ServerSocket serverSocket = new ServerSocket(12345);
             while (true) {
-                Socket socket = serverSocket.accept();
+                socket = serverSocket.accept();
                 startNewThread(serverSocket, socket);
             }
         } catch (IOException e) {
@@ -57,7 +60,7 @@ public class Server {
             dataOutputStream.flush();
         }
     }
-    private static Response getResponse(Request request){
+    private static Response getResponse(Request request) throws IOException {
         Situation situation = request.getCurrentSituation();
         if(Global.regexFind(request.getInput(), "updateUser (.+)")){
             Matcher matcher = Global.getMatcher(request.getInput(), "updateUser (.+)");
@@ -71,13 +74,17 @@ public class Server {
             User temp = User.readUser(matcher.group(1));
             return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(temp)), situation);
         }
+        if (request.getInput().equals("exit")){
+            TokenManager.deleteUser(request.getToken());
+            //socket.close();
+        }
         Response response = null;
         switch (situation){
             case DECK:
                 response = new DeckMenu(user).process(request.getInput());
                 break;
             case DUEL:
-                response = DuelMenu.getDuelMenuByUser(user).process(request.getInput());
+                response = DuelMenu.getDuelMenuByUser(user).process(request.getInput(), user);
                 break;
             case SCOREBOARD:
                 response = new ScoreboardMenu(user).process(request.getInput());

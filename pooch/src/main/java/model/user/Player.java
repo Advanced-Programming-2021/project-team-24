@@ -16,10 +16,10 @@ public class Player {
     private int lifePoint;
     private int isDeadRounds;
     private int maxLifePoint = 0;
-    private CardHolder card;
+    private transient CardHolder card;
     private Address selectedAddress;
-    private Deck deck;
-    
+    private transient Deck deck;
+
     public Player(User user) {
         this.lifePoint = 8000;
         this.isDeadRounds = 0;
@@ -34,7 +34,7 @@ public class Player {
         this.setMaxLifePoint();
         this.setLifePoint(8000);
     }
-    
+
     public User getUser(){
         return user;
     }
@@ -45,12 +45,12 @@ public class Player {
     public void setLifePoint(int lifePoint){
         this.lifePoint = lifePoint;
     }
-    
+
     public CardHolder getMap()
     {
         return this.card;
     }
-    
+
     public void selectAddress(Address address) {
         this.selectedAddress = address;
     }

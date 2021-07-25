@@ -23,4 +23,8 @@ public class TokenManager {
             return false;
         return true;
     }
+    public static HashMap<String, User> getLoggedInUsers(){
+        return loggedInUsers;
+    }
+    public static void deleteUser(String token){         loggedInUsers.remove(token);     }
 }

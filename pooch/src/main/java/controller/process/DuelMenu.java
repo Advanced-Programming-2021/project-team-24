@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import com.google.gson.Gson;
 import com.google.inject.internal.Errors;
 import controller.DuelController;
 import controller.Message;
@@ -29,22 +30,30 @@ import model.effect.EffectManager;
 import model.user.Player;
 import model.user.User;
 import model.zone.Address;
+//import com.baeldung.objectsize.InstrumentationAgent;
 
 public class DuelMenu {
-
     DuelController duelController;
     private static ArrayList<DuelMenu> duelMenus = new ArrayList<>();
+
     public DuelMenu(Player user, Player opponent) {
         this.duelController = new DuelController(new Duel(user, opponent));
         duelController.setDuelMenu(this);
         duelMenus.add(this);
     }
-    public static DuelMenu getDuelMenuByUser(User user){
+
+    public static DuelMenu getDuelMenuByUser(User user) {
         for (int i = 0; i < duelMenus.size(); i++) {
-            if (duelMenus.get(i).getPlayer(false).getUser().getNickname().equals(user.getNickname())) return duelMenus.get(i);
+            if (duelMenus.get(i).getPlayer(false).getUser().getNickname().equals(user.getNickname())) {
+                return duelMenus.get(i);
+            }
+            if (duelMenus.get(i).getPlayer(true).getUser().getNickname().equals(user.getNickname())) {
+                return duelMenus.get(i);
+            }
         }
         return null;
     }
+
     private static HashMap<CardState, String> stringOfCardState = new HashMap<CardState, String>();
 
     static {
@@ -57,74 +66,86 @@ public class DuelMenu {
         stringOfCardState.put(CardState.HAND, "c");
     }
 
-    private static final String REGEX_ENTER_MENU = "menu enter (\\w+)";
+//    private static final String REGEX_ENTER_MENU = "menu enter (\\w+)";
+//    public static void printObjectSize(Object object) {
+//        System.out.println("Object type: " + object.getClass() +
+//                ", size: " + InstrumentationAgent.getObjectSize(object) + " bytes");
+//    }
 
-
-    public synchronized Response process(String command) {
+    public synchronized Response process(String command, User user) {
+        //System.out.println(command + " " + user.getUsername());
         if (duelController.isRoundFinished()) {
+            System.out.println("ajibe");
             return new Response(new Message(TypeMessage.SUCCESSFUL, "End"), Situation.DUEL);
         } else {
-            if(checkPhase()) return new Response(new Message(TypeMessage.ERROR, ""), Situation.DUEL);
-             if (command.equals("menu show-current")) {
-                 return new Response(new Message(TypeMessage.SUCCESSFUL, "Duel Menu"), Situation.DUEL);
+            if (command.equals("getOpponent")) {
+                checkPhase();
+                System.out.println("vard shod");
+                return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(getOpponent(user))), Situation.DUEL);
+            }
+            //System.out.println("else");
+            if (checkPhase()) {
+                System.out.println("checkphase");
+                return new Response(new Message(TypeMessage.ERROR, ""), Situation.DUEL);
+            }
+            if (command.equals("menu show-current")) {
+                return new Response(new Message(TypeMessage.SUCCESSFUL, "Duel Menu"), Situation.DUEL);
             } else if (command.equals("surrender")) {
                 duelController.surrender();
-                 return new Response(new Message(TypeMessage.SUCCESSFUL, "End"), Situation.DUEL);
+                return new Response(new Message(TypeMessage.SUCCESSFUL, "End"), Situation.DUEL);
             } else if (command.equals("select -d")) {
                 Message message = duelController.deselect();
-                 return new Response(message, Situation.DUEL);
-             } else if (command.equals("summon")) {
-                 return new Response(duelController.summon(), Situation.DUEL);
+                return new Response(message, Situation.DUEL);
+            } else if (command.equals("summon")) {
+                return new Response(duelController.summon(), Situation.DUEL);
             } else if (command.equals("flip-summon")) {
-                 return new Response(duelController.flipSummon(), Situation.DUEL);
+                return new Response(duelController.flipSummon(), Situation.DUEL);
             } else if (command.equals("set")) {
-                 return new Response(duelController.set(), Situation.DUEL);
+                return new Response(duelController.set(), Situation.DUEL);
             } else if (command.equals("command")) {
                 command = Global.nextLine();
                 EffectManager effectManager = new EffectManager(new Effect(""), duelController.getDuel().getCurrentPlayer(), duelController.getDuel().getCurrentPlayer().getMap().getId());
                 new EffectParser(this, duelController, effectManager).getCommandResult(command);
             } else if (command.equals("attack direct")) {
-                 return new Response(duelController.directAttack(), Situation.DUEL);
+                return new Response(duelController.directAttack(), Situation.DUEL);
             } else if (command.equals("activate effect")) {
-                 return new Response(duelController.activeMagic(), Situation.DUEL);
+                return new Response(duelController.activeMagic(), Situation.DUEL);
             }
 //             else if (command.equals("show board")) {
 //                return showBoard();
 //            }
-             else if (command.equals("next phase")) {
-                 String string = "";
-                 string += duelController.nextPhase().getContent() + "\n";
-                 if (duelController.getDuel().getCurrentPhase() == Phase.END) {
-                     string += duelController.nextPhase().getContent() + "\n";
-                 }
-                 return new Response(new Message(TypeMessage.SUCCESSFUL, string), Situation.DUEL);
-                    //duelController.getDuel().duelAddresses.get(duelController.getDuel().duelZones.get("monster", duelController.getDuel().getOpponent()), 1);
-            }
-            else if (command.equals("getPhaseName")){
+            else if (command.equals("next phase")) {
+                String string = "";
+                string += duelController.nextPhase().getContent() + "\n";
+                if (duelController.getDuel().getCurrentPhase() == Phase.END) {
+                    string += duelController.nextPhase().getContent() + "\n";
+                }
+                return new Response(new Message(TypeMessage.SUCCESSFUL, string), Situation.DUEL);
+                //duelController.getDuel().duelAddresses.get(duelController.getDuel().duelZones.get("monster", duelController.getDuel().getOpponent()), 1);
+            } else if (command.equals("getPhaseName")) {
                 return new Response(new Message(TypeMessage.INFO, duelController.getDuel().getCurrentPhase().toString()), Situation.DUEL);
-             }
-            else if (command.equals("getMap")){
-
+            } else if (command.equals("getMap")) {
+                System.out.println("why?!?!?!" + duelController.getDuel().getMap().size());
+                //System.out.println(new Gson().toJson(duelController.getDuel().getMap()).length());
                 return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(duelController.getDuel().getMap())), Situation.DUEL);
-             }
-            else if (command.equals("isRoundFinished")){
-                 return new Response(new Message(TypeMessage.INFO, Boolean.toString(duelController.isRoundFinished())), Situation.DUEL);
-             }
-            else if (command.equals("getCurrentPlayer")){
-                 return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(duelController.getDuel().getCurrentPlayer())), Situation.DUEL);
+            } else if (command.equals("getAllCards")) {
+                return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(Card.getAllCards())), Situation.DUEL);
+            } else if (command.equals("isRoundFinished")) {
+                return new Response(new Message(TypeMessage.INFO, Boolean.toString(duelController.isRoundFinished())), Situation.DUEL);
+            } else if (command.equals("getCurrentPlayer")) {
+                return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(duelController.getDuel().getCurrentPlayer())), Situation.DUEL);
+            } else if (command.equals("getOpponentPlayer")) {
+                return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(duelController.getDuel().getOpponent())), Situation.DUEL);
             }
-             else if (command.equals("getOpponentPlayer")){
-                 return new Response(new Message(TypeMessage.INFO, GsonConverter.serialize(duelController.getDuel().getOpponent())), Situation.DUEL);
-             }
 //             else if (command.equals("show graveyard")) {
 //                List<CardHolder> graveyard = getZoneCards("graveyard", false);
 //                if (graveyard.isEmpty()) System.out.println("graveyard empty");
 //                else showCardList(graveyard);
 //                continue;
 //            }
-             else if (command.equals("card show --selected")) {
+            else if (command.equals("card show --selected")) {
                 Message message = duelController.showSelectedCard();
-                 return new Response(message, Situation.DUEL);
+                return new Response(message, Situation.DUEL);
             } else {
                 //<select>
                 Matcher matcher = Global.getMatcher(command, "select (?<zone>(?:--\\w+\\s*\\d*){1,2})");
@@ -199,7 +220,7 @@ public class DuelMenu {
 
         Integer ans = Global.random.nextInt(6) + 1;
         return ans;
-        //TODO in gui    
+        //TODO in gui
     }
 
     public List<Integer> randomSelection(List<Integer> cardHolderId, int count, String message) {
@@ -417,7 +438,7 @@ public class DuelMenu {
         DuelMenu duelMenu = new DuelMenu(new Player(a), new Player(b));
 //        duelMenu.addMagicCard("Mystical space typhoon");
 //        duelMenu.addMonsterCardOpp("Axe Raider");
-        duelMenu.process(" ");
+        duelMenu.process(" ", null);
     }
 
     public void addMonsterCardOpp(String cardName) {
@@ -461,6 +482,13 @@ public class DuelMenu {
                 new MagicCardHolder(this.getDuelController().getDuel().getCurrentPlayer(), v, CardState.NONE));
         duelController.select(hand);
         duelController.summon();
+    }
+
+    public User getOpponent(User user) {
+        System.out.println("empty:" + user.getNickname());
+        if (user.getNickname().equals(this.getDuelController().getDuel().getOpponent().getNickname()))
+            return this.getDuelController().getDuel().getCurrentPlayer().getUser();
+        return this.getDuelController().getDuel().getOpponent().getUser();
     }
 
 }

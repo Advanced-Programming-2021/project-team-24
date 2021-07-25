@@ -62,26 +62,6 @@
                             </AnchorPane>
                         </content>
                     </ScrollPane>
-                    <BorderPane prefHeight="576.0" prefWidth="509.0">
-                        <bottom>
-<!--                            <HBox alignment="CENTER" prefHeight="54.0" prefWidth="510.0" BorderPane.alignment="CENTER">-->
-<!--                                <children>-->
-<!--                                    <StackPane prefHeight="54.0" prefWidth="98.0">-->
-<!--                                        <children>-->
-<!--                                            <JFXButton alignment="CENTER" contentDisplay="CENTER" style="-fx-background-color: white; -fx-background-radius: 20;" text="Spell&amp;Trap" textFill="WHITE" />-->
-<!--                                            <Label text="Monster" />-->
-<!--                                        </children>-->
-<!--                                    </StackPane>-->
-<!--                                    <StackPane prefHeight="54.0" prefWidth="98.0">-->
-<!--                                        <children>-->
-<!--                                            <JFXButton alignment="CENTER" contentDisplay="CENTER" style="-fx-background-color: white; -fx-background-radius: 20; -fx-blend-mode: soft_light;" text="Spell&amp;Trap" textFill="WHITE" />-->
-<!--                                            <Label text="Spell&amp;Trap" textFill="WHITE" />-->
-<!--                                        </children>-->
-<!--                                    </StackPane>-->
-<!--                                </children>-->
-<!--                            </HBox>-->
-                        </bottom>
-                    </BorderPane>
                 </children>
             </AnchorPane>
         </items>

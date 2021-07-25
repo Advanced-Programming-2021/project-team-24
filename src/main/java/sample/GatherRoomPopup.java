@@ -25,11 +25,11 @@ import server.ChatClient;
 
 import java.io.IOException;
 
-public class GatherRoom extends Parent {
+public class GatherRoomPopup extends Parent {
     User user;
     JFXTextArea textArea;
     MFXTextField textField;
-    public GatherRoom(User user) {
+    public GatherRoomPopup(User user) {
         this.user = user;
         textArea = new JFXTextArea();
         textArea.setPrefHeight(250);

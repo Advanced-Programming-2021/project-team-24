@@ -21,9 +21,9 @@ public class ShopMenu extends Menu {
             if (matcher.find()) {
                 String cardName = matcher.group();
                 Message message = shopMenu.buyCard(cardName);
-                if(message.getTypeMessage() == TypeMessage.SUCCESSFUL){
+                System.out.println(message.getContent()+" "+message.getTypeMessage().toString());
+                //if(message.getTypeMessage() == TypeMessage.SUCCESSFUL)
                     return new Response(message, Situation.SHOP);
-                }
             }
         }
         else if (command.compareToIgnoreCase("shop show --all") == 0) return new Response(shopMenu.getInfo(), Situation.SHOP);

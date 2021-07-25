@@ -20,7 +20,7 @@ public class ShopMenu extends MainMenu {
         else {
             if(card.count > 0)
             {
-                if(bannedCard.indexOf(card.getName()) > -1 && bannedCard.indexOf(card.getName()) < bannedCard.size())
+                if(!card.isBanned)
                 {
                     user.setCoin(user.getCoin()-card.getPrice());
                     user.addCard(card);

@@ -87,8 +87,8 @@ public class Duel {
         duelZones = new DuelZones(this);
         duelAddresses = new DuelAddresses(this);
         
-        setTheInitialStateOfHandCards(user.getUser(), currentPlayer);
-        setTheInitialStateOfHandCards(opponent.getUser(), this.opponent);
+//        setTheInitialStateOfHandCards(user.getUser(), currentPlayer);
+//        setTheInitialStateOfHandCards(opponent.getUser(), this.opponent);
     }
 
     private void setTheInitialStateOfHandCards(User user, Player player) {

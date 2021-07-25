@@ -7,24 +7,28 @@ import org.junit.Test;
 import model.user.User;
 import view.LoginMenu;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class App {
     public static void main(String[] args) throws Exception {
         User a = new User("alireza", "alireza", "alireza");
         User b = new User("alir", "alir", "alir");
-        for(int i = 0; i < Card.getAllCards().size(); i++)
+        List<Card> getAllCards = Card.getAllCards();
+        for(int i = 0; i < getAllCards.size(); i++)
         {
-            a.getCardNames().add(Card.getAllCards().get(i).getName());
-            b.getCardNames().add(Card.getAllCards().get(i).getName());
+            a.getCardNames().add(getAllCards.get(i).getName());
+            b.getCardNames().add(getAllCards.get(i).getName());
         }
 
 
         Deck alireza = new Deck("alireza");
-        for(int i = 0; i < Card.getAllCards().size(); i++)
+        for(int i = 0; i < getAllCards.size(); i++)
         {
-            alireza.addMainCard(Card.getAllCards().get(i));
+            alireza.addMainCard(getAllCards.get(i));
             if (i<15){
-                alireza.addSideCard(Card.getAllCards().get(i));
+                alireza.addSideCard(getAllCards.get(i));
             }
         }
         Decks decks = new Decks();

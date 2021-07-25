@@ -35,9 +35,9 @@ public class MainMenu extends Menu {
     }
 
     public synchronized Response process(Request command1) {
-        Response response = ChatServer.handle(command1);
+        Response response;
         String command = command1.getInput();
-        if (response != null) return response;
+
         if (command.equals("menu show-current")) {
             return new Response(new Message(TypeMessage.SUCCESSFUL, "Main Menu"), Situation.MAIN);
         }
@@ -64,6 +64,8 @@ public class MainMenu extends Menu {
                 //TODO ai
             }
         }
+        response = ChatServer.handle(command1);
+        if (response != null) return response;
         return new Response(new Message(TypeMessage.ERROR, "invalid command"), Situation.MAIN);
     }
     public static void main(String[] args) {
@@ -150,7 +152,7 @@ public class MainMenu extends Menu {
         dControleer.setDuelMenu(duelMenu);
         //dControleer.getDuel().getMap().put(Address.get(Zone.get("monster",dControleer.getDuel().getCurrentPlayer()), 1), new MonsterCardHolder(dControleer.getDuel().getCurrentPlayer(), current, CardState.ATTACK_MONSTER));
         //dControleer.getDuel().getMap().put(Address.get(Zone.get("monster",dControleer.getDuel().getCurrentPlayer()), 2), new MonsterCardHolder(dControleer.getDuel().getCurrentPlayer(), current, CardState.ATTACK_MONSTER));
-        duelMenu.process("");
+        duelMenu.process("",null);
         /*System.out.println(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5));
 
         dControleer.getDuel().getMap().put(Address.get(Zone.get("hand", duel.getCurrentPlayer()), 5), new MonsterCardHolder(duel.getCurrentPlayer(), current, CardState.HAND));

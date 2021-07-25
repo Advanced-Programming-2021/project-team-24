@@ -23,6 +23,7 @@ public class Client {
     public static void initializeNetwork() {
         try {
             socket = new Socket("localhost", 7777);
+            //socket = new Socket("2,tcp.ngrok.io", 16433);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
         } catch (IOException x) {
@@ -38,6 +39,7 @@ public class Client {
     }
 
     public static Response getResponse(String command) throws IOException {
+        System.out.println(currentSituation+" "+command);
         Request request = new Request(command, currentSituation, token);
         if (command.equals("menu exit") && currentSituation == Situation.LOGIN) System.exit(0);
         dataOutputStream.writeUTF(GsonConverter.serialize(request));
